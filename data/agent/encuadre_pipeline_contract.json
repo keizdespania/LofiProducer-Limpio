@@ -1,76 +1,40 @@
 {
-  "nombre": "Somos El Encuadre - Pipeline de Producción Automatizada",
-  "version": "1.0",
-  "fecha_creacion": "2026-10-27",
-  "descripcion": "Pipeline completo desde la investigación mediática hasta el renderizado de vídeo y distribución.",
-  "fases": {
-    "fase_1_consejo_inteligencia": {
-      "descripcion": "Análisis forense de medios (prensa, TV, radio, podcasts).",
-      "scripts": [
-        "scripts/recolector.py",
-        "scripts/transcribir_groq.py",
-        "scripts/analista_fase1.py",
-        "scripts/sintetizador.py"
-      ],
-      "agentes": [
-        "detective_tendencias_v2",
-        "forense_medios",
-        "abogado_del_diablo",
-        "analista_emocional",
-        "detector_sesgos_cognitivos",
-        "director_inteligencia_v2",
-        "guionista_retencion_v2",
-        "bibliotecario_v2",
-        "verificador_citas"
-      ],
-      "salida": "output/encuadre/dossier_{fecha}.json"
+  "nombre": "Somos El Encuadre - Pipeline Top 1 Mundial",
+  "version": "4.0",
+  "fecha_actualizacion": "2026-10-28",
+  "descripcion": "Pipeline cinematográfico de 18 escenas con mezcla 40/60 de video e imagen, música independiente por escena, y voz de Álvaro con pausas de intriga.",
+  "arquitectura": {
+    "fase_1_inteligencia": {
+      "script_orquestador": "pipeline_encuadre.py",
+      "pasos": ["recolector.py", "transcribir_groq.py", "analista_fase1.py", "sintetizador.py"],
+      "salida": "dossier_{fecha}.json"
     },
-    "fase_2_fabrica_contenido": {
-      "descripcion": "Generación de artículo, guiones, SEO y plan de montaje.",
-      "scripts": [
-        "scripts/fase2_produccion.py",
-        "scripts/preparar_assets.py",
-        "scripts/planificador_montaje.py",
-        "scripts/generar_blueprint.py",
-        "scripts/voz_edge.py"
-      ],
-      "agentes": [
-        "arquitecto_contenido",
-        "redactor_blog",
-        "guionista_cinematografico",
-        "selector_hooks",
-        "seo_maestro",
-        "disenador_visual",
-        "community_manager",
-        "analista_rendimiento",
-        "director_audiovisual",
-        "abogado_legal",
-        "dios_ffmpeg"
-      ],
-      "salida": "output/encuadre/produccion_{fecha}.json"
+    "fase_2_produccion": {
+      "script": "fase2_produccion.py",
+      "logica": "Genera artículo, 18 escenas (con LLM o fallback), shorts, SEO, y assets iniciales.",
+      "salida": "produccion_{fecha}.json"
     },
-    "fase_3_renderizado": {
-      "descripcion": "Renderizado de vídeo largo y shorts con FFmpeg.",
-      "scripts": [
-        "scripts/renderizador.py"
-      ],
-      "assets_necesarios": {
-        "imagenes": "web/media/imagenes/*.png",
-        "voz_largo": "output/encuadre/voz_largo_{fecha}.mp3",
-        "subtitulos_karaoke": "output/encuadre/voz_largo_{fecha}.ass",
-        "musica": "output/musica_temp/*.mp3"
-      },
-      "salida": "output/encuadre/video_largo_{fecha}.mp4 + short_1_{fecha}.mp4"
+    "fase_3_assets": {
+      "script": "director_arte.py",
+      "logica": "Genera 40% videos (Coverr) y 60% imagenes (SDXL), y 18 pistas musicales (Tunetank/YouTube CC). Guarda copias en merch/.",
+      "salida": "web/media/imagenes/escena_XX.png|mp4 y musica_temp/escena_XX.mp3"
+    },
+    "fase_4_voz": {
+      "script": "voz_edge.py",
+      "logica": "Genera un MP3 por escena con Edge-TTS (voz Álvaro), los une con 2s de silencio, y guarda timeline_{fecha}.json con tiempos exactos.",
+      "salida": "voz_largo_{fecha}.mp3 y timeline_{fecha}.json"
+    },
+    "fase_5_render": {
+      "script": "renderizador.py",
+      "logica": "Renderiza cada escena (video o imagen) con su voz y su música, aplica fades, y concatena todo.",
+      "salida": "video_largo_{fecha}.mp4"
     }
   },
-  "reglas_frodo_aplicadas": [
-    "Chunk Chunk Chunk (dividir tareas gigantes)",
-    "No dejar agentes huérfanos (cada agente tiene su script)",
-    "Reescribir si hay más de 3 parches",
-    "Backup antes de tocar"
-  ],
-  "voz": {
-    "motor": "Edge-TTS (Álvaro)",
-    "contrato": "data/agent/voice_contract.json"
-  }
+  "reglas_de_oro": [
+    "Usar Groq directo (openai/gpt-oss-120b) como motor principal. Es inmune a caídas de OmniRoute.",
+    "La voz de Álvaro debe dividirse en escenas independientes para generar las pausas de intriga.",
+    "El Renderizador debe hacer slideshow dinámico y mezclar música por bloques con fade in/out.",
+    "Los shorts se generan con fallback si el LLM falla.",
+    "Todo se sube a GitHub automáticamente para que Cloudflare compile."
+  ]
 }

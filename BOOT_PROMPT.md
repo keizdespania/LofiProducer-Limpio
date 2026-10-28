@@ -501,3 +501,31 @@ Cada ejecución del pipeline genera:
 
 **PRIORIDAD ESTRATÉGICA:**
 - Comprar dominio `.com` (Namecheap/Porkbun) y VPS (NetGrid/BeoHosting) financiado con los ingresos de Fase 0.
+
+
+## 🚀 ARQUITECTURA FINAL DE "SOMOS EL ENCUADRE" (Actualizado: 2026-10-28)
+
+### 📡 LLM Y VOZ
+- **Motor principal**: Groq Directo (`openai/gpt-oss-120b`). Es la única forma de evitar caídas de OmniRoute.
+- **Voz**: Edge-TTS con `es-ES-AlvaroNeural`. El script `voz_edge.py` limpia acotaciones (`[Fade out]`, `Fin`, etc.) antes de generar.
+
+### 🎬 PIPELINE DE 18 ESCENAS
+- **Fase 1**: `recolector.py` → `transcribir_groq.py` → `analista_fase1.py` → `sintetizador.py`
+- **Fase 2**: `fase2_produccion.py` genera el artículo y las 18 escenas (con fallback si el LLM falla).
+- **Assets**: `director_arte.py` descarga 7 vídeos (Coverr) y genera 11 imágenes (SDXL) + 18 canciones.
+- **Voz**: `voz_edge.py` genera 18 MP3s con 2s de silencio entre ellos y guarda `timeline_{fecha}.json`.
+- **Render**: `renderizador.py` monta cada escena con su música y vídeo/imagen.
+
+### ☁️ INFRAESTRUCTURA
+- **GitHub**: `https://github.com/keizdespania/LofiProducer-Limpio`
+- **Cloudflare Pages**: Proyecto `elencuadre`. El build debe ser `cd web && mkdocs build` (NO `-f web/mkdocs.yml`).
+- **Cron**: Nacional 06:00 AM, Internacional Lunes y Jueves 07:00 AM.
+
+### 🚨 REGLA FRODO #23 (NUEVA)
+> "No dejes que un proceso local (OmniRoute) se convierta en un cuello de botella. Si falla, usa la API directa de Groq. La resiliencia es la clave del imperio."
+
+### 🎯 SIGUIENTE PASO NATURAL (para la próxima IA)
+1. Verificar que el pipeline completo de las 06:00 produce un vídeo de >10 minutos con 18 escenas.
+2. Implementar la subida automática a YouTube con `publish_at`.
+3. Configurar AdSense y Afiliados.
+4. Lanzar el primer pipeline internacional (lunes/jueves).

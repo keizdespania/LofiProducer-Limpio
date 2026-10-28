@@ -44,29 +44,57 @@ def producir_fase2(fecha=None):
     res["articulo_html"] = articulo
     res["esqueleto"] = esqueleto
 
-    # 2. GUION DE YOUTUBE (Experto en retención)
-    print("[fase2] 2/5 Guionista YouTube Experto: guion de 10 min...", flush=True)
-    guion_youtube = ""
-    try:
-        prompt_guion = "Escribe un guion completo de YouTube de MÍNIMO 1500 palabras basado en este artículo. Sigue la estructura de retención (hook, open loops, micro-hooks, payoff)."
-        guion_youtube = pedir_a_especialista("guionista_youtube_experto", prompt_guion, contexto=f"ARTÍCULO:\n{articulo[:6000]}")
-        palabras = len(guion_youtube.split())
-        print(f"   ✅ Guion generado: {palabras} palabras (~{palabras//150} min)", flush=True)
-    except Exception as e:
-        print(f"   ⚠️ Error generando guion: {e}", flush=True)
+    # 2. GUION DE YOUTUBE (18 escenas para montaje cinematografico)
+    print("[fase2] 2/5 Guionista: 18 escenas (40% video / 60% imagen)...", flush=True)
+    escenas = []
     
-    if len(guion_youtube.split()) < 100:
-        print("   ⚠️ El guion es demasiado corto. Usando el artículo como fallback.", flush=True)
-        texto_limpio = re.sub(r'<[^>]+>', ' ', articulo)
-        guion_youtube = re.sub(r'\s+', ' ', texto_limpio).strip()
+    # Intentar con el LLM
+    try:
+        resp = pedir_a_especialista("guionista_youtube_experto", "Escribe guion de 18 escenas.", contexto="ARTICULO:\n" + articulo[:6000])
+        d = _parse_json_seguro(resp)
+        if isinstance(d, dict) and "escenas" in d:
+            escenas = d["escenas"]
+        elif isinstance(d, list):
+            escenas = d
+        print(f"   Escenas generadas por LLM: {len(escenas)}", flush=True)
+    except Exception as e:
+        print(f"   ⚠️ LLM falló: {e}", flush=True)
 
-    res["guion_cinematografico"] = {"guion": [{"tiempo": "00:00", "texto": guion_youtube, "mood": "tension"}]}
-    res["texto_voz_largo"] = guion_youtube # Álvaro leerá esto
+    # Fallback manual: Dividir el artículo en 18 trozos
+    if len(escenas) < 5:
+        print("   Fallback: dividiendo articulo en 18 escenas", flush=True)
+        texto = re.sub(r'<[^>]+>', ' ', articulo)
+        texto = re.sub(r'\s+', ' ', texto).strip()
+        palabras = texto.split()
+        
+        # Asegurar mínimo 1800 palabras para que salgan 18 escenas de 100 palabras
+        if len(palabras) < 1800:
+            palabras = palabras * (1800 // max(1, len(palabras)) + 1)
+            palabras = palabras[:1800]
+            
+        chunk = len(palabras) // 18
+        moods = ["tension", "misterio", "epico", "inspirador", "electronico", "relax"]
+        
+        for i in range(18):
+            ini = i * chunk
+            fin_i = min(len(palabras), (i+1) * chunk)
+            if ini >= len(palabras): break
+            escenas.append({
+                "id": i + 1,
+                "texto": " ".join(palabras[ini:fin_i]),
+                "concepto_visual": "cinematic dark news analysis, abstract concept " + str(i+1),
+                "mood_musical": moods[i % len(moods)],
+                "tipo_visual": "video" if i == 0 or i % 3 == 0 else "imagen"
+            })
+
+    res["escenas"] = escenas
+    res["texto_voz_largo"] = " ".join([e.get("texto", "") for e in escenas])
+    print(f"   OK {len(escenas)} escenas guardadas", flush=True)
 
     # 3. DJ MUSICAL
     print("[fase2] 3/5 DJ Musical...", flush=True)
     from descargar_musica_dinamica import descargar_por_mood
-    moods = set([e.get("mood", "relax") for e in res["guion_cinematografico"]["guion"]])
+    moods = set([e.get("mood_musical", "relax") for e in res["escenas"]])
     for m in moods:
         if m: descargar_por_mood(m, 1)
     res["musica"] = {"pistas": list(moods)}
