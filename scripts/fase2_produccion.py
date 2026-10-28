@@ -99,28 +99,35 @@ def producir_fase2(fecha=None):
         if m: descargar_por_mood(m, 1)
     res["musica"] = {"pistas": list(moods)}
 
-    # 4. SHORTS
-    print("[fase2] 4/5 Selector de Hooks y Guiones de Shorts...", flush=True)
+    # 4. SHORTS (Seleccionando los 4 mejores por score)
+    print("[fase2] 4/5 Selector de Hooks: eligiendo los 4 mejores...", flush=True)
+    
+    # Ordenar todos los hooks por score (de mayor a menor)
+    hooks_ordenados = sorted(hooks, key=lambda x: x.get("score", 0), reverse=True)
+    
+    # Elegir los 4 mejores, intentando que haya variedad de tipos
+    tipos_vistos = set()
     shorts_finales = []
-    for i in range(0, min(len(hooks), 8), 2):
-        lote = hooks[i:i+2]
-        prompt_short = """Convierte estos hooks en guiones de 30s. Devuelve SOLO JSON: {"shorts": [{"id": "string", "tipo": "string", "hook": "string", "guion": "string"}]}"""
-        res_lote = _parse_json_seguro(pedir_a_especialista("guionista_cinematografico", prompt_short, contexto=json.dumps(lote, ensure_ascii=False)))
-        
-        if res_lote.get("shorts") and isinstance(res_lote["shorts"], list) and len(res_lote["shorts"]) > 0:
-            shorts_finales.extend(res_lote["shorts"])
-        else:
-            # Fallback de emergencia: usar el hook como guion
-            print(f"   ⚠️ LLM falló en lote {i}. Usando fallback.", flush=True)
-            for j, h in enumerate(lote):
-                shorts_finales.append({
-                    "id": f"short_{i+j+1}",
-                    "tipo": h.get("tipo", "Dato"),
-                    "hook": h.get("hook", "Análisis del día"),
-                    "guion": h.get("hook", "Análisis del día") + ". Lee el análisis completo en elencuadre.pages.dev"
-                })
+    
+    # Primera pasada: uno de cada tipo
+    for h in hooks_ordenados:
+        tipo = h.get("tipo", "otro")
+        if tipo not in tipos_vistos and len(shorts_finales) < 4:
+            tipos_vistos.add(tipo)
+            shorts_finales.append(h)
+    
+    # Segunda pasada: rellenar hasta 4 si faltan
+    for h in hooks_ordenados:
+        if len(shorts_finales) >= 4: break
+        if h not in shorts_finales:
+            shorts_finales.append(h)
+    
+    # Asignar IDs
+    for i, s in enumerate(shorts_finales):
+        s["id"] = f"short_{i+1}"
+    
     res["shorts_finales"] = shorts_finales
-    print(f"   ✅ {len(shorts_finales)} shorts generados.")
+    print(f"   ✅ {len(shorts_finales)} shorts seleccionados (scores: {[s.get('score', '?') for s in shorts_finales]})", flush=True)
 
     # 5. SEO MAESTRO
     print("[fase2] 5/5 SEO Maestro...", flush=True)

@@ -53,9 +53,9 @@ ROLES = {
         "prompt": "Basado en estos análisis, genera el Dossier Base. Devuelve SOLO JSON: {\"tema_del_dia\": \"string\", \"indice_manipulacion_global\": 0-100, \"el_relato_oficial\": \"string\", \"la_contra_narrativa\": \"string\", \"analisis_psicologico\": \"string\", \"cita_bomba\": \"string\", \"sarcasmo_del_dia\": \"string\", \"protagonista\": \"string\", \"villano\": \"string\", \"temas\": [{\"noticia\": \"string\", \"hooks\": {\"dato\": \"string\", \"contradiccion\": \"string\", \"prediccion\": \"string\", \"tutorial\": \"string\"}}]}"
     },
     "guionista_retencion_v2": {
-        "combo": "auto/best-reasoning",
-        "system": "Eres el Guionista de Retención. Recibes el Dossier y generas TODOS los hooks y guiones posibles. No tiras nada (Regla Frodo). Cada noticia debe tener al menos 3 hooks diferentes. Eres creativo, impactante y sabes cómo enganchar.",
-        "prompt": "Basado en este Dossier, genera TODOS los hooks y guiones posibles. Devuelve SOLO JSON: {\"hooks_totales\": [{\"noticia\": \"string\", \"tipo\": \"string\", \"hook\": \"string\", \"guion\": \"string\"}], \"guion_video_largo\": \"string (300 palabras narración continua)\"}"
+        "combo": "ddgw/tinfoil/gpt-oss-120b",
+        "system": "Eres un estratega de contenido viral. Puntuas hooks por su potencial de retencion y viralidad.",
+        "prompt": "Genera hooks a partir del dossier. Cada hook debe tener: noticia, tipo (dato/contradiccion/prediccion/tutorial), hook (texto corto), guion (texto de 30s) y score (0-100). Devuelve SOLO JSON: {\"hooks_totales\": [{\"noticia\": \"string\", \"tipo\": \"string\", \"hook\": \"string\", \"guion\": \"string\", \"score\": 0}]}"
     },
     "bibliotecario_v2": {
         "combo": "auto/best-reasoning",
