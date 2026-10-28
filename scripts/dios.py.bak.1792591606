@@ -1,0 +1,1265 @@
+#!/usr/bin/env python3
+"""
+================================================================================
+🧙 DIOS DE LA CONSTRUCCIÓN — AGENTE AUTÓNOMO DEL ECOSISTEMA LOFIPRODUCER
+================================================================================
+Este script es el cerebro autónomo del proyecto. Si eres una IA externa 
+leyendo esto, aquí tienes el manual de instrucciones:
+
+### 1. ARQUITECTURA Y ENTORNO
+- Runtime: Python 3.14 en Termux (Samsung A25 5G, sin root).
+- Enrutador LLM: OmniRoute (local, puerto 20128) usando el modelo 'auto'.
+  Si falla, cae a 'mi-groq/qwen3.8-27b' u OpenRouter.
+- Memoria: SQLite (data/agent/memoria.db). Memoria a corto plazo (chats) 
+  y a largo plazo (hechos aprendidos).
+
+### 2. BUCLE DE AGENTE (ReAct)
+El Dios funciona en un bucle de hasta 25 pasos (MAX_STEPS = 25).
+1. Recibe un prompt.
+2. Piensa y decide si usar una herramienta.
+3. Ejecuta la herramienta, lee el resultado y vuelve a pensar.
+4. Cuando termina, da un resumen final.
+
+### 3. HERRAMIENTAS (TOOLS)
+Tiene 20 herramientas declaradas en el array TOOLS. Las más importantes:
+- Construcción: write_file (escribe en sandbox/), validate_file (ast.parse),
+  promote_file (mueve a producción), ejecutar_comando (terminal).
+- Producción: generar_video (Kaggle), generar_imagen (Cloudflare), generar_cancion_kaggle.
+- Memoria: recordar_hecho, consultar_hechos.
+- Búsqueda: buscar_en_web, buscar_youtube.
+
+### 4. REGLAS DE SEGURIDAD (CRÍTICO PARA IAS EXTERNAS)
+- Sandbox: NUNCA escribir directamente en el repo. Usar write_file y luego promote_file.
+- Validación: promote_file fallará si el archivo .py tiene errores de sintaxis. Usar validate_file antes.
+- Comandos Prohibidos: En ejecutar_comando NUNCA usar operadores shell como &&, ;, >, | ni cd. 
+  Usar comandos directos (python scripts/foo.py). La blacklist bloqueará el comando.
+- Secretos: Prohibido leer .env, secrets/, tokens o claves privadas. 
+  La herramienta leer_documentacion y read_file lo bloquearán.
+
+### 5. LÍMITES (v2.0)
+- max_tokens de respuesta: 4096.
+- Contexto de herramientas: 8000 caracteres.
+- Resumen de memoria: 2000 caracteres.
+================================================================================
+
+23. ARSENAL SUPERDIOS (5 herramientas nuevas):
+    - sanar_sistema(): Si algo falla, usala para reiniciar Flask o OmniRoute.
+    - notificar_movil(titulo, mensaje): Avisa al usuario al movil cuando termines tareas largas.
+    - leer_rss(fuente, limite): Lee noticias frescas (boe, techcrunch, hackernews, verge).
+    - pedir_a_especialista(rol, tarea): Sub-agentes expertos (guionista, seo, auditor, traductor, musico).
+    - lanzar_notebook_kaggle(nombre, codigo_python): Ejecuta codigo Python en una GPU de Kaggle.
+"""
+from __future__ import annotations
+import ast
+import json
+import shutil
+import subprocess
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+import requests
+
+ROOT = Path(__file__).resolve().parent.parent
+REQUEST_DELAY = 3  # Segundos de respiro entre peticiones a IAs
+sys.path.insert(0, str(ROOT))
+
+from brain.web_search import buscar
+from brain.ejecutor_seguro import ejecutar
+from brain.memoria_db import guardar_conversacion, recordar_hecho, consultar_hechos, obtener_contexto_reciente
+
+MEM_FILE = ROOT / "data" / "agent" / "memoria.json"
+SANDBOX = ROOT / "sandbox"
+BACKUP_DIR = ROOT / "data" / "agent" / "backups"
+OMNIROUTE_URL = "http://localhost:20128/v1/chat/completions"
+MODEL = "groq/openai/gpt-oss-120b"
+MAX_STEPS = 10
+TTL_HORAS = 48
+
+
+def _leer_key() -> str:
+    env = ROOT / ".env"
+    if not env.exists():
+        raise SystemExit("Falta .env")
+    for line in env.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line.startswith("OMNIROUTE_API_KEY="):
+            return line.split("=", 1)[1].strip().strip('"').strip("'")
+    raise SystemExit("Falta OMNIROUTE_API_KEY en .env")
+
+
+def _cargar_memoria() -> dict:
+    if not MEM_FILE.exists():
+        return {"conversaciones": []}
+    try:
+        return json.loads(MEM_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return {"conversaciones": []}
+
+
+def _guardar_memoria(mem: dict) -> None:
+    mem["ultima_conexion"] = datetime.now(timezone.utc).isoformat()
+    MEM_FILE.parent.mkdir(parents=True, exist_ok=True)
+    MEM_FILE.write_text(json.dumps(mem, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _limpiar_backups() -> int:
+    if not BACKUP_DIR.exists():
+        return 0
+    limite = time.time() - (TTL_HORAS * 3600)
+    borrados = 0
+    for f in BACKUP_DIR.glob("*"):
+        if f.is_file() and f.stat().st_mtime < limite:
+            f.unlink()
+            borrados += 1
+    return borrados
+
+
+def _backup(path: Path) -> Path | None:
+    if not path.exists():
+        return None
+    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    dst = BACKUP_DIR / f"{ts}_{path.name}"
+    shutil.copy2(path, dst)
+    return dst
+
+
+def _contexto_proyecto() -> str:
+    partes = []
+    for f in ["BOOT_PROMPT.md", "README_FUTURO.md"]:
+        p = ROOT / f
+        if p.exists():
+            txt = p.read_text(encoding="utf-8")
+            partes.append(f"=== {f} ===\n{txt[:3000]}")
+    r = subprocess.run(["git", "status", "--short"], cwd=str(ROOT),
+                       capture_output=True, text=True, timeout=15)
+    partes.append("=== git status ===\n" + (r.stdout[:1000] or "(limpio)"))
+    # Inyectar conversaciones recientes (Corto Plazo)
+    ctx_reciente = obtener_contexto_reciente(3)
+    if ctx_reciente:
+        partes.append("=== Conversaciones Recientes ===\n" + ctx_reciente)
+
+    # Inyectar hechos a largo plazo (Largo Plazo)
+    hechos = consultar_hechos()
+    if hechos and "No hay hechos" not in hechos:
+        partes.append("=== Hechos que recuerdas (SQLite) ===\n" + hechos)
+    return "\n\n".join(partes)
+
+
+TOOLS = [
+    {"type": "function", "function": {
+        "name": "publicar_en_redes",
+        "description": "Publica un video final en varias redes sociales (YouTube, TikTok, Instagram, etc).",
+        "parameters": {"type": "object", "properties": {
+            "video_path": {"type": "string", "description": "Ruta del video final (ej. output/produccion_final/video_final.mp4)"},
+            "titulo": {"type": "string", "description": "Titulo del video"},
+            "descripcion": {"type": "string", "description": "Descripcion del video"},
+            "tags": {"type": "array", "items": {"type": "string"}, "description": "Lista de tags"},
+            "redes": {"type": "array", "items": {"type": "string", "enum": ["youtube", "tiktok", "instagram", "blog"]}, "description": "Redes donde publicar"}
+            }, "required": ["video_path", "titulo", "redes"]}}},
+    {"type": "function", "function": {
+        "name": "producir_video",
+        "description": "Toma un video, una cancion, los ensambla con FFmpeg, aplica fade y valida el resultado final.",
+        "parameters": {"type": "object", "properties": {
+            "video_path": {"type": "string", "description": "Ruta del video (ej. output/video_generado.mp4)"},
+            "audio_path": {"type": "string", "description": "Ruta de la cancion (ej. output/cancion_generada.mp3)"},
+            "nombre_final": {"type": "string", "description": "Nombre del archivo final (ej. video_final_lofi.mp4)"}
+            }, "required": ["video_path", "audio_path", "nombre_final"]}}},
+    {"type": "function", "function": {
+        "name": "ensamblar_video_final",
+        "description": "Une un video (MP4) y una cancion (MP3) en un solo archivo final.",
+        "parameters": {"type": "object", "properties": {
+            "video_path": {"type": "string", "description": "Ruta del video (ej. output/video_generado.mp4)"},
+            "audio_path": {"type": "string", "description": "Ruta de la cancion (ej. output/cancion_generada.mp3)"},
+            "output_path": {"type": "string", "description": "Ruta del archivo final (ej. output/video_final.mp4)"}
+            }, "required": ["video_path", "audio_path", "output_path"]}}},
+    {"type": "function", "function": {
+        "name": "generar_video",
+        "description": "Genera un video usando la GPU de Kaggle (LTX-Video). Requiere la URL de Gradio activa.",
+        "parameters": {"type": "object", "properties": {
+            "url": {"type": "string", "description": "URL de Gradio (ej. https://...gradio.live)"},
+            "prompt": {"type": "string", "description": "Descripción del vídeo (ej. un gato montando en bicicleta)"}
+            }, "required": ["url", "prompt"]}}},
+    {"type": "function", "function": {
+        "name": "buscar_youtube",
+        "description": "Busca videos en YouTube o consulta las tendencias actuales de una región. Usa esto ANTES que buscar_en_web para temas de YouTube.",
+        "parameters": {"type": "object", "properties": {
+            "query": {"type": "string", "description": "Qué buscar (ej. 'lofi hip hop', 'noticias ia')"},
+            "region": {"type": "string", "description": "Código de región (ej. ES, MX, US)"},
+            "tipo": {"type": "string", "enum": ["busqueda", "tendencias"], "description": "Buscar por texto o ver lo más popular"}
+            }, "required": ["query"]}}},
+    {"type": "function", "function": {
+        "name": "generar_imagen",
+        "description": "Genera una imagen estática usando Cloudflare SDXL. Tarda unos 20-30 segundos.",
+        "parameters": {"type": "object", "properties": {
+            "prompt": {"type": "string", "description": "Descripción detallada de la imagen"}
+            }, "required": ["prompt"]}}},
+    {"type": "function", "function": {
+        "name": "lanzar_pipeline_kaggle",
+        "description": "Lanza un pipeline completo en Kaggle (genera música, vídeo y lo sube a GitHub) de forma automática y apaga la GPU al terminar.",
+        "parameters": {"type": "object", "properties": {
+            "tema": {"type": "string", "description": "Tema de la canción (ej. lofi jazz, piano)"}
+            }, "required": ["tema"]}}},
+    {"type": "function", "function": {
+        "name": "generar_cancion_kaggle",
+        "description": "Genera una cancion usando ACE-Step v11 (acestep.cpp + GGUF) en Kaggle T4. Tarda ~30 min (compila + descarga + genera). Guarda el MP3 en output/musica/ y aparece en el Media Center. Devuelve el path.",
+        "parameters": {"type": "object", "properties": {
+            "prompt": {"type": "string", "description": "Estilo/descripcion musical (ej. lofi jazz con saxofon suave, 60 bpm, melancolico)"},
+            "duracion": {"type": "integer", "description": "Duracion en segundos (10-180, recomendado 30-60)"},
+            "letra": {"type": "string", "description": "Letra opcional con etiquetas [Verse], [Chorus] (se fusiona con el prompt)"}
+            }, "required": ["prompt"]}}},
+    {"type": "function", "function": {
+        "name": "leer_documentacion",
+        "description": "Lee un archivo maestro de documentación (ej. TRASPASO.md, BOOT_PROMPT.md, MANUAL_KAGGLE.md).",
+        "parameters": {"type": "object", "properties": {"archivo": {"type": "string"}}, "required": ["archivo"]}}},
+    {"type": "function", "function": {
+        "name": "documentar_aprendizaje",
+        "description": "Añade un nuevo descubrimiento o hito al final de un archivo de documentación para nutrir a futuras IAs.",
+        "parameters": {"type": "object", "properties": {
+            "archivo": {"type": "string", "description": "Ej. TRASPASO.md"},
+            "texto": {"type": "string", "description": "El texto markdown a añadir al final."}}, "required": ["archivo", "texto"]}}},
+    {"type": "function", "function": {
+        "name": "ejecutar_comando",
+        "description": "Ejecuta comandos en la terminal (pip install, python, git, etc). Comandos peligrosos pedirán confirmación al usuario.",
+        "parameters": {"type": "object", "properties": {"cmd": {"type": "string"}}, "required": ["cmd"]}}},
+    {"type": "function", "function": {
+        "name": "recordar_hecho",
+        "description": "Guarda un dato importante en la memoria a largo plazo para no olvidarlo en el futuro.",
+        "parameters": {"type": "object", "properties": {"hecho": {"type": "string"}}, "required": ["hecho"]}}},
+    {"type": "function", "function": {
+        "name": "consultar_hechos",
+        "description": "Lee los datos importantes guardados en la memoria a largo plazo.",
+        "parameters": {"type": "object", "properties": {}}}},
+    {"type": "function", "function": {
+        "name": "buscar_en_web",
+        "description": "Busca informacion actual en internet (clima, noticias, precios, productos).",
+        "parameters": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}}},
+    {"type": "function", "function": {
+        "name": "read_file",
+        "description": "Lee un archivo del repo.",
+        "parameters": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}},
+    {"type": "function", "function": {
+        "name": "write_file",
+        "description": "Escribe un archivo en SANDBOX. Hace backup del original si existe. Luego valida y promueve.",
+        "parameters": {"type": "object", "properties": {
+            "path": {"type": "string", "description": "Ruta relativa, ej: scripts/nuevo.py"},
+            "content": {"type": "string"}}, "required": ["path", "content"]}}},
+    {"type": "function", "function": {
+        "name": "validate_file",
+        "description": "Valida sintaxis Python (ast.parse) de un archivo en sandbox.",
+        "parameters": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}},
+    {"type": "function", "function": {
+        "name": "promote_file",
+        "description": "Mueve un archivo validado de sandbox al repo real.",
+        "parameters": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}},
+    {"type": "function", "function": {
+        "name": "list_canales",
+        "description": "Lista los canales configurados (config/channels.json).",
+        "parameters": {"type": "object", "properties": {}}}},
+    {"type": "function", "function": {
+        "name": "estado_sistema",
+        "description": "Estado del ecosistema: git, procesos vivos, omniroute.",
+        "parameters": {"type": "object", "properties": {}}}},
+    {"type": "function", "function": {
+        "name": "delegar_tareas_paralelas",
+        "description": "Delega múltiples tareas de investigación o análisis a OmniRoute en paralelo para ahorrar tiempo. Úsala cuando necesites leer varios archivos, investigar varios temas o hacer varias cosas a la vez.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "tareas": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "prompt": {"type": "string", "description": "La tarea a realizar (ej. 'Lee y resume el archivo X')"},
+                            "system": {"type": "string", "description": "Instrucciones de sistema para esta tarea"}
+                        },
+                        "required": ["prompt"]
+                    }
+                }
+            },
+            "required": ["tareas"]
+        }
+    }},
+    {"type": "function", "function": {"name": "consultar_manual_python", "description": "Busca patrones en el manual de Python.", "parameters": {"type": "object", "properties": {"tema": {"type": "string"}}, "required": ["tema"]}}},
+    {"type": "function", "function": {"name": "consultar_manual_python", "description": "Busca patrones en el manual de Python.", "parameters": {"type": "object", "properties": {"tema": {"type": "string"}}, "required": ["tema"]}}},
+    {"type": "function", "function": {
+        "name": "instalar_dependencia",
+        "description": "Instala una librería de Python (pip). Antes verifica que hay RAM y disco suficiente. Úsalo para auto-mejorar tu sistema.",
+        "parameters": {"type": "object", "properties": {
+            "paquete": {"type": "string", "description": "Nombre del paquete en PyPI (ej. pykokoro, requests)"}
+        }, "required": ["paquete"]}
+    }},
+
+    {"type": "function", "function": {
+        "name": "buscar_repositorio",
+        "description": "Busca librerías o herramientas en GitHub, PyPI o F-Droid. Úsalo antes de instalar algo para ver si existe y cuál es su URL.",
+        "parameters": {"type": "object", "properties": {
+            "plataforma": {"type": "string", "enum": ["github", "pypi", "fdroid"]},
+            "query": {"type": "string", "description": "Nombre o término de búsqueda"}
+        }, "required": ["plataforma", "query"]}
+    }},
+
+    {"type": "function", "function": {"name": "sanar_sistema", "description": "Revisa y reinicia Flask y OmniRoute si estan caidos.", "parameters": {"type": "object", "properties": {}}}},
+    {"type": "function", "function": {"name": "notificar_movil", "description": "Envia notificacion push al movil del usuario.", "parameters": {"type": "object", "properties": {"titulo": {"type": "string"}, "mensaje": {"type": "string"}}, "required": ["titulo", "mensaje"]}}},
+    {"type": "function", "function": {"name": "leer_rss", "description": "Lee noticias frescas. Fuentes: boe, techcrunch, hackernews, verge.", "parameters": {"type": "object", "properties": {"fuente": {"type": "string"}, "limite": {"type": "integer"}}, "required": ["fuente"]}}},
+    {"type": "function", "function": {"name": "pedir_a_especialista", "description": "Delegar tarea a un sub-agente especializado. Roles: guionista, seo, auditor, traductor, musico.", "parameters": {"type": "object", "properties": {"rol": {"type": "string"}, "tarea": {"type": "string"}, "contexto": {"type": "string"}}, "required": ["rol", "tarea"]}}},
+    {"type": "function", "function": {"name": "lanzar_notebook_kaggle", "description": "Crea un notebook con codigo Python y lo ejecuta en Kaggle GPU.", "parameters": {"type": "object", "properties": {"nombre": {"type": "string"}, "codigo_python": {"type": "string"}}, "required": ["nombre", "codigo_python"]}}},
+    {"type": "function", "function": {"name": "analizar_video_competencia", "description": "Descarga un video de YouTube, extrae fotogramas y los analiza visualmente con Nemotron 550B. Borra el video despues.", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "URL del video de YouTube"}}, "required": ["url"]}}},
+    {"type": "function", "function": {"name": "generar_narracion", "description": "Genera un audio de voz con TU voz del Dios (perfil guardado). Usalo para narrar guiones, blogs o videos.", "parameters": {"type": "object", "properties": {"texto": {"type": "string", "description": "El texto a narrar"}, "nombre": {"type": "string", "description": "Nombre del archivo (opcional)"}}, "required": ["texto"]}}},
+]
+
+
+def _tool_read_file(args):
+    p = (ROOT / args["path"]).resolve()
+    if not p.is_relative_to(ROOT):
+        return "ERROR: ruta fuera del repo"
+    if not p.exists():
+        return f"ERROR: {args['path']} no existe"
+    
+    # BLACKLIST DE SEGURIDAD
+    PROHIBIDOS = [".env", "secrets/", ".git-credentials", "token.json",
+                  "client_secret.json", ".pem", ".key", "id_rsa", ".ssh/"]
+    ruta_str = str(p).lower()
+    for prohibido in PROHIBIDOS:
+        if prohibido in ruta_str:
+            return f"ERROR: Acceso denegado a {args['path']} (archivo protegido por seguridad)."
+    
+    # Comprobar que no es un archivo binario
+    BINARIOS = (".png", ".jpg", ".jpeg", ".gif", ".wav", ".mp3", ".mp4", ".mov", ".webm", ".zip", ".tar", ".gz", ".db", ".sqlite", ".pdf")
+    if p.suffix.lower() in BINARIOS:
+        return f"ERROR: {args['path']} es un archivo binario ({p.suffix}). Usa herramientas específicas para leerlo."
+    
+    try:
+        return p.read_text(encoding="utf-8")[:8000]
+    except UnicodeDecodeError:
+        return f"ERROR: {args['path']} no es texto UTF-8 válido (posible binario)."
+
+
+def _tool_write_file(args):
+    rel = args["path"]
+    sandbox_path = SANDBOX / rel
+    sandbox_path.parent.mkdir(parents=True, exist_ok=True)
+    original = ROOT / rel
+    bak_msg = ""
+    if original.exists():
+        dst = _backup(original)
+        bak_msg = f" (backup: {dst.name})" if dst else ""
+    sandbox_path.write_text(args["content"], encoding="utf-8")
+    return f"OK escrito en sandbox/{rel} ({len(args['content'])} bytes){bak_msg}. Siguiente: validate_file."
+
+
+def _tool_validate_file(args):
+    rel = args["path"].replace("sandbox/", "", 1).lstrip("/")
+    p = SANDBOX / rel
+    if not p.exists():
+        return f"ERROR: sandbox/{args['path']} no existe"
+    if not p.name.endswith(".py"):
+        return "OK (no es .py, sin validar)"
+    try:
+        ast.parse(p.read_text(encoding="utf-8"))
+        return "OK sintaxis Python"
+    except SyntaxError as e:
+        return f"SYNTAX ERROR linea {e.lineno}: {e.msg}"
+
+
+def _tool_promote_file(args):
+    rel = args["path"].replace("sandbox/", "", 1).lstrip("/")
+    src = SANDBOX / rel
+    if not src.exists():
+        return f"ERROR: sandbox/{rel} no existe"
+    # Validacion forzosa: si es .py, debe parsear antes de tocar el repo
+    if src.suffix == ".py":
+        try:
+            ast.parse(src.read_text(encoding="utf-8"))
+        except SyntaxError as e:
+            return f"ERROR: sandbox/{rel} no pasa validacion (SyntaxError: {e}). Corrige con write_file + validate_file."
+    dst = ROOT / rel
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src, dst)
+    return f"OK promovido a {rel}"
+
+
+def _tool_list_canales(_args):
+    cf = ROOT / "config" / "channels.json"
+    if not cf.exists():
+        return "No hay config/channels.json"
+    try:
+        data = json.loads(cf.read_text(encoding="utf-8"))
+        if isinstance(data, dict):
+            data = data.get("channels", data)
+        return json.dumps(data, ensure_ascii=False)[:2000]
+    except Exception as e:
+        return f"Error leyendo channels.json: {e}"
+
+
+def _tool_estado_sistema(_args):
+    r = subprocess.run(["git", "status", "--short"], cwd=str(ROOT),
+                       capture_output=True, text=True, timeout=15)
+    git = r.stdout[:500] or "(limpio)"
+    procs = subprocess.run(["pgrep", "-af", "omniroute"],
+                           capture_output=True, text=True, timeout=10).stdout[:300] or "(sin omniroute)"
+    return f"git status:\n{git}\n\nomniroute:\n{procs}"
+
+
+
+def _tool_buscar_en_web(args):
+    return buscar(args["query"])
+
+
+def _tool_recordar_hecho(args):
+    return recordar_hecho(args["hecho"])
+
+def _tool_consultar_hechos(args):
+    return consultar_hechos()
+
+
+def _tool_ejecutar_comando(args):
+    return ejecutar(args["cmd"])
+
+
+def _tool_leer_documentacion(args):
+    archivo = args["archivo"]
+    p = ROOT / archivo
+    if not p.exists():
+        return f"ERROR: El archivo {archivo} no existe."
+    # Misma blacklist que _tool_read_file (evita leer .env, secrets/, etc.)
+    _PROHIB_DOC = (".env", "secrets/", ".git-credentials", "token.json",
+                   "client_secret.json", ".pem", ".key", "id_rsa", ".ssh/")
+    ruta_str = str(p).lower()
+    for prohibido in _PROHIB_DOC:
+        if prohibido in ruta_str:
+            return f"ERROR: Acceso denegado a {archivo} (archivo protegido por seguridad)."
+    return p.read_text(encoding="utf-8")[:8000]
+
+def _tool_documentar_aprendizaje(args):
+    archivo = args["archivo"]
+    if not archivo.endswith(".md"):
+        return "ERROR: Solo se puede documentar en archivos .md"
+    p = ROOT / archivo
+    texto = args["texto"]
+    
+    # Hacemos backup antes de tocar
+    if p.exists():
+        _backup(p)
+        with open(p, "a", encoding="utf-8") as f:
+            f.write(f"\n\n{texto}\n")
+        return f"OK: Aprendizaje documentado en {archivo}."
+    else:
+        return f"ERROR: El archivo {archivo} no existe. Créalo primero con write_file."
+
+
+def _tool_generar_cancion_kaggle(args):
+    """Genera cancion via ACE-Step v11 (acestep.cpp + GGUF) en Kaggle con auto-upload a GitHub.
+    Pipeline: push kernel -> poll estado -> descarga MP3 desde GitHub -> output/musica/."""
+    try:
+        import sys
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from musica_acestep import generar
+    except Exception as e:
+        return f"ERROR importando musica_acestep: {e}"
+
+    prompt = args.get("prompt") or args.get("caption") or ""
+    if not prompt:
+        return "ERROR: falta 'prompt' (estilo/descripcion musical)"
+    duracion = int(args.get("duracion", 30))
+    # Letra opcional: si el LLM la pasa, la fundimos con la descripcion
+    letra = args.get("letra", "").strip()
+    if letra:
+        prompt = prompt + " | " + letra[:400]
+
+    result = generar(prompt, duracion)
+    return result
+def _tool_lanzar_pipeline_kaggle(args):
+    import subprocess
+    tema = args.get("tema", "lofi")
+    ordenes = {"tema": tema, "tipo": "musica_y_video"}
+    ordenes_json = json.dumps(ordenes)
+    
+    proc = subprocess.run(["python", "scripts/kaggle_orchestrator.py", ordenes_json], capture_output=True, text=True, cwd=str(ROOT), timeout=1800) # 30 min timeout
+    
+    if "Kernel creado" in proc.stdout or "Kernel activado" in proc.stdout:
+        return "✅ Pipeline lanzado en Kaggle. Tardará unos 15-20 minutos. Revisa tu GitHub / Media Center para ver los resultados."
+    return f"❌ Error lanzando pipeline:\n{proc.stdout[-500:]}\n{proc.stderr[-500:]}"
+
+
+def _tool_generar_imagen(args):
+    import subprocess
+    prompt = args.get("prompt", "")
+    if not prompt:
+        return "ERROR: Falta el prompt"
+    try:
+        proc = subprocess.run(
+            ["python", "scripts/generar_imagen.py", prompt],
+            capture_output=True, text=True, cwd=str(ROOT), timeout=120
+        )
+        if "OK:" in proc.stdout:
+            return f"✅ Imagen generada. {proc.stdout.strip()}"
+        return f"❌ Error: {proc.stderr[-300:]}"
+    except Exception as e:
+        return f"❌ Excepción: {e}"
+
+
+def _tool_buscar_youtube(args):
+    import sys
+    from pathlib import Path
+    query = args.get("query", "")
+    region = args.get("region", "ES")
+    tipo = args.get("tipo", "busqueda")
+    
+    try:
+        # Importamos la lógica que ya existe en brain/youtube_trending.py
+        if tipo == "tendencias":
+            sys.path.insert(0, str(ROOT))
+            from brain.youtube_trending import resumen_texto
+            return resumen_texto(region=region, top=10)
+        else:
+            # Para búsquedas, usamos la API de YouTube (fases/tendencias.py tiene la lógica)
+            sys.path.insert(0, str(ROOT))
+            from fases.tendencias import buscar_videos
+            # Devolvemos los IDs de los vídeos encontrados
+            ids = buscar_videos(query, max_results=5)
+            return f"Encontrados {len(ids)} vídeos para '{query}': {', '.join(ids)}"
+    except Exception as e:
+        return f"ERROR buscando en YouTube: {e}"
+
+
+def _tool_generar_video(args):
+    import subprocess
+    url = args.get("url", "")
+    prompt = args.get("prompt", "")
+    if not url or not prompt:
+        return "ERROR: Falta la URL de Kaggle o el prompt."
+    
+    proc = subprocess.run(
+        ["python", "scripts/generar_video.py", url, prompt],
+        capture_output=True, text=True, cwd=str(ROOT), timeout=900  # 15 min
+    )
+    
+    if "Vídeo descargado" in proc.stdout or "Video descargado" in proc.stdout:
+        return "✅ Vídeo generado y descargado en output/video_generado.mp4. Ve al Media Center para verlo."
+    return f"❌ Fallo en la generación:\n{proc.stdout[-500:]}\n{proc.stderr[-500:]}"
+
+
+def _tool_ensamblar_video_final(args):
+    import subprocess
+    video = args.get("video_path", "")
+    audio = args.get("audio_path", "")
+    output = args.get("output_path", "output/video_final.mp4")
+    
+    proc = subprocess.run(
+        ["python", "scripts/ensamblar_video.py", video, audio, output],
+        capture_output=True, text=True, cwd=str(ROOT), timeout=300
+    )
+    
+    if "OK:" in proc.stdout:
+        return f"✅ {proc.stdout.strip()}"
+    return f"❌ Fallo en el ensamblaje:\n{proc.stdout[-500:]}\n{proc.stderr[-500:]}"
+
+
+def _tool_producir_video(args):
+    import subprocess
+    video = args.get("video_path", "")
+    audio = args.get("audio_path", "")
+    nombre_final = args.get("nombre_final", "video_final.mp4")
+    
+    proc = subprocess.run(
+        ["python", "scripts/producir_video.py", video, audio, nombre_final],
+        capture_output=True, text=True, cwd=str(ROOT), timeout=300
+    )
+    
+    if "✅ Vídeo listo" in proc.stdout:
+        return proc.stdout.strip()
+    return f"❌ Fallo en la producción:\n{proc.stdout[-500:]}\n{proc.stderr[-500:]}"
+
+
+def _tool_publicar_en_redes(args):
+    import subprocess
+    video = args.get("video_path", "")
+    titulo = args.get("titulo", "Video")
+    descripcion = args.get("descripcion", "")
+    tags = args.get("tags", [])
+    redes = args.get("redes", ["youtube"])
+    
+    resultados = []
+    for red in redes:
+        if red == "youtube":
+            tags_str = ",".join(tags) if tags else ""
+            proc = subprocess.run(
+                ["python", "-m", "fases.subida", video, titulo, descripcion, tags_str],
+                capture_output=True, text=True, cwd=str(ROOT), timeout=600
+            )
+            if "OK:" in proc.stdout or "Video ID" in proc.stdout:
+                resultados.append(f"✅ YouTube: subido")
+            else:
+                resultados.append(f"❌ YouTube: {proc.stderr[-200:]}")
+        elif red in ["tiktok", "instagram", "blog"]:
+            # Hueco preparado para el futuro
+            resultados.append(f"⏳ {red}: pendiente de configurar")
+    
+    return "\n".join(resultados)
+
+
+def _tool_delegar_tareas_paralelas(args):
+    import concurrent.futures, requests, os
+    tareas = args.get("tareas", [])
+    if not tareas: return "ERROR: No se proporcionaron tareas."
+    
+    api_key = _leer_api_key("OMNIROUTE_API_KEY")
+    url = "http://localhost:20128/v1/chat/completions"
+
+    def ejecutar_tarea(t):
+        prompt = t.get("prompt", "")
+        system = t.get("system", "Eres un asistente experto. Responde de forma concisa.")
+        try:
+            r = requests.post(url, json={
+                "model": "auto",
+                "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}],
+                "max_tokens": 2000
+            }, headers={"Authorization": f"Bearer {api_key}"}, timeout=120)
+            if r.status_code == 200:
+                return f"=== TAREA: {prompt[:50]}... ===\n{r.json()['choices'][0]['message']['content']}"
+            return f"=== TAREA: {prompt[:50]}... ===\nERROR HTTP {r.status_code}"
+        except Exception as e:
+            return f"=== TAREA: {prompt[:50]}... ===\nERROR: {e}"
+
+    resultados = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+        futuros = [executor.submit(ejecutar_tarea, t) for t in tareas]
+        for f in concurrent.futures.as_completed(futuros):
+            resultados.append(f.result())
+    
+    return "\n\n".join(resultados)
+
+def _tool_consultar_manual_python(args):
+    tema = args.get("tema", "").lower()
+    manual_path = ROOT / "docs" / "PYTHON_MASTER_MANUAL.md"
+    if not manual_path.exists(): return "ERROR: Manual no existe"
+    texto = manual_path.read_text(encoding="utf-8")
+    secciones = texto.split("\n## ")
+    for sec in secciones:
+        if tema in sec.lower():
+            return f"=== SECCION DEL MANUAL: ===\n{sec[:3000]}"
+    return f"No encontre '{tema}' en el manual."
+
+def _tool_consultar_manual_python(args):
+    tema = args.get("tema", "").lower()
+    manual_path = ROOT / "docs" / "PYTHON_MASTER_MANUAL.md"
+    if not manual_path.exists(): return "ERROR: Manual no existe"
+    texto = manual_path.read_text(encoding="utf-8")
+    secciones = texto.split("\n## ")
+    for sec in secciones:
+        if tema in sec.lower():
+            return f"=== SECCION DEL MANUAL: ===\n{sec[:3000]}"
+    return f"No encontre '{tema}' en el manual."
+
+
+def _tool_instalar_dependencia(args):
+    import subprocess, shutil
+    paquete = args["paquete"]
+    
+    # 1. Auditoría de recursos
+    try:
+        mem = subprocess.run(["free", "-m"], capture_output=True, text=True)
+        libre_mb = int(mem.stdout.split("\n")[1].split()[3])
+        disco = shutil.disk_usage(ROOT)
+        disco_libre_mb = disco.free // (1024 * 1024)
+        
+        if libre_mb < 500:
+            return f"❌ ABORTADO: Solo hay {libre_mb}MB de RAM. Riesgo de OOM."
+        if disco_libre_mb < 300:
+            return f"❌ ABORTADO: Solo hay {disco_libre_mb}MB de disco."
+    except Exception as e:
+        return f"⚠️ No pude auditar los recursos, pero intentaré instalar: {e}"
+
+    # 2. Instalación
+    try:
+        proc = subprocess.run(["pip", "install", paquete], capture_output=True, text=True, timeout=600)
+        if proc.returncode != 0:
+            return f"❌ Error instalando {paquete}: {proc.stderr[-300:]}"
+    except subprocess.TimeoutExpired:
+        return f"❌ Timeout instalando {paquete} (tardó más de 10 min)."
+    
+    # 3. Validación
+    nombre_import = paquete.split("[")[0].replace("-", "_")
+    try:
+        subprocess.run(["python", "-c", f"import {nombre_import}"], check=True, capture_output=True)
+        return f"✅ {paquete} instalado y verificado correctamente."
+    except Exception:
+        return f"✅ {paquete} instalado (no se pudo validar con import, pero el pip terminó bien)."
+
+
+
+def _tool_buscar_repositorio(args):
+    from brain.repos_manager import buscar
+    return buscar(args["plataforma"], args["query"])
+
+
+def _tool_sanar_sistema(args):
+    from brain.sanador import sanar
+    return sanar()
+
+def _tool_notificar_movil(args):
+    from brain.notificador import notificar
+    return notificar(args["titulo"], args["mensaje"])
+
+def _tool_leer_rss(args):
+    from brain.rss_reader import leer_feed
+    return leer_feed(args["fuente"], args.get("limite", 5))
+
+def _tool_pedir_a_especialista(args):
+    from brain.especialistas import pedir_a_especialista
+    return pedir_a_especialista(args["rol"], args["tarea"], args.get("contexto", ""))
+
+def _tool_lanzar_notebook_kaggle(args):
+    from brain.kaggle_launcher import lanzar_notebook
+    return lanzar_notebook(args["nombre"], args["codigo_python"])
+
+
+
+def _tool_analizar_video_competencia(args):
+    """Descarga video, extrae 3 frames y los analiza con NVIDIA Nemotron VL (directo)."""
+    import subprocess, base64, requests, shutil, time as _t
+    url = args["url"]
+    tmp_dir = ROOT / "sandbox" / "tmp_video"
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    video_path = tmp_dir / "video.mp4"
+
+    try:
+        subprocess.run(["yt-dlp", "-f", "worst[ext=mp4]", "-o", str(video_path), url],
+                       check=True, capture_output=True, timeout=120)
+
+        frames = []
+        for i, sec in enumerate([5, 15, 30]):
+            frame_path = tmp_dir / ("frame_" + str(i) + ".jpg")
+            subprocess.run(["ffmpeg", "-y", "-ss", str(sec), "-i", str(video_path),
+                            "-vframes", "1", "-vf", "scale=640:-1", str(frame_path)],
+                           check=True, capture_output=True)
+            if frame_path.exists():
+                frames.append(base64.b64encode(frame_path.read_bytes()).decode("utf-8"))
+
+        if not frames:
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+            return "ERROR: No se pudieron extraer fotogramas."
+
+        debug_dir = ROOT / "output" / "debug_frames"
+        debug_dir.mkdir(parents=True, exist_ok=True)
+        for i, f in enumerate(frames):
+            (debug_dir / ("frame_" + str(int(_t.time())) + "_" + str(i) + ".jpg")).write_bytes(base64.b64decode(f))
+
+        time.sleep(REQUEST_DELAY)
+
+        nkey = _leer_api_key("NVIDIA_API_KEY")
+        if not nkey:
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+            return "ERROR: Falta NVIDIA_API_KEY en .env"
+
+        content_parts = [{"type": "text", "text": "Analiza estos 3 fotogramas de un video de YouTube. Describe: 1) Que persona sale (genero, pelo, ropa, expresion). 2) Que se ve de fondo. 3) Que tipo de video es. Se concreto y visual."}]
+        for f in frames:
+            content_parts.append({"type": "image_url", "image_url": {"url": "data:image/jpeg;base64," + f}})
+
+        payload = {
+            "model": "nvidia/nemotron-3.5-super-vl-120b-a12b",
+            "messages": [{"role": "user", "content": content_parts}],
+            "max_tokens": 2000
+        }
+        r = requests.post(
+            "https://integrate.api.nvidia.com/v1/chat/completions",
+            json=payload,
+            headers={"Authorization": "Bearer " + nkey, "Content-Type": "application/json"},
+            timeout=120
+        )
+
+        if r.status_code != 200:
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+            return "ERROR NVIDIA HTTP " + str(r.status_code) + ": " + r.text[:200]
+
+        data = r.json()
+        try:
+            msg = data["choices"][0]["message"]
+            analisis = msg.get("content") or msg.get("reasoning_content") or str(data)
+        except Exception:
+            analisis = str(data)[:500]
+
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+        return "ANALISIS DEL VIDEO (NVIDIA Nemotron VL):" + chr(10) + analisis + chr(10) + chr(10) + "(Video borrado)."
+
+    except Exception as e:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+        return "ERROR: " + str(e)
+
+
+
+def _tool_generar_narracion(args):
+    """Genera audio con el perfil de voz del Dios."""
+    import subprocess, json, sys, time
+    texto = args["texto"]
+    nombre = args.get("nombre", f"narracion_{int(time.time())}")
+    cmd = [sys.executable, str(ROOT / "scripts" / "voice_studio.py"),
+           "--texto", texto, "--perfil-dios"]
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
+        if r.returncode != 0:
+            return "ERROR: " + r.stderr[-300:]
+        data = json.loads(r.stdout.strip().split(chr(10))[-1])
+        if "error" in data:
+            return "ERROR: " + data["error"]
+        return "OK: Audio generado en " + data["audio_url"] + " (" + str(data.get("duracion", "?")) + "s). Voz: " + data.get("voz", "?")
+    except Exception as e:
+        return "ERROR: " + str(e)
+
+
+TOOL_FNS = {
+    "publicar_en_redes": _tool_publicar_en_redes,
+    "producir_video": _tool_producir_video,
+    "ensamblar_video_final": _tool_ensamblar_video_final,
+    "generar_video": _tool_generar_video,
+    "buscar_youtube": _tool_buscar_youtube,
+    "generar_imagen": _tool_generar_imagen,
+    "lanzar_pipeline_kaggle": _tool_lanzar_pipeline_kaggle,
+    "generar_cancion_kaggle": _tool_generar_cancion_kaggle,
+    "leer_documentacion": _tool_leer_documentacion,
+    "documentar_aprendizaje": _tool_documentar_aprendizaje,
+    "ejecutar_comando": _tool_ejecutar_comando,
+    "recordar_hecho": _tool_recordar_hecho,
+    "delegar_tareas_paralelas": _tool_delegar_tareas_paralelas,
+    "consultar_hechos": _tool_consultar_hechos,
+    "buscar_en_web": _tool_buscar_en_web,
+    "read_file": _tool_read_file,
+    "write_file": _tool_write_file,
+    "validate_file": _tool_validate_file,
+    "promote_file": _tool_promote_file,
+    "list_canales": _tool_list_canales,
+    "estado_sistema": _tool_estado_sistema,
+    "consultar_manual_python": _tool_consultar_manual_python,
+    "consultar_manual_sistema": _tool_consultar_manual_python,
+    "instalar_dependencia": _tool_instalar_dependencia,
+    "generar_narracion": _tool_generar_narracion,
+    "analizar_video_competencia": _tool_analizar_video_competencia,
+    "buscar_repositorio": _tool_buscar_repositorio,
+    "sanar_sistema": _tool_sanar_sistema,
+    "notificar_movil": _tool_notificar_movil,
+    "leer_rss": _tool_leer_rss,
+    "pedir_a_especialista": _tool_pedir_a_especialista,
+    "lanzar_notebook_kaggle": _tool_lanzar_notebook_kaggle,
+}
+
+
+
+def _leer_api_key(nombre: str) -> str:
+    """Lee una API Key genérica del .env."""
+    import os
+    val = os.environ.get(nombre, "").strip()
+    if val:
+        return val
+    env = ROOT / ".env"
+    if env.exists():
+        for line in env.read_text(encoding="utf-8").splitlines():
+            if line.strip().startswith(f"{nombre}="):
+                return line.strip().split("=", 1)[1].strip().strip('"').strip("'")
+    return ""
+
+def _call_llm(api_key, messages, force_no_tools=False):
+    import os, json as _json
+    COOLDOWN_FILE = ROOT / "data" / "agent" / "cooldowns.json"
+
+    def _load_cd():
+        try:
+            if COOLDOWN_FILE.exists():
+                return _json.loads(COOLDOWN_FILE.read_text())
+        except Exception:
+            pass
+        return {}
+
+    def _save_cd(cd):
+        try:
+            COOLDOWN_FILE.parent.mkdir(parents=True, exist_ok=True)
+            COOLDOWN_FILE.write_text(_json.dumps(cd, indent=2))
+        except Exception:
+            pass
+
+    omniroute_key = _leer_api_key("OMNIROUTE_API_KEY")
+    omniroute_models = [
+        "mi-groq/qwen/qwen3.8-27b",
+        "orfree/cohere/north-mini-code:free",
+        "orfree/nvidia/nemotron-3-ultra-550b-a55b:free",
+        "mi-groq/openai/gpt-oss-120b",
+    ]
+
+    cd = _load_cd()
+    ahora = time.time()
+    # Filtrar modelos en cooldown (pero si TODOS estan, forzar intento)
+    disponibles = [m for m in omniroute_models if cd.get(m, 0) < ahora]
+    if not disponibles:
+        print("   [Cooldown] Todos en cooldown, forzando intento igualmente")
+        disponibles = omniroute_models
+
+    last_err = None
+    for i, model in enumerate(disponibles):
+        # Espaciado entre intentos (2s minimo)
+        if i > 0:
+            time.sleep(2)
+
+        payload = {"model": model, "messages": messages, "temperature": 0.2, "max_tokens": 4096}
+        if not force_no_tools:
+            payload["tools"] = TOOLS
+
+        try:
+            r = requests.post(
+                "http://localhost:20128/v1/chat/completions",
+                headers={"Authorization": f"Bearer {omniroute_key}", "Content-Type": "application/json"},
+                json=payload, timeout=180,
+            )
+            if r.status_code < 400:
+                _save_cd(cd)
+                return r.json()
+
+            # Cooldown segun tipo de error
+            if r.status_code == 429:
+                cd[model] = time.time() + 60
+                print(f"   [{model}] 429 Rate Limit -> cooldown 60s")
+            elif r.status_code in (500, 502, 503, 504):
+                cd[model] = time.time() + 15
+                print(f"   [{model}] {r.status_code} Server Error -> cooldown 15s")
+            elif r.status_code in (401, 403, 404):
+                cd[model] = time.time() + 300
+                print(f"   [{model}] {r.status_code} Auth/NotFound -> cooldown 5min")
+            last_err = f"{model} -> HTTP {r.status_code}: {r.text[:200]}"
+        except Exception as e:
+            cd[model] = time.time() + 15
+            last_err = f"{model} -> {e}"
+            print(f"   [{model}] Exception -> cooldown 15s")
+
+    _save_cd(cd)
+
+    # Fallback a OpenRouter directo
+    print(f"   [OmniRoute fallo: {last_err}. Cayendo a OpenRouter directo...]")
+    openrouter_key = _leer_api_key("OPENROUTER_API_KEY")
+    payload = {"model": "openrouter/free", "messages": messages, "temperature": 0.2}
+    if not force_no_tools:
+        payload["tools"] = TOOLS
+    for intento in range(4):
+        r = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={"Authorization": f"Bearer {openrouter_key}", "Content-Type": "application/json"},
+            json=payload, timeout=180,
+        )
+        if r.status_code == 429:
+            print(f"   [429 OpenRouter] Esperando 15s (intento {intento+1}/4)...")
+            time.sleep(15)
+            continue
+        if r.status_code >= 400:
+            raise RuntimeError(f"HTTP {r.status_code}: {r.text[:800]}")
+        return r.json()
+    raise RuntimeError("Se agotaron los reintentos por rate limit (429).")
+
+
+
+SYSTEM_PROMPT = """Eres el Dios de la Construccion del ecosistema LofiProducer.
+REGLAS DEL PRODUCTOR EJECUTIVO (ACTUALIZADO 2026-10-19):
+Cuando el usuario te pida producir un video final para un canal, tu trabajo es ORQUESTARLO TODO. Sigue este flujo:
+1. INVESTIGACION: Usa `buscar_youtube` para ver los videos top del nicho.
+2. GUION Y PLAN: Decide la duracion, el tono y cuantas escenas necesitas.
+3. IMAGENES: Genera las imagenes de cada escena con `generar_imagen`.
+4. MUSICA: Genera la musica de fondo con `generar_cancion_kaggle` (si hay URL) o `lanzar_pipeline_kaggle`.
+5. VIDEO: Genera el video base con `generar_video` (si hay URL) o `lanzar_pipeline_kaggle`.
+6. PRODUCCION FINAL: Usa `producir_video` para unir el video y la musica, aplicar fade y validar el archivo.
+7. AVISO: Dile al usuario que el video final esta en `output/produccion_final/`.
+
+Tu mision: ayudar a construir, buscar informacion y mejorar el proyecto autonomamente.
+
+Reglas estrictas:
+1. Si el usuario te pide informacion del mundo exterior (clima, noticias, productos, precios, etc.), usa `buscar_en_web`. 
+   IMPORTANTE: Si usas `buscar_en_web`, NO uses read_file, write_file ni validate_file. Solo lee el resultado y responde al usuario.
+2. Si necesitas instalar una libreria o ejecutar un script, usa `ejecutar_comando` (ej: "pip install requests").
+   Si el comando no esta en la lista blanca, el sistema pedira permiso al usuario por notificacion.
+3. Si el usuario te pide crear o modificar un archivo:
+   - NUNCA escribas directamente en el repo. Usa `write_file` (va a sandbox/).
+   - Despues de write_file, SIEMPRE usa `validate_file`.
+   - Si validate_file da OK, usa `promote_file`.
+   - Si validate_file falla, corrige y vuelve a write_file.
+3. No inventes rutas. Usa `read_file` para inspeccionar antes de modificar.
+4. Al terminar, resume en 3 lineas lo que has hecho.
+REGLA DE ORO: Si descubres un bug, una solucion tecnica o un hito importante, USA la herramienta `documentar_aprendizaje` para anotarlo en `TRASPASO.md` o `MANUAL_KAGGLE.md`. Eres el guardian del conocimiento de este ecosistema.
+
+4. APRENDIZAJE AUTOMÁTICO: Cuando descubras un bug, una configuración nueva o un dato clave del ecosistema (ej. puertos, modelos que funcionan, rutas), DEBES usar la herramienta `recordar_hecho` para guardarlo en tu memoria a largo plazo antes de terminar.
+
+
+6. EJECUCIÓN DE COMANDOS: Cuando uses `ejecutar_comando` para probar un script, NUNCA uses operadores de shell como `&&`, `;`, `>`, `|`, ni `cd`. La blacklist de seguridad te bloqueará. Simplemente usa el comando directo: `python scripts/tu_script.py` o `python sandbox/scripts/tu_script.py`.
+
+
+7. CONOCIMIENTO DEL REPOSITORIO Y BÚSQUEDA AUTÓNOMA:
+   Conoces la estructura del repo LofiProducer:
+   - `core/`: Configuración, LLM (OmniRoute/Google), logger, auth de YouTube.
+   - `fases/`: Pipeline (tendencias, SEO, imagen, portada, video, audio, subida).
+   - `brain/`: Agentes (ideas, canales, monetización, reportes) y `ejecutor_seguro`.
+   - `scripts/`: Herramientas, el propio `dios.py`, orquestadores de Kaggle y generadores.
+   - `assets/` y `output/`: Recursos estáticos, imágenes, videos finales.
+   - `data/`: Bases de datos SQLite, logs, PID.
+   
+   REGLA DE ORO: Si el usuario te pide leer un archivo y `read_file` da error de que no existe (ej. por mayúsculas/minúsculas), TIENES PROHIBIDO decir "no lo encuentro" y rendirte. Debes usar `ejecutar_comando` con comandos como `ls -la` o `find . -name "*manual*"` para localizar la ruta exacta, y luego leerlo.
+
+
+8. DELEGACIÓN Y PARALELISMO: Si necesitas hacer varias cosas a la vez (ej. leer 3 archivos, investigar 2 temas), NO lo hagas paso a paso. Usa la herramienta `delegar_tareas_paralelas` pasándole una lista de tareas. OmniRoute las resolverá todas a la vez usando sus IAs. Esto es CLAVE para acelerar la autoconstrucción.
+
+
+9. CÓMO DELEGAR CORRECTAMENTE (CRÍTICO): OmniRoute NO tiene acceso a tu disco duro. 
+   - Si necesitas analizar un archivo, PRIMERO usa `read_file` para leerlo tú mismo.
+   - LUEGO, usa `delegar_tareas_paralelas` pasándole el TEXTO del archivo dentro del campo 'prompt' de cada tarea.
+   - Ejemplo: `delegar_tareas_paralelas({"tareas": [{"prompt": "Analiza este código: <AQUÍ EL TEXTO QUE LEÍSTE>"}]})`.
+   - NUNCA le pidas a la delegación que "lea un archivo". Pídele que "analice este texto".
+
+
+10. HONESTIDAD Y MEMORIA: 
+    - Si intentas delegar una tarea y falla, o si no puedes leer un archivo, NUNCA digas "ya lo he leído". 
+    - Si tienes la respuesta en tu memoria a largo plazo (hechos guardados), di: "Según mi memoria, recuerdo que...". 
+    - Si no lo sabes, di: "No tengo acceso a ese archivo en este momento, necesito que me des la ruta o el contenido".
+    - La delegación requiere que TÚ pases el texto. Ejemplo: delegar_tareas_paralelas({"tareas": [{"prompt": "Analiza este código: [TEXTO_AQUÍ]"}]}).
+
+15. CONSULTA DE PYTHON: Usa consultar_manual_python antes de programar.
+15. CONSULTA DE PYTHON: Usa consultar_manual_python antes de programar.
+
+18. AUTO-MEJORA E INSTALACIÓN: Tienes la herramienta `instalar_dependencia(paquete)`. Úsala SIEMPRE que necesites instalar una librería. Ella sola auditará la RAM, el disco, ejecutará el pip y validará que funciona. No uses `ejecutar_comando("pip install...")` directamente.
+
+
+19. MODO SUPERDIOS (SABIDURÍA Y RAZONAMIENTO):
+    Antes de ejecutar cualquier tarea compleja, DEBES seguir este protocolo mental:
+    
+    A) PLANIFICA: Si la tarea requiere más de 1 paso, escribe en tu primer mensaje un plan corto:
+       "Plan: 1) X, 2) Y, 3) Z".
+    B) EJECUTA PASO A PASO: No intentes hacer todo en una sola llamada si son cosas distintas.
+    C) SI FALLA, ANALIZA: Si una herramienta devuelve ERROR, no te rindas. Lee el error, consulta tu manual con `consultar_manual_sistema`, y busca una segunda vía. Tienes permitido fallar 2 veces antes de pedir ayuda.
+    D) AUTO-EVALUACIÓN: Antes de decir "Tarea completada", repasa la petición original del usuario. ¿Has hecho TODO lo que pidió? Si falta algo, hazlo antes de cerrar.
+    
+    EJEMPLOS DE RAZONAMIENTO (Few-Shot):
+    
+    [Usuario]: "Instala pykokoro y genera un audio".
+    [Tu plan]: 
+       1. Usaré `instalar_dependencia("pykokoro")`.
+       2. Escribiré `sandbox/scripts/test.py` con `KokoroPipeline`.
+       3. Lo validaré y ejecutaré.
+    
+    [Usuario]: "Crea un vídeo de Lofi de 1 hora".
+    [Tu plan]:
+       1. `crear_proyecto("lofi_video", "musica")`.
+       2. `generar_imagen` para la portada.
+       3. `generar_cancion_kaggle` para la música.
+       4. `ejecutar_comando` con FFmpeg para el loop.
+    
+    [Usuario]: "Busca las noticias de IA de hoy y hazme un resumen".
+    [Tu plan]:
+       1. `buscar_en_web("últimas noticias inteligencia artificial")`.
+       2. Sintetizar los resultados.
+       3. `recordar_hecho` si hay algo relevante para el imperio.
+
+
+21. LECTURA EFICIENTE (EL CIRUJANO): 
+    - Si buscas un error en un log, NO leas el log entero con `read_file`. Usa `ejecutar_comando("grep -n 'ERROR' ruta_del_log")`.
+    - Si buscas una palabra en el código, usa `grep -rn "palabra" .`.
+    - Si solo necesitas ver el final de un archivo, usa `tail -n 50`.
+    - Ahorra tokens: leer 5000 líneas te hace más lento y tonto. Extrae solo la línea o el fragmento exacto.
+
+
+22. EXPLORACIÓN DE REPOSITORIOS: Tienes la herramienta `buscar_repositorio(plataforma, query)`. Úsala para:
+    - Buscar en GitHub (ej. "web server python").
+    - Buscar en PyPI (ej. "pykokoro").
+    - Buscar en F-Droid (ej. "ffmpeg").
+    Si encuentras una herramienta útil, puedes clonarla usando `ejecutar_comando("git clone URL")` o instalarla con `instalar_dependencia`.
+
+"""
+
+
+
+def _detectar_modo(prompt: str) -> str:
+    """Detecta si es charla rapida o tarea de agente."""
+    # Override manual
+    if prompt.startswith("!"):
+        return "chat"
+    if prompt.startswith("#"):
+        return "agent"
+    
+    acciones = [
+        "instala", "instalar", "crea", "crear", "genera", "generar",
+        "escribe", "ejecuta", "ejecutar", "busca", "buscar",
+        "script", "archivo", "carpeta", "proyecto",
+        "descarga", "sube", "actualiza", "modifica",
+        "video", "cancion", "canción", "imagen",
+        "traduce", "narrar", "tts", "instala",
+        "investiga", "analiza", "revisa", "estudia",
+        "corrige", "arregla", "diagnostica",
+    ]
+    pl = prompt.lower()
+    for kw in acciones:
+        if kw in pl:
+            return "agent"
+    return "chat"
+
+
+def _charla_rapida(prompt: str) -> str:
+    """Respuesta rapida para conversacion (sin tools, sin memoria pesada).
+24. VISION DE VIDEO: Tienes la herramienta `analizar_video_competencia(url)`. Usala para analizar los videos de la competencia. Descargara el video, extraera fotogramas, los analizara visualmente y BORRARA el video para no dejar basura.
+
+25. VOZ DEL DIOS: Tienes la herramienta generar_narracion(texto, nombre) que usa TU perfil de voz guardado (data/agent/voz_dios.json). Usala siempre que el usuario pida narrar un guion, un blog o un video.
+"""
+    import requests
+    # Limpiar prefijo !
+    if prompt.startswith("!"):
+        prompt = prompt[1:].strip()
+    key = _leer_api_key("OMNIROUTE_API_KEY")
+    sys_prompt = (
+        "Eres el Dios de la Construccion, asistente del Arquitecto KeiZ. "
+        "Tienes personalidad chulesca pero servicial. Respondes CORTO, directo y con humor. "
+        "NUNCA uses herramientas. NUNCA inventes que has hecho algo. "
+        "Si te piden una accion compleja (crear codigo, instalar, etc), responde: "
+        "'Para eso pidemelo como tarea de agente (sin el !)'."
+    )
+    payload = {
+        "model": "mi-groq/qwen/qwen3.8-27b",
+        "messages": [
+            {"role": "system", "content": sys_prompt},
+            {"role": "user", "content": prompt},
+        ],
+        "temperature": 0.7,
+        "max_tokens": 300,
+    }
+    try:
+        r = requests.post(
+            "http://localhost:20128/v1/chat/completions",
+            headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"},
+            json=payload, timeout=30
+        )
+        if r.status_code == 200:
+            return r.json()["choices"][0]["message"]["content"]
+        return "[Fallo Groq: HTTP " + str(r.status_code) + "]"
+    except Exception as e:
+        return "[Error de conexion: " + str(e) + "]"
+
+
+def main() -> int:
+
+    if len(sys.argv) < 2:
+        print('Uso: python scripts/dios.py "tu peticion"')
+        return 2
+
+    prompt = " ".join(sys.argv[1:]).strip()
+
+    # ── DETECCION DE MODO ──
+    _modo_actual = _detectar_modo(prompt) if prompt else "agent"
+    if _modo_actual == "chat":
+        print("[dios] Modo CHARLA RAPIDA (sin tools)")
+        _respuesta_rapida = _charla_rapida(prompt)
+        print()
+        print("[dios] Tarea completada. Resumen:")
+        print(_respuesta_rapida)
+        try:
+            guardar_conversacion(prompt, _respuesta_rapida[:2000], 1)
+        except Exception:
+            pass
+        return 0
+    else:
+        print("[dios] Modo AGENTE (tools + razonamiento)")
+    print(f"[dios] Peticion: {prompt}")
+
+    api_key = _leer_key()
+    n = _limpiar_backups()
+    if n:
+        print(f"[dios] {n} backups viejos limpiados")
+
+    contexto = _contexto_proyecto()
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT + "\n\n=== CONTEXTO ===\n" + contexto},
+        {"role": "user", "content": prompt},
+    ]
+
+    step = 0
+    ultima_accion = None
+    repeticiones = 0
+    import time
+
+    while step < MAX_STEPS:
+        step += 1
+        time.sleep(3) # Respetar rate limit de Groq
+        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] [dios] Paso {step}/{MAX_STEPS}")
+
+        try:
+            data = _call_llm(api_key, messages)
+        except Exception as e:
+            print(f"[dios] Error LLM: {e}")
+            return 1
+
+        msg = data["choices"][0]["message"]
+        tool_calls = msg.get("tool_calls") or []
+        messages.append(msg)
+
+        if not tool_calls:
+            resumen = (msg.get("content") or "").strip()
+            print("\n[dios] Tarea completada. Resumen:")
+            print(resumen[:1500])
+            guardar_conversacion(prompt, resumen[:2000], step)
+            return 0
+
+        for tc in tool_calls:
+            fn = tc["function"]["name"]
+            try:
+                args = json.loads(tc["function"]["arguments"])
+            except json.JSONDecodeError:
+                args = {}
+
+            print(f"  -> {fn}({list(args.keys())})")
+
+            firma = f"{fn}:{json.dumps(args, sort_keys=True)[:200]}"
+            if firma == ultima_accion:
+                repeticiones += 1
+            else:
+                repeticiones = 0
+            ultima_accion = firma
+
+            if repeticiones >= 3:
+                print("[dios] Bucle detectado, abortando.")
+                return 1
+
+            if fn == "buscar_en_web":
+                result = TOOL_FNS[fn](args)
+                print(f"     <- (Búsqueda completada. Forzando respuesta final...)")
+                
+                # Cortocircuito: LLM responde directamente con el resultado web
+                final_msgs = [
+                    {"role": "system", "content": "Eres un asistente útil. Responde a la pregunta del usuario basándote EXCLUSIVAMENTE en los resultados de búsqueda proporcionados. No inventes nada."},
+                    {"role": "user", "content": f"Pregunta original: {prompt}\n\nResultados de la búsqueda:\n{result}"}
+                ]
+                try:
+                    final_data = _call_llm(api_key, final_msgs, force_no_tools=True)
+                    resumen = final_data["choices"][0]["message"].get("content", "").strip()
+                    print("\n[dios] Tarea completada. Resumen:")
+                    print(resumen[:1500])
+                    
+                    guardar_conversacion(prompt, resumen[:2000], step)
+                    return 0
+                except Exception as e:
+                    print(f"[dios] Error en respuesta final: {e}")
+                    return 1
+
+            if fn not in TOOL_FNS:
+                result = f"ERROR: tool {fn} desconocida"
+            else:
+                try:
+                    result = TOOL_FNS[fn](args)
+                except Exception as e:
+                    result = f"ERROR: {e}"
+
+            print(f"     <- {str(result)[:150]}")
+            messages.append({
+                "role": "tool",
+                "tool_call_id": tc["id"],
+                "name": fn,
+                "content": str(result)[:8000],
+            })
+
+    print("\n[dios] Limite de pasos alcanzado.")
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

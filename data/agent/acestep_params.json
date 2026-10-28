@@ -1,0 +1,338 @@
+{
+  "source": "/data/data/com.termux/files/home/LofiProducer/kaggle_src/acestep_src/acestep/inference.py",
+  "GenerationParams": {
+    "bases": [],
+    "fields": {
+      "task_type": {
+        "type": "str",
+        "default": "'text2music'"
+      },
+      "instruction": {
+        "type": "str",
+        "default": "'Fill the audio semantic mask based on the given conditions:'"
+      },
+      "reference_audio": {
+        "type": "Optional[str]",
+        "default": "None"
+      },
+      "src_audio": {
+        "type": "Optional[str]",
+        "default": "None"
+      },
+      "audio_codes": {
+        "type": "str",
+        "default": "''"
+      },
+      "caption": {
+        "type": "str",
+        "default": "''"
+      },
+      "global_caption": {
+        "type": "str",
+        "default": "''"
+      },
+      "lyrics": {
+        "type": "str",
+        "default": "''"
+      },
+      "instrumental": {
+        "type": "bool",
+        "default": "False"
+      },
+      "vocal_language": {
+        "type": "str",
+        "default": "'unknown'"
+      },
+      "bpm": {
+        "type": "Optional[int]",
+        "default": "None"
+      },
+      "keyscale": {
+        "type": "str",
+        "default": "''"
+      },
+      "timesignature": {
+        "type": "str",
+        "default": "''"
+      },
+      "duration": {
+        "type": "float",
+        "default": "-1.0"
+      },
+      "enable_normalization": {
+        "type": "bool",
+        "default": "True"
+      },
+      "normalization_db": {
+        "type": "float",
+        "default": "-1.0"
+      },
+      "fade_in_duration": {
+        "type": "float",
+        "default": "0.0"
+      },
+      "fade_out_duration": {
+        "type": "float",
+        "default": "0.0"
+      },
+      "latent_shift": {
+        "type": "float",
+        "default": "0.0"
+      },
+      "latent_rescale": {
+        "type": "float",
+        "default": "1.0"
+      },
+      "inference_steps": {
+        "type": "int",
+        "default": "8"
+      },
+      "seed": {
+        "type": "int",
+        "default": "-1"
+      },
+      "guidance_scale": {
+        "type": "float",
+        "default": "7.0"
+      },
+      "use_adg": {
+        "type": "bool",
+        "default": "False"
+      },
+      "cfg_interval_start": {
+        "type": "float",
+        "default": "0.0"
+      },
+      "cfg_interval_end": {
+        "type": "float",
+        "default": "1.0"
+      },
+      "shift": {
+        "type": "float",
+        "default": "1.0"
+      },
+      "infer_method": {
+        "type": "str",
+        "default": "'ode'"
+      },
+      "sampler_mode": {
+        "type": "str",
+        "default": "'euler'"
+      },
+      "velocity_norm_threshold": {
+        "type": "float",
+        "default": "0.0"
+      },
+      "velocity_ema_factor": {
+        "type": "float",
+        "default": "0.0"
+      },
+      "dcw_enabled": {
+        "type": "Optional[bool]",
+        "default": "None"
+      },
+      "dcw_mode": {
+        "type": "str",
+        "default": "'double'"
+      },
+      "dcw_scaler": {
+        "type": "float",
+        "default": "0.05"
+      },
+      "dcw_high_scaler": {
+        "type": "float",
+        "default": "0.02"
+      },
+      "dcw_wavelet": {
+        "type": "str",
+        "default": "'haar'"
+      },
+      "timesteps": {
+        "type": "Optional[List[float]]",
+        "default": "None"
+      },
+      "repainting_start": {
+        "type": "float",
+        "default": "0.0"
+      },
+      "repainting_end": {
+        "type": "float",
+        "default": "-1"
+      },
+      "chunk_mask_mode": {
+        "type": "str",
+        "default": "'auto'"
+      },
+      "repaint_latent_crossfade_frames": {
+        "type": "int",
+        "default": "10"
+      },
+      "repaint_wav_crossfade_sec": {
+        "type": "float",
+        "default": "0.0"
+      },
+      "repaint_mode": {
+        "type": "str",
+        "default": "'balanced'"
+      },
+      "repaint_strength": {
+        "type": "float",
+        "default": "0.5"
+      },
+      "retake_seed": {
+        "type": "Optional[Union[str, int]]",
+        "default": "None"
+      },
+      "retake_variance": {
+        "type": "float",
+        "default": "0.0"
+      },
+      "flow_edit_morph": {
+        "type": "bool",
+        "default": "False"
+      },
+      "flow_edit_source_caption": {
+        "type": "str",
+        "default": "''"
+      },
+      "flow_edit_source_lyrics": {
+        "type": "str",
+        "default": "''"
+      },
+      "flow_edit_n_min": {
+        "type": "float",
+        "default": "0.0"
+      },
+      "flow_edit_n_max": {
+        "type": "float",
+        "default": "1.0"
+      },
+      "flow_edit_n_avg": {
+        "type": "int",
+        "default": "1"
+      },
+      "audio_cover_strength": {
+        "type": "float",
+        "default": "1.0"
+      },
+      "cover_noise_strength": {
+        "type": "float",
+        "default": "0.0"
+      },
+      "thinking": {
+        "type": "bool",
+        "default": "True"
+      },
+      "lm_temperature": {
+        "type": "float",
+        "default": "0.85"
+      },
+      "lm_cfg_scale": {
+        "type": "float",
+        "default": "2.0"
+      },
+      "lm_top_k": {
+        "type": "int",
+        "default": "0"
+      },
+      "lm_top_p": {
+        "type": "float",
+        "default": "0.9"
+      },
+      "lm_negative_prompt": {
+        "type": "str",
+        "default": "'NO USER INPUT'"
+      },
+      "use_cot_metas": {
+        "type": "bool",
+        "default": "True"
+      },
+      "use_cot_caption": {
+        "type": "bool",
+        "default": "True"
+      },
+      "use_cot_lyrics": {
+        "type": "bool",
+        "default": "False"
+      },
+      "use_cot_language": {
+        "type": "bool",
+        "default": "True"
+      },
+      "use_constrained_decoding": {
+        "type": "bool",
+        "default": "True"
+      },
+      "cot_bpm": {
+        "type": "Optional[int]",
+        "default": "None"
+      },
+      "cot_keyscale": {
+        "type": "str",
+        "default": "''"
+      },
+      "cot_timesignature": {
+        "type": "str",
+        "default": "''"
+      },
+      "cot_duration": {
+        "type": "Optional[float]",
+        "default": "None"
+      },
+      "cot_vocal_language": {
+        "type": "str",
+        "default": "'unknown'"
+      },
+      "cot_caption": {
+        "type": "str",
+        "default": "''"
+      },
+      "cot_lyrics": {
+        "type": "str",
+        "default": "''"
+      }
+    }
+  },
+  "GenerationConfig": {
+    "bases": [],
+    "fields": {
+      "batch_size": {
+        "type": "int",
+        "default": "2"
+      },
+      "allow_lm_batch": {
+        "type": "bool",
+        "default": "False"
+      },
+      "use_random_seed": {
+        "type": "bool",
+        "default": "True"
+      },
+      "seeds": {
+        "type": "Optional[List[int]]",
+        "default": "None"
+      },
+      "lm_batch_chunk_size": {
+        "type": "int",
+        "default": "8"
+      },
+      "constrained_decoding_debug": {
+        "type": "bool",
+        "default": "False"
+      },
+      "audio_format": {
+        "type": "str",
+        "default": "'flac'"
+      },
+      "mp3_bitrate": {
+        "type": "str",
+        "default": "'128k'"
+      },
+      "mp3_sample_rate": {
+        "type": "int",
+        "default": "48000"
+      }
+    }
+  },
+  "_total_params": 81
+}

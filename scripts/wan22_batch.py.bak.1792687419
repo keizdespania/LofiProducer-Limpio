@@ -1,0 +1,97 @@
+"""Wrapper para lanzar Wan 2.2 en modo batch."""
+import sys, time, pathlib, json
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+
+from kaggle_bearer import push_kernel, estado_kernel, stop_kernel
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+TEMPLATE = ROOT / "scripts" / "kaggle_wan22_final.py"
+USUARIO = "keizproductions"
+
+def _leer_env(k):
+    for line in (ROOT / ".env").read_text().splitlines():
+        if line.startswith(k + "="):
+            return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return None
+
+def generar_video_batch(prompts, resolution="640x384", num_frames=17, num_steps=15):
+    """Genera N clips en 1 kernel. Prompts: lista de hasta 3 strings."""
+    if not prompts:
+        return "ERROR: lista vacía"
+    if len(prompts) > 3:
+        print(f"  ⚠️  {len(prompts)} prompts > 3. Cortando.", flush=True)
+        prompts = prompts[:3]
+    
+    if not TEMPLATE.exists():
+        return f"ERROR: falta {TEMPLATE}"
+    gToken = _leer_env("GITHUB_TOKEN")
+    if not gToken:
+        return "ERROR: sin GITHUB_TOKEN"
+    
+    code = TEMPLATE.read_text()
+    code = code.replace("__PROMPTS_LIST__", json.dumps(prompts))
+    code = code.replace('"__RESOLUTION__"', json.dumps(resolution))
+    code = code.replace("__NUM_FRAMES__", str(int(num_frames)))
+    code = code.replace("__NUM_STEPS__", str(int(num_steps)))
+    code = code.replace('"__GITHUB_TOKEN__"', json.dumps(gToken))
+    
+    slug = f"wan-batch-{int(time.time())}"
+    print(f"[Wan batch] Push -> {USUARIO}/{slug} ({len(prompts)} clips)", flush=True)
+    r = push_kernel(f"{USUARIO}/{slug}", code)
+    if isinstance(r, dict) and r.get("hasError"):
+        return f"ERROR push: {r.get('error', r)}"
+    
+    print("[Wan batch] Push OK. Esperando GPU (~20-30 min)...", flush=True)
+    candidatos = [f"{USUARIO}/{slug}", f"lofiproducer/{slug}"]
+    slug_real, status = None, "queued"
+    for i in range(1, 80):
+        time.sleep(30)
+        for s in candidatos:
+            try:
+                est = estado_kernel(s)
+                if isinstance(est, dict) and est.get("status"):
+                    status = est["status"]
+                    slug_real = s
+                    print(f"[{i}/80] {s} → {status}", flush=True)
+                    break
+            except Exception:
+                continue
+        if status in ("complete", "error", "failed"):
+            break
+    
+    # Red de seguridad: apagar kernel tras éxito o error
+    if slug_real:
+        try:
+            print(f"[Wan batch] Intentando apagar kernel {slug_real}...", flush=True)
+            stop_kernel(slug_real)
+        except Exception as e:
+            print(f"[Wan batch] stop_kernel falló (no crítico): {e}", flush=True)
+    
+    # Notificación al móvil
+    if status == "complete":
+        try:
+            import subprocess as _sp
+            url_web = "http://127.0.0.1:8001/?view=media&filter=video"
+            _sp.run([
+                "termux-notification",
+                "-t", f"🎬 {len(prompts)} clip(s) listo(s)",
+                "-c", "Pulsa para abrir en el Media Center",
+                "--button1", "▶️ Abrir",
+                "--button1-action", f"termux-open-url '{url_web}'",
+                "--priority", "high",
+                "--id", "video_batch"
+            ], check=False, timeout=5)
+            print(f"[Wan batch] Notificación enviada", flush=True)
+        except Exception as e:
+            print(f"[Wan batch] Notificación falló (no crítico): {e}", flush=True)
+    
+    if status != "complete":
+        return f"ERROR: kernel {status} (slug: {slug_real})"
+    return f"OK: {len(prompts)} clips generados en {slug_real}"
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Uso: python scripts/wan22_batch.py 'prompt1' ['prompt2' 'prompt3']")
+        sys.exit(1)
+    prompts = sys.argv[1:]
+    print(generar_video_batch(prompts))

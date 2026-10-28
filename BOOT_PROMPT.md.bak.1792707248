@@ -1,0 +1,127 @@
+# 🚀 BOOT_PROMPT — LOFIPRODUCER · MODO DIOS v5.0
+
+> Arranque del Imperio. Última actualización: 2026-10-23.
+
+## 🏠 REPO Y HOST
+- Repo: `~/LofiProducer` · GitHub: `keizdespania/LofiProducer-backup`
+- Host: Samsung A25 5G · Termux · Python 3.14
+- Web: `http://127.0.0.1:8001` (Flask, runsv keiz-web)
+- Arranque: Widget 🚀 Despertar → `start_all.py` → OmniRoute + Flask + Worker
+
+## 🎯 QUÉ ES
+Ecosistema local-first que produce, traduce y distribuye contenido multimedia monetizable. Orquestado por el **Dios** (OmniRoute → Groq). Músculo en Kaggle T4 (2 cuentas). Objetivo: 100 canales automatizados.
+**Filosofía**: "El ecosistema crece por config, no por código."
+
+## 🏗️ ARQUITECTURA (5 capas)
+- **Cerebro** `dios.py`: 36 tools, ReAct, doble cerebro, memoria SQLite, pruner -92%.
+- **Web** :8001: 55 endpoints, 16 pestañas, modal ⚙️, Director Producción, papelera, log worker.
+- **Cola** SQLite FIFO: batch música 5/kernel + vídeo 3/kernel → -72% cuota Kaggle.
+- **Motores** (9): ACE-Step v11 · Sherpa-ONNX · SDXL · Wan 2.2 · Pixabay+FFmpeg · FFmpeg · YouTube · Blogger · Cloudflare R2.
+- **Infra**: OmniRoute (:20128) · Kaggle (2) · Cloudflare · GitHub · OAuth YouTube/Blogger.
+
+## 🏛️ NICHOS (`config/nichos.json`)
+- **ia_news** (video 90s) · **finanzas_barrio** (video 90s) · **boe** (video 90s) · **lofi** (música 1h).
+- Cada nicho: `skills.presets` + `skills.pipeline`.
+- Añadir nicho = web (Crear Canal) o tool `crear_nicho` (HITL). SKILL.md regenera solo.
+
+## 📊 CONTRATOS (9 motores en `data/agent/`)
+Presets · validador · reglas_anti_alucinacion · ejemplos.
+Endpoints: GET /api/params/<motor> · POST /api/user_presets/<motor>.
+SKILL.md auto (`generate_skill_md.py`): mapa unificado, -25 KB/llamada.
+
+## 🎬 DIRECTOR DE PRODUCCIÓN (`scripts/evaluador_produccion.py`)
+5 herramientas: coherencia · presupuesto · calidad prompt · encaje nicho · alternativas.
+Orquestadora `evaluar_produccion(...)` → veredicto 🟢🟡🔴.
+Endpoint POST /api/evaluar · Tool Dios `evaluar_produccion`.
+Pre-flight: Generar → evalúa → si 🔴 confirma, si 🟡 avisa.
+
+## 📁 NAMING (`brain/naming.py`)
+Formato: `{canal}-{tipo}-{NNN}-{titulo-slug}.{ext}` (ej: `ia_news-musica-001-tension-cinematica.mp3`).
+Aplicado en música, voz, imagen, vídeo. Incrementa `output/nichos/<canal>/manifiesto.json`.
+
+## ✅ FUNCIONA (2026-10-22)
+Dios 36 tools · Web 16 pestañas + modal ⚙️ + Director + papelera + log vivo · Jarvis (voz streaming + Fast-Path) · Sherpa 5 voces · **ACE-Step v11 batch validado (2 canciones)** · Wan 2.2 6 presets · Pixabay · SDXL 8 presets · FFmpeg 12 presets · YouTube privado · Blogger IAGLOBALNEWS · Cola+worker+batch · Kaggle Bearer · Conserje+Doctor+Backup · SKILL.md auto.
+
+## 🔴 FALTA
+1. **Ensamblador largo** (vídeo 15 min) → SIGUIENTE HITO.
+2. Notebook WanGP real (49 frames, 4 steps).
+3. Primer vídeo público YouTube.
+4. Spotify/Apple (RouteNote): declarar IA. NUNCA Content ID.
+5. IG/FB (Meta Sandbox) + TikTok (borradores).
+6. kaggle_rotator.py · dry-run visual · FastAPI · evaluador en producir_nicho.
+
+## 🚨 REGLAS FRODO
+1. clear al inicio · 2. Máx 2 cajones, 1 cmd/cajón · 3. **Nano por defecto. Heredoc solo <50 L** · 4. **NUNCA borrar sin permiso** · 5. py_compile tras .py · 6. **Nunca imprimir tokens/keys** · 7. **No git push sin OK** · 8. **No rehacer lo que funciona** · 9. >100MB o GPU → Kaggle · 10. **Backup antes de tocar** · 11. **Termux /tmp NO escribible** → $HOME/tmp/.
+
+## 🧠 MANUAL FRODO v5.0 (detalle en `MANUAL_FRODO_PYTHON.md`)
+Plan-Before-Code · Verificación · Test-First · Simplicidad · Seguridad · Contexto · Pushback · Lectura antes de Escritura · Fail Fast · Terminal seguro · Código Limpio · No Alucines · Verificación Final · Documentación · Si no puedes explicarlo en 1 frase, no lo hagas.
+
+## ⚡ SISTEMA BATCH KAGGLE
+1 kernel = N canciones/clips (timeout 55 min). Música 5/kernel (590s máx) · Vídeo 3/kernel (17 frames).
+Ficheros: kaggle_acestep_v11.py · musica_acestep.py::generar_batch · kaggle_wan22_final.py · wan22_batch.py::generar_video_batch · task_worker.py.
+Notificación móvil: "🎵 N canciones listas" + "☁️ Kaggle apagado".
+
+## 🎙️ CONTRATO SHERPA-ONNX v2
+5 voces (Davefx, Sharvard, Claude, Lessac, Ryan). 7 presets (noticias, narracion_relajada, urgente, audiobook, publicidad, tutorial, sintesis_rapida).
+Params: length_scale 0.5-2.0 (natural 1.1-1.25) · noise_scale 0.667 · silence_scale 0.2 · max_num_sentences 5-8 · sid=0 (Piper monovoz).
+Tool: generar_narracion(texto, voz, preset, length_scale, noise_scale, speed).
+
+## 🎨 CONTRATO CLOUDFLARE SDXL v1
+8 presets (cinematic, anime, realistic, cartoon, product, portrait, landscape, abstract). 6 aspects (16:9 1344x768, 9:16 768x1344, 1:1 1024x1024, 4:3, 3:2, 21:9).
+Params: num_steps 1-20 · guidance 7.5 · seed -1 aleatorio. NO texto en prompt.
+Tool: generar_imagen(prompt, preset, aspect, num_steps, guidance, seed).
+
+## 🎬 CONTRATO WAN 2.2 TI2V-5B v1
+6 presets (cinematic_480p, cinematic_720p, vertical_480p, vertical_720p, turbo_4steps, draft_rapido).
+Resoluciones múltiplos de 32: 832x480, 1280x704, 480x832, 704x1280, 704x704. **NUNCA 1280x720**.
+num_frames 4n+1 (8-121) · steps 4 (Turbo) o 25-50 · guidance 1.0 (Turbo) / 5.0 · shift 3.0 (480p) / 5.0 (720p).
+Prompt: **Sujeto + Movimiento + Cámara + Iluminación** · 1 acción/clip · T4 15GB: 480p 49 frames seguro.
+Tool: generar_video(prompt, preset, resolution, num_frames, steps, guidance, shift, fps).
+
+## 📱 REDES MULTI-CUENTA
+| Red | 1 correo = N | Límite |
+|-----|--------------|--------|
+| YouTube | ✅ Ilimitado (Brand Accounts) | 6 uploads/día por proyecto GCloud |
+| Instagram | ✅ ~10 simultáneas | 25 posts/día |
+| Facebook Page | ✅ Sin límite | — |
+| TikTok | ❌ 1 email = 1 cuenta | Solo borradores sin auditoría |
+
+100 canales: ~9-17 proyectos GCloud + 2 apps Meta + Advanced Access TikTok.
+Spotify/Apple: RouteNote/DistroKid. Declarar IA. NUNCA Content ID.
+Meta Sandbox: 1 app + tus cuentas. TikTok Sandbox: solo borradores.
+
+## 🗺️ HOJA DE RUTA 6 MESES
+- **Mes 1**: ensamblador largo + primer vídeo público + ADN 4 marcas.
+- **Mes 2**: IG/FB/TikTok Sandbox + Telegram/Discord + Spotify RouteNote.
+- **Mes 3**: kaggle_rotator.py + dry-run visual + multiformato 9:16.
+- **Mes 4**: 10 canales + doblaje NLLB-200.
+- **Mes 5**: productos digitales (curso, API, SaaS).
+- **Mes 6**: 100 canales + ingresos pasivos.
+
+## 🚨 COMANDOS CLAVE
+```
+./scripts/start_all.py
+python -c "from brain.sanador import sanar; print(sanar())"
+python scripts/musica_acestep.py "lofi" 60 --preset=lofi
+python scripts/generar_imagen.py "cinematic neon"
+python scripts/ensamblar_video.py video.mp4 musica.mp3 out.mp4
+python scripts/conserje.py --dry
+python scripts/generate_skill_md.py
+sv status keiz-web
+sv restart keiz-web
+```
+
+## 🎯 PENDIENTES INMEDIATOS
+1. Ensamblador largo (scripts/ensamblar_video_largo.py).
+2. Notebook WanGP real (49 frames, 4 steps).
+3. Primer vídeo público en YouTube.
+4. Probar Meta Sandbox.
+5. Configurar kaggle_rotator.py.
+
+## 🎯 FILOSOFÍA
+> "Un output, 6 monetizaciones posibles."
+> "Lo que se regenera, se borra. Lo único, se pregunta."
+> "El ecosistema crece por config, no por código."
+> "15 pasos por delante."
+
+*Frodo Bolsón mode: 500 pasos por delante.*

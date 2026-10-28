@@ -1,0 +1,839 @@
+{
+  "motor": "ACE-Step v11 (acestep.cpp + GGUF)",
+  "version": "1.5",
+  "source_file": "/data/data/com.termux/files/home/LofiProducer/data/agent/acestep_params.json",
+  "total_params": 81,
+  "task_principal": "text2music",
+  "bloques": {
+    "A": {
+      "nombre": "Metadatos",
+      "rol_global": "agente rellena desde guion",
+      "params": {
+        "task_type": {
+          "type": "str",
+          "default": "'text2music'",
+          "rol": "fijo",
+          "nota": "NUNCA cambiar para generar desde cero"
+        },
+        "caption": {
+          "type": "str",
+          "default": "''",
+          "rol": "rellenar",
+          "obligatorio": true,
+          "nota": "Prompt descriptivo del estilo musical"
+        },
+        "global_caption": {
+          "type": "str",
+          "default": "''",
+          "rol": "fijo"
+        },
+        "lyrics": {
+          "type": "str",
+          "default": "''",
+          "rol": "rellenar",
+          "nota": "Opcional. Solo si instrumental=False"
+        },
+        "instrumental": {
+          "type": "bool",
+          "default": "False",
+          "rol": "rellenar",
+          "nota": "True=música sin voz (lyrics='')"
+        },
+        "vocal_language": {
+          "type": "str",
+          "default": "'unknown'",
+          "rol": "rellenar",
+          "nota": "'es','en' o 'unknown' para instrumental"
+        },
+        "bpm": {
+          "type": "Optional[int]",
+          "default": "None",
+          "rol": "rellenar",
+          "rango": [
+            30,
+            300
+          ],
+          "nota": "None=LM lo estima. Indicar género ayuda"
+        },
+        "keyscale": {
+          "type": "str",
+          "default": "''",
+          "rol": "rellenar",
+          "nota": "Ej 'C Major','Am'. Vacío=auto"
+        },
+        "timesignature": {
+          "type": "str",
+          "default": "''",
+          "rol": "rellenar",
+          "nota": "'4/4','3/4'. Vacío=auto"
+        },
+        "duration": {
+          "type": "float",
+          "default": "-1.0",
+          "rol": "rellenar",
+          "rango": [
+            10,
+            600
+          ],
+          "nota": "-1=auto. Para 1h: 10x360s + FFmpeg concat"
+        }
+      }
+    },
+    "B": {
+      "nombre": "Difusion_DiT",
+      "rol_global": "NO tocar salvo experto",
+      "params": {
+        "latent_shift": {
+          "type": "float",
+          "default": "0.0",
+          "rol": "fijo"
+        },
+        "latent_rescale": {
+          "type": "float",
+          "default": "1.0",
+          "rol": "fijo"
+        },
+        "inference_steps": {
+          "type": "int",
+          "default": "8",
+          "rol": "ajustar_por_modelo",
+          "rango": {
+            "turbo": [
+              4,
+              8
+            ],
+            "base": [
+              32,
+              100
+            ]
+          },
+          "nota": "Turbo no mejora con más pasos"
+        },
+        "seed": {
+          "type": "int",
+          "default": "-1",
+          "rol": "fijo",
+          "nota": "-1=aleatorio. Entero fijo para reproducibilidad"
+        },
+        "guidance_scale": {
+          "type": "float",
+          "default": "7.0",
+          "rol": "fijo",
+          "rango": [
+            1,
+            15
+          ],
+          "nota": "Solo aplica a Base. Turbo lo ignora"
+        },
+        "use_adg": {
+          "type": "bool",
+          "default": "False",
+          "rol": "fijo"
+        },
+        "cfg_interval_start": {
+          "type": "float",
+          "default": "0.0",
+          "rol": "fijo"
+        },
+        "cfg_interval_end": {
+          "type": "float",
+          "default": "1.0",
+          "rol": "fijo"
+        },
+        "shift": {
+          "type": "float",
+          "default": "1.0",
+          "rol": "ajustar_por_modelo",
+          "rango": [
+            1,
+            5
+          ],
+          "nota": "Turbo: usar 3.0"
+        },
+        "infer_method": {
+          "type": "str",
+          "default": "'ode'",
+          "rol": "fijo"
+        },
+        "sampler_mode": {
+          "type": "str",
+          "default": "'euler'",
+          "rol": "fijo"
+        },
+        "velocity_norm_threshold": {
+          "type": "float",
+          "default": "0.0",
+          "rol": "fijo"
+        },
+        "velocity_ema_factor": {
+          "type": "float",
+          "default": "0.0",
+          "rol": "fijo"
+        },
+        "dcw_enabled": {
+          "type": "Optional[bool]",
+          "default": "None",
+          "rol": "fijo"
+        },
+        "dcw_mode": {
+          "type": "str",
+          "default": "'double'",
+          "rol": "fijo"
+        },
+        "dcw_scaler": {
+          "type": "float",
+          "default": "0.05",
+          "rol": "fijo"
+        },
+        "dcw_high_scaler": {
+          "type": "float",
+          "default": "0.02",
+          "rol": "fijo"
+        },
+        "dcw_wavelet": {
+          "type": "str",
+          "default": "'haar'",
+          "rol": "fijo"
+        },
+        "timesteps": {
+          "type": "Optional[List[float]]",
+          "default": "None",
+          "rol": "fijo"
+        }
+      }
+    },
+    "C": {
+      "nombre": "LM_5Hz",
+      "rol_global": "control del pensamiento del LM",
+      "params": {
+        "thinking": {
+          "type": "bool",
+          "default": "True",
+          "rol": "fijo"
+        },
+        "lm_temperature": {
+          "type": "float",
+          "default": "0.85",
+          "rol": "fijo",
+          "rango": [
+            0,
+            2
+          ],
+          "nota": "Más alto=más creativo y arriesgado"
+        },
+        "lm_cfg_scale": {
+          "type": "float",
+          "default": "2.0",
+          "rol": "fijo",
+          "rango": [
+            1,
+            10
+          ],
+          "nota": ">1 fuerza al LM a seguir el prompt"
+        },
+        "lm_top_k": {
+          "type": "int",
+          "default": "0",
+          "rol": "fijo"
+        },
+        "lm_top_p": {
+          "type": "float",
+          "default": "0.9",
+          "rol": "fijo",
+          "rango": [
+            0,
+            1
+          ],
+          "nota": "1.0=desactivado"
+        },
+        "lm_negative_prompt": {
+          "type": "str",
+          "default": "'NO USER INPUT'",
+          "rol": "fijo"
+        },
+        "use_cot_metas": {
+          "type": "bool",
+          "default": "True",
+          "rol": "fijo"
+        },
+        "use_cot_caption": {
+          "type": "bool",
+          "default": "True",
+          "rol": "fijo"
+        },
+        "use_cot_lyrics": {
+          "type": "bool",
+          "default": "False",
+          "rol": "fijo"
+        },
+        "use_cot_language": {
+          "type": "bool",
+          "default": "True",
+          "rol": "fijo"
+        },
+        "use_constrained_decoding": {
+          "type": "bool",
+          "default": "True",
+          "rol": "fijo"
+        },
+        "cot_bpm": {
+          "type": "Optional[int]",
+          "default": "None",
+          "rol": "fijo"
+        },
+        "cot_keyscale": {
+          "type": "str",
+          "default": "''",
+          "rol": "fijo"
+        },
+        "cot_timesignature": {
+          "type": "str",
+          "default": "''",
+          "rol": "fijo"
+        },
+        "cot_duration": {
+          "type": "Optional[float]",
+          "default": "None",
+          "rol": "fijo"
+        },
+        "cot_vocal_language": {
+          "type": "str",
+          "default": "'unknown'",
+          "rol": "fijo"
+        },
+        "cot_caption": {
+          "type": "str",
+          "default": "''",
+          "rol": "fijo"
+        },
+        "cot_lyrics": {
+          "type": "str",
+          "default": "''",
+          "rol": "fijo"
+        }
+      }
+    },
+    "D": {
+      "nombre": "Repaint_Cover_Edit",
+      "rol_global": "ignorar para text2music",
+      "params": {
+        "reference_audio": {
+          "type": "Optional[str]",
+          "default": "None",
+          "rol": "fijo"
+        },
+        "src_audio": {
+          "type": "Optional[str]",
+          "default": "None",
+          "rol": "fijo"
+        },
+        "audio_codes": {
+          "type": "str",
+          "default": "''",
+          "rol": "fijo"
+        },
+        "repainting_start": {
+          "type": "float",
+          "default": "0.0",
+          "rol": "fijo"
+        },
+        "repainting_end": {
+          "type": "float",
+          "default": "-1",
+          "rol": "fijo"
+        },
+        "chunk_mask_mode": {
+          "type": "str",
+          "default": "'auto'",
+          "rol": "fijo"
+        },
+        "repaint_latent_crossfade_frames": {
+          "type": "int",
+          "default": "10",
+          "rol": "fijo"
+        },
+        "repaint_wav_crossfade_sec": {
+          "type": "float",
+          "default": "0.0",
+          "rol": "fijo"
+        },
+        "repaint_mode": {
+          "type": "str",
+          "default": "'balanced'",
+          "rol": "fijo"
+        },
+        "repaint_strength": {
+          "type": "float",
+          "default": "0.5",
+          "rol": "fijo"
+        },
+        "retake_seed": {
+          "type": "Optional[Union[str, int]]",
+          "default": "None",
+          "rol": "fijo"
+        },
+        "retake_variance": {
+          "type": "float",
+          "default": "0.0",
+          "rol": "fijo"
+        },
+        "flow_edit_morph": {
+          "type": "bool",
+          "default": "False",
+          "rol": "fijo"
+        },
+        "flow_edit_source_caption": {
+          "type": "str",
+          "default": "''",
+          "rol": "fijo"
+        },
+        "flow_edit_source_lyrics": {
+          "type": "str",
+          "default": "''",
+          "rol": "fijo"
+        },
+        "flow_edit_n_min": {
+          "type": "float",
+          "default": "0.0",
+          "rol": "fijo"
+        },
+        "flow_edit_n_max": {
+          "type": "float",
+          "default": "1.0",
+          "rol": "fijo"
+        },
+        "flow_edit_n_avg": {
+          "type": "int",
+          "default": "1",
+          "rol": "fijo"
+        },
+        "audio_cover_strength": {
+          "type": "float",
+          "default": "1.0",
+          "rol": "fijo"
+        },
+        "cover_noise_strength": {
+          "type": "float",
+          "default": "0.0",
+          "rol": "fijo"
+        }
+      }
+    },
+    "E": {
+      "nombre": "Batch_Config_Post",
+      "rol_global": "config del job y post-proceso",
+      "params": {
+        "instruction": {
+          "type": "str",
+          "default": "'Fill the audio semantic mask based on the given conditions:'",
+          "rol": "fijo"
+        },
+        "enable_normalization": {
+          "type": "bool",
+          "default": "True",
+          "rol": "fijo"
+        },
+        "normalization_db": {
+          "type": "float",
+          "default": "-1.0",
+          "rol": "fijo"
+        },
+        "fade_in_duration": {
+          "type": "float",
+          "default": "0.0",
+          "rol": "fijo"
+        },
+        "fade_out_duration": {
+          "type": "float",
+          "default": "0.0",
+          "rol": "fijo"
+        },
+        "batch_size": {
+          "type": "int",
+          "default": "2",
+          "rol": "fijo",
+          "nota": "T4 14GB: mantener 1-2 para no OOM"
+        },
+        "allow_lm_batch": {
+          "type": "bool",
+          "default": "False",
+          "rol": "fijo"
+        },
+        "use_random_seed": {
+          "type": "bool",
+          "default": "True",
+          "rol": "fijo"
+        },
+        "seeds": {
+          "type": "Optional[List[int]]",
+          "default": "None",
+          "rol": "fijo"
+        },
+        "lm_batch_chunk_size": {
+          "type": "int",
+          "default": "8",
+          "rol": "fijo"
+        },
+        "constrained_decoding_debug": {
+          "type": "bool",
+          "default": "False",
+          "rol": "fijo"
+        },
+        "audio_format": {
+          "type": "str",
+          "default": "'flac'",
+          "rol": "ajustar_por_modelo",
+          "nota": "Kaggle: flac. Redes: mp3"
+        },
+        "mp3_bitrate": {
+          "type": "str",
+          "default": "'128k'",
+          "rol": "fijo"
+        },
+        "mp3_sample_rate": {
+          "type": "int",
+          "default": "48000",
+          "rol": "fijo"
+        }
+      }
+    }
+  },
+  "reglas_anti_alucinacion": [
+    "Turbo: inference_steps 4-8, shift 3.0, NO tocar guidance_scale",
+    "Base: inference_steps 32-100, guidance_scale 7.0, shift 1.0",
+    "NO pedir duration > 600s en una sola llamada",
+    "caption SIEMPRE obligatorio en text2music",
+    "instrumental=True -> lyrics='' y vocal_language='unknown'",
+    "Para 1h loop: 10x360s o 60x60s y concatenar con FFmpeg",
+    "batch_size max 2 en T4 (14GB VRAM)",
+    "seed=-1 aleatorio; entero fijo para A/B testing",
+    "Termux: audio_format=mp3 para redes; flac para archivo",
+    "NUNCA cambiar task_type si no se domina (cover/repaint/lego/extract/complete)",
+    "Para 'lofi': bpm 70-85, keyscale minor, instrumental=True, duration 60-180s",
+    "Para 'ambient': bpm 60-80, sin percusión en caption, instrumental=True",
+    "Para 'piano': caption con 'solo piano', instrumental=True, bpm 70-100",
+    "duration > 600s -> NO pedir en una sola llamada. Partir en chunks de 360s + concatenar con FFmpeg (ej. loop 1h = 10x360s)"
+  ],
+  "presets": {
+    "lofi": {
+      "caption": "lo-fi hip hop, warm vinyl crackle, mellow piano chords, subtle jazzy guitar, soft vinyl percussion, relaxing study vibe",
+      "instrumental": true,
+      "vocal_language": "unknown",
+      "bpm": [
+        70,
+        85
+      ],
+      "keyscale": "minor",
+      "timesignature": "4/4",
+      "duration": 120,
+      "inference_steps": 6,
+      "shift": 3.0,
+      "audio_format": "mp3"
+    },
+    "ambient": {
+      "caption": "ambient pad, ethereal synth layers, no drums, slow evolving textures, meditative, cinematic space",
+      "instrumental": true,
+      "vocal_language": "unknown",
+      "bpm": [
+        60,
+        80
+      ],
+      "keyscale": "minor",
+      "timesignature": "4/4",
+      "duration": 180,
+      "inference_steps": 6,
+      "shift": 3.0,
+      "audio_format": "flac"
+    },
+    "piano": {
+      "caption": "solo piano, emotional, intimate, subtle room reverb, no drums, no other instruments, nostalgic melody",
+      "instrumental": true,
+      "vocal_language": "unknown",
+      "bpm": [
+        70,
+        100
+      ],
+      "keyscale": "minor",
+      "timesignature": "4/4",
+      "duration": 180,
+      "inference_steps": 8,
+      "shift": 3.0,
+      "audio_format": "mp3"
+    },
+    "cinematic": {
+      "caption": "cinematic orchestral, tension strings, epic drums building, movie trailer score, dark atmospheric",
+      "instrumental": true,
+      "vocal_language": "unknown",
+      "bpm": [
+        90,
+        120
+      ],
+      "keyscale": "minor",
+      "timesignature": "4/4",
+      "duration": 60,
+      "inference_steps": 8,
+      "shift": 3.0,
+      "audio_format": "mp3"
+    },
+    "hiphop": {
+      "caption": "boom bap hip hop, punchy drums, dusty samples, 90s golden era, jazzy loop, gritty bass",
+      "instrumental": true,
+      "vocal_language": "unknown",
+      "bpm": [
+        85,
+        95
+      ],
+      "keyscale": "minor",
+      "timesignature": "4/4",
+      "duration": 120,
+      "inference_steps": 6,
+      "shift": 3.0,
+      "audio_format": "mp3"
+    },
+    "electronic": {
+      "caption": "upbeat electronic, driving synth bassline, four-on-the-floor kick, arpeggiated leads, neon energy, dancefloor",
+      "instrumental": true,
+      "vocal_language": "unknown",
+      "bpm": [
+        120,
+        130
+      ],
+      "keyscale": "minor",
+      "timesignature": "4/4",
+      "duration": 90,
+      "inference_steps": 6,
+      "shift": 3.0,
+      "audio_format": "mp3"
+    },
+    "jingle": {
+      "caption": "short catchy jingle, upbeat, bright synths, brand identity sound, punchy and memorable",
+      "instrumental": true,
+      "vocal_language": "unknown",
+      "bpm": [
+        110,
+        130
+      ],
+      "keyscale": "major",
+      "timesignature": "4/4",
+      "duration": 15,
+      "inference_steps": 4,
+      "shift": 3.0,
+      "audio_format": "mp3"
+    },
+    "hiphop_trap": {
+      "caption": "trap hip hop, hard hitting 808 bass, fast hi-hat rolls, dark minor keys, modern underground vibe",
+      "instrumental": true,
+      "vocal_language": "unknown",
+      "bpm": [
+        135,
+        150
+      ],
+      "keyscale": "minor",
+      "timesignature": "4/4",
+      "duration": 120,
+      "inference_steps": 6,
+      "shift": 3.0,
+      "audio_format": "mp3"
+    },
+    "hiphop_boom_bap": {
+      "caption": "90s boom bap hip hop, dusty vinyl samples, jazzy piano chops, gritty snare, golden era East Coast",
+      "instrumental": true,
+      "vocal_language": "unknown",
+      "bpm": [
+        85,
+        95
+      ],
+      "keyscale": "minor",
+      "timesignature": "4/4",
+      "duration": 120,
+      "inference_steps": 6,
+      "shift": 3.0,
+      "audio_format": "mp3"
+    },
+    "synthwave": {
+      "caption": "80s synthwave, neon arpeggios, retro drum machine, analog synth pads, outrun, retrofuturistic",
+      "instrumental": true,
+      "vocal_language": "unknown",
+      "bpm": [
+        100,
+        115
+      ],
+      "keyscale": "minor",
+      "timesignature": "4/4",
+      "duration": 120,
+      "inference_steps": 6,
+      "shift": 3.0,
+      "audio_format": "mp3"
+    },
+    "jazz": {
+      "caption": "smooth jazz, upright bass, brushed drums, warm tenor saxophone, cozy lounge atmosphere",
+      "instrumental": true,
+      "vocal_language": "unknown",
+      "bpm": [
+        90,
+        120
+      ],
+      "keyscale": "minor",
+      "timesignature": "4/4",
+      "duration": 180,
+      "inference_steps": 8,
+      "shift": 3.0,
+      "audio_format": "mp3"
+    },
+    "rock_hiphop_nach": {
+      "desc": "Hip hop rock 90s España tipo Nach",
+      "params": {
+        "duration": 180,
+        "vocal_language": "es",
+        "caption": "90s Spanish hip-hop, rock-hiphop fusion, aggressive male rap vocals, distorted electric guitar riffs, melancholic piano melody, boom-bap drums, gritty vinyl texture, powerful chorus, introspective and poetic lyrics",
+        "bpm": 90,
+        "keyscale": "A minor"
+      }
+    }
+  },
+  "ejemplos": [
+    {
+      "input_usuario": "hazme una canción lofi de 60 segundos",
+      "preset": "lofi",
+      "params": {
+        "task_type": "text2music",
+        "caption": "lo-fi hip hop, warm vinyl crackle, mellow piano chords, relaxing study vibe",
+        "instrumental": true,
+        "vocal_language": "unknown",
+        "duration": 60,
+        "bpm": 78,
+        "keyscale": "A minor",
+        "timesignature": "4/4",
+        "inference_steps": 6,
+        "shift": 3.0,
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "input_usuario": "genera un jingle corto para mi marca de café",
+      "preset": "jingle",
+      "params": {
+        "task_type": "text2music",
+        "caption": "short catchy jingle, bright acoustic guitar, warm piano, brand identity sound, coffee shop feel",
+        "instrumental": true,
+        "vocal_language": "unknown",
+        "duration": 15,
+        "bpm": 120,
+        "keyscale": "C major",
+        "timesignature": "4/4",
+        "inference_steps": 4,
+        "shift": 3.0,
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "input_usuario": "música cinematográfica tensa de 3 minutos para un tráiler",
+      "preset": "cinematic",
+      "params": {
+        "task_type": "text2music",
+        "caption": "cinematic orchestral, tension strings, epic drums, movie trailer score, dark atmospheric",
+        "instrumental": true,
+        "vocal_language": "unknown",
+        "duration": 180,
+        "bpm": 100,
+        "keyscale": "D minor",
+        "timesignature": "4/4",
+        "inference_steps": 8,
+        "shift": 3.0,
+        "audio_format": "mp3"
+      }
+    }
+  ],
+  "validador": {
+    "descripcion": "Clampea y corrige parámetros antes de enviar a ACE-Step. NUNCA rechaza, siempre corrige.",
+    "reglas": [
+      {
+        "campo": "bpm",
+        "min": 30,
+        "max": 300,
+        "default": 90
+      },
+      {
+        "campo": "duration",
+        "min": 10,
+        "max": 600,
+        "default": 60,
+        "nota": ">600 → partir en N chunks de 360s + concat FFmpeg"
+      },
+      {
+        "campo": "inference_steps",
+        "min": 1,
+        "max": 100,
+        "default": 6,
+        "preset_turbo": [
+          4,
+          8
+        ],
+        "preset_base": [
+          32,
+          100
+        ]
+      },
+      {
+        "campo": "guidance_scale",
+        "min": 1.0,
+        "max": 15.0,
+        "default": 1.0,
+        "nota": "Turbo lo ignora; Base lo usa a 7.0"
+      },
+      {
+        "campo": "shift",
+        "min": 1.0,
+        "max": 5.0,
+        "default": 3.0
+      },
+      {
+        "campo": "lm_temperature",
+        "min": 0.0,
+        "max": 2.0,
+        "default": 0.85
+      },
+      {
+        "campo": "lm_cfg_scale",
+        "min": 1.0,
+        "max": 10.0,
+        "default": 2.0
+      },
+      {
+        "campo": "lm_top_p",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.9
+      },
+      {
+        "campo": "batch_size",
+        "min": 1,
+        "max": 2,
+        "default": 1,
+        "nota": "T4 14GB: máx 2 o OOM"
+      },
+      {
+        "campo": "audio_format",
+        "valores": [
+          "mp3",
+          "flac",
+          "wav"
+        ],
+        "default": "mp3"
+      },
+      {
+        "campo": "task_type",
+        "valores": [
+          "text2music"
+        ],
+        "default": "text2music",
+        "nota": "Otros modos requieren experto"
+      }
+    ]
+  },
+  "defaults": {
+    "inference_steps": 12,
+    "guidance_scale": 3.5,
+    "shift": 3.0
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "nacional": {
+    "tv": ["La 1", "La 2", "Antena 3", "laSexta", "Cuatro", "Telecinco", "Trece TV", "Dmax", "DKISS", "Ten", "Real Madrid TV"],
+    "radio": ["Cadena SER", "COPE", "Onda Cero", "RNE", "esRadio", "Radio Intereconomía", "Capital Radio", "Radio 5", "RAC1"],
+    "podcasts": ["The Wild Project", "La Contra Historias", "La Voz de César Vidal", "Saldremos Mejores", "La Radioteca", "Cañones o Mantequilla", "Vaquero Podcast"],
+    "youtube": ["Negocios TV", "El Mundo", "El País", "COPE", "La Vanguardia", "Onda Cero", "Radio Intereconomía", "esRadio", "Libertad Digital", "Vozpópuli", "Público", "VisualPolitik"]
+  },
+  "internacional": {
+    "medios": ["The Guardian", "Le Monde", "BBC", "Deutsche Welle", "Al Jazeera", "The New York Times", "Financial Times", "Reuters", "Associated Press"],
+    "activacion": ["lunes", "jueves"]
+  }
+}

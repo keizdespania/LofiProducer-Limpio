@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>KEIZ OS</title>
+<link rel="manifest" href="/assets/manifest.json">
+<!-- Fuentes de lujo -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #000000;
+  --surface: rgba(20, 20, 25, 0.6);
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #007aff; /* Azul Apple */
+  --accent-glow: rgba(0, 122, 255, 0.6);
+  --text: #ffffff;
+  --muted: #8e8e93;
+  --font-main: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 20px;
+  --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body {
+  background-color: var(--bg); color: var(--text); font-family: var(--font-main);
+  height: 100dvh; overflow: hidden; display: flex; flex-direction: column;
+  position: relative; perspective: 1000px;
+}
+
+/* Fondo de Orbes de Luz (Estilo Apple Vision Pro) */
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background: 
+    radial-gradient(circle at 15% 25%, rgba(0, 122, 255, 0.15), transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.15), transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02), transparent 60%);
+  z-index: -1; pointer-events: none;
+  animation: pulseBg 10s infinite alternate;
+}
+@keyframes pulseBg { from { opacity: 0.6; } to { opacity: 1; } }
+
+/* Header Flotante (Cristal) */
+header {
+  position: absolute; top: 20px; left: 20px; right: 20px; height: 70px;
+  background: var(--surface); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 20px; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.logo-small { font-weight: 800; font-size: 1.3em; letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; }
+.logo-small img { height: 32px; filter: drop-shadow(0 0 15px var(--accent-glow)); }
+.menu-btn { font-size: 1.5em; cursor: pointer; color: var(--text); }
+
+/* Sidebar (Menú Flotante Deslizante) */
+.sidebar {
+  position: fixed; top: 100px; left: -320px; width: 300px; height: calc(100dvh - 120px);
+  background: var(--surface); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  transition: var(--transition); z-index: 99; padding: 20px 10px;
+  overflow-y: auto; box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+}
+.sidebar.open { left: 20px; }
+.sidebar::-webkit-scrollbar { display: none; }
+.nav-item {
+  padding: 16px 20px; cursor: pointer; color: var(--muted); font-size: 1.05em;
+  font-weight: 600; display: flex; align-items: center; gap: 16px;
+  border-radius: 14px; transition: all 0.2s; margin-bottom: 4px;
+}
+.nav-item:hover, .nav-item.active { color: var(--text); background: rgba(255,255,255,0.08); }
+.nav-item.active { background: var(--accent); color: #fff; box-shadow: 0 0 20px var(--accent-glow); }
+
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); opacity: 0; pointer-events: none; transition: 0.4s; z-index: 98; }
+.overlay.open { opacity: 1; pointer-events: auto; }
+
+/* Área de Contenido Principal */
+.main { flex: 1; overflow-y: auto; padding: 110px 20px 40px 20px; z-index: 1; }
+.main::-webkit-scrollbar { display: none; }
+.view { display: none; padding-bottom: 40px; }
+.view.active { display: block; animation: slideUp 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); }
+@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Tarjetas de Cristal (Glass Cards) */
+.section {
+  background: var(--surface); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 24px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+h2 { font-weight: 700; font-size: 1.5em; letter-spacing: -0.5px; margin-bottom: 16px; }
+p.desc { color: var(--muted); font-size: 0.95em; line-height: 1.5; margin-bottom: 20px; }
+
+/* Botones Premium */
+.dash-btn {
+  background: var(--accent); color: #fff; border: none; padding: 14px 24px;
+  border-radius: 14px; font-weight: 700; font-family: var(--font-main); font-size: 1em;
+  cursor: pointer; transition: all 0.3s; width: 100%; letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+}
+.dash-btn:active { transform: scale(0.96); box-shadow: 0 2px 10px rgba(0, 122, 255, 0.2); }
+
+/* Inputs de Lujo */
+input, textarea, select {
+  width: 100%; padding: 16px; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+  border-radius: 14px; color: #fff; font-family: var(--font-main); font-size: 1em;
+  outline: none; transition: border 0.3s; margin-bottom: 16px;
+}
+input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(0,122,255,0.2); }
+
+/* Chat UI */
+.chat-container { display: flex; flex-direction: column; height: calc(100dvh - 180px); }
+.chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding-bottom: 20px; }
+.chat-messages::-webkit-scrollbar { display: none; }
+.msg { padding: 16px 20px; border-radius: 20px; max-width: 85%; font-size: 0.95em; line-height: 1.5; backdrop-filter: blur(10px); }
+.msg.bot { background: var(--surface); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; }
+.msg.user { background: var(--accent); align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3); }
+.chat-input-area { display: flex; gap: 12px; background: var(--surface); padding: 10px; border-radius: 20px; border: 1px solid var(--border); }
+.chat-input-area input { margin-bottom: 0; background: transparent; border: none; }
+.chat-input-area button { width: auto; padding: 12px 24px; border-radius: 14px; }
+
+/* Media Center Grid */
+.media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.media-card { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 16px; padding: 16px; cursor: pointer; transition: 0.3s; }
+.media-card:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
+.media-card h3 { font-size: 0.9em; font-weight: 700; word-break: break-word; margin-bottom: 6px; }
+.media-card p { font-size: 0.75em; color: var(--muted); font-family: var(--font-mono); }
+
+/* Lightbox Premium */
+#lightbox {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+  backdrop-filter: blur(20px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;
+  animation: fadeIn 0.3s;
+}
+#lightbox video, #lightbox img { max-width: 100%; max-height: 90vh; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+#lightbox audio { width: 90vw; }
+
+/* ═══ ACORDEÓN DEL MENÚ ═══ */
+.nav-group { margin: 4px 0; }
+.nav-group-header {
+  padding: 14px 20px; cursor: pointer; color: var(--muted); font-weight: 600;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: all 0.2s; border-radius: 12px; margin: 0 8px;
+}
+.nav-group-header:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.nav-arrow { transition: transform 0.3s; font-size: 0.8em; }
+.nav-group.open .nav-arrow { transform: rotate(180deg); }
+.nav-group-items {
+  max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out;
+}
+.nav-group.open .nav-group-items { max-height: 500px; }
+.nav-item.sub { padding-left: 36px; font-size: 0.95em; }
+.nav-item.sub:hover { color: var(--text); background: rgba(255,255,255,0.05); border-left: 3px solid var(--accent); }
+
+
+/* ═══ BARRA FLOTANTE DE SELECCIÓN ═══ */
+.barra-flotante {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+  padding: 12px 20px; display: none; gap: 12px; align-items: center;
+  backdrop-filter: blur(20px); box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 10000;
+}
+.barra-flotante.activa { display: flex; }
+.file-check { appearance: none; border: 2px solid var(--border); border-radius: 6px; background: transparent; cursor: pointer; }
+.file-check:checked { background: var(--accent); border-color: var(--accent); }
+.file-check:checked::after { content: '✓'; color: white; font-size: 14px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; }
+
+
+/* ═══ MODAL DE PARÁMETROS (Fase 2) ═══ */
+.mp-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  z-index: 99998; align-items: flex-start; justify-content: center; padding: 20px;
+}
+.mp-overlay.open { display: flex; }
+.mp-container {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+  width: 100%; max-width: 640px; max-height: calc(100dvh - 40px);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.mp-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.mp-header h2 { font-size: 1.2em; }
+.mp-close {
+  background: none; border: none; color: #fff; font-size: 1.5em;
+  cursor: pointer; padding: 0 8px; line-height: 1;
+}
+.mp-content { flex: 1; overflow-y: auto; padding: 16px 20px; }
+.mp-content::-webkit-scrollbar { width: 6px; }
+.mp-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.mp-footer {
+  display: flex; gap: 8px; padding: 16px 20px; border-top: 1px solid var(--border);
+  flex-shrink: 0; flex-wrap: wrap;
+}
+.mp-btn {
+  flex: 1; min-width: 100px; padding: 12px 16px; background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border); border-radius: 10px; color: #fff;
+  font-weight: 600; font-size: 0.9em; cursor: pointer; transition: all 0.2s;
+}
+.mp-btn:active { transform: scale(0.96); }
+.mp-btn-primary { background: var(--accent); border-color: var(--accent); }
+.mp-btn:hover { background: rgba(255,255,255,0.15); }
+.mp-btn-primary:hover { background: #2563eb; }
+
+.mp-block { margin-bottom: 12px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.mp-block summary {
+  padding: 12px 16px; cursor: pointer; background: rgba(255,255,255,0.03);
+  font-weight: 600; font-size: 0.9em; color: #fff; list-style: none;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.mp-block summary::-webkit-details-marker { display: none; }
+.mp-block summary::after { content: '▾'; font-size: 0.8em; transition: transform 0.2s; }
+.mp-block[open] summary::after { transform: rotate(180deg); }
+.mp-block-body { padding: 12px 16px; }
+.mp-block-body[hidden] { display: none; }
+
+.mp-field { margin-bottom: 14px; }
+.mp-field:last-child { margin-bottom: 0; }
+.mp-label {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.85em; color: var(--muted); margin-bottom: 6px;
+}
+.mp-label .mp-val { color: var(--accent); font-family: monospace; font-weight: 600; }
+.mp-label .mp-lock { font-size: 0.9em; color: #eab308; }
+.mp-input {
+  width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border); border-radius: 8px; color: #fff;
+  font-size: 0.9em; outline: none;
+}
+.mp-input:focus { border-color: var(--accent); }
+.mp-input:disabled { opacity: 0.5; cursor: not-allowed; }
+input[type=range].mp-input { padding: 0; height: 6px; background: var(--border); }
+input[type=range].mp-input::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--accent); cursor: pointer;
+}
+select.mp-input { cursor: pointer; }
+.mp-hint { font-size: 0.75em; color: var(--muted); margin-top: 4px; }
+
+</style>
+</head>
+<body>
+<header>
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+  <div class="logo-small"><img src="/assets/logo.png" onerror="this.style.display='none'"> KEIZ OS</div>
+  <div style="width:24px;"></div>
+</header>
+<div class="overlay" onclick="toggleMenu()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="nav-item active" onclick="nav('inicio', this)">🏠 <span>Inicio</span></div>
+  <div class="nav-item" onclick="nav('chat', this)">🤖 <span>Dios</span></div>
+
+  <div class="nav-group">
+    <div class="nav-group-header" onclick="toggleGroup(this)">
+      <span>🎬 Studios</span>
+      <span class="nav-arrow">▾</span>
+    </div>
+    <div class="nav-group-items">
+      <div class="nav-item sub" onclick="nav('musica', this)">🎵 <span>Música</span></div>
+      <div class="nav-item sub" onclick="nav('imagen', this)">🎨 <span>Imagen</span></div>
+      <div class="nav-item sub" onclick="nav('voz', this)">🎙️ <span>Voz (TTS)</span></div>
+      <div class="nav-item sub" onclick="nav('video', this)">🎬 <span>Vídeo</span></div>
+    </div>
+  </div>
+
+  <div class="nav-item" onclick="nav('media', this)">🎞️ <span>Media Center</span></div>
+
+  <div class="nav-group">
+    <div class="nav-group-header" onclick="toggleGroup(this)">
+      <span>📺 Canales</span>
+      <span class="nav-arrow">▾</span>
+    </div>
+    <div class="nav-group-items">
+      <div class="nav-item sub" onclick="nav('canales', this)">📺 <span>Mis Canales</span></div>
+      <div class="nav-item sub" onclick="nav('produccion', this)">📋 <span>Producción</span></div>
+      <div class="nav-item sub" onclick="nav('analytics', this)">📊 <span>Analytics</span></div>
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-header" onclick="toggleGroup(this)">
+      <span>🔧 Sistema</span>
+      <span class="nav-arrow">▾</span>
+    </div>
+    <div class="nav-group-items">
+      <div class="nav-item sub" onclick="nav('doctor', this)">🩺 <span>Doctor</span></div>
+      <div class="nav-item sub" onclick="nav('rss', this)">📰 <span>RSS</span></div>
+      <div class="nav-item sub" onclick="nav('especialista', this)">🧠 <span>Especialistas</span></div>
+      <div class="nav-item sub" onclick="nav('prompts', this)">💡 <span>Prompt Studio</span></div>
+      <div class="nav-item sub" onclick="nav('docs', this)">📚 <span>Docs</span></div>
+      <div class="nav-item sub" onclick="nav('ajustes', this)">⚙️ <span>Ajustes</span></div>
+      <div class="nav-item sub" onclick="nav('papelera', this)">🗑️ <span>Papelera</span></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <!-- INICIO -->
+  <div id="view-inicio" class="view active">
+    <div class="section">
+      <h2 style="font-size:2.2em; line-height:1.1; margin-bottom:8px;">Buenas noches,<br>Arquitecto.</h2>
+      <p class="desc">El imperio está en línea. ¿Qué vamos a crear hoy?</p>
+      <div id="dash-status" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">Cargando datos...</div>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div id="view-chat" class="view">
+    <div class="chat-container">
+      <div id="chat-messages" class="chat-messages">
+        <div class="msg bot">> Sistema listo. Memoria conectada. ¿Qué necesitas, Arquitecto?</div>
+      </div>
+      <div class="chat-input-area">
+        <input id="chat-input" placeholder="Escribe o usa el micro..." onkeydown="if(event.key==='Enter')enviarChat()" />
+<button class="dash-btn" id="btn-jarvis" onclick="toggleJarvis()" style="background:rgba(255,255,255,0.1); width:auto; padding:12px 16px; border-radius:50%;" title="Modo Jarvis">🎙️</button>
+        <button class="dash-btn" onclick="enviarChat()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEDIA CENTER -->
+  <div id="view-video" class="view">
+    <div class="section">
+      <h2>🎬 Video Studio</h2>
+      <p class="desc">Wan 2.2 TI2V-5B en Kaggle T4. Fórmula: Sujeto + Movimiento + Cámara + Iluminación.</p>
+      <textarea id="video-prompt" placeholder="Ej: Un zorro rojo se mueve sigilosamente por la nieve, cámara de seguimiento, hora dorada" style="height:80px; margin-bottom:12px;"></textarea>
+      <div style="display:flex; gap:8px; margin-bottom:16px;">
+        <button class="dash-btn" style="width:auto; padding:12px 16px; background:rgba(255,255,255,0.1);" onclick="abrirModalParams('video', generarVideoConParams)" title="Configurar parámetros">⚙️</button>
+        <button class="dash-btn" style="flex:1;" onclick="generarVideoWeb()">Generar con preset por defecto (cinematic_480p)</button>
+      </div>
+      <div id="video-log" style="margin-bottom:12px; font-family:var(--font-mono); font-size:0.85em; color:var(--muted); white-space:pre-wrap;"></div>
+      <h3 style="font-size:1em; margin-bottom:12px;">Clips recientes</h3>
+      <div id="lista-video" class="media-grid"><p style="color:var(--muted);">Cargando...</p></div>
+    </div>
+  </div>
+
+  <div id="view-media" class="view">
+    <div class="section">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:12px;">
+        <h2 style="margin-bottom:0;">Media Vault</h2>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <select id="vault-filtro" onchange="filtrarVault()" style="padding:8px; background:rgba(255,255,255,0.1); color:#fff; border:1px solid var(--border); border-radius:8px; font-size:0.9em;">
+            <option value="todos">Todos</option>
+            <option value="musica">🎵 Música</option>
+            <option value="tts">🎙️ TTS</option>
+            <option value="video">🎬 Vídeo</option>
+            <option value="imagen">🖼️ Imagen</option>
+            <option value="audio">🔊 Audio</option>
+          </select>
+          <button onclick="cargarVault()" style="background:none; border:none; color:#fff; font-size:1.5em; cursor:pointer;">🔄</button>
+        </div>
+      </div>
+      <div id="lista-vault" class="media-grid"><p style="color:var(--muted);">Cargando archivos...</p></div>
+    </div>
+  </div>
+
+  <!-- MUSICA -->
+  <div id="view-musica" class="view">
+    <div class="section">
+      <h2>🎵 Música Studio</h2>
+      <p class="desc">Genera pistas con ACE-Step en Kaggle.</p>
+      <input id="music-prompt" placeholder="Ej: lofi piano chill, 60 bpm" />
+      <div style="display:flex; gap:8px; margin-bottom:16px;">
+        <select id="music-dur" style="flex:1; padding:10px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:12px; color:#fff;">
+          <option value="30">30 segundos</option>
+          <option value="60" selected>60 segundos</option>
+          <option value="180">3 minutos</option>
+        </select>
+        <button class="dash-btn" style="width:auto; padding:12px 16px; background:rgba(255,255,255,0.1);" onclick="abrirModalParams('musica', generarMusicaConParams)" title="Configurar parámetros">⚙️</button>
+        <button class="dash-btn" style="width:auto; padding:12px 24px;" onclick="generarMusicaWeb()">Generar</button>
+      </div>
+      <div id="music-log" style="margin-bottom:12px; font-family:var(--font-mono); font-size:0.8em; color:var(--muted);"></div>
+      <h3 style="font-size:1em; margin-bottom:12px;">Generadas recientemente</h3>
+      <div id="lista-musica" class="media-grid"><p style="color:var(--muted);">Cargando...</p></div>
+    </div>
+  </div>
+  </div>
+
+  <!-- IMAGEN -->
+  <div id="view-imagen" class="view">
+    <div class="section">
+      <h2>🎨 Image Studio</h2>
+      <p class="desc">Genera imágenes con Cloudflare SDXL.</p>
+      <input id="img-prompt" placeholder="Ej: cinematic rocket launch" />
+      <div style="display:flex; gap:8px; margin-bottom:12px;">
+        <button class="dash-btn" style="width:auto; padding:12px 16px; background:rgba(255,255,255,0.1);" onclick="abrirModalParams('imagen', generarImagenConParams)" title="Configurar parámetros">⚙️</button>
+        <button class="dash-btn" onclick="generarImagenWeb()">Generar Imagen</button>
+      </div>
+      <div id="img-log" style="margin-top:12px; margin-bottom:16px; font-family:var(--font-mono); font-size:0.8em; color:var(--muted);"></div>
+      <h3 style="font-size:1em; margin-bottom:12px;">Imágenes recientes</h3>
+      <div id="lista-imagen" class="media-grid"><p style="color:var(--muted);">Cargando...</p></div>
+    </div>
+  </div>
+  </div>
+
+  <!-- VOZ -->
+  <div id="view-voz" class="view">
+    <div class="section">
+      <h2>🎙️ Voice Studio</h2>
+      <p class="desc">Narra textos con la voz del Dios (Sherpa-ONNX).</p>
+      <textarea id="voz-texto" placeholder="Escribe el texto a narrar..."></textarea>
+      <div style="display:flex; gap:8px; margin-bottom:16px;">
+        <select id="voz-opcion" style="flex:1; padding:10px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:12px; color:#fff;">
+          <option value="es_ES-davefx-medium">Davefx (Español, oficial)</option>
+          <option value="es_ES-sharvard-medium">Sharvard (Español)</option>
+          <option value="es_MX-claude-high">Claude (México)</option>
+          <option value="en_US-lessac-medium">Lessac (Inglés)</option>
+          <option value="en_US-ryan-high">Ryan (Inglés)</option>
+        </select>
+        <button class="dash-btn" style="width:auto; padding:12px 16px; background:rgba(255,255,255,0.1);" onclick="abrirModalParams('voz', generarVozConParams)" title="Configurar parámetros">⚙️</button>
+        <button class="dash-btn" style="width:auto; padding:12px 24px;" onclick="generarVozWeb()">Generar</button>
+      </div>
+      <div id="voz-log" style="margin-bottom:12px; font-family:var(--font-mono); font-size:0.8em; color:var(--muted);"></div>
+      <h3 style="font-size:1em; margin-bottom:12px;">Audios recientes</h3>
+      <div id="lista-voz" class="media-grid"><p style="color:var(--muted);">Cargando...</p></div>
+    </div>
+  </div>
+  </div>
+
+<div id="view-ajustes" class="view">
+  <div class="section">
+    <h2>⚙️ Personalización</h2>
+    <p class="desc">Ajusta el ecosistema a tu gusto.</p>
+    
+    <label style="display:block; color:var(--muted); margin-bottom:8px;">Tema de color:</label>
+    <select id="set-tema" onchange="cambiarTema(this.value)" style="width:100%; margin-bottom:20px;">
+      <option value="os">Oscuro (Apple OS)</option>
+      <option value="cyber">Cyberpunk (Neón)</option>
+      <option value="matrix">Matrix (Verde)</option>
+      <option value="light">Claro (Lujo)</option>
+    </select>
+
+    <label style="display:block; color:var(--muted); margin-bottom:8px;">Voz del Dios:</label>
+    <select id="set-voz" style="width:100%; margin-bottom:20px;">
+      <option value="es_ES-davefx-medium">Davefx (Español, oficial)</option>
+      <option value="es_ES-sharvard-medium">Sharvard (Español)</option>
+      <option value="es_MX-claude-high">Claude (México)</option>
+      <option value="en_US-lessac-medium">Lessac (Inglés)</option>
+      <option value="en_US-ryan-high">Ryan (Inglés)</option>
+    </select>
+
+    <label style="display:block; color:var(--muted); margin-bottom:8px;">Tamaño de letra: <span id="val-letra">1.0em</span></label>
+    <input type="range" id="set-letra" min="0.8" max="1.4" step="0.1" value="1.0" oninput="cambiarLetra(this.value)" style="margin-bottom:20px;">
+
+    <label style="display:block; color:var(--muted); margin-bottom:8px;">Radio de bordes: <span id="val-radio">20px</span></label>
+    <input type="range" id="set-radio" min="0" max="40" step="4" value="20" oninput="cambiarRadio(this.value)" style="margin-bottom:20px;">
+
+    <button class="dash-btn" onclick="guardarAjustes()">Guardar Preferencias</button>
+  </div>
+
+  <div class="section">
+    <h2>🔌 APIs y Servicios</h2>
+    <p class="desc">Configura las llaves de acceso. Haz clic en cada servicio para ver cómo obtenerla.</p>
+    
+    <div class="api-item" onclick="toggleApi('youtube')">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border);">
+        <span>📺 YouTube (OAuth)</span>
+        <span style="color:#10b981;">🟢</span>
+      </div>
+    </div>
+    <div id="api-info-youtube" style="display:none; padding:12px; background:rgba(0,0,0,0.3); border-radius:8px; margin-bottom:12px; font-size:0.85em; color:var(--muted);">
+      <p>Ya tienes el OAuth configurado.</p>
+    </div>
+
+    <div class="api-item" onclick="toggleApi('groq')">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border);">
+        <span>🧠 Groq (LLM)</span>
+        <span style="color:#10b981;">🟢</span>
+      </div>
+    </div>
+    <div id="api-info-groq" style="display:none; padding:12px; background:rgba(0,0,0,0.3); border-radius:8px; margin-bottom:12px; font-size:0.85em; color:var(--muted);">
+      <p>1. Ve a <a href="https://console.groq.com/keys" target="_blank" style="color:var(--accent);">console.groq.com/keys</a></p>
+      <p>2. Crea una API Key.</p>
+      <p>3. Pégala aquí abajo.</p>
+      <input id="input-groq" placeholder="gsk_..." style="margin-top:8px; width:100%; padding:8px; border-radius:6px; border:1px solid var(--border); background:rgba(0,0,0,0.5); color:#fff;" />
+      <button class="dash-btn" style="padding:8px; font-size:0.8em; margin-top:8px; width:auto;" onclick="guardarApi('groq')">Guardar</button>
+    </div>
+
+    <div class="api-item" onclick="toggleApi('kaggle')">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border);">
+        <span>☁️ Kaggle (GPU)</span>
+        <span style="color:#10b981;">🟢</span>
+      </div>
+    </div>
+    <div id="api-info-kaggle" style="display:none; padding:12px; background:rgba(0,0,0,0.3); border-radius:8px; margin-bottom:12px; font-size:0.85em; color:var(--muted);">
+      <p>1. Ve a <a href="https://www.kaggle.com/settings" target="_blank" style="color:var(--accent);">kaggle.com/settings</a></p>
+      <p>2. En "API", pulsa "Create New Token".</p>
+      <p>3. Copia el token (KGAT_...).</p>
+      <input id="input-kaggle" placeholder="KGAT_..." style="margin-top:8px; width:100%; padding:8px; border-radius:6px; border:1px solid var(--border); background:rgba(0,0,0,0.5); color:#fff;" />
+      <button class="dash-btn" style="padding:8px; font-size:0.8em; margin-top:8px; width:auto;" onclick="guardarApi('kaggle')">Guardar</button>
+    </div>
+
+    <div class="api-item" onclick="toggleApi('cloudflare')">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border);">
+        <span>🎨 Cloudflare (Imágenes)</span>
+        <span style="color:#10b981;">🟢</span>
+      </div>
+    </div>
+    <div id="api-info-cloudflare" style="display:none; padding:12px; background:rgba(0,0,0,0.3); border-radius:8px; margin-bottom:12px; font-size:0.85em; color:var(--muted);">
+      <p>1. Ve a <a href="https://dash.cloudflare.com/profile/api-tokens" target="_blank" style="color:var(--accent);">Cloudflare API Tokens</a></p>
+      <p>2. Crea un token con permiso de "Workers AI".</p>
+      <input id="input-cloudflare" placeholder="Token..." style="margin-top:8px; width:100%; padding:8px; border-radius:6px; border:1px solid var(--border); background:rgba(0,0,0,0.5); color:#fff;" />
+      <button class="dash-btn" style="padding:8px; font-size:0.8em; margin-top:8px; width:auto;" onclick="guardarApi('cloudflare')">Guardar</button>
+    </div>
+
+    <div class="api-item" onclick="toggleApi('pixabay')">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border);">
+        <span>🎬 Pixabay (Vídeos stock)</span>
+        <span style="color:#10b981;">🟢</span>
+      </div>
+    </div>
+    <div id="api-info-pixabay" style="display:none; padding:12px; background:rgba(0,0,0,0.3); border-radius:8px; margin-bottom:12px; font-size:0.85em; color:var(--muted);">
+      <p>1. Ve a <a href="https://pixabay.com/api/docs/" target="_blank" style="color:var(--accent);">pixabay.com/api/docs/</a></p>
+      <p>2. Copia tu clave.</p>
+      <input id="input-pixabay" placeholder="Clave..." style="margin-top:8px; width:100%; padding:8px; border-radius:6px; border:1px solid var(--border); background:rgba(0,0,0,0.5); color:#fff;" />
+      <button class="dash-btn" style="padding:8px; font-size:0.8em; margin-top:8px; width:auto;" onclick="guardarApi('pixabay')">Guardar</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🚨 Superpoder de Dios: Auditoría</h2>
+    <p class="desc">Dios auditará la web, los logs y el código. Pedirá tu consentimiento antes de reparar.</p>
+    <button class="dash-btn" style="background:#ff3b30;" onclick="auditarDios()">🩺 Auditar el Ecosistema</button>
+    <div id="audit-log" style="margin-top:16px; font-family:var(--font-mono); font-size:0.8em; color:var(--muted);"></div>
+  </div>
+</div>
+
+
+  <div id="view-canales" class="view">
+
+      <div class="section" style="margin-bottom:20px;">
+        <h2>➕ Crear Nuevo Nicho</h2>
+        <p class="desc">Añade un nicho. El SKILL.md se regenera automáticamente.</p>
+        <input id="nicho-nombre" placeholder="Nombre del nicho (ej. Historia)" style="width:100%; margin-bottom:8px; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:10px; color:#fff;" />
+        <select id="nicho-formato" style="width:100%; margin-bottom:8px; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:10px; color:#fff;">
+          <option value="video_voz_imagen">Video + Voz + Imagen</option>
+          <option value="video_texto_voz">Video texto + Voz</option>
+          <option value="musica_loop">Música loop 1h</option>
+        </select>
+        <input id="nicho-tono" placeholder="Tono (ej. cercano, misterioso)" style="width:100%; margin-bottom:8px; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:10px; color:#fff;" />
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
+          <select id="preset-musica" style="padding:10px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:8px; color:#fff; font-size:0.85em;">
+            <option value="lofi">Música: lofi</option>
+            <option value="cinematic">Música: cinematic</option>
+            <option value="ambient">Música: ambient</option>
+            <option value="piano">Música: piano</option>
+            <option value="hiphop">Música: hiphop</option>
+          </select>
+          <select id="preset-voz" style="padding:10px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:8px; color:#fff; font-size:0.85em;">
+            <option value="noticias">Voz: noticias</option>
+            <option value="audiobook">Voz: audiobook</option>
+            <option value="narracion_relajada">Voz: narración</option>
+            <option value="urgente">Voz: urgente</option>
+          </select>
+          <select id="preset-imagen" style="padding:10px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:8px; color:#fff; font-size:0.85em;">
+            <option value="cinematic">Imagen: cinematic</option>
+            <option value="realistic">Imagen: realistic</option>
+            <option value="anime">Imagen: anime</option>
+            <option value="product">Imagen: product</option>
+          </select>
+          <select id="preset-video" style="padding:10px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:8px; color:#fff; font-size:0.85em;">
+            <option value="cinematic_480p">Vídeo: cinematic_480p</option>
+            <option value="cinematic_720p">Vídeo: cinematic_720p</option>
+            <option value="draft_rapido">Vídeo: draft_rapido</option>
+            <option value="vertical_480p">Vídeo: vertical_480p</option>
+          </select>
+        </div>
+        <h3 style="font-size:0.95em; margin:16px 0 10px 0; color:var(--muted);">Plataformas de publicación</h3>
+        <div style="display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
+          <label style="display:flex; align-items:center; gap:6px; font-size:0.9em;"><input type="checkbox" id="plat-youtube" checked> YouTube</label>
+          <label style="display:flex; align-items:center; gap:6px; font-size:0.9em;"><input type="checkbox" id="plat-blogger" checked> Blogger</label>
+          <label style="display:flex; align-items:center; gap:6px; font-size:0.9em;"><input type="checkbox" id="plat-tiktok"> TikTok</label>
+          <label style="display:flex; align-items:center; gap:6px; font-size:0.9em;"><input type="checkbox" id="plat-instagram"> Instagram</label>
+        </div>
+        <h3 style="font-size:0.95em; margin:16px 0 10px 0; color:var(--muted);">Cuentas asociadas</h3>
+        <input id="cuenta-youtube" placeholder="Cuenta YouTube (default: global)" value="global" style="width:100%; margin-bottom:8px; padding:10px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:10px; color:#fff; font-size:0.9em;" />
+        <input id="cuenta-blogger" placeholder="Cuenta Blogger (default: global)" value="global" style="width:100%; margin-bottom:12px; padding:10px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:10px; color:#fff; font-size:0.9em;" />
+        <button class="dash-btn" onclick="crearNicho()">📺 Crear Canal Completo</button>
+        <div id="nicho-log" style="margin-top:12px; font-size:0.85em; color:var(--muted); white-space:pre-wrap;"></div>
+      </div>
+<div class="section"><h2>📺 Canales</h2><div id="canales-nichos" class="media-grid"><p style="color:var(--muted);">Cargando...</p></div><div id="canales-creados" class="media-grid"><p style="color:var(--muted);">Cargando...</p></div></div></div>
+  <div id="view-produccion" class="view"><div class="section"><h2>📋 Producción</h2><div id="cola-tareas"><p style="color:var(--muted);">Cargando...</p></div></div></div>
+  <div id="view-doctor" class="view"><div class="section"><h2>🩺 Doctor</h2><button class="dash-btn" onclick="llamarDoctor()">🩺 Diagnosticar</button><div id="doctor-log" style="margin-top:16px; font-family:var(--font-mono); font-size:0.85em; color:var(--muted);"></div></div></div>
+  <div id="view-rss" class="view"><div class="section"><h2>📰 RSS</h2><select id="rss-fuente" style="width:100%; margin-bottom:12px; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:12px; color:#fff;"><option value="techcrunch">TechCrunch</option><option value="hackernews">Hacker News</option><option value="verge">The Verge</option><option value="boe">BOE</option></select><button class="dash-btn" onclick="leerRSS()">📰 Leer</button><div id="rss-log" style="margin-top:16px; color:var(--muted); font-size:0.9em; white-space:pre-wrap;"></div></div></div>
+  <div id="view-especialista" class="view"><div class="section"><h2>🧠 Especialistas</h2><div id="lista-especialistas" class="media-grid"><p style="color:var(--muted);">Cargando...</p></div></div></div>
+  <div id="view-prompts" class="view"><div class="section"><h2>💡 Prompt Studio</h2><select id="prompt-tipo" style="width:100%; margin-bottom:12px; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:12px; color:#fff;"><option value="visual">Visual</option><option value="musica">Música</option><option value="seo">SEO</option><option value="estrategia">Estrategia</option></select><input id="prompt-idea" placeholder="Idea base" /><button class="dash-btn" onclick="mejorarPrompt()">💡 Generar</button><div id="prompt-log" style="margin-top:16px; font-family:var(--font-mono); font-size:0.85em; color:var(--muted); white-space:pre-wrap;"></div></div></div>
+  <div id="view-analytics" class="view"><div class="section"><h2>📊 Analytics</h2><div id="analytics-content"><p style="color:var(--muted);">Cargando...</p></div></div></div>
+  <div id="view-docs" class="view"><div class="section"><h2>📚 Documentación</h2><div id="docs-content"><p style="color:var(--muted);">Cargando...</p></div></div></div>
+
+  <div id="view-papelera" class="view">
+    <div class="section">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; gap:8px;">
+        <h2>🗑️ Papelera</h2>
+        <div style="display:flex; gap:8px;">
+          <button class="dash-btn" style="width:auto; padding:8px 16px;" onclick="cargarPapelera()">🔄</button>
+          <button class="dash-btn" style="width:auto; padding:8px 16px; background:#ef4444;" onclick="vaciarPapelera()">🗑️ Vaciar</button>
+        </div>
+      </div>
+      <p class="desc">Los archivos se borran automáticamente a los 7 días.</p>
+      <div id="lista-papelera" class="media-grid"><p style="color:var(--muted);">Cargando...</p></div>
+    </div>
+  </div>
+
+</main>
+
+<div id="lightbox" onclick="cerrarLightbox(event)"><div id="lightbox-content"></div></div>
+
+<script>
+function toggleMenu(){ document.getElementById('sidebar').classList.toggle('open'); document.querySelector('.overlay').classList.toggle('open'); }
+function nav(id, el){ 
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); 
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); 
+  document.getElementById('view-'+id).classList.add('active'); 
+  if(el)el.classList.add('active'); 
+  if(window.innerWidth<768) toggleMenu(); 
+  if(id==='media')cargarVault(); 
+  if(id==='inicio')cargarDashboard(); 
+  if(id==='chat')setTimeout(()=>document.getElementById('chat-input')?.focus(), 100); 
+}
+
+async function cargarDashboard(){ 
+    try{ 
+        const r=await fetch('/api/dashboard'); const d=await r.json(); 
+        document.getElementById('dash-status').innerHTML=`
+            <div style="background:rgba(255,255,255,0.05); padding:16px; border-radius:16px; border:1px solid var(--border);">Flask: ${d.salud.flask==='ok'?'🟢':'🔴'}</div>
+            <div style="background:rgba(255,255,255,0.05); padding:16px; border-radius:16px; border:1px solid var(--border);">OmniRoute: ${d.salud.omniroute==='ok'?'🟢':'🔴'}</div>
+            <div style="background:rgba(255,255,255,0.05); padding:16px; border-radius:16px; border:1px solid var(--border);">Worker: ${d.salud.worker==='ok'?'🟢':'🔴'}</div>
+            <div style="background:rgba(255,255,255,0.05); padding:16px; border-radius:16px; border:1px solid var(--border);">Repo: ${d.salud.repo}</div>
+        `;
+    }catch(e){ console.error(e); } 
+}
+
+async function enviarChat(isJarvis = false) {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if(!text) return;
+    input.value = '';
+    const msgs = document.getElementById('chat-messages');
+    msgs.innerHTML += `<div class="msg user">${text}</div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+    
+    const loadingId = 'load-' + Date.now();
+    msgs.innerHTML += `<div id="${loadingId}" class="msg bot" style="color:var(--muted);">Pensando...</div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+
+    try {
+        const res = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({mensaje: text})});
+        const data = await res.json();
+        
+        // Fast-Path (respuesta directa)
+        if(data.status === 'reply') {
+            const el = document.getElementById(loadingId);
+            if(el) el.innerText = data.reply;
+            if(isJarvis && typeof hablarTexto === 'function') hablarTexto(data.reply);
+            return;
+        }
+        
+        // LLM (streaming SSE)
+        if(data.status === 'processing') {
+            const evt = new EventSource('/api/chat_stream/' + data.task_id);
+            let respuestaCompleta = "";
+            let audioQueue = [];
+            let isPlayingAudio = false;
+            
+            evt.onmessage = function(e) {
+                if(e.data.includes('[+]') || e.data.includes('[dios]')) return;
+                
+                let linea = e.data;
+                try { linea = JSON.parse(e.data); } catch(err) {}
+                respuestaCompleta += linea + "\n";
+                
+                const el = document.getElementById(loadingId);
+                if(el) {
+                    el.innerHTML = respuestaCompleta.replace(/\n/g, '<br>');
+                    msgs.scrollTop = msgs.scrollHeight;
+                }
+            };
+            
+            // Al finalizar
+            const finalizar = async function() {
+                evt.close();
+                const el = document.getElementById(loadingId);
+                if(!el) return;
+                
+                // Añadir reproductor
+                const audioId = 'audio-' + Date.now();
+                el.innerHTML += `
+                    <div id="${audioId}" style="display:flex; gap:8px; margin-top:12px; align-items:center;">
+                        <button onclick="controlarAudio('${audioId}', 'play')" style="background:var(--accent); border:none; color:#fff; border-radius:50%; width:36px; height:36px; cursor:pointer;">▶</button>
+                        <button onclick="controlarAudio('${audioId}', 'pause')" style="background:var(--surface); border:1px solid var(--border); color:#fff; border-radius:50%; width:36px; height:36px; cursor:pointer;">⏸</button>
+                        <button onclick="controlarAudio('${audioId}', 'stop')" style="background:var(--surface); border:1px solid var(--border); color:#fff; border-radius:50%; width:36px; height:36px; cursor:pointer;">⏹</button>
+                        <span id="${audioId}-status" style="font-size:0.75em; color:var(--muted);">Generando voz...</span>
+                    </div>
+                `;
+                
+                // Generar audio
+                try {
+                    const r = await fetch('/api/dios_hablar', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({texto: respuestaCompleta.substring(0, 500)})});
+                    const d = await r.json();
+                    if(d.status === 'ok' && d.url) {
+                        const status = document.getElementById(audioId + '-status');
+                        status.innerText = 'Voz lista';
+                        window['audio_' + audioId] = new Audio(d.url);
+                        
+                        if(isJarvis) {
+                            window['audio_' + audioId].play();
+                            status.innerText = '🔊 Reproduciendo...';
+                            window['audio_' + audioId].onended = () => {
+                                status.innerText = 'Voz lista';
+                                if(jarvisActivo && recognition) try { recognition.start(); } catch(e){}
+                            };
+                        }
+                    } else {
+                        document.getElementById(audioId + '-status').innerText = '❌ Error al generar voz';
+                    }
+                } catch(e) {
+                    document.getElementById(audioId + '-status').innerText = '❌ Error de red';
+                }
+            };
+            
+            evt.onerror = function() { evt.close(); finalizar(); };
+            const originalOnMessage = evt.onmessage;
+            evt.onmessage = function(e) {
+                originalOnMessage(e);
+                if(e.data.includes('[+] Proceso finalizado')) finalizar();
+            };
+        }
+    } catch(e) { 
+        const el = document.getElementById(loadingId);
+        if(el) el.innerText = '❌ Error de conexión'; 
+    }
+}
+
+function controlarAudio(audioId, accion) {
+    const audio = window['audio_' + audioId];
+    const status = document.getElementById(audioId + '-status');
+    if(!audio) return;
+    if(accion === 'play') { audio.play(); if(status) status.innerText = '🔊 Reproduciendo...'; }
+    else if(accion === 'pause') { audio.pause(); if(status) status.innerText = '⏸ Pausado'; }
+    else if(accion === 'stop') { audio.pause(); audio.currentTime = 0; if(status) status.innerText = '⏹ Detenido'; }
+}
+
+let _vaultItems = [];
+
+async function cargarVault(){
+    const g = document.getElementById('lista-vault');
+    if(!g) return;
+    g.innerHTML = '<p style="color:var(--muted);">Cargando...</p>';
+    try{
+        const r = await fetch('/api/media_vault');
+        _vaultItems = await r.json();
+        filtrarVault();
+    }catch(e){
+        g.innerHTML = '<p style="color:var(--muted);">Error de conexion</p>';
+    }
+}
+
+function filtrarVault(){
+    const g = document.getElementById('lista-vault');
+    if(!g) return;
+    const sel = document.getElementById('vault-filtro');
+    const filtro = sel ? sel.value : 'todos';
+    const items = filtro === 'todos' ? _vaultItems : _vaultItems.filter(i => (i.categoria || i.tipo) === filtro);
+    if(items.length === 0){
+        g.innerHTML = '<p style="color:var(--muted);">No hay archivos de este tipo.</p>';
+        return;
+    }
+    const iconos = {musica:'🎵', tts:'🎙️', video:'🎬', imagen:'🖼️', audio:'🔊'};
+    g.innerHTML = items.map(i =>
+        '<div class="media-card" onclick="abrirLightbox(\'' + i.url + '\',\'' + i.tipo + '\')">' +
+        '<div style="font-size:2em; margin-bottom:8px;">' + (iconos[i.categoria] || '📄') + '</div>' +
+        '<h3>' + i.nombre + '</h3>' +
+        '<p>' + i.fecha + ' · ' + (i.tamano/1024/1024).toFixed(1) + 'MB</p>' +
+        '</div>'
+    ).join('');
+}
+
+
+function abrirLightbox(url,tipo){ 
+    const lb=document.getElementById('lightbox'); const c=document.getElementById('lightbox-content'); 
+    if(tipo==='video')c.innerHTML=`<video src="${url}" controls autoplay></video>`; 
+    else if(tipo==='audio')c.innerHTML=`<audio src="${url}" controls autoplay></audio>`; 
+    else c.innerHTML=`<img src="${url}">`; 
+    lb.style.display='flex'; 
+}
+
+function cerrarLightbox(e){ if(e.target.id==='lightbox'){ document.getElementById('lightbox').style.display='none'; document.getElementById('lightbox-content').innerHTML=''; } }
+
+async function generarMusicaWeb() {
+    const prompt = document.getElementById('music-prompt').value.trim();
+    if(!prompt) return alert('Escribe un prompt');
+    const log = document.getElementById('music-log');
+    log.innerText = '⏳ Lanzando petición a Kaggle (esto tarda ~30 min)...';
+    try {
+        const r = await fetch('/api/generar_musica_acestep', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({prompt: prompt, duracion: 30})});
+        const d = await r.json();
+        log.innerText = d.reply || d.mensaje || 'Petición enviada.';
+    } catch(e) { log.innerText = '❌ Error: ' + e.message; }
+}
+
+async function generarImagenWeb() {
+    const prompt = document.getElementById('img-prompt').value.trim();
+    if(!prompt) return alert('Escribe un prompt');
+    const log = document.getElementById('img-log');
+    log.innerText = '⏳ Generando imagen...';
+    try {
+        const r = await fetch('/api/generar_imagen', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({prompt: prompt})});
+        const d = await r.json();
+        log.innerText = d.status === 'ok' ? '✅ ' + d.mensaje : '❌ ' + (d.mensaje || 'Error');
+    } catch(e) { log.innerText = '❌ Error: ' + e.message; }
+}
+
+async function generarVozWeb() {
+    const texto = document.getElementById('voz-texto').value.trim();
+    if(!texto) return alert('Escribe un texto');
+    const log = document.getElementById('voz-log');
+    log.innerText = '⏳ Generando voz...';
+    try {
+        const r = await fetch('/api/voice_studio', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({texto: texto, voz: 'davefx'})});
+        const d = await r.json();
+        log.innerText = d.status === 'ok' ? '✅ ' + d.mensaje : '❌ ' + (d.mensaje || 'Error');
+    } catch(e) { log.innerText = '❌ Error: ' + e.message; }
+}
+
+
+// ═══ MODO JARVIS (Voz + Oído) ═══
+let jarvisActivo = false;
+let recognition = null;
+let isSpeaking = false;
+
+function initJarvis() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        alert("Tu navegador no soporta reconocimiento de voz. Usa Chrome.");
+        return null;
+    }
+    const rec = new SpeechRecognition();
+    rec.lang = 'es-ES';
+    rec.continuous = false; // Se para al dejar de hablar
+    rec.interimResults = false;
+
+    rec.onstart = () => {
+        document.getElementById('btn-jarvis').style.background = '#ff3b30'; // Rojo cuando escucha
+        document.getElementById('btn-jarvis').style.boxShadow = '0 0 15px #ff3b30';
+        const msgs = document.getElementById('chat-messages');
+        msgs.innerHTML += `<div class="msg user" style="opacity:0.5; font-style:italic;">Escuchando...</div>`;
+        msgs.scrollTop = msgs.scrollHeight;
+    };
+
+    rec.onresult = (event) => {
+        const text = event.results[0][0].transcript;
+        document.getElementById('chat-input').value = text;
+        enviarChat(true); // true = Modo Jarvis (responde con voz)
+    };
+
+    rec.onerror = (event) => {
+        detenerJarvis();
+    };
+
+    rec.onend = () => {
+        if (!isSpeaking && jarvisActivo) {
+            // Si no está hablando el bot y jarvis sigue activo, vuelve a escuchar
+            setTimeout(() => { try { rec.start(); } catch(e){} }, 500);
+        } else {
+            document.getElementById('btn-jarvis').style.background = 'rgba(255,255,255,0.1)';
+            document.getElementById('btn-jarvis').style.boxShadow = 'none';
+        }
+    };
+
+    return rec;
+}
+
+function toggleJarvis() {
+    if (!recognition) recognition = initJarvis();
+    if (!recognition) return;
+
+    jarvisActivo = !jarvisActivo;
+    if (jarvisActivo) {
+        try { recognition.start(); } catch(e){}
+    } else {
+        try { recognition.stop(); } catch(e){}
+        document.getElementById('btn-jarvis').style.background = 'rgba(255,255,255,0.1)';
+    }
+}
+
+function detenerJarvis() {
+    jarvisActivo = false;
+    if (recognition) try { recognition.stop(); } catch(e){}
+    document.getElementById('btn-jarvis').style.background = 'rgba(255,255,255,0.1)';
+    document.getElementById('btn-jarvis').style.boxShadow = 'none';
+}
+
+async function hablarTexto(texto) {
+    if (!texto) return;
+    isSpeaking = true;
+    try {
+        const res = await fetch('/api/dios_hablar', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ texto: texto.substring(0, 500) })
+        });
+        const data = await res.json();
+        
+        if (data.status === 'ok' && data.url) {
+            const audio = new Audio(data.url);
+            audio.onended = () => {
+                isSpeaking = false;
+                if (jarvisActivo && recognition) try { recognition.start(); } catch(e){}
+            };
+            audio.play();
+        } else {
+            // Fallback: voz del navegador
+            const utterance = new SpeechSynthesisUtterance(texto);
+            utterance.lang = 'es-ES';
+            utterance.onend = () => {
+                isSpeaking = false;
+                if (jarvisActivo && recognition) try { recognition.start(); } catch(e){}
+            };
+            window.speechSynthesis.speak(utterance);
+        }
+    } catch(e) {
+        isSpeaking = false;
+        // Al terminar de hablar, si Jarvis está activo, volver a escuchar
+        if (jarvisActivo && recognition) {
+            setTimeout(() => {
+                try { recognition.start(); } catch(err){}
+            }, 500);
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    cargarDashboard();
+    // Handler de URL params (para notificaciones con botón "Abrir")
+    setTimeout(handleUrlParams, 1500);
+    // Precargar TODOS los listados al arrancar la web
+    setTimeout(() => {
+        cargarStudioFiles('musica');
+        cargarStudioFiles('imagen');
+        cargarStudioFiles('tts');
+        cargarStudioFiles('video');
+        cargarVault();
+        cargarPapelera();
+        cargarCanales();
+        cargarCola();
+        cargarEspecialistas();
+        cargarAnalytics();
+        cargarDocs();
+    }, 500);
+});
+
+
+
+function cambiarTema(tema) {
+    const root = document.documentElement;
+    if (tema === 'cyber') {
+        root.style.setProperty('--bg', '#0a001a');
+        root.style.setProperty('--accent', '#ff00ff');
+        root.style.setProperty('--surface', 'rgba(30, 0, 40, 0.7)');
+    } else if (tema === 'matrix') {
+        root.style.setProperty('--bg', '#000a00');
+        root.style.setProperty('--accent', '#00ff41');
+        root.style.setProperty('--surface', 'rgba(0, 20, 0, 0.7)');
+    } else if (tema === 'light') {
+        root.style.setProperty('--bg', '#f5f5f7');
+        root.style.setProperty('--accent', '#007aff');
+        root.style.setProperty('--surface', 'rgba(255, 255, 255, 0.7)');
+        root.style.setProperty('--text', '#1d1d1f');
+    } else {
+        root.style.setProperty('--bg', '#000000');
+        root.style.setProperty('--accent', '#007aff');
+        root.style.setProperty('--surface', 'rgba(20, 20, 25, 0.6)');
+        root.style.setProperty('--text', '#ffffff');
+    }
+    localStorage.setItem('tema', tema);
+}
+
+function cambiarLetra(val) {
+    const el = document.getElementById('val-letra');
+    if (el) el.innerText = val + 'em';
+    document.body.style.fontSize = val + 'em';
+    localStorage.setItem('letra', val);
+}
+
+function cambiarRadio(val) {
+    const el = document.getElementById('val-radio');
+    if (el) el.innerText = val + 'px';
+    document.documentElement.style.setProperty('--radius', val + 'px');
+    localStorage.setItem('radio', val);
+}
+
+function guardarAjustes() {
+    const voz = document.getElementById('set-voz');
+    if (voz) localStorage.setItem('voz', voz.value);
+    alert('✅ Ajustes guardados.');
+}
+
+function cargarAjustes() {
+    const tema = localStorage.getItem('tema');
+    if (tema) { const el = document.getElementById('set-tema'); if (el) el.value = tema; cambiarTema(tema); }
+    const letra = localStorage.getItem('letra');
+    if (letra) { const el = document.getElementById('set-letra'); if (el) el.value = letra; cambiarLetra(letra); }
+    const radio = localStorage.getItem('radio');
+    if (radio) { const el = document.getElementById('set-radio'); if (el) el.value = radio; cambiarRadio(radio); }
+    const voz = localStorage.getItem('voz');
+    if (voz) { const el = document.getElementById('set-voz'); if (el) el.value = voz; }
+}
+
+
+// ═══ STUDIOS: CARGA DE LISTAS ═══
+async function cargarStudioFiles(tipo) {
+    const cont = document.getElementById('lista-' + tipo);
+    if(!cont) return;
+    try {
+        const r = await fetch('/api/studio_files?tipo=' + tipo);
+        const items = await r.json();
+        if(items.length === 0) {
+            cont.innerHTML = '<p style="color:var(--muted);">No hay archivos generados aún.</p>';
+            return;
+        }
+        cont.innerHTML = items.map(i => {
+            const dur = i.duracion ? ' · ' + i.duracion + 's' : '';
+            const isImg = i.nombre.match(/\.(png|jpg|jpeg)$/i);
+            const thumb = isImg ? `<img src="${i.url}" style="width:100%; height:100px; object-fit:cover; border-radius:8px; margin-bottom:8px;" />` : '<div style="font-size:2em; margin-bottom:8px;">' + (tipo === 'musica' ? '🎵' : tipo === 'tts' ? '🎙️' : '🖼️') + '</div>';
+            return `<div class="media-card"><div style="position:relative;"><input type="checkbox" class="file-check" data-url="${i.url}" style="position:absolute; top:8px; right:8px; width:20px; height:20px; z-index:2;" onclick="event.stopPropagation();"><div onclick="abrirLightbox('${i.url}','${isImg ? 'image' : 'audio'}')" style="cursor:pointer;">${thumb}<h3>${i.nombre}</h3><p>${i.fecha}${dur} · ${(i.tamano/1024/1024).toFixed(1)}MB</p></div></div></div>`;
+        }).join('');
+    } catch(e) { cont.innerHTML = '<p style="color:var(--muted);">Error al cargar.</p>'; }
+}
+
+// Recargar lista después de generar
+async function _postGeneracion(tipo, logEl, mensaje) {
+    if(logEl) logEl.innerText = mensaje;
+    cargarStudioFiles(tipo);
+    cargarVault(); // También actualizar el media center
+}
+
+// ═══ ACTUALIZAR LAS FUNCIONES DE GENERACIÓN ═══
+async function generarMusicaWeb() {
+    const prompt = document.getElementById('music-prompt').value.trim();
+    const dur = parseInt(document.getElementById('music-dur').value);
+    const log = document.getElementById('music-log');
+    if(!prompt) return alert('Escribe un prompt');
+    log.innerText = '⏳ Lanzando petición a Kaggle (~30 min)...';
+    try {
+        const r = await fetch('/api/generar_musica_acestep', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({prompt: prompt, duracion: dur})});
+        const d = await r.json();
+        _postGeneracion('musica', log, d.reply || d.mensaje || '✅ Petición enviada.');
+    } catch(e) { log.innerText = '❌ Error: ' + e.message; }
+}
+
+async function generarImagenWeb() {
+    const prompt = document.getElementById('img-prompt').value.trim();
+    const log = document.getElementById('img-log');
+    if(!prompt) return alert('Escribe un prompt');
+    log.innerText = '⏳ Generando imagen...';
+    try {
+        const r = await fetch('/api/generar_imagen', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({prompt: prompt})});
+        const d = await r.json();
+        _postGeneracion('imagen', log, d.status === 'ok' ? '✅ ' + d.mensaje : '❌ ' + (d.mensaje || 'Error'));
+    } catch(e) { log.innerText = '❌ Error: ' + e.message; }
+}
+
+async function generarVozWeb() {
+    const texto = document.getElementById('voz-texto').value.trim();
+    const voz = document.getElementById('voz-opcion').value;
+    const log = document.getElementById('voz-log');
+    if(!texto) return alert('Escribe un texto');
+    log.innerText = '⏳ Generando voz...';
+    try {
+        const r = await fetch('/api/voice_studio', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({texto: texto, voz: voz})});
+        const d = await r.json();
+        _postGeneracion('tts', log, d.status === 'ok' ? '✅ ' + d.mensaje : '❌ ' + (d.mensaje || 'Error'));
+    } catch(e) { log.innerText = '❌ Error: ' + e.message; }
+}
+
+// Cargar las listas cuando se entra a cada vista
+
+
+// ═══ FUNCIONES DE PESTAÑAS ═══
+async function cargarCanales() {
+    try {
+        const r = await fetch('/api/canales_web');
+        const d = await r.json();
+        const nichos = document.getElementById('canales-nichos');
+        if(nichos) nichos.innerHTML = (d.nichos_base || []).map(n => `<div class="media-card"><h3>${n}</h3><p>Nicho base</p></div>`).join('');
+        const creados = document.getElementById('canales-creados');
+        if(creados) creados.innerHTML = (d.canales_creados || []).length === 0 ? '<p style="color:var(--muted);">Sin canales creados aún.</p>' : (d.canales_creados || []).map(c => `<div class="media-card"><h3>${c.nombre || c.id}</h3><p>Nicho: ${c.nicho_base}</p></div>`).join('');
+    } catch(e) {}
+}
+
+async function cargarCola() {
+    try {
+        const r = await fetch('/api/cola_tareas');
+        const tareas = await r.json();
+        const cont = document.getElementById('cola-tareas');
+        if(!cont) return;
+        if(tareas.length === 0) { cont.innerHTML = '<p style="color:var(--muted);">Sin tareas en cola.</p>'; return; }
+        cont.innerHTML = tareas.map(t => `<div class="media-card" style="margin-bottom:8px;"><h3>${t.session_id}: ${t.prompt}</h3><p>${t.estado} · ${t.creada.substring(0,16)}</p></div>`).join('');
+    } catch(e) {}
+}
+
+async function llamarDoctor() {
+    const log = document.getElementById('doctor-log');
+    if(!log) return;
+    log.innerText = '⏳ Diagnosticando...';
+    try {
+        const r = await fetch('/api/doctor', {method:'POST'});
+        const d = await r.json();
+        log.innerText = d.reporte || d.mensaje || 'OK';
+    } catch(e) { log.innerText = '❌ ' + e.message; }
+}
+
+async function leerRSS() {
+    const fuente = document.getElementById('rss-fuente').value;
+    const log = document.getElementById('rss-log');
+    if(!log) return;
+    log.innerText = '⏳ Leyendo ' + fuente + '...';
+    try {
+        const r = await fetch('/api/rss_leer', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({fuente})});
+        const d = await r.json();
+        log.innerText = d.noticias || d.mensaje || 'Sin noticias';
+    } catch(e) { log.innerText = '❌ ' + e.message; }
+}
+
+async function cargarEspecialistas() {
+    try {
+        const r = await fetch('/api/especialistas');
+        const roles = await r.json();
+        const cont = document.getElementById('lista-especialistas');
+        if(!cont) return;
+        cont.innerHTML = roles.map(role => `<div class="media-card"><h3>🧠 ${role.rol}</h3><p>${role.desc}</p></div>`).join('');
+    } catch(e) {}
+}
+
+// Hook del nav
+
+
+async function cargarAnalytics() {
+    try {
+        const r = await fetch('/api/dashboard');
+        const d = await r.json();
+        const cont = document.getElementById('analytics-content');
+        if(!cont) return;
+        const s = d.salud || {};
+        cont.innerHTML = `
+            <div class="media-grid">
+                <div class="media-card"><h3>Flask</h3><p>${s.flask === 'ok' ? '🟢 OK' : '🔴 DOWN'}</p></div>
+                <div class="media-card"><h3>OmniRoute</h3><p>${s.omniroute === 'ok' ? '🟢 OK' : '🔴 DOWN'}</p></div>
+                <div class="media-card"><h3>Worker</h3><p>${s.worker === 'ok' ? '🟢 OK' : '🔴 DOWN'}</p></div>
+                <div class="media-card"><h3>Repo</h3><p>${s.repo || '?'}</p></div>
+                <div class="media-card"><h3>Tareas recientes</h3><p>${(d.tareas || []).length}</p></div>
+                <div class="media-card"><h3>Uptime</h3><p>24h</p></div>
+            </div>
+        `;
+    } catch(e) {}
+}
+
+async function cargarDocs() {
+    try {
+        const r = await fetch('/api/docs');
+        const docs = ['ESTADO.md', 'MANUAL_FRODO_PYTHON.md', 'docs/INDICE.md', 'docs/MANUALES/KAGGLE.md', 'docs/MANUALES/WAN.md'];
+        const cont = document.getElementById('docs-content');
+        if(!cont) return;
+        cont.innerHTML = docs.map(d => `<div class="media-card" onclick="alert('Abre: ' + '${d}')"><h3>📄 ${d.split('/').pop()}</h3><p>${d}</p></div>`).join('');
+    } catch(e) {}
+}
+
+async function mejorarPrompt() {
+    const tipo = document.getElementById('prompt-tipo').value;
+    const idea = document.getElementById('prompt-idea').value.trim();
+    const log = document.getElementById('prompt-log');
+    if(!idea) return alert('Escribe una idea');
+    log.innerText = '⏳ Generando prompt...';
+    try {
+        const r = await fetch('/api/prompt', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({tipo, idea})});
+        const d = await r.json();
+        log.innerText = d.prompt || d.mensaje || 'Sin respuesta';
+    } catch(e) { log.innerText = '❌ ' + e.message; }
+}
+
+
+
+function toggleGroup(header) {
+    const group = header.parentElement;
+    group.classList.toggle('open');
+    // Persistir en localStorage
+    const groups = JSON.parse(localStorage.getItem('nav_groups') || '{}');
+    const idx = Array.from(document.querySelectorAll('.nav-group')).indexOf(group);
+    groups[idx] = group.classList.contains('open');
+    localStorage.setItem('nav_groups', JSON.stringify(groups));
+}
+
+// Restaurar estado al cargar
+document.addEventListener('DOMContentLoaded', () => {
+    const groups = JSON.parse(localStorage.getItem('nav_groups') || '{}');
+    document.querySelectorAll('.nav-group').forEach((g, i) => {
+        if(groups[i]) g.classList.add('open');
+    });
+});
+
+
+// ═══ HOOK NAV CONSOLIDADO ═══
+const _navBase = _nav_orig;
+_nav_orig = function(v, el) {
+    _navBase(v, el);
+    if(v === 'musica') setTimeout(() => cargarStudioFiles('musica'), 300);
+    if(v === 'imagen') setTimeout(() => cargarStudioFiles('imagen'), 300);
+    if(v === 'voz') setTimeout(() => cargarStudioFiles('tts'), 300);
+    if(v === 'video') setTimeout(() => cargarStudioFiles('video'), 300);
+    if(v === 'media') setTimeout(cargarVault, 300);
+    if(v === 'papelera') setTimeout(cargarPapelera, 300);
+    if(v === 'canales') setTimeout(cargarCanales, 300);
+    if(v === 'produccion') setTimeout(cargarCola, 300);
+    if(v === 'especialista') setTimeout(cargarEspecialistas, 300);
+    if(v === 'analytics') setTimeout(cargarAnalytics, 300);
+    if(v === 'docs') setTimeout(cargarDocs, 300);
+};
+
+
+// ═══ HANDLER DE URL PARAMS (para notificaciones con botón "Abrir") ═══
+async function handleUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+    const view = params.get('view');
+    const file = params.get('file');
+    const filter = params.get('filter');
+    
+    if(!view) return;
+    
+    const navItem = document.querySelector('.nav-item[onclick*="' + view + '"]');
+    if(navItem) navItem.click();
+    
+    await new Promise(r => setTimeout(r, 800));
+    
+    if(filter) {
+        const sel = document.getElementById('vault-filtro');
+        if(sel) { sel.value = filter; filtrarVault(); }
+    }
+    
+    if(file) {
+        const candidato = (typeof _vaultItems !== 'undefined' ? _vaultItems : []).find(i => i.nombre === file);
+        if(candidato) {
+            abrirLightbox(candidato.url, candidato.tipo);
+        } else {
+            abrirLightbox('/media/media_vault/' + file, 'audio');
+        }
+    }
+}
+
+
+// ═══ MODAL DE PARÁMETROS (Fase 2) ═══
+let _mpMotorActual = null;
+let _mpContrato = null;
+let _mpCallback = null;
+let _mpPresetActual = null;
+
+async function abrirModalParams(motor, callback) {
+  _mpMotorActual = motor;
+  _mpCallback = callback || null;
+  _mpPresetActual = null;
+  const modal = document.getElementById('modal-params');
+  const content = document.getElementById('mp-content');
+  const title = document.getElementById('mp-title');
+  
+  const nombres = {musica: '🎵 Música', voz: '🎙️ Voz', imagen: '🎨 Imagen', video: '🎬 Vídeo'};
+  title.innerText = '⚙️ Parámetros · ' + (nombres[motor] || motor);
+  content.innerHTML = '<p style="color:var(--muted);">Cargando contrato...</p>';
+  modal.classList.add('open');
+  
+  try {
+    const r = await fetch('/api/params/' + motor);
+    if (!r.ok) throw new Error('Contrato no disponible');
+    _mpContrato = await r.json();
+    renderizarParams(motor);
+  } catch(e) {
+    content.innerHTML = '<p style="color:#ef4444;">Error: ' + e.message + '</p>';
+  }
+}
+
+function cerrarModalParams() {
+  document.getElementById('modal-params').classList.remove('open');
+  _mpMotorActual = null;
+  _mpContrato = null;
+  _mpCallback = null;
+}
+
+function renderizarParams(motor) {
+  const content = document.getElementById('mp-content');
+  const c = _mpContrato;
+  let html = '';
+  
+  // Presets si existen
+  if (c.presets) {
+    html += '<div class="mp-field"><label class="mp-label">Preset</label>';
+    html += '<select class="mp-input" id="mp-preset-select" onchange="aplicarPresetModal(this.value)">';
+    html += '<option value="">-- sin preset --</option>';
+    for (const [k, v] of Object.entries(c.presets)) {
+      html += '<option value="' + k + '">' + k + '</option>';
+    }
+    html += '</select></div>';
+  }
+  
+  // Bloques
+  const ordenBloques = motor === 'imagen' ? ['_'] : ['A','B','C','E'];
+  for (const letra of ordenBloques) {
+    const bloque = letra === '_' ? null : (c.bloques || {})[letra];
+    if (letra !== '_' && (!bloque || !bloque.params || Object.keys(bloque.params).length === 0)) continue;
+    
+    if (letra === '_') {
+      // Imagen: sin bloques, todos los params del validador
+      html += renderBloque('Parámetros', 'img_', c.validador?.reglas || [], false);
+    } else {
+      const abierto = letra === 'A' ? ' open' : '';
+      html += '<details class="mp-block"' + abierto + '>';
+      html += '<summary>' + letra + ' · ' + (bloque.nombre || letra) + ' (' + Object.keys(bloque.params).length + ' params)</summary>';
+      html += '<div class="mp-block-body">';
+      for (const [pname, pmeta] of Object.entries(bloque.params)) {
+        html += renderCampo(pname, pmeta);
+      }
+      html += '</div></details>';
+    }
+  }
+  
+  content.innerHTML = html;
+}
+
+function renderCampo(nombre, meta) {
+  const rol = meta.rol || 'fijo';
+  const tipo = meta.type || 'string';
+  const def = meta.default !== undefined ? meta.default : '';
+  const disabled = rol === 'fijo' || rol === 'ajustar_por_modelo' ? ' disabled' : '';
+  const lock = disabled ? '<span class="mp-lock">🔒</span>' : '';
+  const id = 'mp-field-' + nombre;
+  
+  let input = '';
+  if (meta.rango && Array.isArray(meta.rango) && meta.rango.length === 2) {
+    const [min, max] = meta.rango;
+    const val = (min + max) / 2;
+    input = '<input type="range" class="mp-input" id="' + id + '" min="' + min + '" max="' + max + '" value="' + val + '"' + disabled + ' oninput="document.getElementById(\'' + id + '-val\').innerText=this.value"><span class="mp-val" id="' + id + '-val">' + val + '</span>';
+  } else if (meta.valores) {
+    input = '<select class="mp-input" id="' + id + '"' + disabled + '>';
+    for (const v of meta.valores) input += '<option value="' + v + '">' + v + '</option>';
+    input += '</select>';
+  } else if (tipo === 'bool') {
+    input = '<select class="mp-input" id="' + id + '"' + disabled + '><option value="true">Sí</option><option value="false">No</option></select>';
+  } else {
+    input = '<input type="text" class="mp-input" id="' + id + '" value="' + def + '"' + disabled + '>';
+  }
+  
+  let html = '<div class="mp-field">';
+  html += '<div class="mp-label"><span>' + nombre + ' ' + lock + '</span>' + (meta.rango ? '' : '') + '</div>';
+  html += input;
+  if (meta.nota) html += '<div class="mp-hint">' + meta.nota + '</div>';
+  html += '</div>';
+  return html;
+}
+
+function aplicarPresetModal(preset) {
+  _mpPresetActual = preset;
+  if (!preset || !_mpContrato || !_mpContrato.presets) return;
+  const p = _mpContrato.presets[preset];
+  const params = p.params || {};
+  // Rellenar los campos que existan
+  for (const [k, v] of Object.entries(params)) {
+    const el = document.getElementById('mp-field-' + k);
+    if (el) {
+      el.value = v;
+      const valSpan = document.getElementById('mp-field-' + k + '-val');
+      if (valSpan) valSpan.innerText = v;
+    }
+  }
+}
+
+function restaurarPresetActual() {
+  if (_mpPresetActual) aplicarPresetModal(_mpPresetActual);
+  else renderizarParams(_mpMotorActual);
+}
+
+function recogerParams() {
+  const result = {};
+  const fields = document.querySelectorAll('#mp-content [id^="mp-field-"]');
+  fields.forEach(el => {
+    const nombre = el.id.replace('mp-field-', '').replace('-val', '');
+    if (el.disabled) return;
+    let val = el.value;
+    if (el.type === 'range') val = parseFloat(val);
+    else if (el.tagName === 'SELECT' && val === 'true') val = true;
+    else if (el.tagName === 'SELECT' && val === 'false') val = false;
+    else if (!isNaN(val) && val !== '') val = parseFloat(val);
+    result[nombre] = val;
+  });
+  return result;
+}
+
+async function guardarPresetCustom() {
+  const nombre = prompt('Nombre del preset:');
+  if (!nombre) return;
+  const params = recogerParams();
+  try {
+    const r = await fetch('/api/user_presets/' + _mpMotorActual, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({nombre, params})
+    });
+    const d = await r.json();
+    if (d.status === 'ok') alert('✅ ' + d.mensaje);
+    else alert('❌ ' + (d.error || 'Error'));
+  } catch(e) { alert('❌ ' + e.message); }
+}
+
+async function generarConParams() {
+  const params = recogerParams();
+  if (_mpCallback) {
+    _mpCallback(params);
+    cerrarModalParams();
+  } else {
+    alert('ℹ️ Params listos: ' + JSON.stringify(params).substring(0, 200));
+  }
+}
+
+
+
+// ═══ CALLBACK: Generar música con params del modal ═══
+async function generarMusicaConParams(params) {
+  const prompt = document.getElementById('music-prompt')?.value.trim();
+  const dur = parseInt(document.getElementById('music-dur')?.value || 60);
+  const log = document.getElementById('music-log');
+  if(!prompt) { alert('Escribe un prompt primero'); return; }
+  
+  // Combinar params del modal con prompt/duration
+  const payload = Object.assign({
+    prompt: prompt,
+    duracion: dur
+  }, params);
+  
+  if(log) log.innerText = '⏳ Enviando con params custom... ' + JSON.stringify(params).substring(0, 100);
+  
+  try {
+    const r = await fetch('/api/generar_musica_acestep', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const d = await r.json();
+    if(log) log.innerText = (d.reply || d.mensaje || '✅ Petición enviada.');
+    if(typeof cargarStudioFiles === 'function') cargarStudioFiles('musica');
+  } catch(e) {
+    if(log) log.innerText = '❌ Error: ' + e.message;
+  }
+}
+
+
+
+// ═══ CALLBACK: Voz con params del modal ═══
+async function generarVozConParams(params) {
+  const texto = document.getElementById('voz-texto')?.value.trim();
+  const voz = document.getElementById('voz-opcion')?.value || 'es_ES-davefx-medium';
+  const log = document.getElementById('voz-log');
+  if(!texto) { alert('Escribe un texto primero'); return; }
+  const payload = Object.assign({texto: texto, voz: voz}, params);
+  if(log) log.innerText = '⏳ Generando voz con params custom...';
+  try {
+    const r = await fetch('/api/voice_studio', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+    const d = await r.json();
+    if(log) log.innerText = d.status === 'ok' ? '✅ ' + (d.mensaje || 'OK') : '❌ ' + (d.mensaje || 'Error');
+    if(typeof cargarStudioFiles === 'function') cargarStudioFiles('tts');
+  } catch(e) { if(log) log.innerText = '❌ ' + e.message; }
+}
+
+// ═══ CALLBACK: Imagen con params del modal ═══
+async function generarImagenConParams(params) {
+  const prompt = document.getElementById('img-prompt')?.value.trim();
+  const log = document.getElementById('img-log');
+  if(!prompt) { alert('Escribe un prompt primero'); return; }
+  const payload = Object.assign({prompt: prompt}, params);
+  if(log) log.innerText = '⏳ Generando imagen con params custom...';
+  try {
+    const r = await fetch('/api/generar_imagen', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+    const d = await r.json();
+    if(log) log.innerText = d.status === 'ok' ? '✅ ' + d.mensaje : '❌ ' + (d.mensaje || 'Error');
+    if(typeof cargarStudioFiles === 'function') cargarStudioFiles('imagen');
+  } catch(e) { if(log) log.innerText = '❌ ' + e.message; }
+}
+
+// ═══ CALLBACK: Vídeo con params del modal ═══
+
+
+
+
+// ═══ VIDEO STUDIO ═══
+async function generarVideoWeb() {
+    const prompt = document.getElementById('video-prompt')?.value.trim();
+    const log = document.getElementById('video-log');
+    if(!prompt) { alert('Escribe un prompt'); return; }
+    if(log) log.innerText = '⏳ Generando con preset cinematic_480p (~25 min)...';
+    try {
+        const r = await fetch('/api/generar_video', {method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({prompt: prompt, preset: 'cinematic_480p'})});
+        const d = await r.json();
+        if(log) log.innerText = (d.status === 'ok' ? '✅ ' : '❌ ') + (d.mensaje || 'Error');
+    } catch(e) { if(log) log.innerText = '❌ ' + e.message; }
+}
+
+async function generarVideoConParams(params) {
+    const prompt = document.getElementById('video-prompt')?.value.trim();
+    const log = document.getElementById('video-log');
+    if(!prompt) { alert('Escribe un prompt'); return; }
+    const payload = Object.assign({prompt: prompt}, params);
+    if(log) log.innerText = '⏳ Generando con params custom (~25 min)...';
+    try {
+        const r = await fetch('/api/generar_video', {method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify(payload)});
+        const d = await r.json();
+        if(log) log.innerText = (d.status === 'ok' ? '✅ ' : '❌ ') + (d.mensaje || 'Error') + '\nPreset: ' + (d.preset || 'custom') + '\nRes: ' + (d.resolution || '?');
+    } catch(e) { if(log) log.innerText = '❌ ' + e.message; }
+}
+
+
+
+// ═══ CREAR NICHO ═══
+async function crearNicho() {
+    const nombre = document.getElementById('nicho-nombre')?.value.trim();
+    const formato = document.getElementById('nicho-formato')?.value;
+    const tono = document.getElementById('nicho-tono')?.value.trim();
+    const log = document.getElementById('nicho-log');
+    if(!nombre) { alert('Escribe un nombre'); return; }
+    
+    const plataformas = [];
+    if(document.getElementById('plat-youtube')?.checked) plataformas.push('youtube');
+    if(document.getElementById('plat-blogger')?.checked) plataformas.push('blogger');
+    if(document.getElementById('plat-tiktok')?.checked) plataformas.push('tiktok');
+    if(document.getElementById('plat-instagram')?.checked) plataformas.push('instagram');
+    
+    const payload = {
+        nombre: nombre,
+        formato: formato,
+        tono: tono || 'neutral',
+        presets: {
+            musica: document.getElementById('preset-musica')?.value,
+            voz: document.getElementById('preset-voz')?.value,
+            imagen: document.getElementById('preset-imagen')?.value,
+            video: document.getElementById('preset-video')?.value,
+        },
+        pipeline: [],
+        plataformas: plataformas,
+        cuentas: {
+            youtube: document.getElementById('cuenta-youtube')?.value || 'global',
+            blogger: document.getElementById('cuenta-blogger')?.value || 'global'
+        }
+    };
+    if(log) log.innerText = '⏳ Creando canal completo...';
+    try {
+        const r = await fetch('/api/crear_nicho', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+        const d = await r.json();
+        if(log) {
+            if(d.status === 'ok') {
+                log.innerText = `✅ ${d.mensaje}\n📁 ${d.canal_dir}\n🎯 Plataformas: ${d.plataformas.join(', ')}\n🔄 SKILL.md: ${d.skill_regenerado ? 'regenerado' : 'error'}`;
+            } else {
+                log.innerText = '❌ ' + (d.mensaje || 'Error');
+            }
+        }
+        if(d.status === 'ok' && typeof cargarCanales === 'function') cargarCanales();
+    } catch(e) { if(log) log.innerText = '❌ ' + e.message; }
+}
+
+</script>
+
+<div id="barra-flotante" class="barra-flotante">
+  <span id="contador-sel" style="font-size:0.9em; color:var(--muted);"></span>
+  <button class="dash-btn" style="width:auto; padding:8px 16px; background:#ef4444;" onclick="borrarSeleccionados()">🗑️ Borrar</button>
+  <button class="dash-btn" style="width:auto; padding:8px 16px; background:rgba(255,255,255,0.1);" onclick="deseleccionarTodos()">✕</button>
+</div>
+
+
+<!-- ═══ MODAL DE PARÁMETROS (Fase 2) ═══ -->
+<div id="modal-params" class="mp-overlay">
+  <div class="mp-container">
+    <div class="mp-header">
+      <h2 id="mp-title">⚙️ Parámetros</h2>
+      <button class="mp-close" onclick="cerrarModalParams()">✕</button>
+    </div>
+    <div id="mp-content" class="mp-content">
+      <p style="color:var(--muted);">Cargando...</p>
+    </div>
+    <div class="mp-footer">
+      <button class="mp-btn" onclick="restaurarPresetActual()">♻️ Restaurar</button>
+      <button class="mp-btn" onclick="guardarPresetCustom()">💾 Guardar</button>
+      <button class="mp-btn mp-btn-primary" onclick="generarConParams()">▶️ Generar</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

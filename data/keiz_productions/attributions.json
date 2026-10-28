@@ -1,0 +1,88 @@
+{
+  "tracks": [
+    {
+      "track_id": 19367,
+      "titulo": "Parametaphoriquement",
+      "artista": "gmz",
+      "url_descarga": "https://ccmixter.org/content/gmz/gmz_-_Parametaphoriquement.mp3",
+      "file_page_url": "https://ccmixter.org/files/gmz/19367",
+      "licencia": "Attribution (3.0)",
+      "licencia_url": "http://creativecommons.org/licenses/by/3.0/",
+      "fuente": "ccmixter",
+      "atribucion_requerida": true,
+      "usado_en": "2026-10-16T15:42:14.564414+00:00"
+    },
+    {
+      "track_id": 69593,
+      "titulo": "More Than Numbers - Desert Ghost EP Remix",
+      "artista": "Coruscate",
+      "url_descarga": "https://ccmixter.org/content/Coruscate/Coruscate_-_More_Than_Numbers_-_Desert_Ghost_EP_Remix_1.mp3",
+      "file_page_url": "https://ccmixter.org/files/Coruscate/69593",
+      "licencia": "Attribution (3.0)",
+      "licencia_url": "http://creativecommons.org/licenses/by/3.0/",
+      "fuente": "ccmixter",
+      "atribucion_requerida": true,
+      "usado_en": "2026-10-16T15:53:55.015190+00:00"
+    },
+    {
+      "track_id": 68825,
+      "titulo": "ZenBoy1955 Remix - The Devil You Tell Them I Am (Apparitions Mix)",
+      "artista": "Coruscate",
+      "url_descarga": "https://ccmixter.org/content/Coruscate/Coruscate_-_ZenBoy1955_Remix_-_The_Devil_You_Tell_Them_I_Am_(Apparitions_Mix).mp3",
+      "file_page_url": "https://ccmixter.org/files/Coruscate/68825",
+      "licencia": "Attribution (3.0)",
+      "licencia_url": "http://creativecommons.org/licenses/by/3.0/",
+      "fuente": "ccmixter",
+      "atribucion_requerida": true,
+      "usado_en": "2026-10-16T15:53:55.023389+00:00"
+    },
+    {
+      "track_id": 17461,
+      "titulo": "Once",
+      "artista": "khidir",
+      "url_descarga": "https://ccmixter.org/content/khidir/khidir_-_Once.mp3",
+      "file_page_url": "https://ccmixter.org/files/khidir/17461",
+      "licencia": "Attribution (3.0)",
+      "licencia_url": "http://creativecommons.org/licenses/by/3.0/",
+      "fuente": "ccmixter",
+      "atribucion_requerida": true,
+      "usado_en": "2026-10-16T20:03:23.041169+00:00"
+    },
+    {
+      "track_id": 15203,
+      "titulo": "Up Down Left Right",
+      "artista": "johnnyhumanoid",
+      "url_descarga": "https://ccmixter.org/content/johnnyhumanoid/johnnyhumanoid_-_Up_Down_Left_Right.mp3",
+      "file_page_url": "https://ccmixter.org/files/johnnyhumanoid/15203",
+      "licencia": "Attribution (3.0)",
+      "licencia_url": "http://creativecommons.org/licenses/by/3.0/",
+      "fuente": "ccmixter",
+      "atribucion_requerida": true,
+      "usado_en": "2026-10-16T20:03:23.823274+00:00"
+    },
+    {
+      "track_id": 33304,
+      "titulo": "The Broken",
+      "artista": "admiralbob77",
+      "url_descarga": "https://ccmixter.org/content/admiralbob77/admiralbob77_-_The_Broken.mp3",
+      "file_page_url": "https://ccmixter.org/files/admiralbob77/33304",
+      "licencia": "Attribution (3.0)",
+      "licencia_url": "http://creativecommons.org/licenses/by/3.0/",
+      "fuente": "ccmixter",
+      "atribucion_requerida": true,
+      "usado_en": "2026-10-16T22:51:49.196123+00:00"
+    },
+    {
+      "track_id": 6343,
+      "titulo": "Ophelia's Song (Vocals)",
+      "artista": "musetta",
+      "url_descarga": "https://ccmixter.org/content/musetta/musetta_-_Ophelia_s_Song_(Vocals).mp3",
+      "file_page_url": "https://ccmixter.org/files/musetta/6343",
+      "licencia": "Attribution",
+      "licencia_url": "http://creativecommons.org/licenses/by/2.5/",
+      "fuente": "ccmixter",
+      "atribucion_requerida": true,
+      "usado_en": "2026-10-16T22:51:49.201490+00:00"
+    }
+  ]
+}

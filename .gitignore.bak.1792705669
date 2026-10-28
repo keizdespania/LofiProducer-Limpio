@@ -1,0 +1,111 @@
+.env
+__pycache__/
+*.pyc
+data/*.json
+output/*
+!output/.gitkeep
+.venv/
+secrets/
+*.json.bak
+
+# === LofiProducer Backup Rules ===
+# Audio pesado (NO subir a GitHub)
+assets/*/audio/*.mp3
+assets/*/audio/*.wav
+assets/*/audio/*.mov
+assets/*/audio/_lista*.txt
+
+# Vídeos y portadas temporales
+output/**/*.mp4
+output/**/*.jpg
+output/**/*.png
+output/**/*.mp3
+output/**/*.ass
+output/**/*.txt
+
+# Backups locales
+_backup_*
+*.tar.gz
+
+# Temporales
+.env.tmp
+*.log
+nohup.out
+
+# Colab MCP clonado fuera
+colab-mcp-termux/
+
+# Fugas detectadas
+.env.*
+.env.backup
+assets/intro/*.mp4
+assets/outro/*.mp4
+assets/intro/*.ass
+assets/outro/*.ass
+data/*/cli-token-salt.json
+data/*/_models.json
+data/cli-token-salt.json
+test_*.jpg
+test_*.mp4
+test_*.png
+
+
+
+# === Ampliación 2026-10-18 (bloqueo runtime + sensibles) ===
+# Bases de datos y estado runtime
+data/*.sqlite
+data/*.sqlite-shm
+data/*.sqlite-wal
+data/*.jsonl
+data/**/.pid
+data/log_archives/
+data/cache/
+data/server/
+data/supervisor/
+data/backup_db/
+
+# Sesiones locales
+.omniharness/
+
+# Temporales de agentes
+*.colab_bak
+*.local_tmp
+*.bak.*
+*.bak2.*
+*.bak3.*
+*.bak.auto.*
+
+# JSON sensibles (por si algún día aparecen fuera de data/)
+**/cli-token-salt.json
+**/token.json
+**/client_secret.json
+**/.git-credentials
+
+# Configs con secretos embebidos
+secrets/*
+!secrets/.gitkeep
+
+# Vídeos y binarios pesados
+*.mp4
+*.mov
+*.wav
+*.mp3
+!assets/intro/*.mp4
+!assets/outro/*.mp4
+
+# Binarios y logs runtime 2026-10-18
+assets/intro/
+assets/outro/
+data/call_logs/
+data/agent/backups/
+data/*.sqlite*
+data/.auto_docs.lock
+
+# Temporales de sesión / backups de DB (no trackear)
+data/*.sqlite.bak.*
+data/*.sqlite-shm.*
+data/*.sqlite-wal.*
+
+# Memoria del Dios (no trackear — se regenera sola)
+data/agent/memoria.db
+kaggle_src/

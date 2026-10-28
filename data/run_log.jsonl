@@ -1,0 +1,5 @@
+{"ts": "2026-10-17T14:03:18.097157+00:00", "paso": "Video horizontal", "estado": "error: FileNotFoundError", "segundos": 3.15}
+{"ts": "2026-10-17T14:04:21.758911+00:00", "paso": "Imagen base", "estado": "error: FileNotFoundError", "segundos": 0.33}
+{"ts": "2026-10-17T14:17:46.955653+00:00", "paso": "Imagen base", "estado": "error: FileNotFoundError", "segundos": 0.43}
+{"ts": "2026-10-17T14:18:50.400467+00:00", "paso": "Tendencias YouTube", "estado": "ok", "segundos": 2.07, "ruta": "/data/data/com.termux/files/home/LofiProducer/data/tendencias_20261017_141850.json", "total": 22}
+{"ts": "2026-10-17T14:18:51.095636+00:00", "paso": "SEO con IA", "estado": "error: RuntimeError", "segundos": 0.69}

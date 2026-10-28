@@ -1,0 +1,66 @@
+{
+  "_bases": {
+    "base_video_narrado": {
+      "formato": "video_voz_imagen",
+      "duracion": 90,
+      "voz": "davefx",
+      "musica": "ambient, chill",
+      "escenas_por_minuto": 4,
+      "subir": false
+    },
+    "base_lofi": {
+      "formato": "musica_loop",
+      "duracion": 3600,
+      "voz": null,
+      "musica": "lofi hip hop, jazz, chill",
+      "subir": false
+    }
+  },
+  "ia_news": {
+    "extends": "base_video_narrado",
+    "nombre": "IA News",
+    "fuente_noticias": [
+      "techcrunch",
+      "hackernews",
+      "verge"
+    ],
+    "tono": "intriga, thriller tecnológico, misterio",
+    "imagen_estilo": "cinematic, dark, futuristic, neon lights"
+  },
+  "finanzas_barrio": {
+    "extends": "base_video_narrado",
+    "nombre": "Finanzas de Barrio",
+    "fuente_noticias": [
+      "boe"
+    ],
+    "tono": "cercano, analogías del día a día, sin tecnicismos",
+    "imagen_estilo": "realistic, urban, warm lighting",
+    "musica": "lofi, relaxed"
+  },
+  "boe": {
+    "extends": "base_video_narrado",
+    "nombre": "El BOE",
+    "fuente_noticias": [
+      "boe"
+    ],
+    "tono": "claro, legal, pausado",
+    "imagen_estilo": "official, clean, documents",
+    "musica": "neutral, minimal"
+  },
+  "lofi": {
+    "extends": "base_lofi",
+    "nombre": "Lofi",
+    "fuente_noticias": [],
+    "tono": "relax, estudio, concentración",
+    "imagen_estilo": "anime, cozy room, rain, warm light"
+  },
+  "_config_video_wan": {
+    "model_type": "ti2v_2_2",
+    "resolution": "1280x704",
+    "video_length": 81,
+    "num_inference_steps": 6,
+    "guidance_scale": 1.0,
+    "flow_shift": 3.0,
+    "reglas_prompt": "Sujeto → Movimiento → Cámara → Iluminación. Una acción por escena."
+  }
+}

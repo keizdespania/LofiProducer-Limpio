@@ -1,0 +1,41 @@
+{
+  "fuentes": {
+    "youtube_audio_library": {
+      "url": "https://studio.youtube.com/channel/UC.../music",
+      "licencia": "Gratis, monetizable, sin atribución [citation:1]",
+      "como": "Descargar manualmente desde YouTube Studio → Biblioteca de audio",
+      "generos": [
+        "cinematic",
+        "ambient",
+        "electronic",
+        "dramatic"
+      ]
+    },
+    "pixabay_music": {
+      "url": "https://pixabay.com/music/",
+      "licencia": "Gratis, comercial, sin atribución (pero cuidado con Content ID) [citation:2]",
+      "como": "Descargar MP3 de pixabay.com/music",
+      "generos": [
+        "cinematic",
+        "ambient",
+        "corporate"
+      ]
+    },
+    "mixkit": {
+      "url": "https://mixkit.co/free-stock-music/",
+      "licencia": "Gratis, sin atribución, sin registro [citation:2]",
+      "como": "Descargar MP3 de mixkit.co",
+      "generos": [
+        "cinematic",
+        "ambient",
+        "dramatic"
+      ]
+    }
+  },
+  "estrategia": "Descargar 5-10 tracks de cada fuente, guardar en output/musica_libre/, y el motor de vídeo los selecciona aleatoriamente.",
+  "carpetas": {
+    "cinematic": "output/musica_libre/cinematic/",
+    "ambient": "output/musica_libre/ambient/",
+    "dramatic": "output/musica_libre/dramatic/"
+  }
+}

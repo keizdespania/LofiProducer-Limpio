@@ -1,0 +1,113 @@
+{
+  "script": "/data/data/com.termux/files/home/LofiProducer/scripts/generar_imagen.py",
+  "payloads_detectados": {
+    "headers": [
+      "Authorization"
+    ],
+    "payload": [
+      "prompt"
+    ]
+  },
+  "funciones": {
+    "_leer_env": [
+      {
+        "name": "nombre",
+        "default": "REQUIRED"
+      }
+    ],
+    "generar": [
+      {
+        "name": "prompt",
+        "default": "REQUIRED"
+      },
+      {
+        "name": "ancho",
+        "default": "1024"
+      },
+      {
+        "name": "alto",
+        "default": "1024"
+      }
+    ]
+  },
+  "urls_y_modelos": [
+    "Generador de imagenes usando Cloudflare Workers AI (SDXL gratuito).",
+    "https://api.cloudflare.com/client/v4/accounts/",
+    "Generando imagen con Cloudflare SDXL...",
+    "@cf/stabilityai/stable-diffusion-xl-base-1.0"
+  ],
+  "env_keys_cloudflare": [
+    "CLOUDFLARE_API_TOKEN",
+    "CLOUDFLARE_ACCOUNT_ID"
+  ],
+  "api_oficial_sdxl": {
+    "endpoint": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0",
+    "modelo": "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+    "params_aceptados": {
+      "prompt": {
+        "type": "string",
+        "obligatorio": true,
+        "max_chars": 2048
+      },
+      "negative_prompt": {
+        "type": "string",
+        "default": "",
+        "nota": "lo que NO quieres ver"
+      },
+      "num_steps": {
+        "type": "int",
+        "default": 20,
+        "rango": [
+          1,
+          50
+        ],
+        "nota": "mas pasos = mas calidad pero mas lento"
+      },
+      "guidance": {
+        "type": "float",
+        "default": 7.5,
+        "rango": [
+          1,
+          20
+        ],
+        "nota": "que tanto sigue el prompt"
+      },
+      "width": {
+        "type": "int",
+        "default": 1024,
+        "rango": [
+          256,
+          2048
+        ],
+        "nota": "debe ser multiplo de 8"
+      },
+      "height": {
+        "type": "int",
+        "default": 1024,
+        "rango": [
+          256,
+          2048
+        ],
+        "nota": "debe ser multiplo de 8"
+      },
+      "seed": {
+        "type": "int",
+        "default": -1,
+        "nota": "-1 aleatorio; fijo para reproducibilidad"
+      }
+    },
+    "respuesta": "image/png binario (no JSON). Guardar con .png"
+  },
+  "reglas_anti_alucinacion": [
+    "width y height DEBEN ser multiplos de 8; si no, la API falla",
+    "prompt max 2048 chars; para lofi: 'cozy room, warm light, lofi aesthetic, 4k'",
+    "negative_prompt SIEMPRE incluir: 'blurry, low quality, distorted, text, watermark'",
+    "num_steps 20 es el default; 30+ mejora poco y tarda mas",
+    "guidance 7.5 default; >12 suele quemar la imagen (over-saturated)",
+    "La API devuelve PNG binario, NO JSON. Usar response.content, no .json()",
+    "Para miniaturas YouTube: 1280x720. Para Shorts: 720x1280",
+    "Para portadas lofi: 1024x1024 o 1280x720",
+    "seed fijo = reproducible; seed -1 = aleatorio (cada llamada cuesta lo mismo)",
+    "NO inventar nombres de modelo: solo '@cf/stabilityai/stable-diffusion-xl-base-1.0'"
+  ]
+}

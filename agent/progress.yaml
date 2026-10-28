@@ -1,0 +1,102 @@
+estado: post-26-oct-2026
+version_boot: v6.1
+ultima_sesion: 2026-10-26
+
+completado:
+  # Base (antes de 26-oct)
+  - detective_multifuente
+  - predictor_viralidad
+  - informe_editorial_html
+  - short_engine_blur
+  - cola_youtube_lun_vie
+  - blog_quality_gate
+  - web_22_vistas
+  - widget_despertar
+  - dios_43_tools
+  # M1 - Reparar (26-oct)
+  - m1_dios_espanol (combo/gratis-razonamiento)
+  - m1_deepseek_free_eliminado
+  - m1_worker_health_check
+  # M2 - Conectar (26-oct)
+  - m2_crear_blog_top_robusto (retry HTTP502)
+  - m2_procesar_cola_youtube_ok
+  - m2_generar_informe_ok
+  # M3 - SEO (26-oct)
+  - m3_seo_youtube
+  - m3_seo_podcast
+  - m3_seo_blog_og
+  - m3_meta_tags_og
+  - m3_sitemap_xml
+  # M4/M5 - Multi-canal (26-oct)
+  - m4_provisionar_canal_script
+  - m4_endpoint_crear_canal
+  - m5_hacer_dia_script
+  - m5_endpoint_hacer_dia
+
+roto:
+  - boton_hacer_dia_web (backend existe, falta boton HTML)
+  - worker_procesos_duplicados (verificado con pgrep, arreglado)
+  - telegram_bot (no implementado)
+  - mkdocs_blog_propio (no implementado)
+
+pendiente:
+  m6_el_encuadre:
+    s1:
+      - anadir_nicho_analisis_medios (config/nichos.json)
+      - especialista_analista_medios (brain/especialistas.py)
+      - especialista_abogado_medios (brain/especialistas.py)
+      - script_graficos_sesgo (matplotlib)
+      - descargar_kaggle_datasets (MediaSpin, HowBiased)
+    s2:
+      - configurar_blogger (elencuadre.blogspot.com)
+      - configurar_mkdocs_web (GitHub Pages)
+      - generar_5_posts_calidad (QG >=8)
+      - publicar_5_shorts (cola YouTube)
+      - telegram_bot_publicacion
+    s3:
+      - solicitar_adsense
+      - afiliados_amazon (Kahneman, Cialdini)
+      - printify_posters (3 disenos)
+      - amazon_kdp_guia
+    s4:
+      - medir_trafico_adsense
+      - expansion_multiidioma (EN, PT, FR, DE)
+
+proximo_paso: m6_el_encuadre_s1
+
+modelo_llm:
+  primario: combo/gratis-razonamiento (Groq GPT-OSS-120B)
+  fallback: openrouter/free
+  deepseek_free: eliminado por OpenRouter (2026-10-26)
+  poe_api: investigado (gratis 3000 puntos/dia, pendiente integracion)
+
+canales_activos:
+  - ia_news (Blogger + YouTube, OAuth OK)
+  - finanzas_barrio (pendiente OAuth)
+  - boe (pendiente OAuth)
+  - lofi (pendiente OAuth)
+
+el_encuadre:
+  estado: disenado (pendiente s1)
+  nombre_es: El Encuadre
+  nombre_en: The Framing Effect
+  dominio_es: elencuadre.com (~15 EUR/ano)
+  dominio_en: framingeffect.com
+  nicho: analisis_medios
+  regla_oro: educativo NO critico NO partidista
+  agente_legal: abogado_medios
+  especialista_contenido: analista_medios
+  diferenciador: Indice Manipulacion Diario (0-100) + comparativa cruzada 3 medios
+  pipeline: RSS 3 medios -> matriz carga emocional -> grafico matplotlib -> articulo + short
+  monetizacion:
+    fase_0: [blogger, github_pages, adsense, afiliados_amazon, telegram]
+    fase_1: [printify, amazon_kdp]
+    fase_2: [admob_25eur, dominio_propio_15eur]
+  datos_kaggle:
+    - MediaSpin (13 categorias sesgo, ediciones titulares)
+    - How Biased Is Your Thinking (6344 personas, 10 sesgos)
+    - news-deframe (libreria Python comparativa framing)
+  competencia:
+    industrial_automatizada: NO existe
+    referentes_manuales: [NewsCord, IndiTag, MediaSpin, Helium MCP]
+  multiidioma: [es, en, pt, fr, de]

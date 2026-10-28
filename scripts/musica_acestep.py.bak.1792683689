@@ -1,0 +1,87 @@
+"""Genera musica con ACE-Step v11 en Kaggle. Auto-upload a GitHub + descarga local."""
+import sys, time, pathlib, shutil, os, json
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+from kaggle_bearer import push_kernel, estado_kernel
+
+TEMPLATE = ROOT / "scripts" / "kaggle_acestep_v11.py"
+OUTPUT_DIR = ROOT / "output" / "musica"
+USUARIO_CTA1 = "keizproductions"
+USUARIO_CTA2 = "lofiproducer"
+GITHUB_REPO = "keizdespania/LofiProducer-backup"
+
+def _leer_env(key):
+    for line in (ROOT / ".env").read_text().splitlines():
+        if line.startswith(key + "="):
+            return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return None
+
+def _poll(slug_temp):
+    candidatos = [f"{USUARIO_CTA1}/{slug_temp}", f"{USUARIO_CTA2}/{slug_temp}"]
+    for i in range(1, 61):
+        time.sleep(30)
+        for slug in candidatos:
+            try:
+                est = estado_kernel(slug)
+                if not isinstance(est, dict): continue
+                status = est.get("status")
+                if not status: continue
+                print(f"[{i}/60] {slug} → {status}", flush=True)
+                if status in ("complete", "error", "failed", "cancelAcknowledged"):
+                    return slug, status
+                break
+            except Exception:
+                continue
+    return None, "timeout"
+
+def _descargar_github(gToken):
+    import requests
+    headers = {"Authorization": f"token {gToken}", "Accept": "application/vnd.github.v3+json"}
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/output/musica"
+    r = requests.get(url, headers=headers, timeout=30)
+    if r.status_code != 200:
+        return f"ERROR GitHub list: {r.status_code} {r.text[:200]}"
+    files = r.json()
+    if not isinstance(files, list) or not files:
+        return "ERROR: output/musica vacio en GitHub"
+    files = sorted(files, key=lambda x: x["name"], reverse=True)
+    latest = files[0]
+    print(f"[Musica] Descargando {latest['name']}...", flush=True)
+    r2 = requests.get(latest["download_url"], headers=headers, timeout=120)
+    if r2.status_code != 200:
+        return f"ERROR descarga raw: {r2.status_code}"
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    dest = OUTPUT_DIR / latest["name"]
+    dest.write_bytes(r2.content)
+    return f"OK: {dest} ({dest.stat().st_size} bytes)"
+
+def generar(caption, duration=30):
+    if not TEMPLATE.exists():
+        return f"ERROR: falta {TEMPLATE}"
+    gToken = _leer_env("GITHUB_TOKEN")
+    if not gToken:
+        return "ERROR: sin GITHUB_TOKEN en .env"
+    code = TEMPLATE.read_text()
+    code = code.replace('"__CAPTION__"', json.dumps(caption))
+    code = code.replace("__DURATION__", str(int(duration)))
+    code = code.replace('"__GITHUB_TOKEN__"', json.dumps(gToken))
+    slug_temp = f"acestep-{int(time.time())}"
+    print(f"[Musica] Push -> {USUARIO_CTA1}/{slug_temp}", flush=True)
+    r = push_kernel(f"{USUARIO_CTA1}/{slug_temp}", code)
+    if isinstance(r, dict) and r.get("hasError"):
+        return f"ERROR push: {r.get('error', r)}"
+    print("[Musica] Push OK. Esperando GPU Kaggle...", flush=True)
+    slug_real, status = _poll(slug_temp)
+    if status != "complete":
+        return f"ERROR: kernel acabo como {status} (slug: {slug_real})"
+    print(f"[Musica] Complete en {slug_real}. Descargando desde GitHub...", flush=True)
+    return _descargar_github(gToken)
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print('Uso: python scripts/musica_acestep.py "caption" [duracion_seg]')
+        sys.exit(1)
+    caption = sys.argv[1]
+    dur = int(sys.argv[2]) if len(sys.argv) > 2 else 30
+    print(generar(caption, dur))

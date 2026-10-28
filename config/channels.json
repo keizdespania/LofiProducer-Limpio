@@ -1,0 +1,500 @@
+{
+  "channels": [
+    {
+      "id": "keiz_productions",
+      "nombre": "KeiZ Productions",
+      "nicho": "lofi",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "lofi",
+        "chill",
+        "jazz",
+        "ambient"
+      ],
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": true
+    },
+    {
+      "id": "ambient_dreams",
+      "nombre": "Ambient Dreams",
+      "nicho": "ambient",
+      "duracion_default": "estandar",
+      "paleta_default": "claro",
+      "tags_audio": [
+        "ambient",
+        "drone",
+        "cinematic",
+        "atmospheric",
+        "meditation"
+      ],
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": true
+    },
+    {
+      "id": "fin_insights",
+      "nombre": "Finance Insights",
+      "nicho": "Finanzas personales y análisis de mercado",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "finance",
+        "personal finance",
+        "stock market"
+      ],
+      "prompt_base": "Create a concise, upbeat English voiceover summarizing today's market moves.",
+      "rpm_estimado": "$23-26",
+      "oportunidad": 9.0,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "ai_news_daily",
+      "nombre": "AI News Daily",
+      "nicho": "Noticias y avances en inteligencia artificial",
+      "duracion_default": "corto",
+      "paleta_default": "claro",
+      "tags_audio": [
+        "AI",
+        "machine learning",
+        "tech news"
+      ],
+      "prompt_base": "Generate an energetic English narration of the latest AI breakthroughs in under 2 minutes.",
+      "rpm_estimado": "$21-24",
+      "oportunidad": 8.8,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "tech_trends_hub",
+      "nombre": "Tech Trends Hub",
+      "nicho": "Reseñas y análisis de tecnología de consumo",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "technology",
+        "gadgets",
+        "reviews"
+      ],
+      "prompt_base": "Produce an informative English script reviewing the newest consumer tech gadgets.",
+      "rpm_estimado": "$21-23",
+      "oportunidad": 8.5,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "invest_master",
+      "nombre": "Investing Masterclass",
+      "nicho": "Estrategias de inversión y educación financiera",
+      "duracion_default": "estandar",
+      "paleta_default": "claro",
+      "tags_audio": [
+        "investing",
+        "stocks",
+        "crypto"
+      ],
+      "prompt_base": "Create a clear English voiceover explaining a weekly investment strategy.",
+      "rpm_estimado": "$21-25",
+      "oportunidad": 9.2,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "fintech_innov",
+      "nombre": "FinTech Innovations",
+      "nicho": "Innovaciones fintech que combinan IA y finanzas",
+      "duracion_default": "corto",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "fintech",
+        "AI finance",
+        "blockchain"
+      ],
+      "prompt_base": "Generate a dynamic English narration about emerging fintech solutions.",
+      "rpm_estimado": "$22-24",
+      "oportunidad": 8.7,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "phy_zenith",
+      "nombre": "Física en 5 Minutos",
+      "nicho": "Explicaciones rápidas de conceptos de física moderna",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "physics",
+        "science",
+        "education"
+      ],
+      "prompt_base": "Explain complex physics topics in a concise, engaging voiceover suitable for a 5‑minute video.",
+      "rpm_estimado": "$19-22",
+      "oportunidad": 8.7,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "econ_brief",
+      "nombre": "Economía al Instante",
+      "nicho": "Análisis de teorías y eventos económicos en formato corto",
+      "duracion_default": "estandar",
+      "paleta_default": "claro",
+      "tags_audio": [
+        "economics",
+        "finance",
+        "education"
+      ],
+      "prompt_base": "Deliver clear, concise explanations of economic concepts with a friendly tone for quick consumption.",
+      "rpm_estimado": "$18-20",
+      "oportunidad": 8.3,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "historia_viva",
+      "nombre": "Historia Viva",
+      "nicho": "Narraciones animadas de eventos históricos clave",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "history",
+        "education",
+        "storytelling"
+      ],
+      "prompt_base": "Create vivid, storytelling voiceovers that bring historical events to life in an engaging manner.",
+      "rpm_estimado": "$9-11",
+      "oportunidad": 7.9,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "phy_future",
+      "nombre": "Física del Futuro",
+      "nicho": "Exploración de tecnologías emergentes basadas en física avanzada",
+      "duracion_default": "estandar",
+      "paleta_default": "claro",
+      "tags_audio": [
+        "physics",
+        "technology",
+        "future"
+      ],
+      "prompt_base": "Explain cutting‑edge physics applications with excitement and clarity for a tech‑savvy audience.",
+      "rpm_estimado": "$19-23",
+      "oportunidad": 8.5,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "econ_insights",
+      "nombre": "Economía en Acción",
+      "nicho": "Casos de estudio de políticas económicas y su impacto real",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "economics",
+        "policy",
+        "analysis"
+      ],
+      "prompt_base": "Provide analytical yet accessible commentary on economic policies, using a professional and engaging tone.",
+      "rpm_estimado": "$18-21",
+      "oportunidad": 8.2,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "zenlife",
+      "nombre": "ZenLife Daily",
+      "nicho": "Meditación guiada y mindfulness para principiantes",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "meditación",
+        "mindfulness",
+        "relajación",
+        "bienestar"
+      ],
+      "prompt_base": "Create a calm 5‑minute guided meditation focusing on breath awareness.",
+      "rpm_estimado": "$16-$19",
+      "oportunidad": 8.7,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "mindboost",
+      "nombre": "MindBoost Productivity",
+      "nicho": "Técnicas de productividad con IA y hábitos saludables",
+      "duracion_default": "estandar",
+      "paleta_default": "claro",
+      "tags_audio": [
+        "productividad",
+        "hábitos",
+        "IA",
+        "gestión del tiempo"
+      ],
+      "prompt_base": "Explain a 3‑minute Pomodoro technique using AI‑generated tips.",
+      "rpm_estimado": "$15-$18",
+      "oportunidad": 8.4,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "fitmind",
+      "nombre": "FitMind Wellness",
+      "nicho": "Ejercicios cortos + salud mental para profesionales ocupados",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "ejercicio",
+        "salud mental",
+        "bienestar",
+        "micro‑rutinas"
+      ],
+      "prompt_base": "Deliver a 4‑minute high‑intensity stretch routine with calming narration.",
+      "rpm_estimado": "$16-$20",
+      "oportunidad": 8.6,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "productiva",
+      "nombre": "Productiva 360",
+      "nicho": "Rutinas matutinas y nocturnas para optimizar energía y foco",
+      "duracion_default": "estandar",
+      "paleta_default": "claro",
+      "tags_audio": [
+        "rutinas",
+        "energía",
+        "foco",
+        "bienestar"
+      ],
+      "prompt_base": "Outline a 6‑minute morning routine that boosts focus using AI‑curated tips.",
+      "rpm_estimado": "$15-$18",
+      "oportunidad": 8.3,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "wellnesshub",
+      "nombre": "Wellness Hub AI",
+      "nicho": "Consejos de nutrición, sueño y meditación respaldados por IA",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "nutrición",
+        "sueño",
+        "IA",
+        "bienestar"
+      ],
+      "prompt_base": "Provide a 5‑minute sleep hygiene guide with AI‑personalized recommendations.",
+      "rpm_estimado": "$16-$19",
+      "oportunidad": 8.5,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "fintech_ai",
+      "nombre": "FinTech IA Automatizada",
+      "nicho": "Finanzas y tecnología aplicadas con IA generativa",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "finanzas",
+        "tecnología",
+        "IA",
+        "automatización",
+        "inversión"
+      ],
+      "prompt_base": "Create a dynamic Spanish voiceover explaining the latest AI-driven financial tools and market trends.",
+      "rpm_estimado": "$22-$24",
+      "oportunidad": 9.2,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "historia_digital",
+      "nombre": "Historia Digital con IA",
+      "nicho": "Narraciones históricas enriquecidas por IA y visuales generados",
+      "duracion_default": "estandar",
+      "paleta_default": "claro",
+      "tags_audio": [
+        "historia",
+        "IA",
+        "educación",
+        "cultura",
+        "visuales"
+      ],
+      "prompt_base": "Produce a captivating Spanish narration of a pivotal historical event using AI‑enhanced storytelling.",
+      "rpm_estimado": "$9-$11",
+      "oportunidad": 7.5,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "noticias_ai",
+      "nombre": "Noticias IA en Español",
+      "nicho": "Resumen diario de noticias globales con análisis de IA",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "noticias",
+        "IA",
+        "actualidad",
+        "análisis",
+        "tecnología"
+      ],
+      "prompt_base": "Generate a concise Spanish news briefing that highlights AI‑driven insights on today's top stories.",
+      "rpm_estimado": "$20-$22",
+      "oportunidad": 8.8,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "inversion_auto",
+      "nombre": "Inversión Automatizada",
+      "nicho": "Estrategias de inversión automatizadas y bots financieros en español",
+      "duracion_default": "estandar",
+      "paleta_default": "oscuro",
+      "tags_audio": [
+        "inversión",
+        "automatización",
+        "IA",
+        "finanzas",
+        "trading"
+      ],
+      "prompt_base": "Deliver an engaging Spanish script on automated trading bots and their performance metrics.",
+      "rpm_estimado": "$20-$22",
+      "oportunidad": 8.6,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    },
+    {
+      "id": "economia_politica_ai",
+      "nombre": "Economía y Política con IA",
+      "nicho": "Análisis económico‑político apoyado por modelos de IA en español",
+      "duracion_default": "estandar",
+      "paleta_default": "claro",
+      "tags_audio": [
+        "economía",
+        "política",
+        "IA",
+        "análisis",
+        "mercado"
+      ],
+      "prompt_base": "Create a clear Spanish voiceover that explains the economic impact of recent political decisions using AI data visualizations.",
+      "rpm_estimado": "$18-$20",
+      "oportunidad": 7.9,
+      "redes": {
+        "youtube": true,
+        "instagram": false,
+        "tiktok": false,
+        "x": false
+      },
+      "enabled": false
+    }
+  ]
+}

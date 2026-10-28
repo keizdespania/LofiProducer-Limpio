@@ -1,0 +1,60 @@
+{
+  "proyecto": "SOMOS EL ENCUADRE - IMPERIO EDITORIAL TOP 1",
+  "version": "3.0",
+  "objetivo": "Generar 12 posts web + 5 posts Blogger + 4 redes sociales diarios con calidad humana y máximo SEO.",
+  "fases_produccion": {
+    "fase_1_investigacion": {
+      "agentes": ["detective_tendencias_v2", "forense_medios", "abogado_del_diablo", "director_inteligencia_v2"],
+      "output": "dossier_{fecha}.json"
+    },
+    "fase_2_orquestacion_arte": {
+      "agentes": ["director_arte", "curador_imagenes", "dj_musical"],
+      "mision": "Generar prompts de imagen exactos para cada post, elegir mejores imagenes de SDXL y asignar pistas musicales para el video.",
+      "output": "assets_ready"
+    },
+    "fase_3_generacion_web": {
+      "estructura": {
+        "post_maestro": "1 Post central (1500-2000 palabras) con las 3 noticias, IMD global, cita bomba.",
+        "posts_quirurgicos": ["3 Posts individuales (1 por noticia) con análisis forense de manipulación."],
+        "posts_satelite": ["Cita Bomba", "Cómo Detectarlo (Tutorial)", "Radar de Medios", "La Voz del Pueblo (TV/Radio)", "Dossier Completo (JSON humanizado)."]
+      },
+      "output": "web/docs/posts/"
+    },
+    "fase_4_generacion_blogger": {
+      "estructura": [
+        "Post 1: Artículo largo completo.",
+        "Post 2: Hub de Vídeo (Embeds de YouTube y Shorts).",
+        "Post 3: Cita Bomba y Sarcasmo.",
+        "Post 4: Tutorial de detección.",
+        "Post 5: Radar de Medios."
+      ],
+      "output": "Blogger API"
+    },
+    "fase_5_distribucion_redes": {
+      "redes": ["YouTube", "TikTok", "Instagram", "X", "Threads"],
+      "mision": "Generar textos con enlaces cruzados (no link a sí mismo) y abrir apps móviles para publicación."
+    }
+  },
+  "calendario_publicacion_escalonado": {
+    "06:00": "Pipeline completo (Radar, Transcripción, Dossier, Assets).",
+    "07:00": "WEB: Publicar Post Maestro (Portada).",
+    "08:00": "BLOGGER: Publicar Post 1 (Artículo completo).",
+    "09:00": "WEB: Publicar Post Quirúrgico 1 (Noticia 1).",
+    "10:00": "BLOGGER: Publicar Post 2 (Hub Vídeo).",
+    "11:00": "WEB: Publicar Post Quirúrgico 2 (Noticia 2).",
+    "12:00": "BLOGGER: Publicar Post 3 (Cita Bomba).",
+    "13:00": "WEB: Publicar Post Quirúrgico 3 (Noticia 3).",
+    "14:00": "BLOGGER: Publicar Post 4 (Tutorial).",
+    "15:00": "WEB: Publicar 5 Posts Satélite (en bloque).",
+    "16:00": "BLOGGER: Publicar Post 5 (Radar).",
+    "17:00": "REDES: Enviar notificaciones y textos a Dashboard (TikTok, IG, X, Threads).",
+    "18:00": "YOUTUBE: Subir Vídeo Largo (Privado/Programado).",
+    "19:00": "SISTEMA: Informe diario en Telegram y actualización del Dashboard."
+  },
+  "reglas_de_oro": [
+    "Todo enlaza con todo (Web -> Redes -> Blogger -> YouTube).",
+    "Ningún post se publica sin su imagen destacada y su alt-text con SEO.",
+    "Los posts de Blogger llevan enlaces cruzados a los posts de la Web para captar tráfico.",
+    "El tono es siempre educativo, irónico y sin sesgo político directo."
+  ]
+}

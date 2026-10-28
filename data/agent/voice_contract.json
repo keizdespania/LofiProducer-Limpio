@@ -1,0 +1,25 @@
+{
+  "nombre": "Contrato de Voz - Somos El Encuadre",
+  "version": "2.0",
+  "fecha": "2026-10-27",
+  "motor_principal": "Edge-TTS (Microsoft)",
+  "motivo": "Voz neuronal humana, gratuita, con timestamps precisos para karaoke.",
+  "voces_disponibles": {
+    "es-ES-AlvaroNeural": "Masculina, España, tono natural y cercano (ELEGIDA)",
+    "es-ES-ElviraNeural": "Femenina, España, tono profesional",
+    "es-MX-JorgeNeural": "Masculina, México, tono cálido"
+  },
+  "parametros": {
+    "rate": "-5%",
+    "volume": "+0%",
+    "pitch": "+0Hz"
+  },
+  "ventajas_sobre_sherpa": [
+    "Voz 100% humana (no robótica)",
+    "Devuelve JSON con timestamps exactos de cada palabra (karaoke perfecto)",
+    "Gratis y sin API Key",
+    "Solo requiere conexión a internet"
+  ],
+  "script_soporte": "scripts/voz_edge.py",
+  "fallback": "Sherpa-ONNX (si falla internet)"
+}

@@ -1,0 +1,1489 @@
+
+// ═══ PERSISTENCIA DE CHAT (Fase 2) ═══
+function guardarMensajeLocal(rol, texto) {
+    let historial = JSON.parse(localStorage.getItem('chat_history') || '[]');
+    historial.push({ rol: rol, texto: texto, ts: Date.now() });
+    // Mantener solo los ultimos 50 mensajes
+    if (historial.length > 50) historial = historial.slice(historial.length - 50);
+    localStorage.setItem('chat_history', JSON.stringify(historial));
+}
+
+function renderizarBurbuja(rol, texto) {
+    const box = document.getElementById('chat-messages');
+    const msg = document.createElement('div');
+    msg.className = 'msg ' + (rol === 'user' ? 'user' : 'assistant');
+    
+    if (rol === 'user') {
+        msg.innerText = texto;
+    } else {
+        const uid = 'audio_' + Math.random().toString(36).substr(2, 9);
+        msg.innerHTML = `
+            <div id="texto-${uid}" style="background: rgba(0,255,204,0.1); border-left: 3px solid #00ffcc; padding: 8px; border-radius: 4px; font-family: monospace; white-space: pre-wrap;">${texto}</div>
+            <div style="display:flex; align-items:center; gap:10px; margin-top:8px; background:#111; padding:6px 12px; border-radius:20px; border:1px solid #333;">
+                <button id="btn-${uid}" onclick="togglePlayTTS('${uid}')" style="background:#00ffcc; color:#000; border:none; border-radius:50%; width:34px; height:34px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center;">▶️</button>
+                <input type="range" id="slider-${uid}" min="0" max="100" value="0" style="flex:1; height:6px; accent-color:#00ffcc;" disabled>
+                <span id="time-${uid}" style="color:#888; font-size:12px; min-width:36px; text-align:right; font-family:monospace;">0:00</span>
+            </div>
+        `;
+    }
+    box.appendChild(msg);
+    box.scrollTop = box.scrollHeight;
+}
+
+function cargarHistorialLocal() {
+    const historial = JSON.parse(localStorage.getItem('chat_history') || '[]');
+    const box = document.getElementById('chat-messages');
+    box.innerHTML = '';
+    if (historial.length === 0) {
+        box.innerHTML = '<div class="msg assistant">Sistema listo.<br>Memoria conectada.<br>¿Qué necesitas, Arquitecto?</div>';
+    } else {
+        historial.forEach(m => renderizarBurbuja(m.rol, m.texto));
+    }
+}
+// ═══ FIN PERSISTENCIA ═══
+let dictadoActivo = false;
+
+// ═══ LOG VISIBLE (debug Jarvis) ═══
+function _jarvisLog(msg) {
+    console.log('[Jarvis]', msg);
+    const consoleDiv = document.getElementById('log-console');
+    if (consoleDiv) {
+        const line = document.createElement('div');
+        line.innerText = '> ' + msg;
+        line.style.color = '#00ffcc'; // Color de acento
+        consoleDiv.appendChild(line);
+        consoleDiv.scrollTop = consoleDiv.scrollHeight;
+    }
+}
+// ═══ FIN LOG ═══
+
+let modoConversacion = false;
+let recognizer = null;
+
+let tareasInterval;
+
+function toggleMenu() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('open');
+}
+
+function nav(vista, el) {
+    if (vista === 'produccion') setTimeout(cargarTareasVideo, 300);
+    return _nav_orig(vista, el);
+}
+function _nav_orig(viewId, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + viewId).classList.add('active');
+  if (el) el.classList.add('active');
+  toggleMenu();
+  
+  // Cerrar sidebar solo si estaba abierto (no reabrir al navegar)
+  const _sb = document.getElementById('sidebar');
+  if (_sb && _sb.classList.contains('open')) toggleMenu();
+
+  if(viewId === 'chat') { setTimeout(() => document.getElementById('chat-input').focus(), 100); }
+  if(viewId === 'docs') { cargarDoc(document.getElementById('doc-selector').value); }
+  if(viewId === 'media') { loadMedia(); }
+  if(viewId === 'analytics') { loadAnalytics(); }
+  if(viewId === 'musica') { document.getElementById('music-url').value = localStorage.getItem('kaggle_url') || ''; }
+  if(viewId === 'imagen') { /* Sin estado previo por ahora */ }
+  if(viewId === 'produccion') { loadTareas(); clearInterval(tareasInterval); tareasInterval = setInterval(loadTareas, 3000); }
+  else { clearInterval(tareasInterval); }
+}
+
+async function enviarChat() {
+  if (modoConversacion && recognizer) {
+      try { recognizer.stop(); } catch(e){}
+  }
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.disabled = true;
+
+  const box = document.getElementById('chat-messages');
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg user'; userMsg.innerText = text;
+  box.appendChild(userMsg);
+
+  const botMsg = document.createElement('div');
+  botMsg.className = 'msg assistant';
+  guardarMensajeLocal('user', text);
+  botMsg.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+  box.appendChild(botMsg);
+  box.scrollTop = box.scrollHeight;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({mensaje: text}),
+    });
+    const data = await res.json();
+
+    if (data.status === 'processing') {
+      const taskId = data.task_id;
+      const consoleDiv = document.getElementById('log-console');
+      consoleDiv.classList.add('active');
+      consoleDiv.innerHTML = '<div style="color:#00ffcc; margin-bottom:5px;">[Conectando con el Dios...]</div>';
+      
+      localStorage.setItem('pending_task', taskId);
+      const eventSource = new EventSource('/api/chat_stream/' + taskId);
+      let fullLog = "";
+      let logQueue = []; // Cola para ir pintando poco a poco
+      let pintando = false;
+
+      // Función para pintar logs con retardo (efecto máquina de escribir)
+      const procesarCola = () => {
+          if (pintando || logQueue.length === 0) return;
+          pintando = true;
+          const linea = logQueue.shift();
+          // Añadimos la línea al div de la consola
+          const p = document.createElement('div');
+          p.innerText = linea;
+          p.style.opacity = '0.8';
+          p.style.fontSize = '12px';
+          consoleDiv.appendChild(p);
+          consoleDiv.scrollTop = consoleDiv.scrollHeight;
+          box.scrollTop = box.scrollHeight;
+          
+          setTimeout(() => {
+              pintando = false;
+              procesarCola();
+          }, 30); // 30ms entre líneas (se puede ajustar)
+      };
+
+      eventSource.onmessage = function(e) {
+          const chunk = JSON.parse(e.data);
+          fullLog += chunk + "\n";
+          
+          logQueue.push(chunk);
+          procesarCola();
+
+          if (chunk.includes("[+] Proceso finalizado.") || chunk.includes("[+] Error:")) {
+              eventSource.close();
+              
+              // Esperar a que la cola termine de pintarse antes de cerrar
+              const checkQueue = setInterval(() => {
+                  if (logQueue.length === 0 && !pintando) {
+                      clearInterval(checkQueue);
+                      consoleDiv.classList.remove('active');
+
+                      let respuesta = fullLog;
+                      if (respuesta.includes("[dios] Tarea completada. Resumen:")) {
+                          respuesta = respuesta.split("[dios] Tarea completada. Resumen:")[1].trim();
+                      } else if (respuesta.includes("[dios] Tarea completada.")) {
+                          respuesta = respuesta.split("[dios] Tarea completada.")[1].trim();
+                      } else if (respuesta.includes("Error LLM:")) {
+                          respuesta = "❌ Error: " + respuesta.split("Error LLM:")[1].trim();
+                      } else {
+                          respuesta = respuesta.split('\n').slice(-10).join('\n');
+                      }
+
+                      // Formatear la respuesta final para que sea legible
+                                            // ¿Fue un proceso real (agent) o una charla?
+                      const esProcesoReal = fullLog.includes("[dios] Paso ") || fullLog.includes("[dios] Modo AGENTE");
+                      
+                      // LIMPIAR mensajes internos del log
+                      respuesta = respuesta
+                          .replace(/\[\+\] Proceso finalizado\.?/g, '')
+                          .replace(/\[\+\] Iniciando el Dios\.\.\./g, '')
+                          .replace(/\[dios\] Paso \d+\/\d+/g, '')
+                          .replace(/\[dios\] Tarea completada\. Resumen:/g, '')
+                          .replace(/\[dios\] Tarea completada\./g, '')
+                          .trim();
+                      if (!respuesta) respuesta = '(Sin respuesta)';
+                      
+                      // Anadir marca de proceso finalizado SOLO si fue un agente real
+                      if (esProcesoReal) {
+                          respuesta = respuesta + '\n\n✅ Proceso de producción finalizado.';
+                      }
+                      localStorage.removeItem('pending_task');
+                      guardarMensajeLocal('assistant', respuesta);
+
+                      // Formatear la respuesta final con barra de audio
+                      const uid = 'audio_' + Math.random().toString(36).substr(2, 9);
+                      botMsg.innerHTML = `
+                          <div id="texto-${uid}" style="background: rgba(0,255,204,0.1); border-left: 3px solid #00ffcc; padding: 8px; border-radius: 4px; font-family: monospace; white-space: pre-wrap;">${respuesta}</div>
+                          <div style="display:flex; align-items:center; gap:10px; margin-top:8px; background:#111; padding:6px 12px; border-radius:20px; border:1px solid #333;">
+                              <button id="btn-${uid}" onclick="togglePlayTTS('${uid}')" style="background:#00ffcc; color:#000; border:none; border-radius:50%; width:34px; height:34px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center;">▶️</button>
+                              <input type="range" id="slider-${uid}" min="0" max="100" value="0" style="flex:1; height:6px; accent-color:#00ffcc;" disabled>
+                              <span id="time-${uid}" style="color:#888; font-size:12px; min-width:36px; text-align:right; font-family:monospace;">0:00</span>
+                          </div>
+                      `;
+                      if (modoConversacion) {
+                          setTimeout(() => togglePlayTTS(uid), 500);
+                      }
+                      input.disabled = false;
+                      input.focus();
+                      input.focus();
+                  }
+              }, 100);
+          }
+      };
+
+      eventSource.onerror = function() {
+          eventSource.close();
+          consoleDiv.classList.remove('active');
+          botMsg.innerText = "❌ Error de conexión SSE.";
+          input.disabled = false;
+      };
+    } else {
+      botMsg.innerText = "❌ Error: " + (data.mensaje || 'Desconocido');
+      input.disabled = false;
+    }
+  } catch (e) {
+    botMsg.innerText = "❌ Error de red: " + e;
+    input.disabled = false;
+  }
+}
+
+async function crearCanal() {
+  const nombre = document.getElementById('canal-nombre').value.trim();
+  const nicho = document.getElementById('canal-nicho').value.trim();
+  const rpm = document.getElementById('canal-rpm').value.trim();
+  const log = document.getElementById('log-canal');
+  if (!nombre || !nicho || !rpm) { log.style.display='block'; log.innerText = "Rellena todos los campos."; return; }
+  
+  log.style.display='block';
+  log.innerText = "Creando canal...";
+  try {
+    const res = await fetch('/api/crear_canal', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({nombre, nicho, rpm}),
+    });
+    const data = await res.json();
+    log.innerText = JSON.stringify(data, null, 2);
+  } catch (e) { log.innerText = "Error de red: " + e; }
+}
+
+async function cargarDoc(filename) {
+  const box = document.getElementById('doc-content');
+  box.innerText = "Cargando " + filename + "...";
+  try {
+    const res = await fetch('/api/docs?file=' + encodeURIComponent(filename));
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const text = await res.text();
+    box.innerText = text;
+  } catch (e) {
+    box.innerText = "❌ Error al cargar el documento: " + e.message;
+  }
+}
+
+async function guardarNota() {
+  const archivo = document.getElementById('doc-target').value;
+  const texto = document.getElementById('doc-note').value.trim();
+  if(!texto) return;
+  
+  const btn = event.target;
+  btn.disabled = true;
+  btn.innerText = "Guardando...";
+  
+  try {
+    const res = await fetch('/api/documentar', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({archivo, texto})
+    });
+    const data = await res.json();
+    alert(data.reply);
+    document.getElementById('doc-note').value = '';
+    cargarDoc(document.getElementById('doc-selector').value);
+  } catch(e) {
+    alert("Error: " + e);
+  }
+  btn.disabled = false;
+  btn.innerText = "Guardar Aprendizaje";
+}
+
+async function loadMedia() {
+  try {
+    const res = await fetch('/api/media');
+    const data = await res.json();
+    const renderList = (items, listId, playerId, type) => {
+      const list = document.getElementById(listId);
+      list.innerHTML = '';
+      if(!items || items.length === 0) { list.innerHTML = '<li>Sin archivos</li>'; return; }
+      items.forEach(f => {
+        const li = document.createElement('li');
+        li.innerText = f;
+        li.onclick = () => {
+          const p = document.getElementById(playerId);
+          p.innerHTML = '';
+          if(type === 'audio') { const a = document.createElement('audio'); a.controls = true; a.src = '/media/' + f; p.appendChild(a); }
+          if(type === 'video') { const v = document.createElement('video'); v.controls = true; v.src = '/media/' + f; p.appendChild(v); }
+          if(type === 'image') { const i = document.createElement('img'); i.src = '/media/' + f; p.appendChild(i); }
+        };
+        list.appendChild(li);
+      });
+    };
+    renderList(data.audio, 'list-audio', 'player-audio', 'audio');
+    renderList(data.video, 'list-video', 'player-video', 'video');
+    renderList(data.image, 'list-image', 'player-image', 'image');
+  } catch(e) { console.error(e); }
+}
+
+async function loadAnalytics() {
+  const c = document.getElementById('analytics-container');
+  if (!c) return;
+  c.innerHTML = 'Cargando métricas...';
+  try {
+    const res = await fetch('/api/analytics');
+    const data = await res.json();
+    
+    let html = '';
+    html += `<div class="yt-header">▶️ ${data["nombre_canal"] || "YouTube Studio"}</div>`;
+    html += `<div class="kpi-grid">`;
+    html += `<div class="kpi-card"><div class="kpi-label">Suscriptores</div><div class="kpi-value">${data["Suscriptores YT"] || 0}</div><div class="kpi-sub">↑ En crecimiento</div></div>`;
+    html += `<div class="kpi-card"><div class="kpi-label">Visitas Totales</div><div class="kpi-value">${data["Visitas YT"] || 0}</div><div class="kpi-sub">↑ En crecimiento</div></div>`;
+    html += `<div class="kpi-card"><div class="kpi-label">Vídeos Publicados</div><div class="kpi-value">${data["Vídeos YT"] || 0}</div></div>`;
+    html += `</div>`;
+
+    const videos = data["Ultimos Videos"] || [];
+    if (videos.length > 0) {
+      html += `<div class="video-list">`;
+      videos.forEach(title => {
+        html += `<div class="video-item">
+          <div class="video-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="video-info"><div class="video-title">${title}</div><div class="video-meta">Recién subido • Público</div></div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+
+    html += `<div class="yt-header" style="margin-top:10px;">💻 Estado del Sistema</div>`;
+    html += `<div class="sys-grid">`;
+    html += `<div class="sys-card"><div class="sys-label">Repo</div><div class="sys-value">${data["Tamaño Repo (MB)"] || 0} MB</div></div>`;
+    html += `<div class="sys-card"><div class="sys-label">Archivos .py</div><div class="sys-value">${data["Archivos Python"] || 0}</div></div>`;
+    html += `<div class="sys-card"><div class="sys-label">Memoria IA</div><div class="sys-value">${data["Conversaciones Dios"] || 0}</div></div>`;
+    html += `<div class="sys-card"><div class="sys-label">Kaggle</div><div class="sys-value kaggle">${data["Estado Kaggle"] || 'Off'}</div></div>`;
+    html += `</div>`;
+
+    c.innerHTML = html;
+    const oldTitle = c.previousElementSibling;
+    if(oldTitle && oldTitle.tagName === 'H2') oldTitle.style.display = 'none';
+  } catch(e) { c.innerHTML = "❌ Error cargando analytics: " + e; }
+}
+
+async 
+async function generarMusicaACEStep() {
+  const prompt = document.getElementById('music-prompt').value.trim();
+  const duracion = parseInt(document.getElementById('music-duracion').value) || 30;
+  const log = document.getElementById('music-log');
+  if (!prompt) { alert("Rellena el prompt"); return; }
+
+  log.style.display = 'block';
+  log.innerText = "Enviando petición...\nCompilación en Kaggle (~30 min). Sé paciente.";
+  try {
+    const r = await fetch('/api/generar_musica_acestep', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({prompt, duracion})
+    });
+    const data = await r.json();
+    log.innerText += "\n" + (data.reply || data.mensaje || JSON.stringify(data));
+
+    if (data.status === 'ok' && data.reply) {
+      const taskId = data.reply.match(/Tarea (\w+)/);
+      if (taskId) {
+        log.innerText += "\nEsperando resultado...";
+        const interval = setInterval(async () => {
+          const rs = await fetch('/api/tareas');
+          const tareas = await rs.json();
+          const t = tareas.find(x => x.id === taskId[1]);
+          if (t) {
+            log.innerText = `Estado: ${t.estado} (${t.progreso}%)\n${t.mensaje}`;
+            if (t.estado === 'completado' || t.estado === 'error') {
+              clearInterval(interval);
+              if (t.estado === 'completado') {
+                setTimeout(() => location.reload(), 2000);
+              }
+            }
+          }
+        }, 15000);
+      }
+    }
+  } catch(e) {
+    log.innerText += "\nERROR: " + e.message;
+  }
+}
+
+async function generarMusica() {
+  const url = document.getElementById('music-url').value.trim();
+  const prompt = document.getElementById('music-prompt').value.trim();
+  const log = document.getElementById('music-log');
+  if(!url || !prompt) { alert("Rellena ambos campos"); return; }
+  
+  localStorage.setItem('kaggle_url', url);
+  log.style.display = 'block';
+  log.innerText = "Iniciando generación en Kaggle...\nLa GPU tardará 2-5 min. Por favor, espera.";
+  
+  try {
+    const res = await fetch('/api/generar_musica', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url, prompt})
+    });
+    const data = await res.json();
+    log.innerText = data.reply;
+    if(data.status === 'ok') {
+      setTimeout(() => { nav('produccion', document.querySelector('.nav-item:nth-child(5)')); }, 1500);
+    }
+  } catch(e) { log.innerText = "Error de conexión: " + e; }
+}
+
+async function loadTareas() {
+  const container = document.getElementById('tareas-container');
+  if (!container) return;
+  try {
+    const res = await fetch('/api/tareas');
+    const tareas = await res.json();
+    if (!tareas || tareas.length === 0) { container.innerHTML = '<p style="color: var(--muted);">No hay tareas en cola.</p>'; return; }
+    let html = '';
+    tareas.reverse().forEach(t => {
+      let color = t.estado === 'completado' ? '#10b981' : (t.estado === 'error' ? '#ef4444' : '#3b82f6');
+      let icono = t.estado === 'completado' ? '✅' : (t.estado === 'error' ? '❌' : '⏳');
+      html += `<div class="card" style="padding: 16px; border-left: 4px solid ${color};">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <strong style="font-size: 0.9em;">${icono} ${t.tipo.toUpperCase()} (${t.id})</strong>
+          <span style="font-size: 0.75em; color: var(--muted);">${t.estado.toUpperCase()}</span>
+        </div>
+        <p style="font-size: 0.85em; margin-bottom: 12px; color: var(--muted);">"${t.prompt}"</p>
+        <div style="width: 100%; background: #000; height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 8px;">
+          <div style="width: ${t.progreso}%; background: ${color}; height: 100%; transition: width 0.5s;"></div>
+        </div>
+        <div style="font-size: 0.75em; color: var(--muted);">${t.mensaje}</div>
+      </div>`;
+    });
+    container.innerHTML = html;
+  } catch(e) { console.error(e); }
+}
+
+async function mejorarPrompt() {
+  const input = document.getElementById('prompt-input').value.trim();
+  const out = document.getElementById('prompt-output');
+  if(!input) return;
+  out.style.display = 'block';
+  out.innerText = "Expandiendo idea...";
+  try {
+    const tipo = document.getElementById('prompt-type').value;
+    const res = await fetch('/api/prompt', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({prompt: input, tipo: tipo})
+    });
+    const data = await res.json();
+    out.innerText = data.status === 'ok' ? data.reply : "Error: " + data.mensaje;
+  } catch(e) { out.innerText = "Error de red"; }
+}
+
+function cambiarTema(tema) {
+  const root = document.documentElement;
+  if (tema === 'light') {
+    root.style.setProperty('--bg', '#f4f4f5'); root.style.setProperty('--surface', '#ffffff');
+    root.style.setProperty('--border', '#e4e4e7'); root.style.setProperty('--text', '#18181b');
+    root.style.setProperty('--muted', '#71717a'); root.style.setProperty('--bubble-bot', '#e4e4e7');
+  } else if (tema === 'midnight') {
+    root.style.setProperty('--bg', '#0f172a'); root.style.setProperty('--surface', '#1e293b');
+    root.style.setProperty('--border', '#334155'); root.style.setProperty('--text', '#f8fafc');
+    root.style.setProperty('--muted', '#94a3b8'); root.style.setProperty('--bubble-bot', '#334155');
+  } else {
+    root.style.setProperty('--bg', '#000000'); root.style.setProperty('--surface', '#121212');
+    root.style.setProperty('--border', '#27272a'); root.style.setProperty('--text', '#ffffff');
+    root.style.setProperty('--muted', '#a1a1aa'); root.style.setProperty('--bubble-bot', '#1f1f22');
+  }
+  localStorage.setItem('keiz-theme', tema);
+}
+
+window.onload = () => {
+  const savedTheme = localStorage.getItem('keiz-theme') || 'dark';
+  const themeSelect = document.getElementById('theme-select');
+  if (themeSelect) themeSelect.value = savedTheme;
+  cambiarTema(savedTheme);
+};
+
+async function generarImagen() {
+  const prompt = document.getElementById('imagen-prompt').value.trim();
+  const log = document.getElementById('imagen-log');
+  
+  if (!prompt) {
+    alert("Escribe un prompt primero.");
+    return;
+  }
+  
+  log.style.display = 'block';
+  log.innerText = "Enviando petición a Cloudflare SDXL...\nEsto puede tardar 20-30 segundos.";
+  
+  try {
+    const res = await fetch('/api/generar_imagen', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({prompt: prompt})
+    });
+    const data = await res.json();
+    
+    if (data.status === 'ok') {
+      log.innerText = "✅ Imagen generada. Ve al Media Center para verla.\n\n" + (data.reply || '');
+    } else {
+      log.innerText = "❌ Error: " + (data.mensaje || 'Desconocido');
+    }
+  } catch (e) {
+    log.innerText = "❌ Error de red: " + e;
+  }
+}
+
+async function producirVideo() {
+  const video = document.getElementById('prod-video').value.trim();
+  const audio = document.getElementById('prod-audio').value.trim();
+  const nombre = document.getElementById('prod-nombre').value.trim();
+  const log = document.getElementById('prod-log');
+  
+  if (!video || !audio || !nombre) {
+    alert("Rellena los 3 campos.");
+    return;
+  }
+  
+  log.style.display = 'block';
+  log.innerText = "Enviando petición al Dios para producir el vídeo...";
+  
+  try {
+    // Llamamos al Dios (que tiene la tool producir_video)
+    const mensaje = `Produce el video final usando la herramienta producir_video con los siguientes datos: video_path="${video}", audio_path="${audio}", nombre_final="${nombre}"`;
+    const res = await fetch('/api/chat', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: mensaje})
+    });
+    const data = await res.json();
+    
+    if (data.status === 'processing') {
+      log.innerText = "⏳ El Dios está procesando la producción...";
+      // Polling para ver el estado
+      const taskId = data.task_id;
+      let polling = setInterval(async () => {
+        const sres = await fetch('/api/chat_status?task_id=' + taskId);
+        const sdata = await sres.json();
+        if (sdata.status === 'done') {
+          clearInterval(polling);
+          log.innerText = sdata.log.split("[dios] Tarea completada. Resumen:")[1] || sdata.log;
+        }
+      }, 2000);
+    } else {
+      log.innerText = "❌ Error: " + (data.mensaje || 'Desconocido');
+    }
+  } catch (e) {
+    log.innerText = "❌ Error de red: " + e;
+  }
+}
+
+async function generarVideo() {
+    const url = document.getElementById('video-url').value.trim();
+    const prompt = document.getElementById('video-prompt').value.trim();
+    const status = document.getElementById('video-status');
+    if (!url || !prompt) { status.innerText = "❌ Faltan la URL o el prompt."; return; }
+    status.innerHTML = "⏳ Conectando con Kaggle... (esto tarda)";
+    try {
+        const res = await fetch('/api/generar_video', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ url, prompt })
+        });
+        const data = await res.json();
+        if (res.ok) status.innerHTML = `✅ ${data.mensaje}`;
+        else status.innerHTML = `❌ Error: ${data.error}`;
+    } catch (e) { status.innerHTML = `❌ Error de red: ${e}`; }
+}
+
+
+function dictar() {
+    const btn = document.getElementById('btn-dictado');
+    const input = document.getElementById('chat-input');
+    if (!input) return;
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        alert("Tu navegador no soporta dictado por voz. Prueba con Chrome.");
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'es-ES';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    if (btn) btn.innerText = '🔴';
+
+    recognition.onresult = function(event) {
+        const texto = event.results[0][0].transcript;
+        _jarvisLog('Dictado: ' + texto);
+        input.disabled = false;
+        input.value = texto;
+        if (btn) btn.innerText = '🎙️';
+        setTimeout(() => {
+            _jarvisLog('Enviando chat...');
+            try { enviarChat(); } catch(e) { _jarvisLog('ERROR: ' + e.message); }
+        }, 400);
+    };
+
+    recognition.onerror = function(event) {
+        console.error("Error dictado:", event.error);
+        if (btn) btn.innerText = '🎙️';
+    };
+
+    recognition.onend = function() {
+        if (btn) btn.innerText = '🎙️';
+    };
+
+    recognition.start();
+}
+
+
+async function llamarDoctor() {
+    const out = document.getElementById('doctor-out');
+    out.textContent = 'Diagnosticando...';
+    try {
+        const r = await fetch('/api/doctor', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'});
+        const d = await r.json();
+        out.textContent = d.reporte || JSON.stringify(d);
+    } catch(e) { out.textContent = 'Error: ' + e; }
+}
+
+async function leerRSS() {
+    const out = document.getElementById('rss-out');
+    const fuente = document.getElementById('rss-fuente').value;
+    out.textContent = 'Leyendo ' + fuente + '...';
+    try {
+        const r = await fetch('/api/rss', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({fuente: fuente, limite: 5})
+        });
+        const d = await r.json();
+        out.textContent = d.resultado || JSON.stringify(d);
+    } catch(e) { out.textContent = 'Error: ' + e; }
+}
+
+async function llamarEspecialista() {
+    const out = document.getElementById('esp-out');
+    const rol = document.getElementById('esp-rol').value;
+    const tarea = document.getElementById('esp-tarea').value.trim();
+    if (!tarea) { out.textContent = 'Escribe una tarea.'; return; }
+    out.textContent = rol + ' pensando...';
+    try {
+        const r = await fetch('/api/especialista', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({rol: rol, tarea: tarea})
+        });
+        const d = await r.json();
+        out.textContent = d.resultado || JSON.stringify(d);
+    } catch(e) { out.textContent = 'Error: ' + e; }
+}
+
+
+
+function toggleConversacion() {
+    modoConversacion = !modoConversacion;
+    const btn = document.getElementById('btn-conversacion');
+    const btnDict = document.getElementById('btn-dictado');
+    
+    if (modoConversacion) {
+        btn.style.background = '#00ffcc';
+        btn.style.color = '#000';
+        btn.innerText = '⏹';
+        if (btnDict) btnDict.disabled = true;
+        iniciarEscuchaConversacion();
+    } else {
+        btn.style.background = '#222';
+        btn.style.color = '#fff';
+        btn.innerText = '🎧';
+        if (recognizer) { try { recognizer.stop(); } catch(e){} }
+        window.speechSynthesis.cancel();
+        if (btnDict) btnDict.disabled = false;
+    }
+}
+
+function iniciarEscuchaConversacion() {
+    if (!modoConversacion) return;
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { _jarvisLog("Tu navegador no soporta microfono."); return; }
+    
+    recognizer = new SR();
+    recognizer.lang = 'es-ES';
+    recognizer.interimResults = false;
+    recognizer.maxAlternatives = 1;
+
+    const btn = document.getElementById('btn-conversacion');
+    if (btn) btn.innerText = '🔴';
+
+    recognizer.onstart = function() {
+        _jarvisLog('Micro ACTIVO - habla ahora');
+        if (btn) btn.innerText = '🔴';
+    };
+
+    recognizer.onresult = function(event) {
+        const texto = event.results[0][0].transcript;
+        _jarvisLog('Capturado: ' + texto);
+        const input = document.getElementById('chat-input');
+        input.disabled = false;
+        input.value = texto;
+        if (btn) btn.innerText = '⏳';
+        setTimeout(() => {
+            _jarvisLog('Enviando chat...');
+            try { enviarChat(); } catch(e) { _jarvisLog('ERROR: ' + e.message); }
+        }, 400);
+    };
+
+    recognizer.onerror = function(event) {
+        _jarvisLog('Error micro: ' + event.error);
+        if (btn) btn.innerText = '🔴';
+        if (modoConversacion) setTimeout(iniciarEscuchaConversacion, 1500);
+    };
+
+    recognizer.onend = function() {
+        if (modoConversacion) {
+            // Si seguimos en modo conversacion y no estamos generando, re-escuchar
+            if (btn) btn.innerText = '🔴';
+        }
+    };
+
+    try { recognizer.start(); } catch(e) { _jarvisLog('No se pudo iniciar: ' + e.message); }
+}
+
+function hablar(texto) {
+    if (!('speechSynthesis' in window)) {
+        alert("Tu navegador no soporta Text-to-Speech.");
+        return;
+    }
+    // Cancelar cualquier audio en curso
+    window.speechSynthesis.cancel();
+    
+    // Limpiar texto (quitar HTML y bloques de codigo para que no lea símbolos raros)
+    const cleanText = texto.replace(/<[^>]*>?/gm, '').replace(/```[\s\S]*?```/g, ' [bloque de codigo omitido] ');
+    
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = 'es-ES';
+    utterance.rate = 1.1; // Un poco mas rapido de lo normal
+    utterance.pitch = 1.0;
+    
+    // Buscar una voz en espanol si esta disponible
+    const voices = window.speechSynthesis.getVoices();
+    const esVoice = voices.find(v => v.lang.startsWith('es'));
+    if (esVoice) utterance.voice = esVoice;
+    
+    utterance.onend = function() {
+        if (modoConversacion) {
+            // Pequena pausa para no cortar el final del audio
+            setTimeout(iniciarEscuchaConversacion, 500);
+        }
+    };
+    window.speechSynthesis.speak(utterance);
+}
+
+
+async function generarVozStudio() {
+    const texto = document.getElementById('voz-texto').value.trim();
+    const voz = document.getElementById('voz-modelo').value;
+    const pitch = parseInt(document.getElementById('voz-pitch').value);
+    const velocidad = parseFloat(document.getElementById('voz-speed').value);
+    const out = document.getElementById('voz-resultado');
+    
+    if (!texto) { out.innerHTML = '<p style="color:#ff6b6b;">Escribe un texto primero.</p>'; return; }
+    
+    out.innerHTML = '<p style="color:#feca57;">⏳ Generando voz (esto tarda 20-40s)...</p>';
+    
+    try {
+        const r = await fetch('/api/voice_studio', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({texto, voz, pitch, velocidad})
+        });
+        const data = await r.json();
+        
+        if (r.ok) {
+            out.innerHTML = `
+                <p style="color:#00ffcc;">✅ Audio generado (${data.duracion}s) - Voz: ${data.voz} | Pitch: ${data.pitch} | Velocidad: ${data.velocidad}x</p>
+                <audio controls src="${data.audio_url}" style="width:100%; margin-top:8px;"></audio>
+            `;
+        } else {
+            out.innerHTML = `<p style="color:#ff6b6b;">❌ Error: ${data.error}</p>`;
+        }
+    } catch(e) {
+        out.innerHTML = `<p style="color:#ff6b6b;">❌ Error de red: ${e}</p>`;
+    }
+}
+
+
+// ═══ VOICE STUDIO PRO ═══
+let _ultimoAudioId = null;
+
+async function cargarVocesDisponibles() {
+    try {
+        const r = await fetch('/api/voces_disponibles');
+        const data = await r.json();
+        const sel = document.getElementById('voz-modelo');
+        sel.innerHTML = '';
+        data.voces.forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = v.id;
+            opt.innerText = v.nombre + (v.instalada ? '' : ' (no instalada)');
+            opt.disabled = !v.instalada;
+            sel.appendChild(opt);
+        });
+    } catch(e) { console.error(e); }
+}
+
+async function abrirCatalogoVoces() {
+    const modal = document.getElementById('modal-voces');
+    const lista = document.getElementById('lista-voces');
+    modal.style.display = 'block';
+    lista.innerHTML = '<p style="color:#feca57;">Cargando catálogo...</p>';
+    try {
+        const r = await fetch('/api/voces_disponibles');
+        const data = await r.json();
+        lista.innerHTML = '';
+        data.voces.forEach(v => {
+            const div = document.createElement('div');
+            div.style.cssText = 'padding:12px; background:#1a1a1a; border-radius:8px; margin-bottom:8px; border:1px solid #222;';
+            div.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <b style="color:#fff;">${v.nombre}</b><br>
+                        <span style="font-size:11px; color:#888;">${v.idioma} · ${v.licencia} · Calidad: ${v.calidad}</span>
+                    </div>
+                    <div style="display:flex; gap:6px;">
+                        ${v.instalada 
+                            ? `<button onclick="desinstalarVoz('${v.id}')" style="background:#ff6b6b; color:#fff; border:none; border-radius:6px; padding:6px 12px; cursor:pointer; font-size:12px;">🗑️ Borrar</button>`
+                            : `<button onclick="instalarVoz('${v.id}')" style="background:#00ffcc; color:#000; border:none; border-radius:6px; padding:6px 12px; cursor:pointer; font-size:12px;">⬇️ Instalar</button>`
+                        }
+                    </div>
+                </div>
+            `;
+            lista.appendChild(div);
+        });
+    } catch(e) { lista.innerHTML = `<p style="color:#ff6b6b;">Error: ${e}</p>`; }
+}
+
+function cerrarCatalogoVoces() {
+    document.getElementById('modal-voces').style.display = 'none';
+}
+
+async function instalarVoz(vozId) {
+    if (!confirm(`¿Instalar la voz ${vozId}? (descarga ~80MB)`)) return;
+    try {
+        const r = await fetch('/api/instalar_voz', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({voz: vozId})
+        });
+        const data = await r.json();
+        if (r.ok) {
+            alert('✅ ' + data.mensaje);
+            await cargarVocesDisponibles();
+            await abrirCatalogoVoces();
+        } else {
+            alert('❌ ' + data.error);
+        }
+    } catch(e) { alert('Error: ' + e); }
+}
+
+async function generarVozStudio() {
+    const texto = document.getElementById('voz-texto').value.trim();
+    const voz = document.getElementById('voz-modelo').value;
+    const pitch = parseInt(document.getElementById('voz-pitch').value);
+    const velocidad = parseFloat(document.getElementById('voz-speed').value);
+    const distorsion = parseInt(document.getElementById('voz-dist').value);
+    const reverb = parseInt(document.getElementById('voz-rev').value);
+    const bass = parseInt(document.getElementById('voz-bass').value);
+    const treble = parseInt(document.getElementById('voz-treble').value);
+    const compresor = document.getElementById('voz-compresor').checked;
+    const normalizar = document.getElementById('voz-normalizar').checked;
+    const out = document.getElementById('voz-resultado');
+
+    if (!texto) { out.innerHTML = '<p style="color:#ff6b6b;">Escribe un texto primero.</p>'; return; }
+    out.innerHTML = '<p style="color:#feca57;">⏳ Generando audio con efectos (esto tarda 20-40s)...</p>';
+
+    try {
+        const r = await fetch('/api/voice_studio', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({texto, voz, pitch, velocidad, distorsion, reverb, bass, treble, compresor, normalizar})
+        });
+        const data = await r.json();
+        if (r.ok) {
+            _ultimoAudioId = data.audio_id;
+            out.innerHTML = `
+                <div style="background:#0a2a2a; padding:12px; border-radius:8px; border:1px solid #00ffcc;">
+                    <p style="color:#00ffcc; margin-top:0;">✅ Audio generado (${data.duracion}s) — ${data.voz} | Pitch: ${data.pitch} | Vel: ${data.velocidad}x</p>
+                    <audio controls src="${data.audio_url}" style="width:100%; margin-bottom:8px;"></audio>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button onclick="guardarAudioStudio()" style="background:#00ffcc; color:#000; border:none; border-radius:6px; padding:8px 14px; cursor:pointer; font-weight:bold;">💾 Guardar Audio</button>
+                        <button onclick="guardarVozDios()" style="background:#feca57; color:#000; border:none; border-radius:6px; padding:8px 14px; cursor:pointer; font-weight:bold;">🤖 Usar Voz del Dios</button>
+                    </div>
+                    <p style="font-size:11px; color:#888; margin-bottom:0;">⚠️ Se borrará automáticamente en 10 minutos si no lo guardas.</p>
+                </div>
+            `;
+        } else {
+            out.innerHTML = `<p style="color:#ff6b6b;">❌ Error: ${data.error}</p>`;
+        }
+    } catch(e) { out.innerHTML = `<p style="color:#ff6b6b;">❌ Error de red: ${e}</p>`; }
+}
+
+async function guardarAudioStudio() {
+    if (!_ultimoAudioId) return;
+    const nombre = prompt('Nombre para el audio:', 'audio_' + Date.now());
+    if (!nombre) return;
+    try {
+        const r = await fetch('/api/guardar_audio', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({audio_id: _ultimoAudioId, nombre})
+        });
+        const data = await r.json();
+        if (r.ok) { alert('✅ Guardado en: ' + data.ruta); }
+        else { alert('❌ ' + data.error); }
+    } catch(e) { alert('Error: ' + e); }
+}
+
+async function guardarVozDios() {
+    const perfil = {
+        voz: document.getElementById('voz-modelo').value,
+        pitch: parseInt(document.getElementById('voz-pitch').value),
+        velocidad: parseFloat(document.getElementById('voz-speed').value),
+        distorsion: parseInt(document.getElementById('voz-dist').value),
+        reverb: parseInt(document.getElementById('voz-rev').value),
+        bass: parseInt(document.getElementById('voz-bass').value),
+        treble: parseInt(document.getElementById('voz-treble').value),
+        compresor: document.getElementById('voz-compresor').checked,
+        normalizar: document.getElementById('voz-normalizar').checked
+    };
+    try {
+        const r = await fetch('/api/guardar_voz_dios', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(perfil)
+        });
+        const data = await r.json();
+        if (r.ok) { alert('✅ Voz del Dios actualizada:\n' + JSON.stringify(data.perfil, null, 2)); }
+        else { alert('❌ ' + data.error); }
+    } catch(e) { alert('Error: ' + e); }
+}
+
+// cargarVocesDisponibles movido al listener principal
+// ═══ FIN VOICE STUDIO PRO ═══
+
+function cambiarTabVoz(tab) {
+    ['single', 'batch', 'history'].forEach(t => {
+        document.getElementById('voz-tab-' + t).style.display = (t === tab) ? 'block' : 'none';
+    });
+    if (tab === 'history') cargarHistorial();
+}
+
+async function generarVozStudio() {
+    const texto = document.getElementById('voz-texto').value;
+    const dictRaw = document.getElementById('voz-dict').value;
+    const dict = {};
+    dictRaw.split(',').forEach(pair => {
+        const [k, v] = pair.split('=');
+        if (k && v) dict[k.trim()] = v.trim();
+    });
+    const payload = {
+        texto, diccionario: dict,
+        voz: document.getElementById('voz-modelo').value,
+        preset: document.getElementById('voz-preset').value,
+        formato: document.getElementById('voz-formato').value,
+        pitch: parseInt(document.getElementById('voz-pitch').value),
+        velocidad: parseFloat(document.getElementById('voz-speed').value),
+        distorsion: parseInt(document.getElementById('voz-dist').value),
+        reverb: parseInt(document.getElementById('voz-rev').value),
+        bass: parseInt(document.getElementById('voz-bass').value),
+        treble: parseInt(document.getElementById('voz-treble').value),
+        compresor: document.getElementById('voz-compresor').checked,
+        normalizar: document.getElementById('voz-normalizar').checked
+    };
+    const out = document.getElementById('voz-resultado');
+    out.innerHTML = '<p style="color:#feca57;">⏳ Generando...</p>';
+    const r = await fetch('/api/voice_studio', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+    const data = await r.json();
+    if (data.status === 'ok') {
+        out.innerHTML = `<div style="background:#0a2a2a; padding:10px; border-radius:8px; margin-top:10px;">
+            <audio controls src="${data.url}" style="width:100%;"></audio>
+            <p style="color:#00ffcc; font-size:12px; margin:4px 0;">${data.duracion}s · ${payload.formato.toUpperCase()}</p>
+        </div>`;
+    } else { out.innerHTML = `<p style="color:#ff6b6b;">❌ ${data.error}</p>`; }
+}
+
+async function generarBatch() {
+    const lineas = document.getElementById('voz-batch-textos').value.split('\n').filter(l => l.trim());
+    if (!lineas.length) return alert('Pega al menos una línea');
+    const out = document.getElementById('batch-resultado');
+    out.innerHTML = `<p style="color:#feca57;">⏳ Generando ${lineas.length} audios (paciencia)...</p>`;
+    const r = await fetch('/api/voice_studio', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({
+        batch: lineas, voz: document.getElementById('voz-modelo').value,
+        preset: document.getElementById('voz-preset').value, formato: document.getElementById('voz-formato').value
+    })});
+    const data = await r.json();
+    if (data.status === 'ok') {
+        out.innerHTML = data.resultados.map(res => 
+            `<div style="background:#111; padding:8px; border-radius:6px; margin-bottom:8px;">
+                <audio controls src="${res.url}" style="width:100%; height:30px;"></audio>
+            </div>`
+        ).join('');
+    }
+}
+
+async function cargarHistorial() {
+    const r = await fetch('/api/historial');
+    const data = await r.json();
+    const out = document.getElementById('lista-historial');
+    if (!data.historial.length) { out.innerHTML = '<p style="color:#888;">Sin audios.</p>'; return; }
+    out.innerHTML = data.historial.map(h => 
+        `<div style="background:#111; padding:10px; border-radius:6px; margin-bottom:8px; border:1px solid #222;">
+            <div style="display:flex; justify-content:space-between;">
+                <span style="font-size:12px; color:#00ffcc;">${h.nombre}</span>
+                <span style="font-size:10px; color:#888;">${new Date(h.ts*1000).toLocaleTimeString()}</span>
+            </div>
+            <audio controls src="${h.url}" style="width:100%; height:30px; margin-top:4px;"></audio>
+        </div>`
+    ).join('');
+}
+
+async function borrarHistorial() {
+    if(confirm('¿Borrar todo el historial?')) {
+        await fetch('/api/borrar_historial', {method:'POST'});
+        cargarHistorial();
+    }
+}
+
+
+async function desinstalarVoz(vozId) {
+    if (!confirm(`¿Seguro que quieres borrar la voz "${vozId}"? Liberaras espacio.`)) return;
+    try {
+        const r = await fetch('/api/desinstalar_voz', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({voz: vozId})
+        });
+        const data = await r.json();
+        if (r.ok) {
+            alert('✅ ' + data.mensaje);
+            await cargarVocesDisponibles();
+            await abrirCatalogoVoces();
+        } else {
+            alert('❌ ' + data.error);
+        }
+    } catch(e) { alert('Error: ' + e); }
+}
+
+
+// ═══ CONTROLES TTS PRO (Chunks) ═══
+let currentTTS = {
+    chunks: [], idx: 0, utterance: null, btn: null, slider: null, timeLabel: null,
+    interval: null, startTime: 0, totalDuration: 0, isPaused: false, isPlaying: false, uid: null
+};
+
+function togglePlayTTS(uid) {
+    const btn = document.getElementById(`btn-${uid}`);
+    const slider = document.getElementById(`slider-${uid}`);
+    const timeLabel = document.getElementById(`time-${uid}`);
+    const textoDiv = document.getElementById(`texto-${uid}`);
+    if (!('speechSynthesis' in window)) return alert("Tu navegador no soporta TTS.");
+    const texto = textoDiv ? textoDiv.innerText : '';
+    if (!texto) return;
+
+    if (currentTTS.uid === uid && currentTTS.isPaused) {
+        _reanudarTTS();
+        return;
+    }
+    if (currentTTS.uid === uid && currentTTS.isPlaying) {
+        _pausarTTS();
+        return;
+    }
+    _iniciarNuevoTTS(uid, texto, btn, slider, timeLabel);
+}
+
+function _splitChunks(texto) {
+    const limpio = texto.replace(/<[^>]*>?/gm, '').trim();
+    if (!limpio) return [];
+    const chunks = limpio.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [limpio];
+    return chunks.map(c => c.trim()).filter(c => c.length > 0);
+}
+
+function _iniciarNuevoTTS(uid, texto, btn, slider, timeLabel) {
+    window.speechSynthesis.cancel();
+    if (currentTTS.interval) clearInterval(currentTTS.interval);
+    const chunks = _splitChunks(texto);
+    if (chunks.length === 0) return;
+    const palabras = texto.split(/\s+/).length;
+    const duracionTotal = (palabras / 150) * 60;
+    currentTTS = {
+        chunks: chunks, idx: 0, utterance: null, btn: btn, slider: slider, timeLabel: timeLabel,
+        interval: null, startTime: 0, totalDuration: duracionTotal, isPaused: false, isPlaying: true, uid: uid
+    };
+    btn.innerText = '⏸️';
+    _reproducirChunk();
+}
+
+function _reproducirChunk() {
+    if (currentTTS.idx >= currentTTS.chunks.length) {
+        _terminarTTS();
+        return;
+    }
+    const chunk = currentTTS.chunks[currentTTS.idx];
+    const utterance = new SpeechSynthesisUtterance(chunk);
+    utterance.lang = 'es-ES';
+    utterance.rate = 1.1;
+    const voices = window.speechSynthesis.getVoices();
+    const esVoice = voices.find(v => v.lang.startsWith('es'));
+    if (esVoice) utterance.voice = esVoice;
+
+    utterance.onstart = () => {
+        currentTTS.startTime = Date.now();
+        if (currentTTS.btn) currentTTS.btn.innerText = '⏸️';
+        _iniciarIntervalTTS();
+    };
+
+    utterance.onend = () => {
+        if (!currentTTS.isPlaying) return;
+        currentTTS.idx++;
+        _actualizarBarraTTS();
+        _reproducirChunk();
+    };
+
+    utterance.onerror = () => {
+        if (!currentTTS.isPlaying) return;
+        currentTTS.idx++;
+        _actualizarBarraTTS();
+        _reproducirChunk();
+    };
+
+    currentTTS.utterance = utterance;
+    window.speechSynthesis.speak(utterance);
+}
+
+function _pausarTTS() {
+    currentTTS.isPlaying = false;
+    currentTTS.isPaused = true;
+    window.speechSynthesis.cancel();
+    if (currentTTS.interval) clearInterval(currentTTS.interval);
+    if (currentTTS.btn) currentTTS.btn.innerText = '▶️';
+    _actualizarBarraTTS();
+}
+
+function _reanudarTTS() {
+    currentTTS.isPlaying = true;
+    currentTTS.isPaused = false;
+    if (currentTTS.btn) currentTTS.btn.innerText = '⏸️';
+    _reproducirChunk();
+}
+
+function _terminarTTS() {
+    if (currentTTS.interval) clearInterval(currentTTS.interval);
+    if (currentTTS.btn) currentTTS.btn.innerText = '▶️';
+    if (currentTTS.slider) currentTTS.slider.value = 100;
+    if (currentTTS.timeLabel) currentTTS.timeLabel.innerText = _formatTime(currentTTS.totalDuration);
+    currentTTS.isPlaying = false;
+    currentTTS.isPaused = false;
+    if (modoConversacion) {
+        setTimeout(iniciarEscuchaConversacion, 500);
+    }
+}
+
+function _iniciarIntervalTTS() {
+    if (currentTTS.interval) clearInterval(currentTTS.interval);
+    currentTTS.interval = setInterval(() => {
+        if (!currentTTS.isPlaying) return;
+        _actualizarBarraTTS();
+    }, 250);
+}
+
+function _actualizarBarraTTS() {
+    if (!currentTTS.slider || !currentTTS.chunks || !currentTTS.chunks.length) return;
+    const basePercent = (currentTTS.idx / currentTTS.chunks.length) * 100;
+    currentTTS.slider.value = Math.min(basePercent, 99);
+    if (currentTTS.timeLabel && currentTTS.totalDuration) {
+        const transcurrido = (currentTTS.idx / currentTTS.chunks.length) * currentTTS.totalDuration;
+        currentTTS.timeLabel.innerText = _formatTime(transcurrido);
+    }
+}
+
+function _formatTime(secs) {
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return m + ':' + s.toString().padStart(2, '0');
+}
+// ═══ FIN CONTROLES TTS PRO ═══
+
+// ═══ RECONEXION AL CARGAR ═══
+document.addEventListener('DOMContentLoaded', () => {
+    cargarHistorialLocal();
+    
+    // ¿Hay un proceso en marcha?
+    const pendingTask = localStorage.getItem('pending_task');
+    if (pendingTask) {
+        console.log('[Reconexion] Proceso pendiente detectado:', pendingTask);
+        const box = document.getElementById('chat-messages');
+        const botMsg = document.createElement('div');
+        botMsg.className = 'msg assistant';
+        botMsg.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div><br><small style="color:#feca57;">⏳ Reconectando al proceso en curso...</small>';
+        box.appendChild(botMsg);
+        box.scrollTop = box.scrollHeight;
+        
+        // Llamar a la funcion que reconecta al SSE
+        reconectarAlProceso(pendingTask, botMsg);
+    }
+});
+
+async function reconectarAlProceso(taskId, botMsg) {
+    const input = document.getElementById('chat-input');
+    input.disabled = true;
+    const consoleDiv = document.getElementById('log-console');
+    consoleDiv.classList.add('active');
+    consoleDiv.innerText = "Reconectando al Dios...\n";
+    
+    const eventSource = new EventSource('/api/chat_stream/' + taskId);
+    let fullLog = "";
+    
+    eventSource.onmessage = function(e) {
+        const chunk = JSON.parse(e.data);
+        fullLog += chunk + "\n";
+        consoleDiv.innerText = fullLog;
+        consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        
+        if (chunk.includes("[+] Proceso finalizado.") || chunk.includes("[+] Error:")) {
+            eventSource.close();
+            consoleDiv.classList.remove('active');
+            localStorage.removeItem('pending_task');
+            
+            let respuesta = fullLog;
+            if (respuesta.includes("[dios] Tarea completada. Resumen:")) {
+                respuesta = respuesta.split("[dios] Tarea completada. Resumen:")[1].trim();
+            } else if (respuesta.includes("[dios] Tarea completada.")) {
+                respuesta = respuesta.split("[dios] Tarea completada.")[1].trim();
+            }
+            
+            // Limpieza condicional
+            const esProcesoReal = fullLog.includes("[dios] Paso ") || fullLog.includes("[dios] Modo AGENTE");
+            respuesta = respuesta.replace(/\[\+\] Proceso finalizado\.?/g, '').replace(/\[\+\] Iniciando el Dios\.\.\./g, '').replace(/\[dios\] Paso \d+\/\d+/g, '').replace(/\[dios\] Tarea completada\.( Resumen:)?/g, '').trim();
+            if (esProcesoReal) respuesta = respuesta + '\n\n✅ Proceso de producción finalizado.';
+            
+            localStorage.removeItem('pending_task');
+            guardarMensajeLocal('assistant', respuesta);
+            
+            // Reemplazar el mensaje de "reconectando" con el real
+            botMsg.innerHTML = '';
+            botMsg.remove();
+            renderizarBurbuja('assistant', respuesta);
+            
+            input.disabled = false;
+        }
+    };
+    
+    eventSource.onerror = function() {
+        eventSource.close();
+        consoleDiv.classList.remove('active');
+        botMsg.innerText = "❌ Error de reconexion.";
+        input.disabled = false;
+    };
+}
+
+
+async function cargarTareasVideo() {
+    const cont = document.getElementById('tareas-video-container');
+    if (!cont) return;
+    try {
+        const res = await fetch('/api/tareas_video');
+        const tareas = await res.json();
+        if (tareas.length === 0) {
+            cont.innerHTML = '<p style="color:#888; font-size:13px;">No hay videos generados.</p>';
+            return;
+        }
+        cont.innerHTML = tareas.map(t => {
+            let video = '';
+            if (t.ruta_video && t.ruta_video.includes('/')) {
+                const name = t.ruta_video.split('/').pop();
+                video = `<video controls src="/media/videos/${name}" style="width:100%; max-height:200px; border-radius:6px;"></video>`;
+            }
+            return `<div style="background:#111; padding:12px; border-radius:8px; border:1px solid #222;">
+                <p style="color:#fff; font-size:13px; margin:0 0 6px;">${t.prompt}</p>
+                <p style="color:#888; font-size:11px; margin:0 0 8px;">Estado: ${t.estado}</p>
+                ${video}
+            </div>`;
+        }).join('');
+    } catch(e) { console.error(e); }
+}
+
+
+// ═══ DASHBOARD ═══
+async function cargarDashboard() {
+  try {
+    const r = await fetch('/api/dashboard');
+    const d = await r.json();
+    const s = d.salud || {};
+    const icono = (v) => v === 'ok' || v === '?' ? '🟢' : '🔴';
+    const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+    set('dash-flask', icono(s.flask) + ' ' + (s.flask || '?'));
+    set('dash-omni', icono(s.omniroute) + ' ' + (s.omniroute || '?'));
+    set('dash-worker', icono(s.worker) + ' ' + (s.worker || '?'));
+    set('dash-repo', s.repo || '?');
+    const st = document.getElementById('dash-status');
+    if (st) {
+      const ok = s.flask === 'ok' && s.omniroute === 'ok' && s.worker === 'ok';
+      st.textContent = ok ? '🟢 Sistema OK' : '🟡 Atención';
+      st.style.background = ok ? 'rgba(34,197,94,0.15)' : 'rgba(234,179,8,0.15)';
+      st.style.color = ok ? '#22c55e' : '#eab308';
+    }
+    const box = document.getElementById('dash-tareas');
+    if (box) {
+      if (!d.tareas || d.tareas.length === 0) {
+        box.innerHTML = '<p class="dash-muted">Sin tareas recientes</p>';
+      } else {
+        box.innerHTML = d.tareas.map(t => {
+          const id = (t.id || '?').substring(0, 8);
+          const msg = (t.mensaje || t.prompt || '').substring(0, 55);
+          const est = t.estado || '?';
+          return '<div class="task-row"><span class="task-id">' + id + '</span><span>' + msg + '</span><span class="task-estado ' + est + '">' + est + '</span></div>';
+        }).join('');
+      }
+    }
+  } catch(e) { console.error('Dashboard:', e); }
+}
+
+async function apiDoctor() {
+  mostrarToast('info', '🩺 Doctor', 'Diagnosticando...');
+  try {
+    const r = await fetch('/api/doctor', {method: 'POST'});
+    const d = await r.json();
+    mostrarToast(d.status === 'ok' ? 'success' : 'error', '🩺 Doctor', (d.reporte || d.mensaje || '').substring(0, 100));
+    cargarDashboard();
+  } catch(e) { mostrarToast('error', 'Doctor', String(e)); }
+}
+
+async function apiLimpiar() {
+  mostrarToast('info', '🧹 Conserje', 'Consultando...');
+  try {
+    const r = await fetch('/api/conserje', {method: 'POST'});
+    const d = await r.json();
+    mostrarToast('success', '🧹 Conserje', (d.resumen || 'OK').substring(0, 120));
+  } catch(e) { mostrarToast('error', 'Conserje', String(e)); }
+}
+
+// ═══ TOASTS ═══
+function mostrarToast(tipo, titulo, mensaje) {
+  const c = document.getElementById('toast-container');
+  if (!c) return;
+  const t = document.createElement('div');
+  t.className = 'toast ' + tipo;
+  t.innerHTML = '<div class="toast-title">' + titulo + '</div><div class="toast-msg">' + mensaje + '</div>';
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 300); }, 5000);
+}
+
+// ═══ POLLING TOASTS ═══
+let _tareasVistas = new Set();
+let _pollInit = false;
+async function initPolling() {
+  if (_pollInit) return;
+  _pollInit = true;
+  try {
+    const r = await fetch('/api/toasts');
+    const ts = await r.json();
+    ts.forEach(t => _tareasVistas.add(t.id));
+  } catch(e) {}
+  setInterval(async () => {
+    try {
+      const r = await fetch('/api/toasts');
+      const ts = await r.json();
+      ts.forEach(t => {
+        if (!_tareasVistas.has(t.id)) {
+          _tareasVistas.add(t.id);
+          const tipo = t.estado === 'done' ? 'success' : 'error';
+          const ic = t.estado === 'done' ? '✅' : '❌';
+          mostrarToast(tipo, ic + ' Tarea ' + t.id.substring(0,8), (t.prompt || '').substring(0, 60));
+        }
+      });
+    } catch(e) {}
+  }, 5000);
+}
+
+// ═══ COMMAND PALETTE ═══
+const CMD_ITEMS = [
+  {icon: '🏠', label: 'Ir a Inicio', action: () => nav('inicio', null)},
+  {icon: '🤖', label: 'Abrir chat con Dios', action: () => nav('chat', null)},
+  {icon: '🎵', label: 'Música Studio', action: () => nav('musica', null)},
+  {icon: '🎨', label: 'Image Studio', action: () => nav('imagen', null)},
+  {icon: '🎙️', label: 'Voice Studio', action: () => nav('voz', null)},
+  {icon: '🎬', label: 'Video Studio', action: () => nav('video', null)},
+  {icon: '🎞️', label: 'Media Center', action: () => nav('media', null)},
+  {icon: '📋', label: 'Cola de producción', action: () => nav('produccion', null)},
+  {icon: '🩺', label: 'Doctor (diagnóstico)', action: () => { nav('inicio', null); setTimeout(apiDoctor, 200); }},
+  {icon: '🧹', label: 'Limpiar sistema (Conserje)', action: () => { nav('inicio', null); setTimeout(apiLimpiar, 200); }},
+  {icon: '📰', label: 'RSS', action: () => nav('rss', null)},
+  {icon: '📊', label: 'Analytics', action: () => nav('analytics', null)},
+  {icon: '📚', label: 'Documentación', action: () => nav('docs', null)},
+];
+
+let _cmdFiltrados = CMD_ITEMS.slice();
+let _cmdSel = 0;
+
+function initCommandPalette() {
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); abrirCmd(); }
+    if (e.key === 'Escape') cerrarCmd();
+  });
+}
+
+function abrirCmd() {
+  const p = document.getElementById('cmd-palette');
+  if (!p) return;
+  p.style.display = 'flex';
+  const i = document.getElementById('cmd-input');
+  if (i) { i.value = ''; i.focus(); }
+  _cmdFiltrados = CMD_ITEMS.slice();
+  _cmdSel = 0;
+  renderCmd();
+}
+
+function cerrarCmd() {
+  const p = document.getElementById('cmd-palette');
+  if (p) p.style.display = 'none';
+}
+
+function filtrarCmd() {
+  const q = (document.getElementById('cmd-input').value || '').toLowerCase();
+  _cmdFiltrados = CMD_ITEMS.filter(c => c.label.toLowerCase().includes(q));
+  _cmdSel = 0;
+  renderCmd();
+}
+
+function renderCmd() {
+  const b = document.getElementById('cmd-results');
+  if (!b) return;
+  b.innerHTML = _cmdFiltrados.map((c, i) =>
+    '<div class="cmd-item' + (i === _cmdSel ? ' selected' : '') + '" onclick="ejecutarCmd(' + i + ')"><span class="cmd-icon">' + c.icon + '</span>' + c.label + '</div>'
+  ).join('');
+}
+
+function cmdKeydown(e) {
+  if (e.key === 'ArrowDown') { e.preventDefault(); _cmdSel = Math.min(_cmdSel + 1, _cmdFiltrados.length - 1); renderCmd(); }
+  if (e.key === 'ArrowUp') { e.preventDefault(); _cmdSel = Math.max(_cmdSel - 1, 0); renderCmd(); }
+  if (e.key === 'Enter') { e.preventDefault(); ejecutarCmd(_cmdSel); }
+}
+
+function ejecutarCmd(i) {
+  if (_cmdFiltrados[i]) { _cmdFiltrados[i].action(); cerrarCmd(); }
+}
+
+// ═══ INIT ═══
+document.addEventListener('DOMContentLoaded', () => {
+  initCommandPalette();
+  initPolling();
+  setTimeout(cargarDashboard, 400);
+});
+setInterval(() => {
+  const v = document.getElementById('view-inicio');
+  if (v && v.classList.contains('active')) cargarDashboard();
+}, 15000);
+
+
+async function producirNicho(nicho) {
+  const log = document.getElementById('nicho-log');
+  log.textContent = '⏳ Lanzando ' + nicho + '... (mira el log del worker, o espera a que termine)';
+  try {
+    const r = await fetch('/api/producir_nicho', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({nicho, dry:false})});
+    const d = await r.json();
+    log.textContent = '✅ ' + (d.mensaje || 'OK');
+    mostrarToast('info', '🏭 Orquestador', nicho + ' en marcha (30 min)');
+  } catch(e) {
+    log.textContent = '❌ ' + e.message;
+  }
+}

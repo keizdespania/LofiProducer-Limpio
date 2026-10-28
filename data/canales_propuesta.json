@@ -1,0 +1,205 @@
+{
+  "canales": [
+    {
+      "id": "physics_channel",
+      "nombre": "Physics Explained",
+      "nicho": "educación/ciencia",
+      "rpm": "$19",
+      "oportunidad": 8.5,
+      "duracion": "estandar",
+      "paleta": "oscuro",
+      "tags": [
+        "physics"
+      ],
+      "prompt_audio": "physics prompt",
+      "justificacion": "Este canal proporciona explicaciones clave sobre temas de física moderna, para aprender y divirtirse con la ciencia."
+    },
+    {
+      "id": "economics_channel",
+      "nombre": "Economics Made Easy",
+      "nicho": "educación/ciencia",
+      "rpm": "$18",
+      "oportunidad": 8.5,
+      "duracion": "estandar",
+      "paleta": "oscuro",
+      "tags": [
+        "economics"
+      ],
+      "prompt_audio": "economics prompt",
+      "justificacion": "Este canal simplifica los conceptos económicos para que entiendas mejor el funcionamiento de la economía y cómo afecta a la sociedad."
+    },
+    {
+      "id": "history_channel",
+      "nombre": "History Uncovered",
+      "nicho": "educación/ciencia",
+      "rpm": "$9",
+      "oportunidad": 8.5,
+      "duracion": "estandar",
+      "paleta": "oscuro",
+      "tags": [
+        "history"
+      ],
+      "prompt_audio": "history prompt",
+      "justificacion": "Este canal explora eventos históricos y su impacto en la sociedad, presentándolo de una manera entretenida y interactiva."
+    },
+    {
+      "id": "wellness",
+      "nombre": "Escala de Salud",
+      "nicho": "lifestyle/wellness",
+      "rpm": "$17.5-18",
+      "oportunidad": 8.5,
+      "duracion": "estandar",
+      "paleta": "oscuro",
+      "tags": [
+        "health",
+        "meditation",
+        "productivity"
+      ],
+      "prompt_audio": "english prompt",
+      "justificacion": "Este canal se enfocará en proponer estrategias e instrumentos para mejorar la salud física y mental, meditación, productividad y desarrollo personal, con una perspectiva de investigación y experimentación."
+    },
+    {
+      "id": "mindfulness",
+      "nombre": "Escala de Meditación",
+      "nicho": "lifestyle/wellness",
+      "rpm": "$17.5-18",
+      "oportunidad": 8.5,
+      "duracion": "estandar",
+      "paleta": "oscuro",
+      "tags": [
+        "mindfulness",
+        "meditation",
+        "productivity"
+      ],
+      "prompt_audio": "english prompt",
+      "justificacion": "Este canal se dedicará a compartir consejos, técnicas y estudios de investigación sobre el poder de la meditación para mejorar la calidad de vida, la concentración y la reducción de estrés."
+    },
+    {
+      "id": "productivity",
+      "nombre": "Escala de Productividad",
+      "nicho": "lifestyle/wellness",
+      "rpm": "$17.5-18",
+      "oportunidad": 8.5,
+      "duracion": "estandar",
+      "paleta": "oscuro",
+      "tags": [
+        "productivity",
+        "mindfulness",
+        "self-improvement"
+      ],
+      "prompt_audio": "english prompt",
+      "justificacion": "Este canal proporcionará herramientas y consejos para mejorar la productividad, la organización y la eficiencia en los trabajos y actividades diarias, combinando técnicas de meditación y auto-mejoramiento."
+    },
+    {
+      "id": "fitness",
+      "nombre": "Escala de Fitness",
+      "nicho": "lifestyle/wellness",
+      "rpm": "$17.5-18",
+      "oportunidad": 8.5,
+      "duracion": "estandar",
+      "paleta": "oscuro",
+      "tags": [
+        "fitness",
+        "health",
+        "self-improvement"
+      ],
+      "prompt_audio": "english prompt",
+      "justificacion": "Este canal se enfocará en ofrecer consejos, tutoriales y reportajes sobre la salud física y mental, desarrollando una dieta equilibrada, ejercicios y técnicas de auto-conservación de salud y bienestar."
+    },
+    {
+      "id": "mindbody",
+      "nombre": "Escala de Mind Body",
+      "nicho": "lifestyle/wellness",
+      "rpm": "$17.5-18",
+      "oportunidad": 8.5,
+      "duracion": "estandar",
+      "paleta": "oscuro",
+      "tags": [
+        "mindbody",
+        "health",
+        "self-improvement"
+      ],
+      "prompt_audio": "english prompt",
+      "justificacion": "Este canal se centrará en mejorar el bienestar físico y mental, abordando ejercicios, nutrición y consejos para disminuir la ansiedad y mejorar la calidad de vida."
+    },
+    {
+      "id": "finanzas",
+      "nombre": "Español Finanzas",
+      "nicho": "información sobre finanzas y economía para hablantes en español",
+      "rpm": "$23-21",
+      "oportunidad": 8.5,
+      "duracion": "estandar",
+      "paleta": "oscuro",
+      "tags": [
+        "finanzas",
+        "economía"
+      ],
+      "prompt_audio": "prompter para contenido sobre finanzas y economía en español",
+      "justificacion": "Ofrece información útil y actualizada sobre temas financieros para ayudar a suscriptores a gestionar sus recursos y mejorar su conocimiento en esta área"
+    },
+    {
+      "id": "tech",
+      "nombre": "Español Tecnología",
+      "nicho": "información sobre tecnología y innovación para hablantes en español",
+      "rpm": "$21-21",
+      "oportunidad": 8.5,
+      "duracion": "estandar",
+      "paleta": "oscuro",
+      "tags": [
+        "tecnología",
+        "innovación",
+        "ciencia"
+      ],
+      "prompt_audio": "prompter para contenido sobre tecnología y innovación en español",
+      "justificacion": "Brindando actualizaciones y análisis sobre nuevas tecnologías, tendencias y avances científicos, mejoramos la conocimiento de nuestros suscriptores"
+    },
+    {
+      "id": "historia",
+      "nombre": "Español Historia",
+      "nicho": "temas históricos y cultura para hablantes en español",
+      "rpm": "$9-9",
+      "oportunidad": 8.2,
+      "duracion": "pasaje",
+      "paleta": "claro",
+      "tags": [
+        "historia",
+        "cultura",
+        "épocas"
+      ],
+      "prompt_audio": "prompter para contenido sobre temas históricos y cultura en español",
+      "justificacion": "Proporcionando contenido informativo sobre épocas, luchas y eventos históricos, mejoramos la comprensión y cultura de nuestros suscriptores"
+    },
+    {
+      "id": "noticias",
+      "nombre": "Español Noticias",
+      "nicho": "actualizaciones y noticias actuales en español",
+      "rpm": "$9-8",
+      "oportunidad": 7.8,
+      "duracion": "breve",
+      "paleta": "claro",
+      "tags": [
+        "noticias",
+        "actualizaciones",
+        "temas actuales"
+      ],
+      "prompt_audio": "prompter para actualizaciones y noticias en español",
+      "justificacion": "Proporcionando noticias útiles y actualizaciones en diversos temas, nuestros suscriptores pueden mantenerse al día sobre eventos actuales y tendencias"
+    },
+    {
+      "id": "inovacion",
+      "nombre": "Español Inovación",
+      "nicho": "innovación y avance tecnológico en español",
+      "rpm": "$9-8",
+      "oportunidad": 7.6,
+      "duracion": "breve",
+      "paleta": "claro",
+      "tags": [
+        "innovación",
+        "tecnología",
+        "avance"
+      ],
+      "prompter": "prompter para contenido de innovación y avance tecnológico en español",
+      "justificacion": "Proporcionando información útil y actualizada sobre innovaciones y avances tecnológicos, nuestros suscriptores pueden mejorar su conocimiento en este ámbito"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+# ACE-Step v11 - Kaggle Kernel (acestep.cpp + GGUF) - auto-upload a GitHub
+CAPTION = "__CAPTION__"
+DURATION = __DURATION__
+GITHUB_TOKEN = "__GITHUB_TOKEN__"
+GITHUB_REPO = "keizdespania/LofiProducer-backup"
+
+import subprocess, pathlib, json, shutil, sys, time
+
+def sh(cmd, cwd=None):
+    print("$ " + cmd, flush=True)
+    r = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)
+    if r.stdout: print(r.stdout[-2000:], flush=True)
+    if r.returncode != 0:
+        print(r.stderr[-2000:], flush=True)
+        sys.exit("FAIL: " + cmd)
+
+WORK = pathlib.Path("/kaggle/working")
+REPO = WORK / "acestep.cpp"
+MODELS = REPO / "models"
+
+print("== 1. clonar acestep.cpp ==", flush=True)
+sh("git clone --depth 1 --recurse-submodules https://github.com/ServeurpersoCom/acestep.cpp.git " + str(REPO))
+
+print("== 2. compilar CUDA (arch=75 T4 + driver real Kaggle) ==", flush=True)
+sh("ls -la /usr/local/nvidia/lib64/libcuda.so* || true")
+sh("ln -sf /usr/local/nvidia/lib64/libcuda.so /usr/local/cuda/lib64/libcuda.so || true")
+sh("ln -sf /usr/local/nvidia/lib64/libcuda.so.1 /usr/local/cuda/lib64/libcuda.so.1 || true")
+sh("sed -i 's|CUDA::cuda_driver|/usr/local/nvidia/lib64/libcuda.so|g' CMakeLists.txt || true")
+sh("sed -i 's|CUDA::cuda_driver|/usr/local/nvidia/lib64/libcuda.so|g' ggml/src/ggml-cuda/CMakeLists.txt || true")
+sh("rm -rf build && mkdir build && cd build && cmake .. -DGGML_CUDA=ON -DGGML_NCCL=OFF -DGGML_CUDA_NO_VMM=ON -DCMAKE_CUDA_COMPILER=/usr/local/cuda/bin/nvcc -DCMAKE_CUDA_ARCHITECTURES=75 -DCUDA_cuda_driver_LIBRARY=/usr/local/nvidia/lib64/libcuda.so -DCMAKE_PREFIX_PATH=/usr/local/nvidia && cmake --build . --config Release -j 2", cwd=str(REPO))
+
+print("== 3. GGUF (~3.5GB) ==", flush=True)
+MODELS.mkdir(exist_ok=True)
+for f in [
+    "acestep-v15-turbo-Q4_K_M.gguf",
+    "acestep-5Hz-lm-0.6B-Q8_0.gguf",
+    "Qwen3-Embedding-0.6B-Q8_0.gguf",
+    "vae-BF16.gguf",
+]:
+    url = "https://huggingface.co/Serveurperso/ACE-Step-1.5-GGUF/resolve/main/" + f + "?download=true"
+    sh('wget -q --content-disposition --tries=3 --timeout=60 "' + url + '"', cwd=str(MODELS))
+
+print("== 4. request.json ==", flush=True)
+request = {
+    "lm_model": "acestep-5Hz-lm-0.6B-Q8_0.gguf",
+    "synth_model": "acestep-v15-turbo-Q4_K_M.gguf",
+    "caption": CAPTION,
+    "task_type": __TASK_TYPE__,
+    "lyrics": __LYRICS__,
+    "instrumental": __INSTRUMENTAL__,
+    "vocal_language": __VOCAL_LANGUAGE__,
+    "duration": DURATION,
+    "bpm": __BPM__,
+    "keyscale": __KEYSCALE__,
+    "timesignature": __TIMESIG__,
+    "inference_steps": __STEPS__,
+    "guidance_scale": __GUIDANCE__,
+    "shift": __SHIFT__,
+    "lm_temperature": __LM_TEMP__,
+    "lm_cfg_scale": __LM_CFG__,
+    "lm_top_p": __LM_TOP_P__,
+    "seed": __SEED__,
+    "output_format": __OUTPUT_FORMAT__,
+    "mp3_bitrate": 128,
+}
+pathlib.Path("/tmp/request.json").write_text(json.dumps(request))
+print(json.dumps(request, indent=2), flush=True)
+
+print("== 5. ace-lm ==", flush=True)
+sh("./build/ace-lm --models models --request /tmp/request.json", cwd=str(REPO))
+
+print("== 6. ace-synth ==", flush=True)
+sh("./build/ace-synth --models models --request /tmp/request0.json", cwd=str(REPO))
+
+print("== 7. copiar MP3 a working ==", flush=True)
+candidates = list(pathlib.Path("/tmp").glob("request00*.mp3")) + list(REPO.glob("request00*.mp3"))
+if not candidates:
+    print("/tmp:", [p.name for p in pathlib.Path("/tmp").iterdir()], flush=True)
+    print("repo:", [p.name for p in REPO.iterdir() if p.is_file()], flush=True)
+    sys.exit("No se genero MP3")
+src = candidates[0]
+dst = WORK / "musica.mp3"
+shutil.copy2(src, dst)
+print("OK: " + str(dst) + " (" + str(dst.stat().st_size) + " bytes)", flush=True)
+
+print("== 8. subir a GitHub ==", flush=True)
+if not GITHUB_TOKEN or GITHUB_TOKEN.startswith("__"):
+    print("WARN: GITHUB_TOKEN no inyectado. Saltando upload.", flush=True)
+else:
+    import base64, requests
+    ts = int(time.time())
+    dest_path = f"output/musica/musica_{ts}.mp3"
+    with open(str(dst), "rb") as f:
+        content = base64.b64encode(f.read()).decode()
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{dest_path}"
+    headers = {"Authorization": f"token {GITHUB_TOKEN}", "Accept": "application/vnd.github.v3+json"}
+    r = requests.get(url, headers=headers)
+    sha = r.json().get("sha") if r.status_code == 200 else None
+    payload = {"message": f"Add music {ts}", "content": content, "branch": "main"}
+    if sha: payload["sha"] = sha
+    r = requests.put(url, headers=headers, json=payload)
+    print("GitHub upload:", r.status_code, flush=True)
+    if r.status_code not in (200, 201):
+        sys.exit(f"GitHub upload failed: {r.text[:300]}")
+    print("OK GitHub: " + dest_path, flush=True)

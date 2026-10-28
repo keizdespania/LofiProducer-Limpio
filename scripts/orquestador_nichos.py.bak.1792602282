@@ -1,0 +1,89 @@
+"""Orquestador universal de nichos. Uso: python scripts/orquestador_nichos.py <nicho> [--dry]"""
+import sys, json, pathlib, subprocess, time
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts")); sys.path.insert(0, str(ROOT / "brain"))
+
+def _env(k):
+    for line in (ROOT / ".env").read_text().splitlines():
+        if line.startswith(k + "="):
+            return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return None
+
+def _heredar(nicho, cfg):
+    base = cfg.get(nicho, {}).get("extends")
+    if base and base in cfg.get("_bases", {}):
+        final = dict(cfg["_bases"][base]); final.update(cfg[nicho]); return final
+    return cfg.get(nicho, {})
+
+def _rss(nc):
+    from rss_reader import leer_feed
+    out = []
+    for f in nc.get("fuente_noticias", []):
+        try: out.append(f"## {f}\n{leer_feed(f, 3)}")
+        except Exception as e: print(f"  ⚠️ {f}: {e}")
+    return "\n\n".join(out) or "Sin noticias."
+
+
+def _guion(ctx, nc):
+    import urllib.request, time, urllib.error
+    prompt = "Eres guionista YouTube. Guion " + str(nc.get("duracion", 90)) + "s, tono: " + str(nc.get("tono","neutral")) + ". SOLO guion.\n\nContexto:\n" + ctx[:3000]
+    key = _env("OMNIROUTE_API_KEY")
+    body = json.dumps({"model": "mi-groq/qwen/qwen3.8-27b",
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": 2000, "temperature": 0.7}).encode()
+    for intento in range(3):
+        try:
+            req = urllib.request.Request("http://127.0.0.1:20128/v1/chat/completions", data=body,
+                headers={"Authorization": "Bearer " + str(key), "Content-Type": "application/json", "User-Agent": "LofiProducer/1.0"})
+            return json.loads(urllib.request.urlopen(req, timeout=120).read())["choices"][0]["message"]["content"]
+        except urllib.error.HTTPError as e:
+            if e.code == 429 and intento < 2:
+                print("  espera 15s (429)")
+                time.sleep(15); continue
+            raise
+
+def producir(nicho, dry=False):
+    cfg = json.loads((ROOT / "config" / "nichos.json").read_text())
+    if nicho not in cfg or nicho.startswith("_"):
+        return f"ERROR: nicho '{nicho}' no existe. Disponibles: {[k for k in cfg if not k.startswith('_')]}"
+    nc = _heredar(nicho, cfg)
+    print(f"[Orquestador] {nc.get('nombre', nicho)} · formato={nc.get('formato')} · {nc.get('duracion')}s")
+    ts = int(time.time()); out = ROOT / "output" / "nichos" / nicho; out.mkdir(parents=True, exist_ok=True)
+    print("[1/5] RSS..."); noticias = _rss(nc); print(f"  {len(noticias)} chars")
+    print("[2/5] Guion..."); guion = _guion(noticias, nc)
+    (out / f"guion_{ts}.md").write_text(guion, encoding="utf-8"); print(f"  {len(guion)} chars")
+    if dry: return f"OK dry. Guion en {out}/guion_{ts}.md"
+    audio = None
+    if nc.get("voz"):
+        print(f"[3/5] Voz ({nc['voz']})...")
+        try:
+            from dios import _tool_generar_narracion
+            r = _tool_generar_narracion({"texto": guion[:3000], "nombre": f"{nicho}_{ts}"})
+            print(f"  {r[:100]}")
+            mp3s = sorted((ROOT / "output" / "audios").glob(f"*{nicho}*{ts}*"), key=lambda p: p.stat().st_mtime, reverse=True)
+            if mp3s: audio = mp3s[0]
+        except Exception as e: print(f"  ⚠️ Voz: {e}")
+    else: print("[3/5] Sin voz (música loop)")
+    print("[4/5] Música..."); musica = None
+    try:
+        from musica_acestep import generar as gen_mus
+        r = gen_mus(f"{nc.get('musica','lofi chill')}, {nc.get('nombre')}, cinematográfico", min(nc.get("duracion",90)+30, 180))
+        print(f"  {r[:120]}")
+        if r.startswith("OK:"): musica = pathlib.Path(r.split(":",1)[1].split("(")[0].strip())
+    except Exception as e: print(f"  ⚠️ Música: {e}")
+    print("[5/5] Imagen..."); img = None
+    try:
+        p = subprocess.run([sys.executable, "scripts/generar_imagen.py", f"{nc.get('imagen_estilo','cinematic')}, {nc.get('nombre')}"],
+            capture_output=True, text=True, cwd=str(ROOT), timeout=180)
+        if "OK:" in p.stdout:
+            ruta = p.stdout.split("OK:")[-1].strip().split()[0]
+            img = ROOT / ruta if not ruta.startswith("/") else pathlib.Path(ruta); print(f"  {img}")
+    except Exception as e: print(f"  ⚠️ Imagen: {e}")
+    manif = {"nicho": nicho, "ts": ts, "guion": str(out / f"guion_{ts}.md"),
+        "audio": str(audio) if audio else None, "musica": str(musica) if musica else None, "imagen": str(img) if img else None}
+    (out / f"manifest_{ts}.json").write_text(json.dumps(manif, indent=2), encoding="utf-8")
+    return f"OK: {json.dumps(manif, ensure_ascii=False)}"
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2: print("Uso: python scripts/orquestador_nichos.py <nicho> [--dry]"); sys.exit(1)
+    print(producir(sys.argv[1], "--dry" in sys.argv))

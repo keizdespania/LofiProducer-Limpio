@@ -1,0 +1,211 @@
+{
+  "motor": "YouTube Data API v3",
+  "version": "v3",
+  "endpoint_upload": "POST https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status",
+  "cuota_diaria": 10000,
+  "cuota_reset": "Medianoche PT",
+  "costos": {
+    "videos.insert": 1600,
+    "thumbnails.set": 50,
+    "playlistItems.insert": 50,
+    "videos.update": 50,
+    "videos.list": 1,
+    "captions.insert": 400,
+    "search.list": 100
+  },
+  "uploads_max_dia": 6,
+  "proyectos_para_100_canales": 17,
+  "scopes": [
+    "https://www.googleapis.com/auth/youtube.upload",
+    "https://www.googleapis.com/auth/youtube.readonly",
+    "https://www.googleapis.com/auth/youtube.force-ssl"
+  ],
+  "presets": {
+    "draft_privado": {
+      "desc": "Borrador privado",
+      "params": {
+        "privacyStatus": "private",
+        "notifySubscribers": false,
+        "categoryId": "22"
+      }
+    },
+    "publicar_ahora": {
+      "desc": "Publicar (requiere auditoría)",
+      "params": {
+        "privacyStatus": "public",
+        "notifySubscribers": true,
+        "categoryId": "22"
+      }
+    },
+    "programar": {
+      "desc": "Programar con publishAt",
+      "params": {
+        "privacyStatus": "private",
+        "publishAt": "ISO8601",
+        "categoryId": "22"
+      }
+    },
+    "shorts_vertical": {
+      "desc": "Shorts <60s 9:16",
+      "params": {
+        "privacyStatus": "public",
+        "categoryId": "24",
+        "duracion_max": 60
+      }
+    },
+    "lofi_music": {
+      "desc": "Música lofi",
+      "params": {
+        "privacyStatus": "public",
+        "categoryId": "10"
+      }
+    },
+    "podcast": {
+      "desc": "Podcast",
+      "params": {
+        "privacyStatus": "public",
+        "categoryId": "22",
+        "defaultLanguage": "es"
+      }
+    }
+  },
+  "validador": {
+    "reglas": [
+      {
+        "campo": "title",
+        "min": 1,
+        "max": 100
+      },
+      {
+        "campo": "description",
+        "min": 0,
+        "max": 5000
+      },
+      {
+        "campo": "tags_total_chars",
+        "min": 0,
+        "max": 500
+      },
+      {
+        "campo": "categoryId",
+        "valores": [
+          "10",
+          "17",
+          "20",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28"
+        ],
+        "default": "22"
+      },
+      {
+        "campo": "privacyStatus",
+        "valores": [
+          "private",
+          "unlisted",
+          "public"
+        ],
+        "default": "private"
+      },
+      {
+        "campo": "defaultLanguage",
+        "valores": [
+          "es",
+          "en",
+          "pt",
+          "fr",
+          "de",
+          "it"
+        ],
+        "default": "es"
+      }
+    ]
+  },
+  "errores": [
+    {
+      "code": 403,
+      "reason": "quotaExceeded",
+      "fix": "Esperar 24h o rotar proyecto Google Cloud"
+    },
+    {
+      "code": 400,
+      "reason": "uploadLimitExceeded",
+      "fix": "Máx 6/día. Rotar proyecto"
+    },
+    {
+      "code": 400,
+      "reason": "invalidTitle",
+      "fix": "1-100 chars, sin < >"
+    },
+    {
+      "code": 400,
+      "reason": "invalidTags",
+      "fix": "Suma <= 500 chars"
+    },
+    {
+      "code": 403,
+      "reason": "forbidden",
+      "fix": "Sin auditoría Google, todo privado"
+    }
+  ],
+  "reglas_anti_alucinacion": [
+    "Costo 1600 units/upload. 10000/día = 6 uploads max",
+    "privacyStatus='private' por defecto hasta auditar Google",
+    "Sin auditoría Google: todos los uploads salen privados",
+    "selfDeclaredMadeForKids=false SIEMPRE",
+    "notifySubscribers=false en masivo, true en estrenos",
+    "100 canales = 17 proyectos Google Cloud",
+    "Thumbnail 50 units extra (pero obligatorio para CTR)",
+    "Shorts: <60s, 9:16, NO como vídeo largo",
+    "categoryId coherente (lofi=10, news=25, edu=27)",
+    "defaultLanguage SIEMPRE (SEO internacional)"
+  ],
+  "ejemplos": [
+    {
+      "input": "sube en privado",
+      "preset": "draft_privado"
+    },
+    {
+      "input": "sube short",
+      "preset": "shorts_vertical"
+    },
+    {
+      "input": "programa lofi mañana",
+      "preset": "programar"
+    }
+  ],
+  "stats": {
+    "presets": 6,
+    "reglas": 10,
+    "errores": 5
+  },
+  "script_local": {
+    "path": "/data/data/com.termux/files/home/LofiProducer/scripts/subir_youtube.py",
+    "funciones": {
+      "_refresh": {
+        "args": [
+          "tok"
+        ],
+        "kwonly": []
+      },
+      "token": {
+        "args": [],
+        "kwonly": []
+      },
+      "subir": {
+        "args": [
+          "video",
+          "titulo",
+          "descripcion",
+          "tags",
+          "privacidad"
+        ],
+        "kwonly": []
+      }
+    }
+  }
+}

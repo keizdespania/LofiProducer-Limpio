@@ -1,0 +1,18 @@
+{
+  "nombre": "short_vertical_blur",
+  "ancho": 1080,
+  "alto": 1920,
+  "crf": 20,
+  "duracion": 60,
+  "loop_video": true,
+  "crop_blur": true,
+  "fades": {
+    "in": 0.3,
+    "out": 0.3
+  },
+  "musica_vol": 0.12,
+  "logo": null,
+  "logo_pos": "W-w-30:30",
+  "subtitulos": true,
+  "salida_path": "output/videos/short-blur-final.mp4"
+}

@@ -1,0 +1,44 @@
+# 🚀 BOOT_PROMPT — LOFIPRODUCER · MODO DIOS v5.0
+
+> **Arranque del Imperio. Pega este fichero al inicio de cada conversación.**
+> Abrir con: `cat ~/LofiProducer/BOOT_PROMPT.md`
+> Última actualización: 2026-10-23
+
+---
+
+## 🏠 REPO Y HOST
+
+- **Repo**: `~/LofiProducer` · GitHub: `keizdespania/LofiProducer-backup`
+- **Host**: Samsung A25 5G · Termux (F-Droid) · sin root · Python 3.14
+- **Web**: `http://127.0.0.1:8001` (Flask, supervisado por `runsv keiz-web`)
+- **Arranque**: Widget **🚀 Despertar** → `scripts/start_all.py` → OmniRoute + Flask + Task Worker
+- **Repo**: 849 MB · 2049 ficheros tracked (media excluida de git)
+
+---
+
+## 🎯 QUÉ ES
+
+Ecosistema local-first que produce, traduce y distribuye contenido multimedia monetizable a escala industrial. Orquestado por el **Dios** (LLM vía OmniRoute → Groq). Músculo en Kaggle T4 (2 cuentas rotativas). Objetivo: 100 canales automatizados generando ingresos pasivos.
+
+**Filosofía**: "El ecosistema crece por config, no por código." Añadir nicho/red/pipeline = editar JSON + regenerar SKILL.md, sin tocar Python.
+
+---
+
+## 🏗️ ARQUITECTURA (5 capas)
+
+### 1. Cerebro — `scripts/dios.py`
+- **36 tools** en `TOOL_FNS`.
+- **Bucle ReAct** hasta 25 pasos.
+- **Doble cerebro**: charla rápida (~2s) vs agente meticuloso (~30s).
+- **Memoria**: SQLite (`data/agent/memoria.db`).
+- **Pruner casero** (`brain/pruner.py`): -92% tokens.
+- **Contexto**: `BOOT_PROMPT.md` + `MANUAL_FRODO_PYTHON.md` + 9 contratos JSON.
+
+### 2. Web — `web_dashboard.py` + `assets/`
+- **55 endpoints** Flask.
+- **16 pestañas** con menú acordeón (Studios, Canales, Sistema).
+- **Modal ⚙️** de parámetros en los 4 studios.
+- **Director de Producción**: botón 🎬 Producir en Inicio.
+- **Papelera canales**: triple filtro + restaurar 30 días.
+- **Chat Jarvis**: voz streaming + Fast-Path + modo conversación.
+- **Producción**: cola + log worker en vivo (auto-refresh 3s).

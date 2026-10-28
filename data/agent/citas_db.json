@@ -1,0 +1,332 @@
+[
+  {
+    "libro": "Propaganda",
+    "autor": "Edward Bernays",
+    "año": 1928,
+    "cita_breve": "La manipulación consciente de las opiniones de las masas es un elemento importante de la sociedad democrática.",
+    "explicacion": "Bernays describe cómo los medios moldean la percepción pública."
+  },
+  {
+    "libro": "Manufacturing Consent",
+    "autor": "Noam Chomsky",
+    "año": 1988,
+    "cita_breve": "Los medios filtran la información para servir a los intereses del poder.",
+    "explicacion": "Chomsky describe cómo los medios omiten lo que amenaza al poder."
+  },
+  {
+    "libro": "Public Opinion",
+    "autor": "Walter Lippmann",
+    "año": 1922,
+    "cita_breve": "Los medios crean imágenes mentales que no corresponden a la realidad.",
+    "explicacion": "Lippmann describe cómo los medios construyen la realidad."
+  },
+  {
+    "libro": "Thinking, Fast and Slow",
+    "autor": "Daniel Kahneman",
+    "año": 2011,
+    "cita_breve": "Nada en la vida es tan importante como crees que es mientras lo estás pensando.",
+    "explicacion": "Kahneman describe el sesgo de disponibilidad."
+  },
+  {
+    "libro": "Influence",
+    "autor": "Robert Cialdini",
+    "año": 1984,
+    "cita_breve": "La escasez hace que lo deseemos más, aunque no lo necesitemos.",
+    "explicacion": "Cialdini describe el principio de escasez."
+  },
+  {
+    "libro": "The Crowd",
+    "autor": "Gustave Le Bon",
+    "año": 1895,
+    "cita_breve": "En la multitud, el individuo pierde su personalidad consciente y actúa por sugestión.",
+    "explicacion": "Le Bon describe la psicología de las masas."
+  },
+  {
+    "libro": "Propaganda",
+    "autor": "Edward Bernays",
+    "año": 1928,
+    "cita_breve": "La propaganda es la técnica de influir en la acción de un grupo.",
+    "explicacion": "Bernays define la propaganda moderna."
+  },
+  {
+    "libro": "Manufacturing Consent",
+    "autor": "Noam Chomsky",
+    "año": 1988,
+    "cita_breve": "Los medios son propiedad de grandes corporaciones que buscan el beneficio.",
+    "explicacion": "Chomsky critica la propiedad de los medios."
+  },
+  {
+    "libro": "Thinking, Fast and Slow",
+    "autor": "Daniel Kahneman",
+    "año": 2011,
+    "cita_breve": "El sesgo de confirmación hace que busquemos información que confirme nuestras creencias.",
+    "explicacion": "Kahneman describe el sesgo de confirmación."
+  },
+  {
+    "libro": "Influence",
+    "autor": "Robert Cialdini",
+    "año": 1984,
+    "cita_breve": "La autoridad se usa para vender, y funciona aunque no sea experta.",
+    "explicacion": "Cialdini describe el principio de autoridad."
+  },
+  {
+    "libro": "Propaganda",
+    "autor": "Edward Bernays",
+    "año": 1928,
+    "cita_breve": "La repetición es la base de la propaganda.",
+    "explicacion": "Bernays describe la repetición como arma."
+  },
+  {
+    "libro": "The Crowd",
+    "autor": "Gustave Le Bon",
+    "año": 1895,
+    "cita_breve": "Las ideas se contagian de unos a otros como virus.",
+    "explicacion": "Le Bon describe el contagio de ideas."
+  },
+  {
+    "libro": "Public Opinion",
+    "autor": "Walter Lippmann",
+    "año": 1922,
+    "cita_breve": "Los estereotipos son la defensa del individuo contra la realidad.",
+    "explicacion": "Lippmann describe los estereotipos."
+  },
+  {
+    "libro": "Manufacturing Consent",
+    "autor": "Noam Chomsky",
+    "año": 1988,
+    "cita_breve": "Los medios crean una realidad ficticia que los ciudadanos toman como cierta.",
+    "explicacion": "Chomsky critica la ficción mediática."
+  },
+  {
+    "libro": "Thinking, Fast and Slow",
+    "autor": "Daniel Kahneman",
+    "año": 2011,
+    "cita_breve": "El sistema 1 es rápido, intuitivo y propenso a errores.",
+    "explicacion": "Kahneman describe el sistema 1."
+  },
+  {
+    "libro": "Influence",
+    "autor": "Robert Cialdini",
+    "año": 1984,
+    "cita_breve": "La reciprocidad es el principio más poderoso de la persuasión.",
+    "explicacion": "Cialdini describe la reciprocidad."
+  },
+  {
+    "libro": "Propaganda",
+    "autor": "Edward Bernays",
+    "año": 1928,
+    "cita_breve": "La opinión pública es un producto manufacturado.",
+    "explicacion": "Bernays describe la fabricación de la opinión."
+  },
+  {
+    "libro": "The Crowd",
+    "autor": "Gustave Le Bon",
+    "año": 1895,
+    "cita_breve": "La masa es siempre inconsciente de sus actos.",
+    "explicacion": "Le Bon describe la inconsciencia de la masa."
+  },
+  {
+    "libro": "Manufacturing Consent",
+    "autor": "Noam Chomsky",
+    "año": 1988,
+    "cita_breve": "La propaganda se usa para controlar el pensamiento.",
+    "explicacion": "Chomsky describe el control del pensamiento."
+  },
+  {
+    "libro": "Thinking, Fast and Slow",
+    "autor": "Daniel Kahneman",
+    "año": 2011,
+    "cita_breve": "La aversión a la pérdida es más fuerte que el deseo de ganar.",
+    "explicacion": "Kahneman describe la aversión a la pérdida."
+  },
+  {
+    "libro": "Influence",
+    "autor": "Robert Cialdini",
+    "año": 1984,
+    "cita_breve": "La coherencia social nos hace seguir a la mayoría.",
+    "explicacion": "Cialdini describe la coherencia social."
+  },
+  {
+    "libro": "Propaganda",
+    "autor": "Edward Bernays",
+    "año": 1928,
+    "cita_breve": "La sugestión es la base de toda comunicación persuasiva.",
+    "explicacion": "Bernays describe la sugestión."
+  },
+  {
+    "libro": "The Crowd",
+    "autor": "Gustave Le Bon",
+    "año": 1895,
+    "cita_breve": "El prestigio es la cualidad que paraliza el juicio.",
+    "explicacion": "Le Bon describe el prestigio."
+  },
+  {
+    "libro": "Public Opinion",
+    "autor": "Walter Lippmann",
+    "año": 1922,
+    "cita_breve": "El público no piensa, solo reacciona a los estímulos.",
+    "explicacion": "Lippmann critica la pasividad del público."
+  },
+  {
+    "libro": "Manufacturing Consent",
+    "autor": "Noam Chomsky",
+    "año": 1988,
+    "cita_breve": "Los medios son el cuarto poder, pero sirven al poder.",
+    "explicacion": "Chomsky critica el papel de los medios."
+  },
+  {
+    "libro": "Thinking, Fast and Slow",
+    "autor": "Daniel Kahneman",
+    "año": 2011,
+    "cita_breve": "El exceso de confianza es el sesgo más peligroso.",
+    "explicacion": "Kahneman describe el exceso de confianza."
+  },
+  {
+    "libro": "Influence",
+    "autor": "Robert Cialdini",
+    "año": 1984,
+    "cita_breve": "La simpatía nos hace decir sí sin pensar.",
+    "explicacion": "Cialdini describe el principio de simpatía."
+  },
+  {
+    "libro": "Propaganda",
+    "autor": "Edward Bernays",
+    "año": 1928,
+    "cita_breve": "La propaganda debe ser invisible para ser efectiva.",
+    "explicacion": "Bernays describe la invisibilidad de la propaganda."
+  },
+  {
+    "libro": "The Crowd",
+    "autor": "Gustave Le Bon",
+    "año": 1895,
+    "cita_breve": "La multitud amplifica las emociones y reduce la razón.",
+    "explicacion": "Le Bon describe la amplificación emocional."
+  },
+  {
+    "libro": "Manufacturing Consent",
+    "autor": "Noam Chomsky",
+    "año": 1988,
+    "cita_breve": "La desinformación es una forma de control social.",
+    "explicacion": "Chomsky describe la desinformación."
+  },
+  {
+    "libro": "The Matrix",
+    "autor": "Morpheus",
+    "año": 1999,
+    "cita_breve": "Nadie puede decirte qué es Matrix. Tienes que verlo por ti mismo.",
+    "explicacion": "La realidad mediática es una construcción que solo entiendes cuando despiertas.",
+    "tipo": "cultura_pop"
+  },
+  {
+    "libro": "1984",
+    "autor": "George Orwell",
+    "año": 1949,
+    "cita_breve": "Quien controla el pasado controla el futuro. Quien controla el presente controla el pasado.",
+    "explicacion": "El control de la narrativa mediática define cómo recordamos las cosas.",
+    "tipo": "cultura_pop"
+  },
+  {
+    "libro": "Fight Club",
+    "autor": "Tyler Durden",
+    "año": 1999,
+    "cita_breve": "La publicidad nos hace perseguir coches y ropa, pero no nos hace felices.",
+    "explicacion": "La manipulación del deseo por parte de los medios de masas.",
+    "tipo": "cultura_pop"
+  },
+  {
+    "libro": "Entrevista (Rap Español)",
+    "autor": "Nach",
+    "año": 2020,
+    "cita_breve": "No me creo las noticias que me venden, solo creo lo que siento y lo que vivo.",
+    "explicacion": "La desconfianza en los medios tradicionales desde la experiencia personal.",
+    "tipo": "cultura_pop"
+  },
+  {
+    "libro": "Entrevista (Rap Español)",
+    "autor": "Kase.O",
+    "año": 2018,
+    "cita_breve": "El sistema te dice que eres libre mientras te pone la correa.",
+    "explicacion": "La ilusión de libertad en la sociedad de la información.",
+    "tipo": "cultura_pop"
+  },
+  {
+    "libro": "The Social Dilemma",
+    "autor": "Tristan Harris",
+    "año": 2020,
+    "cita_breve": "Si no pagas por el producto, el producto eres tú.",
+    "explicacion": "La economía de la atención y la manipulación algorítmica.",
+    "tipo": "cultura_pop"
+  },
+  {
+    "libro": "Entrevista",
+    "autor": "Eduardo Galeano",
+    "año": 2000,
+    "cita_breve": "Los medios de comunicación no dicen la verdad, dicen lo que les mandan.",
+    "explicacion": "La crítica literaria a la manipulación informativa.",
+    "tipo": "cultura_pop"
+  },
+  {
+    "libro": "Cita Anónima",
+    "autor": "Banksy",
+    "año": 2010,
+    "cita_breve": "El arte de la manipulación es hacer que la gente crea que decidió por sí misma.",
+    "explicacion": "El arte callejero como crítica a la comunicación de masas.",
+    "tipo": "cultura_pop"
+  },
+  {
+    "libro": "Refranero Popular",
+    "autor": "Sabiduría Popular",
+    "año": 2024,
+    "cita_breve": "Si el río suena, agua lleva.",
+    "explicacion": "Si todos los medios hablan de lo mismo, es porque hay un interés detrás.",
+    "tipo": "calle"
+  },
+  {
+    "libro": "Jerga Callejera",
+    "autor": "Anónimo",
+    "año": 2024,
+    "cita_breve": "No te cuentan la película completa, solo el tráiler que les interesa.",
+    "explicacion": "La omisión deliberada de información en los titulares.",
+    "tipo": "calle"
+  },
+  {
+    "libro": "Refranero Popular",
+    "autor": "Sabiduría Popular",
+    "año": 2024,
+    "cita_breve": "Ojos que no ven, corazón que no siente.",
+    "explicacion": "Lo que no sale en los medios, no existe para la opinión pública.",
+    "tipo": "calle"
+  },
+  {
+    "libro": "Jerga Callejera",
+    "autor": "Anónimo",
+    "año": 2024,
+    "cita_breve": "Te están vendiendo humo y tú encima dándoles las gracias.",
+    "explicacion": "La manipulación en el consumo de noticias.",
+    "tipo": "calle"
+  },
+  {
+    "libro": "Refranero Popular",
+    "autor": "Sabiduría Popular",
+    "año": 2024,
+    "cita_breve": "El que parte y reparte se lleva la mejor parte.",
+    "explicacion": "El control de los medios por parte de los grandes poderes.",
+    "tipo": "calle"
+  },
+  {
+    "libro": "Cita Anónima",
+    "autor": "Anónimo",
+    "año": 2024,
+    "cita_breve": "No es magia, es manipulación. Te hacen ver lo que quieren que veas.",
+    "explicacion": "El uso de efectos visuales y emocionales para dirigir la atención.",
+    "tipo": "calle"
+  },
+  {
+    "libro": "Jerga Callejera",
+    "autor": "Anónimo",
+    "año": 2024,
+    "cita_breve": "Mucho titular y poca chicha.",
+    "explicacion": "El clickbait como herramienta de manipulación mediática.",
+    "tipo": "calle"
+  }
+]

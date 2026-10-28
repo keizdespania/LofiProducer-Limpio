@@ -1,0 +1,114 @@
+"""Generador de imagenes con Cloudflare Workers AI SDXL + contrato."""
+import sys, time, json, pathlib, requests
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "brain"))
+from naming import generar_nombre
+from pathlib import Path
+
+CONTRACT = Path(__file__).resolve().parent.parent / "data" / "agent" / "image_contract.json"
+
+def _leer_env(nombre):
+    env = Path(".env")
+    if env.exists():
+        for line in env.read_text().splitlines():
+            if line.startswith(f"{nombre}="):
+                return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return ""
+
+def _cargar_contrato():
+    if not CONTRACT.exists(): return None
+    try: return json.loads(CONTRACT.read_text())
+    except Exception: return None
+
+def _aplicar_preset(preset, prompt):
+    c = _cargar_contrato()
+    if not c or not preset: return prompt, "", {}
+    p = c.get("presets", {}).get(preset)
+    if not p: return prompt, "", {}
+    extra = p.get("prompt_extra", "")
+    prompt_final = prompt + (", " + extra if extra else "")
+    return prompt_final, p.get("negative", ""), p.get("params", {})
+
+def _validar(params):
+    c = _cargar_contrato()
+    if not c: return params
+    out = dict(params)
+    for r in c.get("validador", {}).get("reglas", []):
+        campo = r["campo"]; val = out.get(campo)
+        if val is None or not isinstance(val, (int, float)): continue
+        if val < r["min"]: out[campo] = r["min"]
+        elif val > r["max"]: out[campo] = r["max"]
+    return out
+
+def generar(prompt, ancho=1024, alto=1024, preset=None, aspect=None,
+            negative_prompt="", num_steps=20, guidance=7.5, seed=-1, canal="general"):
+    # Aplicar preset
+    if preset:
+        prompt, preset_neg, preset_params = _aplicar_preset(preset, prompt)
+        if not negative_prompt: negative_prompt = preset_neg
+        if not aspect and "aspect" in preset_params:
+            aspect = preset_params["aspect"]
+        if preset_params.get("num_steps"): num_steps = preset_params["num_steps"]
+        if preset_params.get("guidance"): guidance = preset_params["guidance"]
+    
+    # Aspect ratio
+    if aspect:
+        c = _cargar_contrato()
+        if c:
+            ad = c.get("aspect_ratios", {}).get(aspect)
+            if ad:
+                ancho = ad["width"]; alto = ad["height"]
+    
+    # Validar
+    v = _validar({"num_steps": num_steps, "guidance": guidance, "width": ancho, "height": alto})
+    num_steps = v["num_steps"]; guidance = v["guidance"]
+    ancho = v["width"]; alto = v["height"]
+    
+    account_id = _leer_env("CLOUDFLARE_ACCOUNT_ID")
+    api_token = _leer_env("CLOUDFLARE_API_TOKEN")
+    if not account_id or not api_token:
+        return "ERROR: Faltan CLOUDFLARE_ACCOUNT_ID o CLOUDFLARE_API_TOKEN en .env"
+    
+    modelo = "@cf/stabilityai/stable-diffusion-xl-base-1.0"
+    url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{modelo}"
+    headers = {"Authorization": f"Bearer {api_token}"}
+    payload = {
+        "prompt": prompt,
+        "negative_prompt": negative_prompt or "blurry, low quality, distorted, text, watermark",
+        "num_steps": int(num_steps),
+        "guidance": float(guidance),
+        "width": int(ancho),
+        "height": int(alto),
+    }
+    if seed >= 0: payload["seed"] = int(seed)
+    
+    print(f"Generando imagen con Cloudflare SDXL...", flush=True)
+    print(f"Preset: {preset or 'custom'} | Aspect: {aspect or 'custom'} | Size: {ancho}x{alto} | Steps: {num_steps}", flush=True)
+    print(f"Prompt: {prompt[:120]}", flush=True)
+    
+    try:
+        r = requests.post(url, headers=headers, json=payload, timeout=120)
+        if r.status_code >= 400:
+            return f"ERROR HTTP {r.status_code}: {r.text[:300]}"
+        
+        output_dir = Path("output") / "imagenes"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        # Naming consistente
+        try:
+            titulo_slug = (prompt[:40] or "imagen").strip()
+            nombre, _ = generar_nombre(canal, "imagen", titulo_slug, "png")
+        except Exception:
+            nombre = f"imagen_{int(time.time())}.png"
+        ruta = output_dir / nombre
+        ruta.write_bytes(r.content)
+        return f"OK: {ruta} | URL: /media/imagenes/{nombre}"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Uso: python scripts/generar_imagen.py 'prompt' [preset] [aspect]")
+        sys.exit(1)
+    prompt = sys.argv[1]
+    preset = sys.argv[2] if len(sys.argv) > 2 else None
+    aspect = sys.argv[3] if len(sys.argv) > 3 else None
+    print(generar(prompt, preset=preset, aspect=aspect))
