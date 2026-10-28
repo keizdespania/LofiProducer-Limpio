@@ -72,8 +72,12 @@ def main():
     _run("enlazador_seo.py", [fecha])
     
     # Subida a YouTube (Programada)
+    from datetime import datetime, timedelta
+    manana = (datetime.strptime(fecha, '%Y-%m-%d') + timedelta(days=1)).strftime('%Y-%m-%d')
+    
     _subir_youtube(str(video_path), f"Vídeo Largo {fecha}", "Análisis completo.", publish_at=f"{fecha}T18:00:00Z")
-    _subir_youtube(str(short_path), f"Short {fecha}", "Análisis rápido.", publish_at=f"{fecha}T13:00:00Z")
+    if short_path.exists():
+        _subir_youtube(str(short_path), f"Short 1 {fecha}", "Análisis rápido.", publish_at=f"{fecha}T13:00:00Z")
     
     # Notificación
     try:
