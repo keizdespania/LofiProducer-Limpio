@@ -197,6 +197,15 @@ def main():
 
     state = {"fecha": fecha, "completado": True, "video": str(video_path)}
     (OUT / f"pipeline_{fecha}.json").write_text(json.dumps(state, indent=2))
+    # CAPA 4: Post-producción inteligente
+    _run("calendario_editorial.py", [fecha], 300, 1)
+    _run("detector_evergreen.py", [fecha], 300, 1)
+    _run("optimizador_adsense.py", [fecha], 300, 1)
+    
+    # CAPA 1/3: Mantenimiento
+    _run("monitor_salud.py", None, 300, 1)
+    _run("rollback_auto.py", None, 300, 1)
+
     print(f"\n✅ PIPELINE MASIVO {fecha} COMPLETADO CON ÉXITO")
 
 if __name__ == "__main__":

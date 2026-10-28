@@ -64,6 +64,10 @@ HTML_FACTORY = """<!DOCTYPE html>
             <button onclick="cambiarVista('preview')" id="tab-preview" class="tab-active text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-eye mr-2"></i>Previsualización</button>
             <button onclick="cambiarVista('distribucion')" id="tab-distribucion" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-share-nodes mr-2"></i>Distribución & SEO</button>
             <button onclick="cambiarVista('live')" id="tab-live" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-terminal mr-2"></i>Pipeline Live</button>
+            <button onclick="cambiarVista('analytics')" id="tab-analytics" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-chart-line mr-2"></i>Analytics</button>
+            <button onclick="cambiarVista('ab')" id="tab-ab" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-flask mr-2"></i>A/B Testing</button>
+            <button onclick="cambiarVista('calendario')" id="tab-calendario" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-regular fa-calendar mr-2"></i>Calendario</button>
+            <button onclick="cambiarVista('agentes')" id="tab-agentes" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-robot mr-2"></i>Agentes</button>
             <button onclick="cambiarVista('monetizacion')" id="tab-monetizacion" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-sack-dollar mr-2"></i>Monetización</button>
         </div>
 
@@ -293,13 +297,17 @@ HTML_FACTORY = """<!DOCTYPE html>
         }
 
         function cambiarVista(v) {
-            ['preview', 'distribucion', 'monetizacion', 'live'].forEach(t => {
+            ['preview', 'distribucion', 'monetizacion', 'live', 'analytics', 'ab', 'calendario', 'agentes'].forEach(t => {
                 document.getElementById('view-' + t).classList.toggle('hidden', t !== v);
                 const tab = document.getElementById('tab-' + t);
                 if (tab) tab.className = t === v ? "tab-active text-sm font-semibold pb-2 px-2 whitespace-nowrap" : "text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap";
             });
             if (v === 'monetizacion') document.getElementById('view-monetizacion').classList.add('grid');
             if (v === 'live') document.getElementById('view-live').classList.add('grid');
+            if (v === 'analytics') document.getElementById('view-analytics').classList.add('grid');
+            if (v === 'ab') document.getElementById('view-ab').classList.add('grid');
+            if (v === 'calendario') document.getElementById('view-calendario').classList.add('grid');
+            if (v === 'agentes') document.getElementById('view-agentes').classList.add('grid');
             if (v === 'distribucion') document.getElementById('view-distribucion').classList.remove('grid');
         }
 

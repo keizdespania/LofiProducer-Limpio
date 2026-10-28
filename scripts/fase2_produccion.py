@@ -86,6 +86,13 @@ def producir_fase2(fecha=None):
                 "tipo_visual": "video" if i == 0 or i % 3 == 0 else "imagen"
             })
 
+    # CAPA 4: Gate de Sentimiento
+    print("[fase2] Analizando temperatura emocional...", flush=True)
+    sent = _parse_json_seguro(pedir_a_especialista("analista_sentimiento", "Analiza el tono", contexto=ctx[:2000]))
+    res["sentimiento"] = sent
+    if sent.get("intensidad", 0) > 80:
+        print(f"   ⚠️ Tema caliente ({sent.get('emocion_principal')}). Ajustando...", flush=True)
+
     res["escenas"] = escenas
     res["texto_voz_largo"] = " ".join([e.get("texto", "") for e in escenas])
     print(f"   OK {len(escenas)} escenas guardadas", flush=True)
@@ -132,6 +139,12 @@ def producir_fase2(fecha=None):
     print("[fase2] 5/5 SEO Maestro...", flush=True)
     prompt_seo = "Genera el SEO. Devuelve SOLO JSON: {\"youtube\": {\"titulo\": \"string\", \"descripcion\": \"string\"}, \"tiktok\": {\"texto\": \"string\"}, \"instagram\": {\"texto\": \"string\"}, \"x\": {\"texto\": \"string\"}}"
     res["seo"] = _parse_json_seguro(pedir_a_especialista("seo_maestro", prompt_seo, contexto=f"Tema: {dossier.get('tema_del_dia')}"))
+
+    # CAPA 4: Gate de Viralidad
+    print("[fase2] Calculando score de viralidad...", flush=True)
+    viral = _parse_json_seguro(pedir_a_especialista("predictor_viralidad", "Puntua este contenido", contexto=json.dumps({"dossier": dossier, "hooks": hooks[:3]}, ensure_ascii=False)[:3000]))
+    res["viralidad"] = viral
+    print(f"   ✅ Score de viralidad: {viral.get('score', 'N/A')}/100", flush=True)
 
     # GUARDAR
     out_json = OUT / f"produccion_{fecha}.json"
