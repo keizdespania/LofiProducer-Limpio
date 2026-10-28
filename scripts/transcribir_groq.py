@@ -65,6 +65,9 @@ def transcribir_groq(audio_path):
         out_txt.write_text(texto)
         return texto
     except urllib.error.HTTPError as e:
+        if e.code == 413:
+            print(f"[groq-stt] ⚠️ Archivo demasiado grande (>25MB), omitiendo transcripción.")
+            return "[Transcripción omitida: archivo muy grande]"
         print(f"[groq-stt] HTTP {e.code}: {e.read().decode()[:200]}")
         return None
     except Exception as e:
