@@ -21,7 +21,14 @@ def generar_ass(palabras, salida_ass):
 
 async def main():
     fecha = sys.argv[1] if len(sys.argv) > 1 else None
-    prod = OUT / f"produccion_{fecha}.json" if fecha else list(OUT.glob("produccion_*.json"))[-1]
+    if not fecha:
+        prod_files = sorted(list(OUT.glob("produccion_*.json")))
+        if not prod_files:
+            print("❌ No hay JSON de producción"); return
+        prod = prod_files[-1]
+        fecha = prod.stem.replace("produccion_", "") # Saca la fecha del nombre
+    else:
+        prod = OUT / f"produccion_{fecha}.json"
     if not prod.exists():
         print("❌ No hay JSON de producción"); return
     datos = json.loads(prod.read_text())
