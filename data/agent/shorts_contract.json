@@ -1,0 +1,29 @@
+{
+  "nombre": "Contrato de Shorts Verticales - Somos El Encuadre",
+  "version": "1.0",
+  "libreria_principal": "rot (v0.1.0)",
+  "estado": "Verificado y funcionando",
+  "arquitectura": {
+    "formato": "9:16 (short_form)",
+    "fondo": "imagen o video con fit='cover' para llenar pantalla sin bandas negras",
+    "voz": "Edge-TTS (es-ES-AlvaroNeural) o audio pregrabado",
+    "subtitulos": "CaptionTheme con font='monospace', font_size=44, max_words=5, Placement(0.5, 0.85, anchor='center')",
+    "musica": "soundtrack(volume=0.15, ducking=True, fade_out=1.0)"
+  },
+  "sintaxis_exacta": [
+    "from rot import Project, RenderSettings, CaptionTheme, Placement",
+    "project = Project(settings=RenderSettings(captions=True)).short_form()",
+    "project = project.background(str(img), fit='cover', loop=True)",
+    "project = project.add_speaker('narrator')",
+    "project = project.script(f'@narrator [audio={voz}]: {texto}')",
+    "project = project.captions(theme=CaptionTheme(font='monospace', font_size=44, max_words=5, position=Placement(0.5, 0.85, anchor='center')))",
+    "project = project.soundtrack(str(musica), volume=0.15, ducking=True, fade_out=1.0)",
+    "project.render(str(out), overwrite=True)"
+  ],
+  "reglas_de_oro": [
+    "NUNCA usar FFmpeg directo para shorts, usar rot.",
+    "NUNCA olvidar el parámetro fit='cover' o saldrán bandas negras.",
+    "La música debe usar siempre ducking=True para que la voz destaque.",
+    "Los subtítulos deben usar la fuente 'monospace' para el look hacker/tecnológico."
+  ]
+}
