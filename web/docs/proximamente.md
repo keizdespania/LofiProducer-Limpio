@@ -1,5 +1,9 @@
 # Próximamente en Somos El Encuadre
 
+<div style="text-align: center; margin-bottom: 40px;">
+    <img src="../assets/images/logo_encuadre.jpg" alt="Somos El Encuadre - Analista Independiente de Medios" style="max-width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(255, 42, 42, 0.2);">
+</div>
+
 Estamos construyendo el ecosistema de análisis mediático más grande de habla hispana. Esto es lo que viene:
 
 ## 📚 Libros y Publicaciones (Amazon KDP)
