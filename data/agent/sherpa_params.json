@@ -1,0 +1,36 @@
+{
+  "sherpa_onnx_version": "1.13.8",
+  "classes": {
+    "OfflineTtsConfig": {
+      "available": true,
+      "params": {},
+      "doc": ""
+    },
+    "OfflineTtsModelConfig": {
+      "available": true,
+      "params": {},
+      "doc": ""
+    },
+    "OfflineTtsVitsModelConfig": {
+      "available": true,
+      "params": {},
+      "doc": ""
+    },
+    "OfflineTtsMatchaModelConfig": {
+      "available": true,
+      "params": {},
+      "doc": ""
+    },
+    "OfflineTtsKokoroModelConfig": {
+      "available": true,
+      "params": {},
+      "doc": ""
+    },
+    "GenerationConfig": {
+      "available": true,
+      "params": {},
+      "doc": ""
+    }
+  },
+  "_total_params": 0
+}

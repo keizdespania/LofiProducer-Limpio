@@ -1,0 +1,827 @@
+{
+  "moods": [
+    {
+      "id": 25,
+      "name": "Powerful",
+      "alias": "powerful"
+    },
+    {
+      "id": 39,
+      "name": "Party",
+      "alias": "party"
+    },
+    {
+      "id": 35,
+      "name": "Sexy",
+      "alias": "sexy"
+    },
+    {
+      "id": 13,
+      "name": "Euphoric",
+      "alias": "euphoric"
+    },
+    {
+      "id": 33,
+      "name": "Mysterious",
+      "alias": "mysterious"
+    },
+    {
+      "id": 15,
+      "name": "Glamorous",
+      "alias": "glamorous"
+    },
+    {
+      "id": 37,
+      "name": "Weird",
+      "alias": "weird"
+    },
+    {
+      "id": 17,
+      "name": "Exciting",
+      "alias": "exciting"
+    },
+    {
+      "id": 32,
+      "name": "Hopeful",
+      "alias": "hopeful"
+    },
+    {
+      "id": 12,
+      "name": "Romantic",
+      "alias": "romantic"
+    },
+    {
+      "id": 8,
+      "name": "Happy",
+      "alias": "happy"
+    },
+    {
+      "id": 43,
+      "name": "Neutral",
+      "alias": "neutral"
+    },
+    {
+      "id": 41,
+      "name": "Aesthetic",
+      "alias": "aesthetic"
+    },
+    {
+      "id": 4,
+      "name": "Funny",
+      "alias": "funny"
+    },
+    {
+      "id": 22,
+      "name": "Angry",
+      "alias": "angry"
+    },
+    {
+      "id": 9,
+      "name": "Eccentric",
+      "alias": "eccentric"
+    },
+    {
+      "id": 38,
+      "name": "Enchanting",
+      "alias": "enchanting"
+    },
+    {
+      "id": 23,
+      "name": "Majestic",
+      "alias": "majestic"
+    },
+    {
+      "id": 11,
+      "name": "Epic",
+      "alias": "epic"
+    },
+    {
+      "id": 31,
+      "name": "Hard",
+      "alias": "hard"
+    },
+    {
+      "id": 20,
+      "name": "Sad",
+      "alias": "sad"
+    },
+    {
+      "id": 40,
+      "name": "Sporty",
+      "alias": "sporty"
+    },
+    {
+      "id": 7,
+      "name": "Tense",
+      "alias": "tense"
+    },
+    {
+      "id": 34,
+      "name": "Peaceful",
+      "alias": "peaceful"
+    },
+    {
+      "id": 2,
+      "name": "Inspiring",
+      "alias": "inspiring"
+    },
+    {
+      "id": 3,
+      "name": "Nostalgic",
+      "alias": "nostalgic"
+    },
+    {
+      "id": 36,
+      "name": "Suspense",
+      "alias": "suspense"
+    },
+    {
+      "id": 16,
+      "name": "Energetic",
+      "alias": "energetic"
+    },
+    {
+      "id": 21,
+      "name": "Scary",
+      "alias": "scary"
+    },
+    {
+      "id": 26,
+      "name": "Quirky",
+      "alias": "quirky"
+    },
+    {
+      "id": 5,
+      "name": "Dark",
+      "alias": "dark"
+    },
+    {
+      "id": 19,
+      "name": "Dramatic",
+      "alias": "dramatic"
+    },
+    {
+      "id": 18,
+      "name": "Sentimental",
+      "alias": "sentimental"
+    },
+    {
+      "id": 1,
+      "name": "Dreamy",
+      "alias": "dreamy"
+    },
+    {
+      "id": 42,
+      "name": "Studying",
+      "alias": "studying"
+    },
+    {
+      "id": 27,
+      "name": "Relaxed",
+      "alias": "relaxed"
+    }
+  ],
+  "generos": [
+    {
+      "id": 154,
+      "name": "Phonk",
+      "alias": "phonk"
+    },
+    {
+      "id": 10,
+      "name": "Rock",
+      "alias": "rock"
+    },
+    {
+      "id": 213,
+      "name": "House",
+      "alias": "house"
+    },
+    {
+      "id": 16,
+      "name": "Classical",
+      "alias": "classical"
+    },
+    {
+      "id": 200,
+      "name": "Latin",
+      "alias": "latin"
+    },
+    {
+      "id": 206,
+      "name": "Synthwave",
+      "alias": "synth"
+    },
+    {
+      "id": 11,
+      "name": "Ambient",
+      "alias": "ambient"
+    },
+    {
+      "id": 188,
+      "name": "Solo Guitar",
+      "alias": "solo-guitar"
+    },
+    {
+      "id": 198,
+      "name": "Flamenco",
+      "alias": "flamenco"
+    },
+    {
+      "id": 54,
+      "name": "Downtempo",
+      "alias": "downtempo"
+    },
+    {
+      "id": 195,
+      "name": "Traditional Country",
+      "alias": "traditional-country"
+    },
+    {
+      "id": 2,
+      "name": "Folk",
+      "alias": "folk"
+    },
+    {
+      "id": 1,
+      "name": "Film",
+      "alias": "film"
+    },
+    {
+      "id": 212,
+      "name": "Beats",
+      "alias": "beats"
+    },
+    {
+      "id": 96,
+      "name": "Adventure",
+      "alias": "adventure"
+    },
+    {
+      "id": 187,
+      "name": "African",
+      "alias": "african"
+    },
+    {
+      "id": 111,
+      "name": "World Music",
+      "alias": "world-music"
+    },
+    {
+      "id": 3,
+      "name": "Pop",
+      "alias": "pop"
+    },
+    {
+      "id": 5,
+      "name": "Hip Hop",
+      "alias": "hip-hop"
+    },
+    {
+      "id": 208,
+      "name": "EDM",
+      "alias": "edm"
+    },
+    {
+      "id": 193,
+      "name": "Gospel",
+      "alias": "gospel"
+    },
+    {
+      "id": 196,
+      "name": "Country Rock",
+      "alias": "country-rock"
+    },
+    {
+      "id": 191,
+      "name": "Solo Piano",
+      "alias": "solo-piano"
+    },
+    {
+      "id": 4,
+      "name": "Kids",
+      "alias": "kids"
+    },
+    {
+      "id": 202,
+      "name": "Indian",
+      "alias": "indian"
+    },
+    {
+      "id": 199,
+      "name": "Bossa Nova",
+      "alias": "bossa-nova"
+    },
+    {
+      "id": 214,
+      "name": "Solo Percussion",
+      "alias": "solo-percussion"
+    },
+    {
+      "id": 204,
+      "name": "Chinese",
+      "alias": "chinese"
+    },
+    {
+      "id": 23,
+      "name": "Chill",
+      "alias": "chill"
+    },
+    {
+      "id": 124,
+      "name": "Holiday",
+      "alias": "holiday"
+    },
+    {
+      "id": 192,
+      "name": "Lullabies",
+      "alias": "lullabies"
+    },
+    {
+      "id": 102,
+      "name": "Trailer",
+      "alias": "trailer"
+    },
+    {
+      "id": 197,
+      "name": "Salsa",
+      "alias": "salsa"
+    },
+    {
+      "id": 207,
+      "name": "8 bit",
+      "alias": "8-bit"
+    },
+    {
+      "id": 201,
+      "name": "Middle East / Arabic",
+      "alias": "middle-east-arabic"
+    },
+    {
+      "id": 194,
+      "name": "Religious",
+      "alias": "religious"
+    },
+    {
+      "id": 210,
+      "name": "Metal",
+      "alias": "metal"
+    },
+    {
+      "id": 12,
+      "name": "Jazz",
+      "alias": "jazz"
+    },
+    {
+      "id": 190,
+      "name": "French",
+      "alias": "french"
+    },
+    {
+      "id": 8,
+      "name": "Indie",
+      "alias": "indie"
+    },
+    {
+      "id": 13,
+      "name": "Country",
+      "alias": "country"
+    },
+    {
+      "id": 109,
+      "name": "Christmas",
+      "alias": "christmas"
+    },
+    {
+      "id": 203,
+      "name": "Japanese",
+      "alias": "japanese"
+    },
+    {
+      "id": 205,
+      "name": "Corporate",
+      "alias": "corporate"
+    },
+    {
+      "id": 209,
+      "name": "Elevator",
+      "alias": "elevator"
+    },
+    {
+      "id": 21,
+      "name": "Acoustic",
+      "alias": "acoustic"
+    },
+    {
+      "id": 15,
+      "name": "Electronic",
+      "alias": "electronic"
+    },
+    {
+      "id": 189,
+      "name": "Surf Rock",
+      "alias": "surf-rock"
+    },
+    {
+      "id": 104,
+      "name": "Lo-Fi",
+      "alias": "lo-fi"
+    },
+    {
+      "id": 215,
+      "name": "Future Bass",
+      "alias": "future-bass"
+    },
+    {
+      "id": 211,
+      "name": "Techno",
+      "alias": "techno"
+    },
+    {
+      "id": 92,
+      "name": "Trap",
+      "alias": "trap"
+    },
+    {
+      "id": 19,
+      "name": "Funk",
+      "alias": "funk"
+    },
+    {
+      "id": 216,
+      "name": "Upbeat",
+      "alias": "upbeat"
+    },
+    {
+      "id": 217,
+      "name": "Beautiful Plays",
+      "alias": "beautiful-plays"
+    },
+    {
+      "id": 218,
+      "name": "Main Title",
+      "alias": "main-title"
+    },
+    {
+      "id": 219,
+      "name": "Action",
+      "alias": "action"
+    },
+    {
+      "id": 220,
+      "name": "Cafe",
+      "alias": "cafe"
+    },
+    {
+      "id": 221,
+      "name": "Supernatural",
+      "alias": "supernatural"
+    },
+    {
+      "id": 222,
+      "name": "Suspense",
+      "alias": "suspense"
+    },
+    {
+      "id": 223,
+      "name": "Crime Scene",
+      "alias": "crime-scene"
+    },
+    {
+      "id": 224,
+      "name": "Jingles",
+      "alias": "jingles"
+    },
+    {
+      "id": 225,
+      "name": "Sneaky",
+      "alias": "sneaky"
+    },
+    {
+      "id": 226,
+      "name": "Scary Childerns Tunes",
+      "alias": "scaray-childerns-tunes"
+    },
+    {
+      "id": 227,
+      "name": "Alternative",
+      "alias": "alternative"
+    },
+    {
+      "id": 228,
+      "name": "Video Games",
+      "alias": "video-games"
+    }
+  ],
+  "temas": [
+    {
+      "id": 50,
+      "name": "Aerials",
+      "alias": "aerials"
+    },
+    {
+      "id": 2,
+      "name": "Fashion",
+      "alias": "fashion"
+    },
+    {
+      "id": 51,
+      "name": "Christmas",
+      "alias": "christmas"
+    },
+    {
+      "id": 19,
+      "name": "Science",
+      "alias": "science"
+    },
+    {
+      "id": 24,
+      "name": "Travel",
+      "alias": "travel"
+    },
+    {
+      "id": 83,
+      "name": "Fantasy",
+      "alias": "fantasy"
+    },
+    {
+      "id": 84,
+      "name": "News",
+      "alias": "news"
+    },
+    {
+      "id": 48,
+      "name": "Tech",
+      "alias": "tech"
+    },
+    {
+      "id": 85,
+      "name": "Workout",
+      "alias": "workout"
+    },
+    {
+      "id": 86,
+      "name": "Yoga",
+      "alias": "yoga"
+    },
+    {
+      "id": 87,
+      "name": "Lullaby",
+      "alias": "lullaby"
+    },
+    {
+      "id": 49,
+      "name": "Nature",
+      "alias": "nature"
+    },
+    {
+      "id": 21,
+      "name": "Sports",
+      "alias": "sports"
+    },
+    {
+      "id": 27,
+      "name": "Gaming",
+      "alias": "gaming"
+    },
+    {
+      "id": 30,
+      "name": "Cinematic",
+      "alias": "cinematic"
+    },
+    {
+      "id": 26,
+      "name": "Wedding",
+      "alias": "wedding"
+    },
+    {
+      "id": 1,
+      "name": "Business",
+      "alias": "business"
+    },
+    {
+      "id": 25,
+      "name": "Vlog",
+      "alias": "vlog"
+    },
+    {
+      "id": 82,
+      "name": "Retro",
+      "alias": "retro"
+    },
+    {
+      "id": 28,
+      "name": "Podcast",
+      "alias": "podcast"
+    },
+    {
+      "id": 45,
+      "name": "Lifestyle",
+      "alias": "lifestyle"
+    },
+    {
+      "id": 46,
+      "name": "Comedy",
+      "alias": "comedy"
+    },
+    {
+      "id": 4,
+      "name": "Educational",
+      "alias": "educational"
+    },
+    {
+      "id": 44,
+      "name": "Halloween",
+      "alias": "halloween"
+    }
+  ],
+  "playlists": [
+    {
+      "id": 333,
+      "alias": "online-radio",
+      "name": "Online Radio",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1721391813523.jpg",
+      "trackCount": 31
+    },
+    {
+      "id": 332,
+      "alias": "elegant-ads",
+      "name": "Elegant Ads",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1721208414092.jpg",
+      "trackCount": 26
+    },
+    {
+      "id": 331,
+      "alias": "dystopian-trailers",
+      "name": "Dystopian Trailers",
+      "description": "Enhance your trailers with eerie, royalty-free music. Download now for that dystopian, captivating atmosphere.",
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1721024419500.jpg",
+      "trackCount": 25
+    },
+    {
+      "id": 330,
+      "alias": "reality-tv",
+      "name": "Reality TV",
+      "description": "Spice up your reality TV show with dynamic, royalty-free music. Download now for the perfect entertainment vibe.",
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1721190026396.jpg",
+      "trackCount": 14
+    },
+    {
+      "id": 327,
+      "alias": "feelgood-trailers",
+      "name": "Feelgood Trailers",
+      "description": "Boost your trailers with uplifting, royalty-free music. Download now for that feelgood, memorable touch.",
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1721024229507.jpg",
+      "trackCount": 37
+    },
+    {
+      "id": 324,
+      "alias": "badass-ads",
+      "name": "Badass Ads",
+      "description": "Elevate your ads with powerful, royalty-free music. Download now for that badass, unforgettable impact.",
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1721022638324.jpg",
+      "trackCount": 24
+    },
+    {
+      "id": 321,
+      "alias": "streetwear-lookbook",
+      "name": "Streetwear Lookbook",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1719909900265.jpg",
+      "trackCount": 17
+    },
+    {
+      "id": 317,
+      "alias": "makeup-and-skincare-routine",
+      "name": "Makeup & Skincare Routine",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1719913450962.jpg",
+      "trackCount": 28
+    },
+    {
+      "id": 286,
+      "alias": "organic-sounds",
+      "name": "Organic Sounds",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114099350.jpg",
+      "trackCount": 26
+    },
+    {
+      "id": 285,
+      "alias": "night-time",
+      "name": "Night Time",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114116200.jpg",
+      "trackCount": 22
+    },
+    {
+      "id": 284,
+      "alias": "outdoor-adventure",
+      "name": "Outdoor Adventure",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114134497.jpg",
+      "trackCount": 25
+    },
+    {
+      "id": 283,
+      "alias": "serene-soundscapes",
+      "name": "Serene Soundscapes",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114149633.jpg",
+      "trackCount": 22
+    },
+    {
+      "id": 282,
+      "alias": "spring-melodies",
+      "name": "Spring Melodies",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114161192.jpg",
+      "trackCount": 21
+    },
+    {
+      "id": 281,
+      "alias": "around-the-world",
+      "name": "Around The World",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114172915.jpg",
+      "trackCount": 26
+    },
+    {
+      "id": 280,
+      "alias": "camping",
+      "name": "Camping",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114209642.jpg",
+      "trackCount": 17
+    },
+    {
+      "id": 279,
+      "alias": "japan-trip",
+      "name": "Japan Trip",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114237973.jpg",
+      "trackCount": 13
+    },
+    {
+      "id": 278,
+      "alias": "on-the-beach",
+      "name": "On The Beach",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114265932.jpg",
+      "trackCount": 24
+    },
+    {
+      "id": 277,
+      "alias": "tutorials",
+      "name": "Tutorials",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114287666.jpg",
+      "trackCount": 22
+    },
+    {
+      "id": 276,
+      "alias": "retro-gaming",
+      "name": "Retro Gaming",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114299801.jpg",
+      "trackCount": 15
+    },
+    {
+      "id": 275,
+      "alias": "e-sports",
+      "name": "E-Sports",
+      "description": null,
+      "image": "https://d2mpxqr2vyojy5.cloudfront.net/artworks/1713114311728.jpg",
+      "trackCount": 21
+    }
+  ],
+  "_guia_dj": {
+    "buscar_musica": {
+      "herramienta": "search_music",
+      "parametros": {
+        "query": "Texto libre (nombre de canción o artista)",
+        "name": "Nombre exacto de la canción",
+        "artist": "Nombre del artista",
+        "genre": "Nombre o ID numérico del género",
+        "mood": "Nombre o ID numérico del mood",
+        "theme": "Nombre o ID numérico del tema",
+        "duration": "Duración objetivo en segundos (ej. 30)",
+        "tolerance": "Margen ± en segundos (por defecto 5)",
+        "limit": "Máximo de resultados (por defecto 20, máx 50)"
+      }
+    },
+    "buscar_efectos": {
+      "herramienta": "search_sfx",
+      "parametros": {
+        "query": "Texto libre (ej. 'whoosh')",
+        "category": "Categoría del SFX",
+        "duration": "Duración objetivo en segundos",
+        "tolerance": "Margen ± en segundos",
+        "limit": "Máximo de resultados"
+      }
+    },
+    "licencia": "Gratis para YouTube, Shorts, TikTok, Reels, podcasts. Se puede monetizar. Atribución no obligatoria pero agradecida. Claims se resuelven en tunetank.com/copyright-claims [citation:2][citation:5]"
+  }
+}

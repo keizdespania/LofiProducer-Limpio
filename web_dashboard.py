@@ -1,0 +1,1824 @@
+"""
+KeiZ Command Center - Flask Edition
+Servidor ligero con auto-reload para Termux.
+"""
+import os
+import sys
+import json
+import threading
+import subprocess
+import time
+import uuid
+from pathlib import Path
+from flask import Flask, request, jsonify, send_from_directory
+
+ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT))
+
+app = Flask(__name__, static_folder="assets", static_url_path="/assets")
+from encuadre_routes import encuadre_bp
+app.register_blueprint(encuadre_bp)
+
+# ═══ PAPELERA (Soft Delete + Purga 7 días) ═══
+PAPELERA_DIR = ROOT / "output" / ".papelera"
+PAPELERA_FILES = PAPELERA_DIR / "files"
+PAPELERA_INFO = PAPELERA_DIR / "info"
+PAPELERA_DIAS = 7
+PAPELERA_FILES.mkdir(parents=True, exist_ok=True)
+PAPELERA_INFO.mkdir(parents=True, exist_ok=True)
+
+def _purgar_papelera():
+    import time as _t
+    borrados = 0
+    for info in list(PAPELERA_INFO.glob("*.json")):
+        try:
+            d = json.loads(info.read_text())
+            if _t.time() - d.get("borrado_en", 0) > PAPELERA_DIAS * 86400:
+                fid = info.stem
+                for f in PAPELERA_FILES.glob(fid + ".*"):
+                    f.unlink()
+                info.unlink()
+                borrados += 1
+        except Exception: pass
+    return borrados
+
+def _mover_a_papelera(ruta_rel):
+    import time as _t, uuid as _u, shutil as _sh
+    ruta_rel = ruta_rel.lstrip("/")
+    if ruta_rel.startswith("media/"): ruta_rel = ruta_rel[len("media/"):]
+    p = ROOT / "output" / ruta_rel
+    if not p.exists() or not p.is_file(): return False
+    fid = _u.uuid4().hex[:12]
+    dest = PAPELERA_FILES / (fid + p.suffix)
+    _sh.move(str(p), str(dest))
+    (PAPELERA_INFO / (fid + ".json")).write_text(json.dumps({
+        "id": fid, "nombre_original": p.name, "ruta_original": "output/" + ruta_rel,
+        "borrado_en": _t.time(), "tamano": dest.stat().st_size
+    }, ensure_ascii=False))
+    return True
+
+try: _purgar_papelera()
+except Exception: pass
+
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+# ── FUNCIONES DE AYUDA ──
+def leer_api_key(nombre):
+    env = ROOT / ".env"
+    if env.exists():
+        for line in env.read_text(encoding="utf-8").splitlines():
+            if line.strip().startswith(f"{nombre}="):
+                return line.strip().split("=", 1)[1].strip().strip('"').strip("'")
+    return ""
+
+def _get_analytics():
+    import sqlite3
+    size_mb = sum(f.stat().st_size for f in ROOT.rglob('*') if f.is_file()) / (1024*1024)
+    py_files = len(list(ROOT.rglob("*.py")))
+    try:
+        db = sqlite3.connect(ROOT / "data" / "agent" / "memoria.db")
+        convs = db.execute("SELECT COUNT(*) FROM conversaciones").fetchone()[0]
+        db.close()
+    except Exception:
+        convs = 0
+    try:
+        from brain.analytics_youtube import obtener_stats_canal
+        yt = obtener_stats_canal()
+        yt_data = {"nombre_canal": yt.get("nombre_canal", "KeiZ Productions"), "Suscriptores YT": yt["suscriptores"], "Visitas YT": yt["visitas_totales"], "Vídeos YT": yt["videos_totales"], "Ultimos Videos": yt.get("ultimos_videos", [])} if "error" not in yt else {"YouTube": "Fallo API"}
+    except Exception:
+        yt_data = {"YouTube": "Error"}
+    return {"Tamaño Repo (MB)": f"{size_mb:.1f}", "Archivos Python": str(py_files), "Conversaciones Dios": str(convs), "Estado Kaggle": "Conectado", **yt_data}
+
+def _list_media():
+    media = {"audio": [], "video": [], "image": []}
+    for d in [ROOT / "output", ROOT / "assets"]:
+        if not d.exists(): continue
+        for f in d.rglob("*"):
+            if not f.is_file(): continue
+            if f.suffix in (".mp3", ".wav"): media["audio"].append(f.name)
+            elif f.suffix in (".mp4", ".mov"): media["video"].append(f.name)
+            elif f.suffix in (".png", ".jpg", ".jpeg"): media["image"].append(f.name)
+    return {k: list(set(v)) for k, v in media.items()}
+
+def _worker_musica(task_id, url, prompt):
+    db_path = ROOT / "data" / "tareas.json"
+    def update_db(estado, progreso, mensaje):
+        try:
+            t = json.loads(db_path.read_text(encoding="utf-8"))
+            for task in t:
+                if task["id"] == task_id:
+                    task["estado"], task["progreso"], task["mensaje"] = estado, progreso, mensaje
+            db_path.write_text(json.dumps(t, indent=2, ensure_ascii=False), encoding="utf-8")
+        except Exception: pass
+
+    update_db("procesando", 10, "Conectando con Kaggle...")
+    try:
+        proc = subprocess.run(["python", "scripts/generar_musica.py", url, prompt], capture_output=True, text=True, cwd=str(ROOT), timeout=300)
+        if "descargada" in proc.stdout:
+            update_db("completado", 100, "Canción lista en el Media Center")
+        else:
+            update_db("error", 100, f"Fallo: {proc.stdout[-100:]}")
+    except Exception as e:
+        update_db("error", 100, str(e))
+
+def _worker_musica_acestep(task_id, prompt, duracion):
+    db_path = ROOT / "data" / "tareas.json"
+    def update_db(estado, progreso, mensaje):
+        try:
+            t = json.loads(db_path.read_text(encoding="utf-8"))
+            for task in t:
+                if task["id"] == task_id:
+                    task["estado"], task["progreso"], task["mensaje"] = estado, progreso, mensaje
+            db_path.write_text(json.dumps(t, indent=2, ensure_ascii=False), encoding="utf-8")
+        except Exception: pass
+    update_db("procesando", 10, "Lanzando ACE-Step en Kaggle (compilación ~30 min)...")
+    try:
+        import sys
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from musica_acestep import generar
+        resultado = generar(prompt, duracion)
+        if resultado.startswith("OK:"):
+            update_db("completado", 100, resultado)
+        else:
+            update_db("error", 100, resultado[:200])
+    except Exception as e:
+        update_db("error", 100, f"{type(e).__name__}: {str(e)[:150]}")
+
+# ── RUTAS WEB ──
+
+@app.before_request
+def guardian_de_acceso():
+    from flask import request, jsonify
+    from pathlib import Path
+    import json
+    ip = request.remote_addr
+    if ip in ("127.0.0.1", "localhost", "::1"):
+        return None
+    if ip in IPs_Aprobadas:
+        return None
+    
+    # Escribir la IP en un archivo para que el Job la procese
+    pendientes_file = Path("data/accesos_pendientes.json")
+    pendientes_file.parent.mkdir(exist_ok=True)
+    
+    try:
+        data = json.loads(pendientes_file.read_text()) if pendientes_file.exists() else {"ips": []}
+    except:
+        data = {"ips": []}
+    
+    if ip not in data["ips"]:
+        data["ips"].append(ip)
+        pendientes_file.write_text(json.dumps(data, indent=2))
+    
+    return jsonify({"error": "Acceso pendiente. Revisa la notificación en el móvil."}), 403
+
+@app.route("/aprobar/<ip>")
+def aprobar_ip(ip):
+    IPs_Aprobadas.add(ip)
+    IPs_Pendientes.discard(ip)
+    return jsonify({"status": "ok", "mensaje": f"IP {ip} aprobada."})
+
+
+@app.route("/")
+def index():
+    return send_from_directory(app.static_folder, "index.html")
+
+@app.route("/api/docs")
+def get_docs():
+    filename = request.args.get("file", "MANUAL_DE_USO.md")
+    if ".." in filename or "/" in filename:
+        return jsonify({"error": "Ruta inválida"}), 403
+    return send_from_directory(ROOT, filename)
+
+
+@app.route("/media/<path:filename>")
+def serve_media(filename):
+    """Sirve archivos estáticos de output/, assets/ o data/ (caché de voz)."""
+    from flask import send_file
+    import mimetypes
+    bases = [ROOT / "output", ROOT / "assets", ROOT / "data" / "cache_voz"]
+    for base in bases:
+        file_path = base / filename
+        if file_path.exists() and file_path.is_file():
+            ext = file_path.suffix.lower()
+            mime = {".mp4": "video/mp4", ".mp3": "audio/mpeg", ".wav": "audio/wav",
+                    ".png": "image/png", ".jpg": "image/jpeg"}.get(ext, "application/octet-stream")
+            return send_file(str(file_path), mimetype=mime, conditional=True)
+    # Si no está en las bases, intentar ruta directa desde ROOT
+    file_path = ROOT / filename
+    if file_path.exists() and file_path.is_file():
+        ext = file_path.suffix.lower()
+        mime = {".mp4": "video/mp4", ".mp3": "audio/mpeg", ".wav": "audio/wav",
+                ".png": "image/png", ".jpg": "image/jpeg"}.get(ext, "application/octet-stream")
+        return send_file(str(file_path), mimetype=mime, conditional=True)
+    return jsonify({"error": "Archivo no encontrado"}), 404
+
+@app.route("/api/generar_imagen", methods=["POST"])
+def generar_imagen_endpoint():
+    """Genera imagen con Cloudflare SDXL usando contrato."""
+    import subprocess as _sp, sys as _sys
+    data = request.json or {}
+    prompt = data.get("prompt", "").strip()
+    if not prompt:
+        return jsonify({"status": "error", "mensaje": "Falta prompt"})
+    
+    preset = data.get("preset") or ""
+    aspect = data.get("aspect") or ""
+    num_steps = data.get("num_steps") or 20
+    guidance = data.get("guidance") or 7.5
+    seed = data.get("seed") if data.get("seed") is not None else -1
+    canal = data.get("canal") or "general"
+    
+    try:
+        _sys.path.insert(0, str(ROOT / "scripts"))
+        from generar_imagen import generar as gen_img
+        result = gen_img(
+            prompt,
+            preset=preset or None,
+            aspect=aspect or None,
+            num_steps=int(num_steps),
+            guidance=float(guidance),
+            seed=int(seed),
+            canal=canal,
+        )
+        if result.startswith("OK:"):
+            return jsonify({"status": "ok", "mensaje": result})
+        return jsonify({"status": "error", "mensaje": result})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)})
+
+@app.route("/api/media")
+def get_media():
+    return jsonify(_list_media())
+
+@app.route("/api/analytics")
+def get_analytics():
+    return jsonify(_get_analytics())
+
+def _tareas_unificadas():
+    """Une cola.db (chat/video) + tareas.json (musica) en una lista."""
+    import sqlite3
+    result = []
+    db_cola = ROOT / "data" / "agent" / "cola.db"
+    if db_cola.exists():
+        try:
+            with sqlite3.connect(db_cola) as c:
+                c.row_factory = sqlite3.Row
+                for r in c.execute("SELECT id, session_id as tipo, prompt, estado, salida as mensaje, creada FROM tareas ORDER BY creada DESC LIMIT 30").fetchall():
+                    result.append({"id": r["id"], "tipo": r["tipo"], "prompt": r["prompt"], "estado": r["estado"], "mensaje": r["mensaje"] or "", "inicio": r["creada"]})
+        except Exception: pass
+    db_json = ROOT / "data" / "tareas.json"
+    if db_json.exists():
+        try:
+            for t in json.loads(db_json.read_text(encoding="utf-8"))[-10:]:
+                result.append(t)
+        except Exception: pass
+    return result
+
+
+@app.route("/api/tareas")
+def get_tareas():
+    return jsonify(_tareas_unificadas())
+
+
+@app.route("/api/dashboard")
+def api_dashboard():
+    """Estado completo del sistema en 1 request."""
+    import urllib.request
+    salud = {}
+    for name, url in [("flask", "http://127.0.0.1:8001/"), ("omniroute", "http://127.0.0.1:20128/")]:
+        try:
+            with urllib.request.urlopen(url, timeout=2) as r:
+                salud[name] = "ok" if r.status < 500 else "error"
+        except Exception:
+            salud[name] = "down"
+    try:
+        import subprocess as _sp
+        r = _sp.run(["pgrep", "-f", "task_worker.py"], capture_output=True, timeout=3)
+        salud["worker"] = "ok" if r.returncode == 0 else "down"
+    except Exception:
+        salud["worker"] = "?"
+    try:
+        import subprocess as _sp
+        r = _sp.run(["du", "-sh", "."], capture_output=True, text=True, timeout=5, cwd=str(ROOT))
+        salud["repo"] = r.stdout.split()[0] if r.stdout else "?"
+    except Exception:
+        salud["repo"] = "?"
+    return jsonify({"salud": salud, "tareas": _tareas_unificadas()[:5]})
+
+
+@app.route("/api/toasts")
+def api_toasts():
+    """Tareas completadas/error en los últimos 60s (para polling)."""
+    import sqlite3
+    result = []
+    db_cola = ROOT / "data" / "agent" / "cola.db"
+    if db_cola.exists():
+        try:
+            with sqlite3.connect(db_cola) as c:
+                c.row_factory = sqlite3.Row
+                for r in c.execute("SELECT id, estado, substr(prompt,1,60) as p FROM tareas WHERE estado IN ('done','error') ORDER BY actualizada DESC LIMIT 5").fetchall():
+                    result.append({"id": r["id"], "estado": r["estado"], "prompt": r["p"]})
+        except Exception: pass
+    return jsonify(result)
+
+
+@app.route("/api/conserje", methods=["POST"])
+def api_conserje():
+    import subprocess as _sp
+    try:
+        r = _sp.run(["python", "scripts/conserje.py", "--stats"], capture_output=True, text=True, timeout=30, cwd=str(ROOT))
+        lineas = [l for l in r.stdout.split(chr(10)) if "Resumen" in l or "✅" in l]
+        return jsonify({"status": "ok", "resumen": " | ".join(lineas[-2:]) if lineas else "Sin cambios"})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)}), 500
+
+
+
+import random
+FAST_PATH_SALUDOS = ["hola", "buenas", "qué tal", "que tal", "hey", "ey"]
+FAST_PATH_RESP = ["Aquí estoy, Arquitecto. ¿Qué construimos?", "Listo para la acción. ¿Qué necesitas?", "Sistema en línea. Dime.", "¿Qué vamos a crear hoy?"]
+FAST_PATH_VIDEO = ["video", "vídeo", "genera video", "crea video"]
+FAST_PATH_MUSICA = ["musica", "música", "cancion", "canción", "lofi"]
+FAST_PATH_IMAGEN = ["imagen", "foto", "dibujo"]
+FAST_PATH_VOZ = ["voz", "narra", "lee esto"]
+
+
+
+
+
+def _detectar_intencion(msg):
+    m = msg.lower()
+    # Frases largas o con palabras de nicho/completo → Dios (no fast path)
+    if len(m) > 40 or any(k in m for k in ("ia_news", "finanzas_barrio", "boe", "lofi", "nicho", "produce", "canal", "completo", "pipeline", "guion", "seo")):
+        return "complejo"
+    if any(s in m for s in FAST_PATH_SALUDOS) and len(m) < 25:
+        return "saludo"
+    if any(p in m for p in FAST_PATH_VIDEO):
+        return "video"
+    if any(p in m for p in FAST_PATH_MUSICA):
+        return "musica"
+    if any(p in m for p in FAST_PATH_IMAGEN):
+        return "imagen"
+    if any(p in m for p in FAST_PATH_VOZ):
+        return "voz"
+    return "complejo"
+
+@app.route("/api/chat", methods=["POST"])
+def chat():
+    import sqlite3, uuid
+    from datetime import datetime
+    data = request.json or {}
+    msg = data.get("mensaje", "").strip()
+    if not msg: return jsonify({"status": "error", "mensaje": "Mensaje vacio"})
+
+    # 1. Pruner
+    try: msg_limpio = comprimir(msg, max_chars=800)
+    except Exception: msg_limpio = msg
+
+    # 2. Router de intenciones
+    intencion = _detectar_intencion(msg_limpio)
+    
+    if intencion == "saludo":
+        return jsonify({"status": "reply", "reply": random.choice(FAST_PATH_RESP)})
+    
+    if intencion in ("video", "musica", "imagen", "voz"):
+        task_id = str(uuid.uuid4())
+        now = datetime.now().isoformat()
+        db_path = ROOT / "data" / "agent" / "cola.db"
+        with sqlite3.connect(db_path) as conn:
+            conn.execute("INSERT INTO tareas (id, session_id, prompt, estado, creada, actualizada) VALUES (?, ?, ?, ?, ?, ?)",
+                         (task_id, "default", msg_limpio, "pending", now, now))
+            conn.commit()
+        
+        respuestas = {
+            "video": ["🎬 Marchando. En cola.", "🎥 Entendido. Procesando.", "🎞️ Vale, en cuanto pueda."],
+            "musica": ["🎵 Marchando. A la cola.", "🎶 En cola, jefe.", "🎧 Entendido."],
+            "imagen": ["🎨 A la cola.", "🖼️ En marcha.", "📸 Entendido."],
+            "voz": ["🎙️ Generando voz...", "🗣️ En cola.", "🔊 A la cola."]
+        }
+        return jsonify({"status": "reply", "reply": random.choice(respuestas[intencion])})
+
+    # 3. LLM
+    task_id = str(uuid.uuid4())
+    now = datetime.now().isoformat()
+    db_path = ROOT / "data" / "agent" / "cola.db"
+    with sqlite3.connect(db_path) as conn:
+        conn.execute("INSERT INTO tareas (id, session_id, prompt, estado, creada, actualizada) VALUES (?, ?, ?, ?, ?, ?)",
+                     (task_id, "default", msg_limpio, "pending", now, now))
+        conn.commit()
+    return jsonify({"status": "processing", "task_id": task_id})
+
+@app.route("/api/generar_musica", methods=["POST"])
+def generar_musica():
+    data = request.json
+    url, prompt = data.get("url", ""), data.get("prompt", "")
+    if not url or not prompt: return jsonify({"status": "error", "mensaje": "Falta URL o prompt"})
+    
+    task_id = str(uuid.uuid4())[:8]
+    db_path = ROOT / "data" / "tareas.json"
+    tareas = json.loads(db_path.read_text(encoding="utf-8")) if db_path.exists() else []
+    tareas.append({"id": task_id, "tipo": "musica", "prompt": prompt, "url": url, "estado": "en_cola", "progreso": 0, "inicio": time.time(), "mensaje": "Esperando..."})
+    db_path.write_text(json.dumps(tareas, indent=2), encoding="utf-8")
+    
+    threading.Thread(target=_worker_musica, args=(task_id, url, prompt), daemon=True).start()
+    return jsonify({"status": "ok", "reply": f"Tarea {task_id} en cola."})
+
+@app.route("/api/generar_musica_acestep", methods=["POST"])
+def generar_musica_acestep():
+    """Encola tarea de música en cola.db para que el worker la procese en batch."""
+    import sqlite3, uuid
+    from datetime import datetime
+    data = request.json or {}
+    prompt = data.get("prompt", "").strip()
+    duracion = int(data.get("duracion", 60))
+    if not prompt:
+        return jsonify({"status": "error", "mensaje": "Falta prompt"})
+    task_id = str(uuid.uuid4())[:8]
+    now = datetime.now().isoformat()
+    db_path = ROOT / "data" / "agent" / "cola.db"
+    with sqlite3.connect(db_path) as conn:
+        conn.execute(
+            "INSERT INTO tareas (id, session_id, prompt, estado, creada, actualizada) VALUES (?, ?, ?, ?, ?, ?)",
+            (task_id, "musica", prompt, "pending", now, now)
+        )
+        conn.commit()
+    return jsonify({"status": "ok", "reply": f"Tarea {task_id} en cola batch (~30 min)"})
+
+@app.route("/api/producir_nicho", methods=["POST"])
+def api_producir_nicho():
+    """Lanza el orquestador para un nicho en background."""
+    import threading, subprocess, sys
+    data = request.json or {}
+    nicho = data.get("nicho", "").strip()
+    dry = bool(data.get("dry", False))
+    if not nicho:
+        return jsonify({"status": "error", "mensaje": "Falta 'nicho'"})
+    cmd = [sys.executable, "scripts/orquestador_nichos.py", nicho]
+    if dry: cmd.append("--dry")
+    def _run():
+        try:
+            subprocess.run(cmd, cwd=str(ROOT), timeout=3600)
+        except Exception as e:
+            print(f"[producir_nicho] {e}", flush=True)
+    threading.Thread(target=_run, daemon=True).start()
+    return jsonify({"status": "ok", "mensaje": f"Produciendo {nicho}{' (dry)' if dry else ''}..."})
+
+
+@app.route("/api/canales/<canal_id>/stream")
+def api_canal_stream(canal_id):
+    """Emite los logs en vivo de la producción de un canal."""
+    import subprocess, sys
+    from flask import Response
+    def generate():
+        yield f"data: [CONECTADO] Iniciando pipeline para {canal_id}...\n\n"
+        cmd = [sys.executable, "-u", "scripts/orquestador_nichos.py", canal_id]
+        try:
+            process = subprocess.Popen(cmd, cwd=str(ROOT), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            for line in process.stdout:
+                if line.strip():
+                    yield f"data: {line.strip()}\n\n"
+            process.wait()
+            if process.returncode == 0:
+                yield "data: [COMPLETADO] Proceso terminado con éxito.\n\n"
+            else:
+                yield f"data: [ERROR] Proceso terminó con código {process.returncode}.\n\n"
+        except Exception as e:
+            yield f"data: [ERROR] {str(e)}\n\n"
+    return Response(generate(), mimetype="text/event-stream", headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"})
+
+
+
+
+@app.route("/api/media_vault", methods=["GET"])
+def api_media_vault():
+    """Lista SOLO los archivos finales del vault con fecha y tipo."""
+    bases = [ROOT / "output" / "media_vault", ROOT / "output" / "musica", ROOT / "output" / "audios", ROOT / "output" / "imagenes", ROOT / "output" / "videos"]
+    items = []
+    all_files = []
+    for base in bases:
+        if base.exists():
+            all_files.extend(base.glob("*"))
+    for f in sorted(all_files, key=lambda x: x.stat().st_mtime, reverse=True):
+            if f.suffix.lower() in (".mp4", ".mp3", ".png", ".jpg", ".wav"):
+                tipo = "video" if f.suffix == ".mp4" else "audio" if f.suffix in (".mp3", ".wav") else "image"
+                nombre_lower = f.name.lower()
+                if f.suffix == ".mp4":
+                    categoria = "video"
+                elif f.suffix in (".mp3", ".wav"):
+                    if "musica" in nombre_lower or "music" in nombre_lower:
+                        categoria = "musica"
+                    elif "studio" in nombre_lower or "dios" in nombre_lower or "davefx" in nombre_lower:
+                        categoria = "tts"
+                    else:
+                        categoria = "audio"
+                else:
+                    categoria = "imagen"
+                items.append({
+                    "nombre": f.name,
+                    "tipo": tipo,
+                    "categoria": categoria,
+                    "tamano": f.stat().st_size,
+                    "fecha": __import__("datetime").datetime.fromtimestamp(f.stat().st_mtime).strftime("%Y-%m-%d %H:%M"),
+                    "url": f"/media/{f.parent.name}/{f.name}"
+                })
+    return jsonify(items)
+
+
+
+
+
+STUDIO_FOLDERS = {"musica": "musica", "tts": "audios", "imagen": "imagenes", "video": "videos", "audio": "audios"}
+
+@app.route("/api/studio_files", methods=["GET"])
+def api_studio_files():
+    """Devuelve los archivos recientes de un tipo (musica, tts, imagen) con duración."""
+    import subprocess as _sp, json as _json
+    tipo = request.args.get("tipo", "musica")
+    carpeta = STUDIO_FOLDERS.get(tipo, tipo)
+    base = ROOT / "output" / carpeta
+    if not base or not base.exists():
+        return jsonify([])
+    items = []
+    for f in sorted(base.glob("*"), key=lambda x: x.stat().st_mtime, reverse=True)[:20]:
+        if f.suffix.lower() not in (".mp3", ".wav", ".mp4", ".png", ".jpg"):
+            continue
+        duracion = None
+        if f.suffix.lower() in (".mp3", ".wav", ".mp4"):
+            try:
+                r = _sp.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                             "-of", "default=noprint_wrappers=1:nokey=1", str(f)],
+                            capture_output=True, text=True, timeout=10)
+                duracion = float(r.stdout.strip()) if r.stdout.strip() else None
+            except Exception:
+                pass
+        items.append({
+            "nombre": f.name,
+            "tamano": f.stat().st_size,
+            "fecha": __import__("datetime").datetime.fromtimestamp(f.stat().st_mtime).strftime("%Y-%m-%d %H:%M"),
+            "duracion": round(duracion, 1) if duracion else None,
+            "url": f"/media/{carpeta}/{f.name}"
+        })
+    return jsonify(items)
+
+
+@app.route("/api/canales_web", methods=["GET"])
+def api_canales_web():
+    """Lista canales configurados + nichos base."""
+    cfg = json.loads((ROOT / "config" / "nichos.json").read_text())
+    nichos = [k for k in cfg if not k.startswith("_")]
+    canales_dir = ROOT / "output" / "nichos"
+    canales = []
+    if canales_dir.exists():
+        for d in canales_dir.iterdir():
+            if d.is_dir() and (d / "canal.json").exists():
+                canales.append(json.loads((d / "canal.json").read_text()))
+    return jsonify({"nichos_base": nichos, "canales_creados": canales})
+
+@app.route("/api/cola_tareas", methods=["GET"])
+def api_cola_tareas():
+    """Lista tareas de la cola (últimas 20)."""
+    import sqlite3
+    db = ROOT / "data" / "agent" / "cola.db"
+    if not db.exists(): return jsonify([])
+    with sqlite3.connect(db) as c:
+        c.row_factory = sqlite3.Row
+        rows = c.execute("SELECT id, session_id, estado, substr(prompt,1,80) as prompt, creada FROM tareas ORDER BY creada DESC LIMIT 20").fetchall()
+    return jsonify([dict(r) for r in rows])
+
+@app.route("/api/rss_leer", methods=["POST"])
+def api_rss_leer():
+    """Lee noticias de una fuente."""
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "brain"))
+    data = request.json or {}
+    fuente = data.get("fuente", "techcrunch")
+    try:
+        from rss_reader import leer_feed
+        return jsonify({"status": "ok", "noticias": leer_feed(fuente, 5)})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)})
+
+@app.route("/api/especialistas", methods=["GET"])
+def api_especialistas():
+    """Lista roles de especialistas disponibles."""
+    return jsonify([
+        {"rol": "guionista", "desc": "Escribe guiones de YouTube"},
+        {"rol": "seo", "desc": "Optimiza títulos y descripciones"},
+        {"rol": "musico", "desc": "Compone prompts musicales"},
+        {"rol": "auditor", "desc": "Revisa calidad y errores"},
+        {"rol": "traductor", "desc": "Traduce contenido"},
+        {"rol": "coding", "desc": "Programa y depura"},
+        {"rol": "vision", "desc": "Analiza imágenes"},
+    ])
+
+
+
+
+@app.route("/api/papelera/mover", methods=["POST"])
+def api_papelera_mover():
+    data = request.json or {}
+    archivos = data.get("archivos", [])
+    movidos = sum(1 for a in archivos if _mover_a_papelera(a))
+    return jsonify({"status": "ok", "movidos": movidos})
+
+@app.route("/api/papelera/listar", methods=["GET"])
+def api_papelera_listar():
+    import time as _t
+    _purgar_papelera()
+    items = []
+    for info in PAPELERA_INFO.glob("*.json"):
+        try:
+            d = json.loads(info.read_text())
+            dias = PAPELERA_DIAS - int((_t.time() - d.get("borrado_en", 0)) / 86400)
+            items.append({
+                "id": d["id"], "nombre": d["nombre_original"],
+                "ruta_original": d["ruta_original"], "tamano": d.get("tamano", 0),
+                "borrado_en": _t.strftime("%Y-%m-%d %H:%M", _t.localtime(d.get("borrado_en", 0))),
+                "dias_restantes": max(0, dias)
+            })
+        except Exception: pass
+    items.sort(key=lambda x: x["dias_restantes"])
+    return jsonify(items)
+
+@app.route("/api/papelera/restaurar", methods=["POST"])
+def api_papelera_restaurar():
+    import shutil as _sh
+    data = request.json or {}
+    ids = data.get("ids", [])
+    restaurados = 0
+    for fid in ids:
+        info = PAPELERA_INFO / (fid + ".json")
+        if not info.exists(): continue
+        try:
+            d = json.loads(info.read_text())
+            src_f = next(PAPELERA_FILES.glob(fid + ".*"), None)
+            if src_f:
+                dest = ROOT / d["ruta_original"]
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                _sh.move(str(src_f), str(dest))
+                info.unlink()
+                restaurados += 1
+        except Exception: pass
+    return jsonify({"status": "ok", "restaurados": restaurados})
+
+@app.route("/api/papelera/vaciar", methods=["POST"])
+def api_papelera_vaciar():
+    for f in PAPELERA_FILES.glob("*"):
+        try: f.unlink()
+        except Exception: pass
+    for f in PAPELERA_INFO.glob("*"):
+        try: f.unlink()
+        except Exception: pass
+    return jsonify({"status": "ok", "mensaje": "Papelera vaciada"})
+
+@app.route("/api/guardar_api", methods=["POST"])
+def api_guardar_api():
+    """Guarda una API Key en el archivo .env de forma segura."""
+    data = request.json or {}
+    key = data.get("key", "").strip()
+    value = data.get("value", "").strip()
+    if not key or not value:
+        return jsonify({"status": "error", "mensaje": "Falta key o value"})
+    try:
+        env_path = ROOT / ".env"
+        lines = env_path.read_text().splitlines() if env_path.exists() else []
+        # Filtrar si ya existía
+        lines = [l for l in lines if not l.startswith(key + "=")]
+        lines.append(f"{key}={value}")
+        env_path.write_text("\n".join(lines) + "\n")
+        return jsonify({"status": "ok", "mensaje": "Guardado"})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)})
+
+@app.route("/api/auditar_dios", methods=["POST"])
+def api_auditar_dios():
+    """Dios audita el ecosistema y propone reparaciones."""
+    import subprocess as _sp
+    try:
+        # 1. Backup preventivo
+        backup_script = ROOT / "scripts" / "backup_agente.py"
+        if backup_script.exists():
+            _sp.run(["python", str(backup_script)], cwd=str(ROOT), capture_output=True, timeout=60)
+        
+        # 2. Ejecutar auditoría (Dios en modo diagnóstico)
+        prompt = """Actúa como un Auditor de Sistemas experto. 
+Revisa el estado actual del ecosistema. 
+1. Lee ESTADO.md
+2. Comprueba que la web responde.
+3. Comprueba si hay errores en data/logs/web.log.
+4. Devuelve un informe con: Salud General, Errores Encontrados, y Plan de Reparación (sin ejecutar).
+NO modifiques nada, solo informa."""
+
+        # Lanzar a Dios en modo diagnóstico (sin tools de escritura)
+        r = _sp.run(["python", "scripts/dios.py", prompt], capture_output=True, text=True, cwd=str(ROOT), timeout=120)
+        
+        # Extraer el resumen
+        reporte = "Auditoría completada. Revisa la consola del Dios para detalles."
+        if "[dios] Tarea completada. Resumen:" in r.stdout:
+            reporte = r.stdout.split("[dios] Tarea completada. Resumen:")[-1].strip()
+        
+        return jsonify({"status": "ok", "reporte": reporte})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)})
+
+
+
+@app.route("/api/dios_hablar", methods=["POST"])
+def api_dios_hablar():
+    """Genera la voz del Dios usando Sherpa-ONNX con el perfil guardado. Con caché."""
+    import subprocess as _sp, json as _json, hashlib
+    data = request.json or {}
+    texto = data.get("texto", "").strip()
+    if not texto:
+        return jsonify({"status": "error", "mensaje": "Falta texto"})
+    
+    # Caché: buscar si ya se generó este texto
+    cache_dir = ROOT / "data" / "cache_voz"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    hash_texto = hashlib.md5(texto.encode()).hexdigest()[:12]
+    cache_file = cache_dir / f"{hash_texto}.mp3"
+    
+    if cache_file.exists():
+        ruta_relativa = str(cache_file.relative_to(ROOT))
+        return jsonify({"status": "ok", "url": "/media/" + ruta_relativa, "cache": True})
+    
+    # Leer el perfil de voz del Dios
+    voz_file = ROOT / "data" / "agent" / "voz_dios.json"
+    voz = "es_ES-davefx-medium" # Default
+    if voz_file.exists():
+        try:
+            perfil = _json.loads(voz_file.read_text())
+            voz = perfil.get("voz", voz)
+        except Exception: pass
+    
+    # Generar el audio
+    audio_out = ROOT / "output" / "audios" / f"dios_{int(__import__('time').time())}.mp3"
+    audio_out.parent.mkdir(parents=True, exist_ok=True)
+    
+    cmd = ["python", "scripts/voice_studio.py", "--texto", texto[:1000], "--voz", voz, "--formato", "mp3"]
+    try:
+        _sp.run(cmd, cwd=str(ROOT), capture_output=True, timeout=60)
+        # El script guarda con un nombre aleatorio, buscamos el más reciente
+        mp3s = sorted((ROOT / "output" / "audios").glob("studio_*.mp3"), key=lambda p: p.stat().st_mtime, reverse=True)
+        if mp3s:
+            ultimo = mp3s[0]
+            # Copiar a caché
+            import shutil
+            shutil.copy2(ultimo, cache_file)
+            ruta_relativa = str(cache_file.relative_to(ROOT))
+            return jsonify({"status": "ok", "url": "/media/" + ruta_relativa, "voz": voz, "cache": False})
+        return jsonify({"status": "error", "mensaje": "No se generó el MP3"})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)})
+
+
+@app.route("/api/documentar", methods=["POST"])
+def documentar():
+    data = request.json
+    archivo, texto = data.get("archivo", "TRASPASO.md"), data.get("texto", "")
+    p = ROOT / archivo
+    if p.exists() and archivo.endswith(".md"):
+        with open(p, "a", encoding="utf-8") as f: f.write("\n\n" + texto + "\n")
+        return jsonify({"status": "ok", "reply": f"Añadido a {archivo}"})
+    return jsonify({"status": "error", "mensaje": "Archivo no válido"})
+
+@app.route("/api/prompt", methods=["POST"])
+def prompt_studio():
+    data = request.json
+    prompt, tipo = data.get("prompt", ""), data.get("tipo", "visual")
+    try:
+        import requests
+        systems = {"visual": "Eres experto en prompts de imagen/video. SOLO el prompt.", "estrategia": "Eres estratega. Da 3-5 viñetas.", "seo": "Genera título, desc y guion 30s.", "musica": "Eres experto en ACE-Step. SOLO el prompt."}
+        key = leer_api_key("GROQ_API_KEY")
+        r = requests.post("https://api.groq.com/openai/v1/chat/completions", headers={"Authorization": f"Bearer {key}"}, json={"model": "openai/gpt-oss-120b", "messages": [{"role": "system", "content": systems.get(tipo, systems["visual"])}, {"role": "user", "content": prompt}]}, timeout=30)
+        return jsonify({"status": "ok", "reply": r.json()["choices"][0]["message"]["content"]})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)})
+
+
+@app.route("/api/generar_video", methods=["POST"])
+def api_generar_video():
+    """Genera vídeo con Wan 2.2 TI2V-5B en Kaggle usando el contrato."""
+    import threading, sys as _sys
+    data = request.json or {}
+    prompt = data.get("prompt", "").strip()
+    if not prompt:
+        return jsonify({"status": "error", "mensaje": "Falta prompt"})
+
+    # Params del contrato
+    preset = data.get("preset") or None
+    resolution = data.get("resolution") or None
+    num_frames = data.get("num_frames") or None
+    num_inference_steps = data.get("num_inference_steps") or None
+    guidance_scale = data.get("guidance_scale") or None
+    shift = data.get("shift") or None
+    fps = data.get("fps") or None
+
+    # Traducir prompt a cinematográfico (fórmula Wan)
+    try:
+        _sys.path.insert(0, str(ROOT / "scripts"))
+        from orquestador_nichos import _traducir_a_prompt_wan
+        prompt_cine = _traducir_a_prompt_wan(prompt)
+    except Exception as e:
+        print(f"[video] Traducción falló, usando original: {e}", flush=True)
+        prompt_cine = prompt
+
+    def _run():
+        try:
+            _sys.path.insert(0, str(ROOT / "scripts"))
+            from wan22_batch import generar_video_batch
+            result = generar_video_batch(
+                [prompt_cine],
+                preset=preset,
+                resolution=resolution,
+                num_frames=num_frames,
+                num_steps=num_inference_steps,
+                guidance=guidance_scale,
+                shift=shift,
+                fps=fps,
+            )
+            print(f"[video] {result[:300]}", flush=True)
+        except Exception as e:
+            print(f"[video] Error: {e}", flush=True)
+
+    threading.Thread(target=_run, daemon=True).start()
+    return jsonify({
+        "status": "ok",
+        "mensaje": f"Vídeo en cola: {prompt_cine[:80]}...",
+        "prompt_cinematografico": prompt_cine,
+        "preset": preset,
+        "resolution": resolution or "832x480 (default)",
+    })
+
+@app.route("/api/chat_stream/<task_id>")
+def chat_stream(task_id):
+    """Stream de logs del Dios con UTF-8 forzado."""
+    from flask import Response
+    from flask import Response
+    import time, json, sqlite3
+    log_file = ROOT / "data" / "logs" / "tasks" / (task_id + ".log")
+    db_path = ROOT / "data" / "agent" / "cola.db"
+
+    def generate():
+        esperando = 0
+        while not log_file.exists():
+            yield "data: " + json.dumps("[+] En cola...") + chr(10) + chr(10)
+            time.sleep(1)
+            esperando += 1
+            if esperando > 300:
+                yield "data: " + json.dumps("[+] Timeout esperando worker") + chr(10) + chr(10)
+                return
+
+        with open(log_file, "r", encoding="utf-8") as f:
+            while True:
+                line = f.readline()
+                if line:
+                    yield "data: " + line.rstrip(chr(10)) + chr(10) + chr(10)
+                else:
+                    try:
+                        with sqlite3.connect(db_path) as conn:
+                            row = conn.execute("SELECT estado FROM tareas WHERE id=?", (task_id,)).fetchone()
+                            if row and row[0] in ("done", "error"):
+                                break
+                    except Exception:
+                        pass
+                    time.sleep(0.5)
+        yield "data: " + json.dumps("[+] Proceso finalizado.") + chr(10) + chr(10)
+
+    return Response(generate(), mimetype="text/event-stream")
+
+@app.route("/api/doctor", methods=["POST"])
+def api_doctor():
+    from brain.sanador import sanar
+    try:
+        res = sanar()
+        return jsonify({"status": "ok", "reporte": res})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)}), 500
+
+@app.route("/api/rss", methods=["POST"])
+def api_rss():
+    from brain.rss_reader import leer_feed
+    data = request.json
+    try:
+        res = leer_feed(data.get("fuente", "techcrunch"), data.get("limite", 5))
+        return jsonify({"status": "ok", "resultado": res})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)}), 500
+
+@app.route("/api/especialista", methods=["POST"])
+def api_especialista():
+    from brain.especialistas import pedir_a_especialista
+    data = request.json
+    try:
+        res = pedir_a_especialista(data.get("rol", "auditor"), data.get("tarea", ""), data.get("contexto", ""))
+        return jsonify({"status": "ok", "resultado": res})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)}), 500
+
+
+
+
+# ═══════════ VOICE STUDIO PRO v2 ═══════════
+import json as _json, subprocess as _sp, sys as _sys, shutil as _shutil, threading as _th, urllib.request as _url
+
+@app.route("/api/voces_disponibles", methods=["GET"])
+def api_voces_disponibles():
+    cat_path = ROOT / "assets" / "models" / "tts" / "catalogo.json"
+    if not cat_path.exists(): return jsonify({"voces": []})
+    cat = _json.loads(cat_path.read_text(encoding="utf-8"))
+    for v in cat["voces"]:
+        onnx = list((ROOT / "assets" / "models" / "tts" / v["id"]).glob("*.onnx"))
+        if not onnx:
+            onnx = list((ROOT / "assets" / "models" / "tts" / ("vits-piper-" + v["id"])).glob("*.onnx"))
+        v["instalada"] = len(onnx) > 0
+    return jsonify(cat)
+
+@app.route("/api/instalar_voz", methods=["POST"])
+def api_instalar_voz():
+    voz_id = request.json.get("voz", "")
+    cat_path = ROOT / "assets" / "models" / "tts" / "catalogo.json"
+    cat = _json.loads(cat_path.read_text(encoding="utf-8"))
+    voz = next((v for v in cat["voces"] if v["id"] == voz_id), None)
+    if not voz: return jsonify({"error": "Voz no existe"}), 404
+    if list((ROOT / "assets" / "models" / "tts" / voz_id).glob("*.onnx")): return jsonify({"status": "ok", "mensaje": "Ya instalada"})
+    try:
+        dest = ROOT / "assets" / "models" / "tts" / voz_id
+        dest.mkdir(parents=True, exist_ok=True)
+        base = "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/" + voz["family"] + "/" + voz["lang"] + "/" + voz["speaker"] + "/" + voz["quality"] + "/" + voz["lang"] + "-" + voz["speaker"] + "-" + voz["quality"]
+        _url.urlretrieve(base + ".onnx", str(dest / (voz["lang"] + "-" + voz["speaker"] + "-" + voz["quality"] + ".onnx")))
+        _url.urlretrieve(base + ".onnx.json", str(dest / (voz["lang"] + "-" + voz["speaker"] + "-" + voz["quality"] + ".onnx.json")))
+        return jsonify({"status": "ok", "mensaje": voz_id + " instalada"})
+    except Exception as e: return jsonify({"error": str(e)}), 500
+
+@app.route("/api/desinstalar_voz", methods=["POST"])
+def api_desinstalar_voz():
+    voz_id = request.json.get("voz", "")
+    for d in [voz_id, "vits-piper-" + voz_id]:
+        ruta = ROOT / "assets" / "models" / "tts" / d
+        if ruta.exists():
+            _shutil.rmtree(ruta)
+            return jsonify({"status": "ok", "mensaje": voz_id + " desinstalada"})
+    return jsonify({"error": "No encontrada"}), 404
+
+@app.route("/api/historial", methods=["GET"])
+def api_historial():
+    p = ROOT / "output" / "audios" / "history.json"
+    return jsonify({"historial": _json.loads(p.read_text()) if p.exists() else []})
+
+@app.route("/api/borrar_historial", methods=["POST"])
+def api_borrar_historial():
+    p = ROOT / "output" / "audios" / "history.json"
+    if p.exists(): p.write_text("[]")
+    return jsonify({"status": "ok"})
+
+@app.route("/api/guardar_voz_dios", methods=["POST"])
+def api_guardar_voz_dios():
+    perfil_path = ROOT / "data" / "agent" / "voz_dios.json"
+    perfil_path.parent.mkdir(parents=True, exist_ok=True)
+    perfil_path.write_text(_json.dumps(request.json, indent=2))
+    return jsonify({"status": "ok"})
+
+@app.route("/api/guardar_audio", methods=["POST"])
+def api_guardar_audio():
+    data = request.json
+    audio_id = data.get("audio_id", "")
+    nombre = data.get("nombre", "audio").replace("/", "_")
+    # Buscar cualquier extension (mp3 o wav)
+    origen = next((ROOT / "output" / "audios").glob(audio_id + ".*"), None)
+    if not origen: return jsonify({"error": "No existe el audio"}), 404
+    dest_dir = ROOT / "output" / "audios" / "guardados"
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest = dest_dir / (nombre + origen.suffix)
+    _shutil.copy2(origen, dest)
+    return jsonify({"status": "ok", "ruta": str(dest.name)})
+
+@app.route("/api/voice_studio", methods=["POST"])
+def api_voice_studio():
+    data = request.json
+    if "batch" in data:
+        res = []
+        for linea in data["batch"]:
+            if not linea.strip(): continue
+            cmd = [_sys.executable, "scripts/voice_studio.py", "--texto", linea, "--voz", data.get("voz","es_ES-davefx-medium"), "--preset", data.get("preset","ninguno"), "--formato", data.get("formato","mp3")]
+            r = _sp.run(cmd, capture_output=True, text=True, cwd=str(ROOT))
+            try: res.append(_json.loads(r.stdout.strip().split("\n")[-1]))
+            except: pass
+        return jsonify({"status": "ok", "resultados": res})
+    cmd = [
+        _sys.executable, "scripts/voice_studio.py", "--texto", data.get("texto",""), 
+        "--voz", data.get("voz","es_ES-davefx-medium"), "--preset", data.get("preset","ninguno"), 
+        "--formato", data.get("formato","mp3"),
+        "--pitch", str(data.get("pitch", 0)), "--velocidad", str(data.get("velocidad", 1.0)),
+        "--distorsion", str(data.get("distorsion", 0)), "--reverb", str(data.get("reverb", 0)),
+        "--bass", str(data.get("bass", 0)), "--treble", str(data.get("treble", 0))
+    ]
+    if data.get("compresor"): cmd.append("--compresor")
+    if not data.get("normalizar"): cmd.append("--no-normalizar")
+    try:
+        r = _sp.run(cmd, capture_output=True, text=True, cwd=str(ROOT), timeout=180)
+        return jsonify(_json.loads(r.stdout.strip().split("\n")[-1]))
+    except Exception as e: return jsonify({"error": str(e)}), 500
+# ═══════════ FIN VOICE STUDIO PRO v2 ═══════════
+
+
+@app.route("/api/crear_video", methods=["POST"])
+def api_crear_video():
+    import sqlite3, uuid, subprocess, sys
+    from datetime import datetime
+    data = request.json
+    prompt = data.get("prompt", "")
+    if not prompt:
+        return jsonify({"error": "Falta prompt"}), 400
+    
+    task_id = str(uuid.uuid4())[:8]
+    now = datetime.now().isoformat()
+    db_path = ROOT / "data" / "agent" / "cola.db"
+    
+    with sqlite3.connect(db_path) as conn:
+        conn.execute("INSERT INTO tareas (id, session_id, prompt, estado, creada, actualizada) VALUES (?, ?, ?, ?, ?, ?)",
+                     (task_id, "video", prompt, "pending", now, now))
+        conn.commit()
+    
+    return jsonify({"status": "processing", "task_id": task_id})
+
+@app.route("/api/estado_video/<task_id>")
+def api_estado_video(task_id):
+    import sqlite3
+    db_path = ROOT / "data" / "agent" / "cola.db"
+    with sqlite3.connect(db_path) as conn:
+        row = conn.execute("SELECT estado, prompt, ruta_video FROM tareas WHERE id=?", (task_id,)).fetchone()
+        if not row:
+            return jsonify({"error": "No existe"}), 404
+        return jsonify({"estado": row[0], "prompt": row[1], "ruta_video": row[2]})
+
+
+@app.route("/api/tareas_video", methods=["GET"])
+def api_tareas_video():
+    import sqlite3
+    db_path = ROOT / "data" / "agent" / "cola.db"
+    with sqlite3.connect(db_path) as conn:
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute("SELECT id, prompt, estado, ruta_video FROM tareas WHERE session_id='video' ORDER BY creada DESC LIMIT 20").fetchall()
+        return jsonify([dict(r) for r in rows])
+
+
+# ═══ ENDPOINTS DE PARÁMETROS (Fase 1 — solo lectura) ═══
+@app.route("/api/params/<motor>", methods=["GET"])
+def api_params_motor(motor):
+    """Devuelve el contrato del motor agrupado por bloques."""
+    mapa = {
+        "musica": "acestep_contract.json",
+        "voz": "sherpa_contract.json",
+        "imagen": "image_contract.json",
+        "video": "video_contract.json",
+        "youtube": "youtube_contract.json",
+        "ffmpeg": "ffmpeg_contract.json",
+        "blogger": "blogger_contract.json",
+        "pixabay": "pixabay_contract.json",
+    }
+    archivo = mapa.get(motor)
+    if not archivo:
+        return jsonify({"error": f"Motor '{motor}' no tiene contrato"}), 404
+    ruta = ROOT / "data" / "agent" / archivo
+    if not ruta.exists():
+        return jsonify({"error": f"Contrato no generado: {archivo}"}), 404
+    try:
+        return jsonify(json.loads(ruta.read_text()))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/user_presets/<motor>", methods=["GET", "POST"])
+def api_user_presets(motor):
+    """Lista o guarda presets de usuario para un motor."""
+    archivo = ROOT / "data" / "agent" / "user_presets.json"
+    data = {}
+    if archivo.exists():
+        try:
+            data = json.loads(archivo.read_text())
+        except Exception:
+            data = {}
+    if request.method == "GET":
+        return jsonify(data.get(motor, {}))
+    # POST: guardar
+    body = request.json or {}
+    nombre = body.get("nombre", "").strip()
+    params = body.get("params", {})
+    if not nombre:
+        return jsonify({"error": "Falta nombre"}), 400
+    data.setdefault(motor, {})[nombre] = params
+    archivo.parent.mkdir(parents=True, exist_ok=True)
+    archivo.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+    return jsonify({"status": "ok", "mensaje": f"Preset '{nombre}' guardado"})
+
+
+
+
+
+# ═══ CREAR NICHO (Fase: config-driven) ═══
+@app.route("/api/crear_nicho", methods=["POST"])
+def api_crear_nicho():
+    """Crea un canal completo: config + carpeta + canal.json + subcarpetas + SKILL + notificación."""
+    import subprocess as _sp, sys as _sys, time as _t
+    data = request.json or {}
+    nombre = data.get("nombre", "").strip().lower().replace(" ", "_")
+    if not nombre:
+        return jsonify({"status": "error", "mensaje": "Falta nombre"})
+    
+    cfg_path = ROOT / "config" / "nichos.json"
+    cfg = json.loads(cfg_path.read_text())
+    if nombre in cfg and not nombre.startswith("_"):
+        return jsonify({"status": "error", "mensaje": f"Nichos '{nombre}' ya existe"})
+    
+    # 1. Escribir nicho en config
+    nicho = {
+        "nombre": data.get("nombre", nombre),
+        "formato": data.get("formato", "video_voz_imagen"),
+        "duracion": int(data.get("duracion", 90)),
+        "tono": data.get("tono", "neutral"),
+        "fuente_noticias": data.get("fuente_noticias", []),
+        "voz": data.get("voz", "es_ES-davefx-medium"),
+        "imagen_estilo": data.get("imagen_estilo", "cinematic"),
+        "musica": data.get("musica", "lofi"),
+        "subir": bool(data.get("subir", True)),
+        "skills": {
+            "presets": data.get("presets", {}),
+            "pipeline": data.get("pipeline", []),
+        }
+    }
+    cfg[nombre] = nicho
+    cfg_path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False))
+    
+    # 2. Sincronizar montajes (auto-genera config/montajes/<nombre>.json)
+    try:
+        _sys.path.insert(0, str(ROOT / "scripts"))
+        from sincronizar_montajes import sincronizar
+        sincronizar(nombre)
+    except Exception as e:
+        print(f"[crear_nicho] sync montajes: {e}", flush=True)
+    
+    # 3. Crear carpeta con subcarpetas
+    canal_dir = ROOT / "output" / "nichos" / nombre
+    for sub in ("media", "tokens", "guiones", "audios", "videos", "imagenes"):
+        (canal_dir / sub).mkdir(parents=True, exist_ok=True)
+    
+    # 3. canal.json con config + skills + plataformas
+    canal_cfg = {
+        "id": nombre,
+        "nombre": data.get("nombre", nombre),
+        "nicho_base": nombre,
+        "config": nicho,
+        "creado": _t.time(),
+        "activo": True,
+        "plataformas": data.get("plataformas", ["youtube", "blogger"]),
+        "cuentas": data.get("cuentas", {
+            "youtube": "global",
+            "blogger": "global"
+        }),
+    }
+    (canal_dir / "canal.json").write_text(json.dumps(canal_cfg, indent=2, ensure_ascii=False))
+    
+    # 4. Regenerar SKILL.md
+    skill_ok = False
+    try:
+        _sys.path.insert(0, str(ROOT / "scripts"))
+        from generate_skill_md import main as gen_skill
+        gen_skill()
+        skill_ok = True
+    except Exception as e:
+        print(f"[crear_nicho] SKILL.md falló: {e}", flush=True)
+    
+    # 5. Notificar al móvil
+    try:
+        _sp.run(["termux-notification", "-t", f"📺 Canal '{nombre}' creado", 
+                 "-c", f"Presets: {list(data.get('presets', {}).values())}. Carpeta lista.", 
+                 "--id", "crear_canal"], check=False, timeout=5)
+    except Exception: pass
+    
+    return jsonify({
+        "status": "ok",
+        "mensaje": f"Canal '{nombre}' creado. Carpeta + tokens + SKILL.md + notificación.",
+        "canal_dir": str(canal_dir.relative_to(ROOT)),
+        "skill_regenerado": skill_ok,
+        "plataformas": canal_cfg["plataformas"],
+    })
+
+
+
+
+# ═══ EVALUADOR DE PRODUCCIÓN ═══
+@app.route("/api/evaluar", methods=["POST"])
+def api_evaluar():
+    """Dios evalúa un plan ANTES de producir. Devuelve veredicto con semáforos."""
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "scripts"))
+    from evaluador_produccion import evaluar_produccion
+    data = request.json or {}
+    try:
+        informe = evaluar_produccion(
+            prompt=data.get("prompt", ""),
+            motor=data.get("motor", "musica"),
+            preset=data.get("preset"),
+            nicho=data.get("nicho"),
+            cantidad=int(data.get("cantidad", 1)),
+            duracion=int(data.get("duracion", 0)),
+        )
+        return jsonify({"status": "ok", "informe": informe})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)}), 500
+
+@app.route("/api/papelera/borrar_canal", methods=["POST"])
+def api_borrar_canal():
+    """Mueve un canal a la papelera (soft delete). Requiere confirmación por nombre."""
+    import shutil as _sh, time as _t
+    data = request.json or {}
+    canal_id = data.get("canal_id", "").strip()
+    confirm = data.get("confirm_name", "").strip()
+    if canal_id != confirm:
+        return jsonify({"status": "error", "mensaje": "Nombre de confirmación no coincide"})
+    canal_dir = ROOT / "output" / "nichos" / canal_id
+    if not canal_dir.exists():
+        return jsonify({"status": "error", "mensaje": "Canal no existe"})
+    papelera = ROOT / "output" / ".papelera" / "canales" / f"{canal_id}_{int(_t.time())}"
+    papelera.parent.mkdir(parents=True, exist_ok=True)
+    _sh.move(str(canal_dir), str(papelera))
+    # Mover también del config (soft delete: guardar copia)
+    cfg_path = ROOT / "config" / "nichos.json"
+    cfg = json.loads(cfg_path.read_text())
+    if canal_id in cfg:
+        cfg_bak = cfg.pop(canal_id)
+        (papelera / "_config_snapshot.json").write_text(json.dumps(cfg_bak, indent=2, ensure_ascii=False))
+        cfg_path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False))
+    return jsonify({"status": "ok", "mensaje": f"Canal '{canal_id}' movido a papelera"})
+
+@app.route("/api/papelera/listar", methods=["GET"])
+def api_papelera_canal_listar():
+    import time as _t, json as _j
+    base = ROOT / "output" / ".papelera" / "canales"
+    items = []
+    if base.exists():
+        for d in base.iterdir():
+            if d.is_dir():
+                try:
+                    snap = d / "_config_snapshot.json"
+                    cfg = _j.loads(snap.read_text()) if snap.exists() else {}
+                    ts = int(d.name.split("_")[-1])
+                    dias = 30 - int((_t.time() - ts) / 86400)
+                    items.append({"id": d.name, "nombre": cfg.get("nombre", d.name), "borrado": _t.strftime("%Y-%m-%d %H:%M", _t.localtime(ts)), "dias": max(0, dias)})
+                except Exception: pass
+    return jsonify(items)
+
+@app.route("/api/papelera/restaurar", methods=["POST"])
+def api_papelera_canal_restaurar():
+    import shutil as _sh, json as _j
+    data = request.json or {}
+    pid = data.get("id", "").strip()
+    src = ROOT / "output" / ".papelera" / "canales" / pid
+    if not src.exists():
+        return jsonify({"status": "error", "mensaje": "No existe"})
+    original_id = pid.rsplit("_", 1)[0]
+    dest = ROOT / "output" / "nichos" / original_id
+    if dest.exists():
+        return jsonify({"status": "error", "mensaje": "Ya existe ese canal"})
+    _sh.move(str(src), str(dest))
+    # Restaurar config si hay snapshot
+    snap = dest / "_config_snapshot.json"
+    if snap.exists():
+        cfg = _j.loads(snap.read_text())
+        cfg_path = ROOT / "config" / "nichos.json"
+        d = _j.loads(cfg_path.read_text())
+        d[original_id] = cfg
+        cfg_path.write_text(_j.dumps(d, indent=2, ensure_ascii=False))
+        snap.unlink()
+    return jsonify({"status": "ok", "mensaje": f"Canal '{original_id}' restaurado"})
+
+
+
+
+
+# ═══ WORKER LOG EN VIVO ═══
+
+@app.route("/api/blogger_stats", methods=["GET"])
+def blogger_stats():
+    """Devuelve stats de Blogger (visitas, posts)."""
+    import json, pathlib, urllib.request, urllib.parse, time
+    try:
+        tok_path = ROOT / "data" / "youtube_token.json"
+        tok = json.loads(tok_path.read_text())
+        if time.time() > tok.get("expires_at", 0) - 60:
+            data = urllib.parse.urlencode({
+                "client_id": tok["client_id"], "client_secret": tok["client_secret"],
+                "refresh_token": tok["refresh_token"], "grant_type": "refresh_token"
+            }).encode()
+            req = urllib.request.Request("https://oauth2.googleapis.com/token", data=data)
+            r = json.loads(urllib.request.urlopen(req).read())
+            tok["access_token"] = r["access_token"]
+            tok["expires_at"] = time.time() + r.get("expires_in", 3600)
+            tok_path.write_text(json.dumps(tok, indent=2))
+
+        # Obtener el ID del blog
+        req = urllib.request.Request(
+            "https://www.googleapis.com/blogger/v3/users/self/blogs",
+            headers={"Authorization": f"Bearer {tok['access_token']}"})
+        blogs = json.loads(urllib.request.urlopen(req, timeout=15).read())
+        
+        resultado = []
+        for b in blogs.get("items", []):
+            bid = b["id"]
+            # Vistas (API v3 devuelve counts si el blog lo permite)
+            pv = {}
+            try:
+                req_pv = urllib.request.Request(
+                    f"https://www.googleapis.com/blogger/v3/blogs/{bid}/pageViews?range=30d&pageIds=all",
+                    headers={"Authorization": f"Bearer {tok['access_token']}"})
+                pv = json.loads(urllib.request.urlopen(req_pv, timeout=10).read())
+            except Exception: pass
+            
+            # Posts
+            posts_data = []
+            try:
+                req_p = urllib.request.Request(
+                    f"https://www.googleapis.com/blogger/v3/blogs/{bid}/posts?maxResults=5",
+                    headers={"Authorization": f"Bearer {tok['access_token']}"})
+                p_data = json.loads(urllib.request.urlopen(req_p, timeout=10).read())
+                for item in p_data.get("items", []):
+                    posts_data.append({"titulo": item.get("title"), "url": item.get("url"), "fecha": item.get("published")})
+            except Exception: pass
+            
+            visits = pv.get("counts", [{}])[0].get("count", 0) if pv.get("counts") else 0
+            
+            resultado.append({
+                "nombre": b["name"], "url": b["url"], "id": bid,
+                "posts_total": b.get("posts", {}).get("totalItems", 0),
+                "visitas_30d": visits, "ultimos_posts": posts_data
+            })
+        return jsonify(resultado)
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)})
+
+@app.route("/api/crear_post_blog", methods=["POST"])
+def api_crear_post_blog():
+    import threading, sys as _sys
+    data = request.json or {}
+    tema = data.get("tema", "").strip()
+    nicho = data.get("nicho", "ia_news")
+    if not tema: return jsonify({"status":"error","mensaje":"Falta tema"})
+    
+    def _run():
+        try:
+            _sys.path.insert(0, str(ROOT / "scripts"))
+            _sys.path.insert(0, str(ROOT / "brain"))
+            from dios import _tool_publicar_blog_completo
+            print(f"[web] Generando post: {tema}", flush=True)
+            r = _tool_publicar_blog_completo({"nicho": nicho, "tema": tema, "palabras": 1500, "status": "live"})
+            print(f"[web] {r}", flush=True)
+        except Exception as e:
+            print(f"[web] Error: {e}", flush=True)
+    
+    threading.Thread(target=_run, daemon=True).start()
+    return jsonify({"status": "ok", "mensaje": "Redactando noticia..."})
+
+@app.route("/api/investigar/<nicho>", methods=["GET"])
+def api_investigar(nicho):
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(ROOT / "brain"))
+        from investigador_redes import investigar
+        r = investigar(nicho)
+        return jsonify({"status": "ok", "data": r})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)})
+
+@app.route("/api/investigacion_guardada/<nicho>", methods=["GET"])
+def api_investigacion_guardada(nicho):
+    p = ROOT / "data" / "agent" / f"investigacion_{nicho}.json"
+    if not p.exists():
+        return jsonify({"status": "error", "mensaje": "Sin datos. Ejecuta investigar primero."})
+    return jsonify(json.loads(p.read_text()))
+
+
+@app.route("/api/factory", methods=["GET"])
+def api_factory():
+    import json, sqlite3, datetime
+    try:
+        resultado = {
+            "tendencias": {},
+            "borradores_blog": 0,
+            "cola_youtube": {"pending": 0, "done": 0, "error": 0, "proximas": []},
+            "videos_hoy": 0,
+            "shorts_totales": 0,
+            "podcasts_totales": 0,
+            "ultima_investigacion": None,
+        }
+
+        # 1. Tendencias por nicho (lee JSON guardados)
+        for nicho in ("ia_news", "finanzas_barrio", "boe", "lofi"):
+            p_inv = ROOT / "data" / "agent" / f"investigacion_{nicho}.json"
+            if p_inv.exists():
+                try:
+                    d = json.loads(p_inv.read_text())
+                    resultado["tendencias"][nicho] = {
+                        "youtube": len(d.get("youtube", [])),
+                        "trends": len(d.get("trends", [])),
+                        "reddit": len(d.get("reddit", [])),
+                        "hackernews": len(d.get("hackernews", [])),
+                        "ts": d.get("ts"),
+                    }
+                    if not resultado["ultima_investigacion"] or d.get("ts", "") > resultado["ultima_investigacion"]:
+                        resultado["ultima_investigacion"] = d.get("ts")
+                except Exception:
+                    pass
+
+        # 2. Borradores blog
+        b_dir = ROOT / "data" / "agent" / "blog_borradores"
+        if b_dir.exists():
+            resultado["borradores_blog"] = len(list(b_dir.glob("*.json")))
+
+        # 3. Cola YouTube
+        db_y = ROOT / "data" / "agent" / "cola_publicacion.db"
+        if db_y.exists():
+            with sqlite3.connect(db_y) as c:
+                for estado in ("pending", "done", "error"):
+                    n = c.execute("SELECT COUNT(*) FROM publicaciones WHERE estado=?", (estado,)).fetchone()[0]
+                    resultado["cola_youtube"][estado] = n
+                proximas = c.execute("SELECT titulo, publish_at FROM publicaciones WHERE estado='pending' ORDER BY publish_at LIMIT 5").fetchall()
+                resultado["cola_youtube"]["proximas"] = [{"titulo": t, "fecha": f} for t, f in proximas]
+
+        # 4. Videos y podcasts
+        vids = ROOT / "output" / "videos"
+        if vids.exists():
+            hoy = datetime.date.today().isoformat()
+            resultado["videos_hoy"] = sum(1 for f in vids.glob("*.mp4") if datetime.date.fromtimestamp(f.stat().st_mtime).isoformat() == hoy)
+            resultado["shorts_totales"] = len(list(vids.glob("short_*.mp4")))
+
+        pod = ROOT / "output" / "podcast"
+        if pod.exists():
+            resultado["podcasts_totales"] = len(list(pod.glob("*.mp3")))
+
+        return jsonify({"status": "ok", "data": resultado})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)})
+
+
+@app.route("/api/informe/<nicho>", methods=["GET"])
+def api_informe(nicho):
+    p_html = ROOT / "data" / "agent" / f"informe_{nicho}.html"
+    p_meta = ROOT / "data" / "agent" / f"informe_{nicho}.json"
+    if not p_html.exists():
+        return jsonify({"status": "error", "mensaje": "Sin informe. Genera uno primero."})
+    meta = {}
+    if p_meta.exists():
+        try: meta = json.loads(p_meta.read_text())
+        except: pass
+    return jsonify({"status": "ok", "html": p_html.read_text(encoding="utf-8"), "meta": meta})
+
+@app.route("/api/informe_generar/<nicho>", methods=["POST"])
+def api_informe_generar(nicho):
+    import threading, sys as _sys
+    def _run():
+        try:
+            _sys.path.insert(0, str(ROOT / "brain"))
+            _sys.path.insert(0, str(ROOT / "scripts"))
+            from informe_detective import generar_informe_visual
+            generar_informe_visual(nicho)
+            print(f"[web] Informe {nicho} generado", flush=True)
+        except Exception as e:
+            print(f"[web] Error informe {nicho}: {e}", flush=True)
+    threading.Thread(target=_run, daemon=True).start()
+    return jsonify({"status": "processing", "mensaje": f"Generando informe para {nicho}..."})
+
+
+@app.route("/api/listar_informes", methods=["GET"])
+def api_listar_informes():
+    import json
+    data_dir = ROOT / "data" / "agent"
+    informes = []
+    if data_dir.exists():
+        for f in data_dir.glob("informe_*.json"):
+            try:
+                d = json.loads(f.read_text())
+                informes.append({"nicho": d.get("nicho", "?"), "fecha": d.get("fecha", "")})
+            except Exception:
+                pass
+    informes.sort(key=lambda x: x.get("fecha", ""), reverse=True)
+    return jsonify({"status": "ok", "informes": informes})
+
+
+@app.route("/api/borradores_blog", methods=["GET"])
+def api_borradores_blog():
+    import json
+    b_dir = ROOT / "data" / "agent" / "blog_borradores"
+    res = []
+    if b_dir.exists():
+        for f in b_dir.glob("*.json"):
+            try:
+                d = json.loads(f.read_text())
+                d["filename"] = f.name
+                res.append(d)
+            except Exception: pass
+    res.sort(key=lambda x: x.get("ts", 0), reverse=True)
+    return jsonify(res)
+
+@app.route("/api/publicar_borrador", methods=["POST"])
+def api_publicar_borrador():
+    import subprocess, json
+    data = request.json or {}
+    filename = data.get("filename", "")
+    if not filename: return jsonify({"status":"error", "mensaje":"falta filename"})
+    p = ROOT / "data" / "agent" / "blog_borradores" / filename
+    if not p.exists(): return jsonify({"status":"error", "mensaje":"no existe"})
+    d = json.loads(p.read_text())
+    try:
+        proc = subprocess.run(["python", "scripts/publicar_blogger.py", d["titulo"], d["html"]], capture_output=True, text=True, cwd=str(ROOT), timeout=120)
+        if "OK:" in proc.stdout:
+            p.unlink()
+            return jsonify({"status":"ok", "detalle": proc.stdout.strip()})
+        return jsonify({"status":"error", "mensaje": proc.stdout[-300:] + proc.stderr[-200:]})
+    except Exception as e:
+        return jsonify({"status":"error", "mensaje": str(e)})
+
+
+@app.route("/api/descartar_borrador", methods=["POST"])
+def api_descartar_borrador():
+    data = request.json or {}
+    filename = data.get("filename", "")
+    if not filename: return jsonify({"status":"error"})
+    p = ROOT / "data" / "agent" / "blog_borradores" / filename
+    if p.exists(): p.unlink()
+    return jsonify({"status":"ok"})
+
+
+@app.route("/sitemap.xml")
+def sitemap():
+    from flask import Response
+    import datetime
+    today = datetime.date.today().isoformat()
+    urls = [
+        ("http://127.0.0.1:8001/", "1.0", "daily"),
+        ("http://127.0.0.1:8001/?view=tendencias", "0.8", "daily"),
+        ("http://127.0.0.1:8001/?view=informe", "0.8", "daily"),
+        ("http://127.0.0.1:8001/?view=factory", "0.7", "hourly"),
+    ]
+    xml = '<?xml version="1.0" encoding="UTF-8"?>' + chr(10)
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + chr(10)
+    for u, prio, freq in urls:
+        xml += '  <url><loc>' + u + '</loc><lastmod>' + today + '</lastmod><priority>' + prio + '</priority><changefreq>' + freq + '</changefreq></url>' + chr(10)
+    xml += '</urlset>'
+    return Response(xml, mimetype="application/xml")
+
+
+@app.route("/api/crear_canal", methods=["POST"])
+def api_crear_canal():
+    import sys as _sys, pathlib, json
+    data = request.json or {}
+    nombre = data.get("nombre", "").strip()
+    nicho = data.get("nicho", "ia_news").strip()
+    oauth_token = data.get("oauth_token", "").strip()
+    if not nombre:
+        return jsonify({"status": "error", "mensaje": "Falta nombre"})
+    try:
+        _sys.path.insert(0, str(ROOT / "scripts"))
+        from provisionar_canal import provisionar
+        r = provisionar(nombre, nicho, oauth_token=oauth_token or None)
+        if r.get("status") == "ok":
+            return jsonify({"status": "ok", "canal": r["canal"], "acciones": r["acciones"]})
+        return jsonify({"status": "error", "mensaje": r.get("error", "?")})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)})
+
+
+@app.route("/api/hacer_dia", methods=["POST"])
+def api_hacer_dia():
+    import threading, sys as _sys
+    data = request.json or {}
+    dry = data.get("dry", False)
+    def _run():
+        try:
+            _sys.path.insert(0, str(ROOT / "scripts"))
+            from hacer_dia import hacer_dia
+            r = hacer_dia(dry=dry)
+            print(f"[web] Hacer dia: {r}", flush=True)
+        except Exception as e:
+            print(f"[web] Hacer dia fallo: {e}", flush=True)
+    threading.Thread(target=_run, daemon=True).start()
+    return jsonify({"status": "processing", "mensaje": "Ejecutando en background..."})
+
+@app.route("/api/worker_log", methods=["GET"])
+def api_worker_log():
+    """Devuelve las últimas N líneas de worker.log."""
+    lineas = int(request.args.get("lineas", 200))
+    log_path = ROOT / "data" / "logs" / "worker.log"
+    if not log_path.exists():
+        return jsonify({"status": "ok", "lineas": [], "total": 0, "tamano": 0})
+    try:
+        with open(log_path, "r", encoding="utf-8", errors="replace") as f:
+            todas = f.readlines()
+        ultimas = [l.rstrip("\n") for l in todas[-lineas:]]
+        return jsonify({
+            "status": "ok",
+            "lineas": ultimas,
+            "total": len(todas),
+            "tamano": log_path.stat().st_size,
+            "modificado": log_path.stat().st_mtime
+        })
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)}), 500
+
+
+
+@app.route("/api/ensamblar_largo", methods=["POST"])
+def api_ensamblar_largo():
+    """Ensambla un vídeo largo con la receta del nicho."""
+    import threading, sys as _sys
+    data = request.json or {}
+    nicho = data.get("nicho", "ia_news").strip()
+    video_base = data.get("video_base", "").strip()
+    voz = data.get("voz", "").strip()
+    musica = data.get("musica", "").strip()
+    imagenes = data.get("imagenes", [])
+    receta_path = ROOT / "config" / "montajes" / (nicho + ".json")
+    if not receta_path.exists():
+        return jsonify({"status":"error","mensaje":f"Receta '{nicho}' no existe"})
+    if not video_base or not pathlib.Path(video_base).exists():
+        return jsonify({"status":"error","mensaje":"Falta video_base o no existe"})
+    def _run():
+        try:
+            _sys.path.insert(0, str(ROOT / "scripts"))
+            from motor_ensamblado import motor
+            overrides = {"video_base": video_base}
+            if voz: overrides["voz"] = voz
+            if musica: overrides["musica"] = musica
+            if imagenes: overrides["imagenes"] = imagenes
+            result = motor(str(receta_path), overrides)
+            print(f"[ensamblar] OK: {result}", flush=True)
+        except Exception as e:
+            print(f"[ensamblar] ERROR: {e}", flush=True)
+    threading.Thread(target=_run, daemon=True).start()
+    return jsonify({"status":"ok","mensaje":f"Ensamblaje '{nicho}' en marcha","receta":str(receta_path.relative_to(ROOT))})
+
+if __name__ == "__main__":
+    port = 8001
+    print(f"✨ KeiZ Command Center (Flask) iniciado en: http://127.0.0.1:{port}")
+    app.run(host="127.0.0.1", port=port, debug=True, use_reloader=False)
+
+
+
+# ═══ DASHBOARD SOMOS EL ENCUADRE ═══
+@app.route("/encuadre")
+def vista_encuadre():
+    return """<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Somos El Encuadre - Factory</title>
+    <style>
+        body { background-color: #0a0a12; color: #e0e0e0; font-family: system-ui, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        h1 { color: #e63946; text-align: center; }
+        .card { background: #1a1a24; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #333; }
+        .card h2 { color: #f77f00; font-size: 1.2em; margin-top: 0; }
+        textarea { width: 100%; height: 100px; background: #0a0a12; color: #fff; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; resize: vertical; }
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-copy { background: #25D366; color: #000; }
+        .btn-share { background: #e63946; color: #fff; }
+        button:hover { opacity: 0.8; }
+        select { width: 100%; padding: 10px; background: #1a1a24; color: #fff; border: 1px solid #333; border-radius: 8px; margin-bottom: 20px; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+    <h1>🎬 Factory: Somos El Encuadre</h1>
+    
+    <div class="card">
+        <label>Selecciona la fecha de producción:</label>
+        <select id="fechaSelector" onchange="cargarDatos(this.value)">
+            <option value="">Cargando fechas...</option>
+        </select>
+    </div>
+
+    <div id="panelRedes" style="display:none;">
+        <div class="card" id="card-tiktok">
+            <h2>📱 TikTok</h2>
+            <textarea id="txt-tiktok"></textarea>
+            <div class="btn-group">
+                <button class="btn-copy" onclick="copiar('txt-tiktok')">📋 Copiar</button>
+                <button class="btn-share" onclick="compartir('tiktok')">🚀 Abrir TikTok</button>
+            </div>
+        </div>
+
+        <div class="card" id="card-instagram">
+            <h2>📸 Instagram Reels</h2>
+            <textarea id="txt-instagram"></textarea>
+            <div class="btn-group">
+                <button class="btn-copy" onclick="copiar('txt-instagram')">📋 Copiar</button>
+                <button class="btn-share" onclick="compartir('instagram')">🚀 Abrir Instagram</button>
+            </div>
+        </div>
+
+        <div class="card" id="card-threads">
+            <h2>🧵 Threads</h2>
+            <textarea id="txt-threads"></textarea>
+            <div class="btn-group">
+                <button class="btn-copy" onclick="copiar('txt-threads')">📋 Copiar</button>
+                <button class="btn-share" onclick="compartir('threads')">🚀 Abrir Threads</button>
+            </div>
+        </div>
+
+        <div class="card" id="card-x">
+            <h2>🐦 X (Twitter)</h2>
+            <textarea id="txt-x"></textarea>
+            <div class="btn-group">
+                <button class="btn-copy" onclick="copiar('txt-x')">📋 Copiar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cargar fechas al iniciar
+        fetch('/api/encuadre/fechas')
+            .then(r => r.json())
+            .then(data => {
+                const sel = document.getElementById('fechaSelector');
+                sel.innerHTML = '';
+                if (data.fechas.length === 0) {
+                    sel.innerHTML = '<option value="">No hay producciones recientes</option>';
+                } else {
+                    data.fechas.forEach(f => {
+                        sel.innerHTML += `<option value="${f}">${f}</option>`;
+                    });
+                    cargarDatos(data.fechas[0]);
+                }
+            });
+
+        function cargarDatos(fecha) {
+            if (!fecha) return;
+            fetch(`/api/encuadre/datos/${fecha}`)
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('panelRedes').style.display = 'block';
+                    document.getElementById('txt-tiktok').value = data.tiktok || 'Sin texto generado.';
+                    document.getElementById('txt-instagram').value = data.instagram || 'Sin texto generado.';
+                    document.getElementById('txt-threads').value = data.threads || data.x || 'Sin texto generado.';
+                    document.getElementById('txt-x').value = data.x || 'Sin texto generado.';
+                });
+        }
+
+        function copiar(id) {
+            const txt = document.getElementById(id);
+            txt.select();
+            document.execCommand('copy');
+            alert('✅ Texto copiado al portapapeles');
+        }
+
+        function compartir(red) {
+            const fecha = document.getElementById('fechaSelector').value;
+            alert(`🚀 Abriendo menú de Android para ${red}...`);
+            fetch('/api/encuadre/compartir', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({red: red, fecha: fecha})
+            });
+        }
+    </script>
+</body>
+</html>"""
+
+@app.route("/api/encuadre/fechas")
+def api_encuadre_fechas():
+    import glob
+    OUT = ROOT / "output" / "encuadre"
+    # Buscar archivos redes_FECHA.json
+    archivos = glob.glob(str(OUT / "redes_*.json"))
+    fechas = []
+    for a in archivos:
+        nombre = Path(a).stem.replace("redes_", "")
+        fechas.append(nombre)
+    fechas.sort(reverse=True)
+    return jsonify({"fechas": fechas})
+
+@app.route("/api/encuadre/datos/<fecha>")
+def api_encuadre_datos(fecha):
+    OUT = ROOT / "output" / "encuadre"
+    f = OUT / f"redes_{fecha}.json"
+    if f.exists():
+        return jsonify(json.loads(f.read_text()))
+    return jsonify({"error": "No hay datos"})
+
+@app.route("/api/encuadre/compartir", methods=["POST"])
+def api_encuadre_compartir():
+    data = request.json
+    red = data.get("red")
+    fecha = data.get("fecha")
+    
+    # Ejecutamos el hack en segundo plano
+    script = ROOT / "scripts" / "hack_compartir_redes.py"
+    if red and fecha:
+        # Usamos un hilo para no bloquear la respuesta de la web
+        def run_share():
+            import subprocess
+            subprocess.run(["python3", str(script), red], cwd=str(ROOT))
+        threading.Thread(target=run_share).start()
+        return jsonify({"status": "ok", "msg": f"Abriendo {red}"})
+    return jsonify({"status": "error", "msg": "Faltan datos"})
+

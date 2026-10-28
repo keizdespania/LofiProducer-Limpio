@@ -1,0 +1,90 @@
+
+/* EL ENCUADRE — Blogger Theme (Median UI Style) */
+:root {
+  --bg: #0a0a0f;
+  --surface: #1a1a24;
+  --border: #2a2a3a;
+  --accent: #e63946;
+  --accent2: #f77f00;
+  --text: #e8e8ec;
+  --muted: #8a8a9a;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+  line-height: 1.7;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+header h1 {
+  margin: 0;
+  font-size: 1.5em;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+article {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+article h1 {
+  font-size: 2em;
+  margin: 0 0 16px 0;
+  background: linear-gradient(135deg, #fff, #c8c8d8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+article h2 {
+  font-size: 1.4em;
+  color: var(--accent2);
+  border-left: 3px solid var(--accent);
+  padding-left: 12px;
+  margin-top: 32px;
+}
+article blockquote {
+  border-left: 4px solid var(--accent);
+  background: rgba(230,57,70,0.05);
+  padding: 12px 20px;
+  margin: 16px 0;
+  font-style: italic;
+  border-radius: 0 8px 8px 0;
+}
+article blockquote cite {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.85em;
+  color: var(--muted);
+  font-style: normal;
+}
+article img {
+  border-radius: 8px;
+  margin: 20px 0;
+  max-width: 100%;
+}
+article strong {
+  color: var(--accent2);
+}
+@media (max-width: 768px) {
+  main { padding: 16px 12px; }
+  article { padding: 20px 16px; }
+  article h1 { font-size: 1.5em; }
+}

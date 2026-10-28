@@ -1,0 +1,294 @@
+"""Genera musica con ACE-Step v11. Usa el contrato acestep_contract.json."""
+import sys, time, pathlib, shutil, os, json
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+from kaggle_bearer import push_kernel, estado_kernel
+
+CONTRACT_FILE = ROOT / "data" / "agent" / "acestep_contract.json"
+
+
+def _cargar_contrato():
+    """Carga el contrato de ACE-Step (params + presets + validador)."""
+    if not CONTRACT_FILE.exists():
+        return None
+    try:
+        return json.loads(CONTRACT_FILE.read_text())
+    except Exception:
+        return None
+
+
+def _aplicar_preset(nombre, params):
+    """Fusiona un preset con los params override. Devuelve dict final sin validar."""
+    contrato = _cargar_contrato()
+    if not contrato or not nombre:
+        return params or {}
+    preset = contrato.get("presets", {}).get(nombre)
+    if not preset:
+        print(f"  ⚠️  Preset '{nombre}' no existe, usando defaults", flush=True)
+        return params or {}
+    final = dict(preset)
+    final.update(params or {})
+    return final
+
+
+def _validar_params(params):
+    """Clampea los params según las reglas del validador del contrato."""
+    contrato = _cargar_contrato()
+    if not contrato:
+        return params
+    reglas = {r["campo"]: r for r in contrato.get("validador", {}).get("reglas", [])}
+    out = dict(params)
+    for campo, regla in reglas.items():
+        val = out.get(campo)
+        # Aplicar valor por defecto si falta
+        if val is None and "default" in regla:
+            out[campo] = regla["default"]
+            continue
+        if val is None:
+            continue
+        # Validar valores enumerados
+        if "valores" in regla and val not in regla["valores"]:
+            out[campo] = regla["default"]
+            print(f"  ⚠️  {campo}={val} no válido, usando {regla['default']}", flush=True)
+            continue
+        # Clampear numéricos
+        if "min" in regla and isinstance(val, (int, float)) and val < regla["min"]:
+            out[campo] = regla["min"]
+            print(f"  ⚠️  {campo}={val} < {regla['min']}, clampeado", flush=True)
+        if "max" in regla and isinstance(val, (int, float)) and val > regla["max"]:
+            out[campo] = regla["max"]
+            print(f"  ⚠️  {campo}={val} > {regla['max']}, clampeado", flush=True)
+    return out
+
+
+
+
+def _resolver_rangos(params):
+    """Convierte rangos [min, max] de presets a un valor único (media)."""
+    out = dict(params)
+    for k, v in list(out.items()):
+        if isinstance(v, list) and len(v) == 2 and all(isinstance(x, (int, float)) for x in v):
+            out[k] = int((v[0] + v[1]) / 2)
+    return out
+
+def _componer_params(caption, duration, preset, extra):
+    """Fusiona: defaults + preset + caption/duration + extra, y valida."""
+    params = {
+        "caption": caption,
+        "duration": duration,
+        "task_type": "text2music",
+        "lyrics": "",
+        "instrumental": True,
+        "vocal_language": "unknown",
+        "bpm": None,
+        "keyscale": "",
+        "timesignature": "4/4",
+        "inference_steps": 6,
+        "guidance_scale": 1.0,
+        "shift": 3.0,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2.0,
+        "lm_top_p": 0.9,
+        "seed": -1,
+        "audio_format": "mp3",
+    }
+    if preset:
+        params.update(_aplicar_preset(preset, {}))
+    params["caption"] = caption
+    params["duration"] = duration
+    if extra:
+        params.update(extra)
+    # Resolver rangos de presets [min, max] -> valor único
+    params = _resolver_rangos(params)
+    return _validar_params(params)
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+from kaggle_bearer import push_kernel, estado_kernel
+
+TEMPLATE = ROOT / "scripts" / "kaggle_acestep_v11.py"
+OUTPUT_DIR = ROOT / "output" / "musica"
+USUARIO_CTA1 = "keizproductions"
+USUARIO_CTA2 = "lofiproducer"
+GITHUB_REPO = "keizdespania/LofiProducer-backup"
+
+def _leer_env(key):
+    for line in (ROOT / ".env").read_text().splitlines():
+        if line.startswith(key + "="):
+            return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return None
+
+def _poll(slug_temp):
+    candidatos = [f"{USUARIO_CTA1}/{slug_temp}", f"{USUARIO_CTA2}/{slug_temp}"]
+    for i in range(1, 61):
+        time.sleep(30)
+        for slug in candidatos:
+            try:
+                est = estado_kernel(slug)
+                if not isinstance(est, dict): continue
+                status = est.get("status")
+                if not status: continue
+                print(f"[{i}/60] {slug} → {status}", flush=True)
+                if status in ("complete", "error", "failed", "cancelAcknowledged"):
+                    return slug, status
+                break
+            except Exception:
+                continue
+    return None, "timeout"
+
+def _descargar_github(gToken):
+    import requests
+    headers = {"Authorization": f"token {gToken}", "Accept": "application/vnd.github.v3+json"}
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/output/musica"
+    r = requests.get(url, headers=headers, timeout=30)
+    if r.status_code != 200:
+        return f"ERROR GitHub list: {r.status_code} {r.text[:200]}"
+    files = r.json()
+    if not isinstance(files, list) or not files:
+        return "ERROR: output/musica vacio en GitHub"
+    files = sorted(files, key=lambda x: x["name"], reverse=True)
+    latest = files[0]
+    print(f"[Musica] Descargando {latest['name']}...", flush=True)
+    r2 = requests.get(latest["download_url"], headers=headers, timeout=120)
+    if r2.status_code != 200:
+        return f"ERROR descarga raw: {r2.status_code}"
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    dest = OUTPUT_DIR / latest["name"]
+    dest.write_bytes(r2.content)
+    return f"OK: {dest} ({dest.stat().st_size} bytes)"
+
+def generar(caption, duration=30, preset=None, **extra):
+    """Genera una canción.
+    Args:
+        caption: Descripción del estilo.
+        duration: Segundos (10-600).
+        preset: 'lofi'|'ambient'|'piano'|'cinematic'|'hiphop'|'electronic'|'jingle'.
+        **extra: params del contrato (bpm, keyscale, instrumental, etc).
+    """
+    if not TEMPLATE.exists():
+        return f"ERROR: falta {TEMPLATE}"
+    gToken = _leer_env("GITHUB_TOKEN")
+    if not gToken:
+        return "ERROR: sin GITHUB_TOKEN en .env"
+
+    params = _componer_params(caption, duration, preset, extra)
+    print(f"[Musica] Preset={preset or 'custom'} · steps={params['inference_steps']} · bpm={params['bpm']} · dur={params['duration']}s", flush=True)
+
+    code = TEMPLATE.read_text()
+    # Inyectar placeholders del contrato
+    code = code.replace('"__CAPTION__"', json.dumps(params["caption"]))
+    code = code.replace("__DURATION__", str(int(params["duration"])))
+    code = code.replace('"__GITHUB_TOKEN__"', json.dumps(gToken))
+    code = code.replace("__TASK_TYPE__", json.dumps(params["task_type"]))
+    code = code.replace("__LYRICS__", json.dumps(params["lyrics"]))
+    code = code.replace("__INSTRUMENTAL__", str(bool(params["instrumental"])))
+    code = code.replace("__VOCAL_LANGUAGE__", json.dumps(params["vocal_language"]))
+    code = code.replace("__BPM__", json.dumps(params["bpm"]))
+    code = code.replace("__KEYSCALE__", json.dumps(params["keyscale"]))
+    code = code.replace("__TIMESIG__", json.dumps(params["timesignature"]))
+    code = code.replace("__STEPS__", str(int(params["inference_steps"])))
+    code = code.replace("__GUIDANCE__", str(float(params["guidance_scale"])))
+    code = code.replace("__SHIFT__", str(float(params["shift"])))
+    code = code.replace("__LM_TEMP__", str(float(params["lm_temperature"])))
+    code = code.replace("__LM_CFG__", str(float(params["lm_cfg_scale"])))
+    code = code.replace("__LM_TOP_P__", str(float(params["lm_top_p"])))
+    code = code.replace("__SEED__", str(int(params["seed"])))
+    code = code.replace("__OUTPUT_FORMAT__", json.dumps(params["audio_format"]))
+
+    slug_temp = f"acestep-{int(time.time())}"
+    print(f"[Musica] Push -> {USUARIO_CTA1}/{slug_temp}", flush=True)
+    r = push_kernel(f"{USUARIO_CTA1}/{slug_temp}", code)
+    if isinstance(r, dict) and r.get("hasError"):
+        return f"ERROR push: {r.get('error', r)}"
+    print("[Musica] Push OK. Esperando GPU Kaggle...", flush=True)
+    slug_real, status = _poll(slug_temp)
+    if status != "complete":
+        return f"ERROR: kernel acabo como {status} (slug: {slug_real})"
+    print(f"[Musica] Complete en {slug_real}. Descargando desde GitHub...", flush=True)
+    return _descargar_github(gToken)
+
+
+
+
+def generar_batch(captions, duration=30, preset=None, **extra):
+    """Genera N canciones en 1 solo kernel (batch mode).
+    captions: lista de strings (max 5 recomendado).
+    """
+    if not captions:
+        return "ERROR: lista vacia"
+    if len(captions) > 5:
+        print(f"  ⚠️  {len(captions)} captions > 5. Partiendo en chunks.", flush=True)
+        captions = captions[:5]
+    
+    if not TEMPLATE.exists():
+        return f"ERROR: falta {TEMPLATE}"
+    gToken = _leer_env("GITHUB_TOKEN")
+    if not gToken:
+        return "ERROR: sin GITHUB_TOKEN en .env"
+    
+    # Composicion base (mismo preset para todas)
+    params = _componer_params(captions[0], duration, preset, extra)
+    print(f"[Musica batch] {len(captions)} canciones · preset={preset or 'custom'} · steps={params['inference_steps']} · dur={duration}s", flush=True)
+    
+    code = TEMPLATE.read_text()
+    code = code.replace("__CAPTIONS_LIST__", json.dumps(captions))
+    code = code.replace("__DURATION__", str(int(duration)))
+    code = code.replace('"__GITHUB_TOKEN__"', json.dumps(gToken))
+    # Inyectar placeholders de params
+    code = code.replace("__TASK_TYPE__", json.dumps(params["task_type"]))
+    code = code.replace("__LYRICS__", json.dumps(params["lyrics"]))
+    code = code.replace("__INSTRUMENTAL__", str(bool(params["instrumental"])))
+    code = code.replace("__VOCAL_LANGUAGE__", json.dumps(params["vocal_language"]))
+    code = code.replace("__BPM__", json.dumps(params["bpm"]))
+    code = code.replace("__KEYSCALE__", json.dumps(params["keyscale"]))
+    code = code.replace("__TIMESIG__", json.dumps(params["timesignature"]))
+    code = code.replace("__STEPS__", str(int(params["inference_steps"])))
+    code = code.replace("__GUIDANCE__", str(float(params["guidance_scale"])))
+    code = code.replace("__SHIFT__", str(float(params["shift"])))
+    code = code.replace("__LM_TEMP__", str(float(params["lm_temperature"])))
+    code = code.replace("__LM_CFG__", str(float(params["lm_cfg_scale"])))
+    code = code.replace("__LM_TOP_P__", str(float(params["lm_top_p"])))
+    code = code.replace("__SEED__", str(int(params["seed"])))
+    code = code.replace("__OUTPUT_FORMAT__", json.dumps(params["audio_format"]))
+    
+    slug_temp = f"acestep-batch-{int(time.time())}"
+    print(f"[Musica batch] Push -> {USUARIO_CTA1}/{slug_temp}", flush=True)
+    r = push_kernel(f"{USUARIO_CTA1}/{slug_temp}", code)
+    if isinstance(r, dict) and r.get("hasError"):
+        return f"ERROR push: {r.get('error', r)}"
+    print("[Musica batch] Push OK. Esperando GPU Kaggle (~45 min)...", flush=True)
+    slug_real, status = _poll(slug_temp)
+    if status != "complete":
+        return f"ERROR: kernel acabo como {status} (slug: {slug_real})"
+    print(f"[Musica batch] Complete. Descargando {len(captions)} MP3s desde GitHub...", flush=True)
+    # Descarga BATCH: coger los N archivos más recientes con el prefijo del batch
+    import requests
+    headers = {"Authorization": f"token {gToken}", "Accept": "application/vnd.github.v3+json"}
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/output/musica"
+    r = requests.get(url, headers=headers, timeout=30)
+    if r.status_code != 200:
+        return f"ERROR GitHub list: {r.status_code}"
+    files = r.json()
+    # Filtrar los más recientes (N = len(captions))
+    files = sorted(files, key=lambda x: x["name"], reverse=True)[:len(captions)]
+    resultados = []
+    for f_info in reversed(files):  # reversed para orden original
+        r2 = requests.get(f_info["download_url"], headers=headers, timeout=120)
+        if r2.status_code != 200:
+            resultados.append(f"ERROR {f_info['name']}: {r2.status_code}")
+            continue
+        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+        dest = OUTPUT_DIR / f_info["name"]
+        dest.write_bytes(r2.content)
+        resultados.append(f"OK: {dest} ({dest.stat().st_size} bytes)")
+    return "\n".join(resultados)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print('Uso: python scripts/musica_acestep.py "caption" [duracion_seg]')
+        sys.exit(1)
+    caption = sys.argv[1]
+    dur = int(sys.argv[2]) if len(sys.argv) > 2 else 30
+    print(generar(caption, dur))

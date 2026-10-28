@@ -1,0 +1,56 @@
+"""Generador de imagenes usando Cloudflare Workers AI (SDXL gratuito)."""
+import sys
+import time
+import base64
+import requests
+from pathlib import Path
+
+def _leer_env(nombre):
+    env = Path(".env")
+    if env.exists():
+        for line in env.read_text().splitlines():
+            if line.startswith(f"{nombre}="):
+                return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return ""
+
+def generar(prompt: str, ancho: int = 1024, alto: int = 1024) -> str:
+    account_id = _leer_env("CLOUDFLARE_ACCOUNT_ID")
+    api_token = _leer_env("CLOUDFLARE_API_TOKEN")
+    
+    if not account_id or not api_token:
+        return "ERROR: Faltan CLOUDFLARE_ACCOUNT_ID o CLOUDFLARE_API_TOKEN en .env"
+    
+    # SDXL es gratuito en el plan Workers Free
+    modelo = "@cf/stabilityai/stable-diffusion-xl-base-1.0"
+    url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{modelo}"
+    
+    headers = {"Authorization": f"Bearer {api_token}"}
+    payload = {"prompt": prompt}
+    
+    print(f"Generando imagen con Cloudflare SDXL...")
+    print(f"Prompt: {prompt}")
+    
+    try:
+        r = requests.post(url, headers=headers, json=payload, timeout=120)
+        
+        if r.status_code >= 400:
+            return f"ERROR HTTP {r.status_code}: {r.text[:300]}"
+        
+        # Cloudflare devuelve la imagen como bytes binarios
+        output_dir = Path("output") / "imagenes"
+        output_dir.mkdir(exist_ok=True)
+        nombre = f"imagen_{int(time.time())}.png"
+        ruta = output_dir / nombre
+        ruta.write_bytes(r.content)
+        
+        return f"OK: Imagen guardada en {ruta}"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Uso: python scripts/generar_imagen.py 'tu prompt'")
+        sys.exit(1)
+    
+    resultado = generar(sys.argv[1])
+    print(resultado)

@@ -1,0 +1,22 @@
+# Entornos y secretos
+.env
+*.token
+*token.json
+secrets/
+
+# Logs y temporales
+data/logs/
+$HOME/tmp/
+*.log
+*.part
+
+# ASSETS PESADOS (Nunca subir a GitHub)
+assets/models/
+output/
+web/media/imagenes/
+web/site/
+web/web/
+
+# Python
+__pycache__/
+*.pyc

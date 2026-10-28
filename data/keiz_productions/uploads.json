@@ -1,0 +1,30 @@
+{
+  "uploads": [
+    {
+      "sha256": "dba48fb6a42839f1cec03103d8a7483af27981621400d24697c92d0d6ab8e18a",
+      "video_id": "8eYZ4DHA598",
+      "url": "https://www.youtube.com/watch?v=8eYZ4DHA598",
+      "titulo": "2026 Ultimate Mind Relaxing Lofi Beats 💫 | Slowed + Reverb 🎧 Mix For Study, Sleep & Chill",
+      "subido": "2026-10-14T22:35:18.713038+00:00"
+    },
+    {
+      "sha256": "035f0bd6f37f7e6daa4533faa63334d291f48de57e818d91a1a9a663307bf452",
+      "video_id": "ur_tgTElfl8",
+      "url": "https://www.youtube.com/watch?v=ur_tgTElfl8",
+      "titulo": "2026 Ultimate Mind Relaxing Lofi Beats 💫 Study Sleep & Chill 🎧",
+      "subido": "2026-10-16T02:05:07.385755+00:00",
+      "publish_at": "2026-10-16T18:00:00Z",
+      "paleta": "claro"
+    },
+    {
+      "sha256": "3f178d6917ed81f9e1908cc317506eea26765afa2a83db92c118e47d40b96b65",
+      "video_id": "RFGZj_dB3x8",
+      "url": "https://www.youtube.com/watch?v=RFGZj_dB3x8",
+      "titulo": "2026 Ultimate Mind Relaxing Lofi Beats | Study, Sleep & Chill 🎧✨",
+      "subido": "2026-10-16T03:36:29.640586+00:00",
+      "publish_at": "2026-10-16T18:00:00Z",
+      "paleta": "oscuro"
+    }
+  ],
+  "ultima_paleta": "oscuro"
+}

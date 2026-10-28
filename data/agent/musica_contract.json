@@ -1,0 +1,28 @@
+{
+  "nombre": "Contrato de Descarga Musical - Somos El Encuadre",
+  "version": "1.0",
+  "fecha_creacion": "2026-10-27",
+  "proveedor": "Tunetank MCP (https://mcp.tunetank.com)",
+  "metodo": "JSON-RPC 2.0 con User-Agent de Chrome (para evitar Cloudflare 1010)",
+  "herramientas": {
+    "search_music": {
+      "parametros": ["query", "name", "artist", "genre", "mood", "theme", "duration", "tolerance", "limit"],
+      "ejemplo": "{\"mood\": \"epic\", \"duration\": 30, \"tolerance\": 5}"
+    },
+    "search_sfx": {
+      "parametros": ["query", "category", "duration", "tolerance", "limit"],
+      "ejemplo": "{\"category\": \"whoosh\", \"duration\": 2}"
+    }
+  },
+  "analisis_post_descarga": {
+    "script": "scripts/analista_audio.py",
+    "funcion": "Detecta el pico de energía (drop) de la canción para usar el mejor fragmento.",
+    "salida": "peak_energy_time, sugerencia_inicio, sugerencia_fin"
+  },
+  "licencia": {
+    "tipo": "Gratis para YouTube, Shorts, TikTok, Reels y podcasts. Se puede monetizar.",
+    "atribucion": "No obligatoria pero recomendada: 'Music by Tunetank'",
+    "claims": "Se resuelven en https://tunetank.com/copyright-claims"
+  },
+  "almacenamiento": "output/musica_temp/ (se puede limpiar después de renderizar)"
+}

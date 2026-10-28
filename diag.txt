@@ -1,0 +1,13 @@
+1. Python OK
+2. numpy 2.5.4
+3. sherpa_onnx 1.13.8
+4. onnx exists: True
+5. Construyendo config...
+6. Config OK. Cargando modelo (aqui suele morir)...
+/k2-fsa/sherpa-onnx/sherpa-onnx/csrc/piper-phonemize-lexicon.cc:operator():381 You need to follow our examples to copy the espeak-ng-data directory from the assets folder to an external storage directory.
+/k2-fsa/sherpa-onnx/sherpa-onnx/csrc/piper-phonemize-lexicon.cc:operator():388 Hint: Please see
+https://github.com/k2-fsa/sherpa-onnx/blob/master/android/SherpaOnnxTtsEngine/app/src/main/java/com/k2fsa/sherpa/onnx/tts/engine/TtsEngine.kt#L188
+The function copyDataDir()
+
+7. MODELO CARGADO OK
+EXIT CODE: 0

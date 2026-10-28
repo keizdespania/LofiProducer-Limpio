@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+{{ super() }}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="El Encuadre">
+<meta property="og:title" content="{{ page.title if page else 'El Encuadre' }}">
+<meta property="og:description" content="{{ (page.meta.description if page and page.meta else 'Análisis técnico de medios y sesgos cognitivos') }}">
+<meta property="og:image" content="{{ config.site_url }}assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@elencuadre">
+<meta name="theme-color" content="#0a0a0f">
+{% endblock %}

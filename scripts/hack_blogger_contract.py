@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+"""hack_blogger_contract.py — Contrato Blogger v3 con presets + validador."""
+import json, pathlib
+
+OUT = pathlib.Path.home() / "LofiProducer/data/agent/blogger_contract.json"
+
+PRESETS = {
+    "blog_rapido": {"desc": "Post corto de 500 palabras", "params": {"status": "draft", "labels": ["ia", "noticias"], "content_min_chars": 500}},
+    "articulo_seo": {"desc": "Artículo SEO 1500 palabras", "params": {"status": "live", "labels": ["seo", "guia"], "content_min_chars": 1500}},
+    "review_largo": {"desc": "Review detallada 2500 palabras", "params": {"status": "draft", "labels": ["review"], "content_min_chars": 2500}},
+    "tutorial_paso_a_paso": {"desc": "Tutorial con pasos numerados", "params": {"status": "live", "labels": ["tutorial", "howto"]}},
+    "post_simple": {"desc": "Nota corta (sin pretensiones)", "params": {"status": "draft", "labels": []}},
+    "pagina_estatica": {"desc": "Página estática (about/contacto)", "params": {"status": "live", "labels": []}}
+}
+
+VALIDADOR = {"reglas": [
+    {"campo": "title", "min": 1, "max": 200, "nota": "Obligatorio, sin HTML"},
+    {"campo": "content", "min": 1, "max_chars": 1048576, "nota": "1MB máx (HTML)"},
+    {"campo": "labels", "max_items": 20, "max_chars_each": 200, "nota": "Blogger tags"},
+    {"campo": "status", "valores": ["draft", "live", "scheduled"], "default": "draft", "nota": "NO existe 'public'"},
+    {"campo": "publishAt", "formato": "ISO 8601", "nota": "Solo si status=scheduled"},
+    {"campo": "blogId", "nota": "Leer de /users/self/blogs. NO inventar"},
+    {"campo": "isDraft", "nota": "OBSOLETO. Usar status='draft'"}
+]}
+
+ERRORES = [
+    {"code": 401, "fix": "Token expirado. Renovar con auth_youtube.py"},
+    {"code": 403, "fix": "Proyecto sin Blogger API habilitada en Google Cloud Console"},
+    {"code": 404, "fix": "blogId incorrecto. Llamar a /users/self/blogs primero"},
+    {"code": 429, "fix": "Rate limit (raro). Blogger da 100k calls/día gratis"},
+    {"code": 400, "fix": "status inválido: usa draft/live/scheduled (NO public)"}
+]
+
+REGLAS = [
+    "Blogger cuota: 100.000 calls/día por proyecto (10x más que YouTube)",
+    "NO existe status='public'. Usar 'live' para publicar",
+    "Sin auditoría Google: publica al instante si el token es válido",
+    "Content máx 1 MB (HTML). 5000 chars ya es artículo enorme",
+    "labels = tags de Blogger. Máx 20, cada uno <=200 chars",
+    "isDraft es OBSOLETO. Usar status='draft'",
+    "publishAt solo si status='scheduled'. Formato ISO 8601",
+    "blogId se obtiene de GET /users/self/blogs. NUNCA inventarlo",
+    "El HTML permite <b>, <i>, <a>, <h2>, <img>. NO <script> (bloqueado)",
+    "Para SEO: title con keyword + meta description (no soportado nativo, poner en content)",
+    "El primer blog del usuario viene en items[0] de /users/self/blogs",
+    "Si el token tiene scope sólo youtube, Blogger dará 403"
+]
+
+EJEMPLOS = [
+    {"input": "publica un post de IA News", "preset": "blog_rapido", "params": {"title": "IA hoy: ...", "content": "<p>...</p>", "status": "draft"}},
+    {"input": "publica un artículo SEO largo", "preset": "articulo_seo", "params": {"title": "...", "content": "<p>...</p>", "status": "live"}},
+    {"input": "programa para mañana", "preset": "articulo_seo", "params": {"status": "scheduled", "publishAt": "2026-10-25T08:00:00Z"}}
+]
+
+def main():
+    c = {
+        "motor": "Blogger API v3",
+        "version": "v3",
+        "endpoint_post": "POST https://www.googleapis.com/blogger/v3/blogs/{blogId}/posts",
+        "endpoint_list_blogs": "GET https://www.googleapis.com/blogger/v3/users/self/blogs",
+        "scope": "https://www.googleapis.com/auth/blogger",
+        "cuota_diaria": 100000,
+        "cuota_reset": "Medianoche PT",
+        "costo_publicar": 1,
+        "requiere_auditoria_google": False,
+        "presets": PRESETS,
+        "validador": VALIDADOR,
+        "errores": ERRORES,
+        "reglas_anti_alucinacion": REGLAS,
+        "ejemplos": EJEMPLOS,
+        "stats": {"presets": len(PRESETS), "reglas": len(REGLAS), "errores": len(ERRORES)}
+    }
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(json.dumps(c, indent=2, ensure_ascii=False))
+    print(f"OK {OUT}")
+    print(f"  Presets: {len(PRESETS)} | Validador: {len(VALIDADOR['reglas'])} | Errores: {len(ERRORES)} | Reglas: {len(REGLAS)}")
+
+if __name__ == "__main__":
+    main()

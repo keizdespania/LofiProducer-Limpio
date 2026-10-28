@@ -1,0 +1,43 @@
+import json, pathlib, urllib.request, urllib.parse, sys, time
+
+env = {}
+for line in pathlib.Path(".env").read_text().splitlines():
+    if "=" in line and not line.startswith("#"):
+        k, v = line.split("=", 1)
+        env[k.strip()] = v.strip().strip('"').strip("'")
+
+CID = env["YOUTUBE_CLIENT_ID"]
+CSEC = env["YOUTUBE_CLIENT_SECRET"]
+
+if len(sys.argv) > 1:
+    code = sys.argv[1].strip()
+else:
+    auth_url = f"https://accounts.google.com/o/oauth2/auth?client_id={CID}&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=https://www.googleapis.com/auth/youtube.upload+https://www.googleapis.com/auth/youtube.readonly+https://www.googleapis.com/auth/blogger&access_type=offline&prompt=consent"
+    print("\n🌐 Abre esta URL en el navegador:\n")
+    print(auth_url)
+    print("\nCopia el código y ejecuta: python scripts/auth_youtube.py TU_CODIGO")
+    sys.exit(0)
+
+data = urllib.parse.urlencode({
+    "code": code, "client_id": CID, "client_secret": CSEC,
+    "redirect_uri": "urn:ietf:wg:oauth:2.0:oob", "grant_type": "authorization_code"
+}).encode()
+req = urllib.request.Request("https://oauth2.googleapis.com/token", data=data)
+resp = json.loads(urllib.request.urlopen(req).read())
+
+TOKEN = pathlib.Path("data/youtube_token.json")
+TOKEN.parent.mkdir(exist_ok=True)
+TOKEN.write_text(json.dumps({
+    "client_id": CID, "client_secret": CSEC,
+    "access_token": resp["access_token"], "refresh_token": resp["refresh_token"],
+    "expires_at": time.time() + resp.get("expires_in", 3600),
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "scopes": ["https://www.googleapis.com/auth/youtube.upload", "https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/blogger"]
+}, indent=2))
+print(f"\n✅ Token guardado en {TOKEN}")
+
+req = urllib.request.Request("https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&mine=true",
+    headers={"Authorization": f"Bearer {resp['access_token']}"})
+ch = json.loads(urllib.request.urlopen(req).read())["items"][0]
+print(f"✅ Canal conectado: {ch['snippet']['title']}")
+print(f"   Subs: {ch['statistics'].get('subscriberCount', '?')} · Vídeos: {ch['statistics'].get('videoCount', '?')}")

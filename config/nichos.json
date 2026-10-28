@@ -1,0 +1,304 @@
+{
+  "_bases": {
+    "base_video_narrado": {
+      "formato": "video_voz_imagen",
+      "duracion": 90,
+      "voz": "davefx",
+      "musica": "ambient, chill",
+      "escenas_por_minuto": 4,
+      "subir": false
+    },
+    "base_lofi": {
+      "formato": "musica_loop",
+      "duracion": 3600,
+      "voz": null,
+      "musica": "lofi hip hop, jazz, chill",
+      "subir": false
+    }
+  },
+  "ia_news": {
+    "extends": "base_video_narrado",
+    "nombre": "IA News",
+    "fuente_noticias": [
+      "techcrunch",
+      "hackernews",
+      "verge"
+    ],
+    "tono": "intriga, thriller tecnológico, misterio",
+    "imagen_estilo": "cinematic, dark, futuristic, neon lights",
+    "skills": {
+      "presets": {
+        "musica": "cinematic",
+        "voz": "noticias",
+        "imagen": "cinematic",
+        "video": "cinematic_480p",
+        "ffmpeg": "youtube_1080p",
+        "youtube": "draft_privado",
+        "blogger": "articulo_seo",
+        "pixabay": "ia_news"
+      },
+      "pipeline": [
+        "Guion (LLM): noticias de las últimas 24h sobre IA",
+        "Voz: generar_narracion(guion, preset='noticias')",
+        "Música: generar_cancion_kaggle(preset='cinematic', duration=90)",
+        "Imágenes: generar_imagen(preset='cinematic', aspect='16:9') × 3-5",
+        "Vídeo: generar_video(preset='cinematic_480p') × 2-3",
+        "Ensamblar: ensamblar_video_final(preset='youtube_1080p')",
+        "Subir: subir_youtube(preset='draft_privado')"
+      ]
+    },
+    "queries_youtube": [
+      "artificial intelligence news",
+      "GPT-5",
+      "OpenAI news",
+      "AI regulation",
+      "machine learning breakthrough"
+    ],
+    "subreddits": [
+      "artificial",
+      "MachineLearning",
+      "OpenAI",
+      "singularity"
+    ],
+    "keywords_trends": [
+      "inteligencia artificial",
+      "GPT-5",
+      "OpenAI",
+      "AI news"
+    ]
+  },
+  "finanzas_barrio": {
+    "extends": "base_video_narrado",
+    "nombre": "Finanzas de Barrio",
+    "fuente_noticias": [
+      "boe"
+    ],
+    "tono": "cercano, analogías del día a día, sin tecnicismos",
+    "imagen_estilo": "realistic, urban, warm lighting",
+    "musica": "lofi, relaxed",
+    "skills": {
+      "presets": {
+        "musica": "lofi",
+        "voz": "noticias",
+        "imagen": "cinematic",
+        "video": "cinematic_480p",
+        "ffmpeg": "youtube_1080p",
+        "youtube": "draft_privado",
+        "blogger": "articulo_seo",
+        "pixabay": "finanzas"
+      },
+      "pipeline": [
+        "Guion (LLM): explicar noticia financiera con analogías del barrio",
+        "Voz: generar_narracion(guion, preset='noticias')",
+        "Música: generar_cancion_kaggle(preset='lofi', duration=90)",
+        "Imágenes: generar_imagen(preset='cinematic', aspect='16:9') × 3-5",
+        "Vídeo: generar_video(preset='cinematic_480p') × 2-3",
+        "Ensamblar: ensamblar_video_final(preset='youtube_1080p')",
+        "Subir: subir_youtube(preset='draft_privado')"
+      ]
+    },
+    "queries_youtube": [
+      "economia española",
+      "inflacion españa",
+      "finanzas personales",
+      "bitcoin euro"
+    ],
+    "subreddits": [
+      "SpainFIRE",
+      "finanzas",
+      "personalfinance"
+    ],
+    "keywords_trends": [
+      "inflacion",
+      "euribor",
+      "bolsa española",
+      "bitcoin"
+    ]
+  },
+  "boe": {
+    "extends": "base_video_narrado",
+    "nombre": "El BOE",
+    "fuente_noticias": [
+      "boe"
+    ],
+    "tono": "claro, legal, pausado",
+    "imagen_estilo": "official, clean, documents",
+    "musica": "neutral, minimal",
+    "skills": {
+      "presets": {
+        "musica": "ambient",
+        "voz": "audiobook",
+        "imagen": "realistic",
+        "video": "draft_rapido",
+        "ffmpeg": "youtube_720p",
+        "youtube": "draft_privado",
+        "blogger": "articulo_seo",
+        "pixabay": "boe"
+      },
+      "pipeline": [
+        "Guion (LLM): resumen de la ley del BOE en lenguaje claro",
+        "Voz: generar_narracion(guion, preset='audiobook')",
+        "Música: generar_cancion_kaggle(preset='ambient', duration=120)",
+        "Imágenes: generar_imagen(preset='realistic', aspect='16:9') × 3",
+        "Vídeo: generar_video(preset='draft_rapido') × 2",
+        "Ensamblar: ensamblar_video_final(preset='youtube_720p')",
+        "Subir: subir_youtube(preset='draft_privado')"
+      ]
+    },
+    "queries_youtube": [
+      "BOE hoy",
+      "ley españa explicada",
+      "regulacion españa",
+      "derecho español"
+    ],
+    "subreddits": [
+      "SpainLegal",
+      "askspain"
+    ],
+    "keywords_trends": [
+      "BOE",
+      "ley españa",
+      "regulacion"
+    ]
+  },
+  "lofi": {
+    "extends": "base_lofi",
+    "nombre": "Lofi",
+    "fuente_noticias": [],
+    "tono": "relax, estudio, concentración",
+    "imagen_estilo": "anime, cozy room, rain, warm light",
+    "skills": {
+      "presets": {
+        "musica": "lofi",
+        "voz": null,
+        "imagen": "anime",
+        "video": "draft_rapido",
+        "ffmpeg": "youtube_1080p",
+        "youtube": "lofi_music",
+        "blogger": "post_simple",
+        "pixabay": "lofi"
+      },
+      "pipeline": [
+        "Música: generar_cancion_kaggle(preset='lofi', duration=590) × N chunks",
+        "Imagen: generar_imagen('cozy room rain', preset='anime', aspect='16:9')",
+        "Vídeo: generar_video(preset='draft_rapido') × 3 (loop)",
+        "Ensamblar: ensamblar_video_final(preset='youtube_1080p')",
+        "Subir: subir_youtube(preset='lofi_music')"
+      ]
+    },
+    "queries_youtube": [
+      "lofi hip hop",
+      "relaxing lofi beats",
+      "chillhop study",
+      "lofi jazz"
+    ],
+    "subreddits": [
+      "LofiHipHop",
+      "lofi",
+      "chillhop"
+    ],
+    "keywords_trends": [
+      "lofi music",
+      "chillhop",
+      "lofi beats"
+    ]
+  },
+  "_config_video_wan": {
+    "model_type": "ti2v_2_2",
+    "resolution": "1280x704",
+    "video_length": 81,
+    "num_inference_steps": 6,
+    "guidance_scale": 1.0,
+    "flow_shift": 3.0,
+    "reglas_prompt": "Sujeto → Movimiento → Cámara → Iluminación. Una acción por escena."
+  },
+  "canal_test": {
+    "nombre": "Canal Test",
+    "formato": "video_voz",
+    "duracion": 60,
+    "tono": "intriga, thriller tecnológico, misterio",
+    "queries_youtube": [
+      "artificial intelligence news",
+      "GPT-5",
+      "OpenAI news",
+      "AI regulation",
+      "machine learning breakthrough"
+    ],
+    "subreddits": [
+      "artificial",
+      "MachineLearning",
+      "OpenAI",
+      "singularity"
+    ],
+    "keywords_trends": [
+      "inteligencia artificial",
+      "GPT-5",
+      "OpenAI",
+      "AI news"
+    ],
+    "skills": {
+      "presets": {
+        "musica": "cinematic",
+        "voz": "noticias",
+        "imagen": "cinematic",
+        "video": "cinematic_480p",
+        "ffmpeg": "youtube_1080p",
+        "youtube": "draft_privado",
+        "blogger": "articulo_seo",
+        "pixabay": "ia_news"
+      },
+      "pipeline": [
+        "Guion (LLM): noticias de las últimas 24h sobre IA",
+        "Voz: generar_narracion(guion, preset='noticias')",
+        "Música: generar_cancion_kaggle(preset='cinematic', duration=90)",
+        "Imágenes: generar_imagen(preset='cinematic', aspect='16:9') × 3-5",
+        "Vídeo: generar_video(preset='cinematic_480p') × 2-3",
+        "Ensamblar: ensamblar_video_final(preset='youtube_1080p')",
+        "Subir: subir_youtube(preset='draft_privado')"
+      ]
+    },
+    "plataformas": [
+      "youtube",
+      "blogger"
+    ],
+    "oauth_configured": false
+  },
+  "analisis_medios": {
+    "nombre": "El Encuadre",
+    "formato": "video_voz",
+    "duracion": 60,
+    "tono": "analitico, educativo, no critico",
+    "queries_youtube": [
+      "media bias",
+      "framing effect",
+      "cognitive bias news",
+      "propaganda analysis"
+    ],
+    "subreddits": [
+      "media_criticism",
+      "psychology",
+      "sociology"
+    ],
+    "keywords_trends": [
+      "sesgo cognitivo",
+      "manipulacion mediatica",
+      "framing"
+    ],
+    "skills": {
+      "presets": {
+        "musica": "ambient",
+        "voz": "narracion_relajada",
+        "imagen": "cinematic_dark",
+        "video": "draft_rapido",
+        "ffmpeg": "short_vertical_blur"
+      },
+      "pipeline": [
+        "Comparar 3 medios (comparar_medios.py)",
+        "Analisis LLM (analista_medios)",
+        "Articulo (redactor_seo)",
+        "Short (short_engine)",
+        "Publicar (Blogger + YouTube)"
+      ]
+    }
+  }
+}

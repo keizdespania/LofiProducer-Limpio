@@ -1,0 +1,9 @@
+{
+  "herramientas": [
+    {"id": "blog_wordpress", "categoria": "blogs", "licencia": "API WP", "entorno": "cpu", "descripcion": "Publica articulos SEO en WordPress."},
+    {"id": "web_landing", "categoria": "webs", "licencia": "MIT (OpenPage)", "entorno": "cpu", "descripcion": "Genera JSON de landing page para renderizar."},
+    {"id": "video_wan22", "categoria": "video", "licencia": "Apache 2.0", "entorno": "gpu_kaggle", "descripcion": "Genera clips de video con Wan 2.2."},
+    {"id": "voz_openvoice", "categoria": "voz", "licencia": "MIT", "entorno": "gpu_kaggle", "descripcion": "Clonacion de voz zero-shot."},
+    {"id": "musica_acestep", "categoria": "musica", "licencia": "MIT", "entorno": "gpu_kaggle", "descripcion": "Genera musica Lofi."}
+  ]
+}

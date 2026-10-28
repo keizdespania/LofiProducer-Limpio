@@ -1,0 +1,123 @@
+# BOOT_PROMPT — LofiProducer · Imperio KeiZ
+
+> Widget de arranque. Pega este fichero al inicio de cada nueva conversación.
+
+## REPO Y HOST
+- Repo: ~/LofiProducer · GitHub: keizdespania/LofiProducer-backup
+- Host: Samsung A25 5G · Termux · sin root · Python 3.14
+- Web: http://127.0.0.1:8001 (Flask, supervisado por runsv keiz-web)
+- Arranque: Widget Despertar.sh → scripts/start_all.py → OmniRoute + Flask + Worker
+
+## QUÉ ES
+Ecosistema local-first que produce, traduce y distribuye contenido multimedia monetizable. Orquestado por el Dios (LLM). Músculo en Kaggle (2 cuentas T4). Objetivo: 100 canales automatizados generando ingresos pasivos.
+
+## ARQUITECTURA
+- Cerebro: scripts/dios.py (ReAct, tools dinámicas, memoria SQLite)
+- Web: web_dashboard.py (:8001, 15 pestañas, SSE chat, dashboard salud)
+- Cola: scripts/task_worker.py + data/agent/cola.db (FIFO)
+- Motores: scripts/*.py (música ACE-Step v11, vídeo Wan 2.2, voz Sherpa-ONNX, imagen Cloudflare SDXL, ensamblado FFmpeg, publicar WP/YouTube)
+- Infra: OmniRoute (:20128) → Groq/OpenRouter; Kaggle (2 cuentas); Cloudflare; GitHub; YouTube
+- Auto-cuidado: brain/sanador.py (Doctor), scripts/conserje.py (Conserje cron 24h)
+
+## NICHOS (config/nichos.json)
+- ia_news — vídeo narrado 90s · RSS → guion → TTS → img → vídeo
+- finanzas_barrio — vídeo narrado · RSS BOE → guion → TTS
+- boe — vídeo texto_voz · RSS BOE → resumen → TTS
+- lofi — música loop 1h · ACE-Step x10 → FFmpeg loop
+
+## LO QUE FUNCIONA (2026-10-21)
+- Chat web SSE + memoria + tools dinámicas (-80% tokens)
+- Dashboard Inicio (salud + tareas + acciones rápidas)
+- Command palette Ctrl+K
+- Sidebar agrupado (Core/Estudios/Datos/Sistema)
+- Toasts reactivos
+- TTS Sherpa-ONNX local (5 voces, davefx)
+- ACE-Step v11 Kaggle (auto-upload GitHub) — VERIFICADO
+- Vídeo Wan 2.2 TI2V-5B Kaggle T4
+- Cloudflare SDXL imágenes
+- Ensamblado FFmpeg
+- Publicar WordPress — SIN CREDENCIALES
+- Publicar YouTube — SIN OAUTH
+- Conserje (Job 1005 diario)
+- Doctor (widget + sanador.py)
+
+## LO QUE FALTA (crítico)
+- YouTube OAuth (CLIENT_ID + SECRET + TOKEN) — bloquea subida
+- WordPress credenciales (URL + user + app password)
+- TikTok / Instagram / Facebook / Threads API
+- Orquestador universal de nichos (JSON v2 listo, código no)
+- kaggle_rotator.py (60h/semana)
+- Scraper BOE automático
+- Multiformato (9:16, cortes shorts, subtítulos)
+- python_master_manual.md
+- Reinventar web 7 pestañas maestras
+
+## APIs CONFIGURADAS
+OK: Groq · OpenRouter · NVIDIA · DeepSeek · Cloudflare (2) · GitHub · Kaggle (2) · OmniRoute (2)
+Falta: YouTube OAuth · WordPress · TikTok · Instagram · Threads · Spotify/RouteNote
+
+## COMANDOS CLAVE
+./scripts/start_all.py
+python -c "from brain.sanador import sanar; print(sanar())"
+python scripts/musica_acestep.py "upbeat lofi 30s" 30
+python scripts/kaggle_wan22_final.py "un gato en bici"
+python scripts/generar_imagen.py "cinematic neon"
+python scripts/ensamblar_video.py video.mp4 musica.mp3 out.mp4
+python scripts/conserje.py --dry
+sv status keiz-web
+sv restart keiz-web
+
+## REGLAS FRODO
+1. Todo bloque empieza con clear
+2. Máx 2 cajones, 1 comando por cajón
+3. Nano por defecto. Heredoc solo >100L o JSON. NUNCA heredoc gigante con markdown.
+4. NUNCA borrar sin permiso. Mover a ~/.trash/
+5. python -m py_compile tras cada .py
+6. Nunca imprimir tokens/keys/.env
+7. No git push sin OK explícito
+8. No rehacer lo que funciona
+9. >100MB o GPU → Kaggle/Modal
+10. Backup antes de tocar: cp archivo archivo.bak.1792596578
+
+## HOJA DE RUTA 6 MESES
+- Mes 1: 1 canal publicado, YouTube OAuth, WordPress, orquestador nichos
+- Mes 2-3: Multi-plataforma (TikTok, IG, Threads, Spotify), kaggle_rotator, multiformato
+- Mes 4: 10 canales, auto-construcción config JSON, primeros ingresos
+- Mes 5: Doblaje NLLB-200, 5 idiomas por canal (×5 ingresos)
+- Mes 6: 100 canales, productos digitales (curso, API, SaaS)
+
+## IDEAS LOCAS
+1. A/B miniaturas (3 variantes Cloudflare)
+2. Newsletter Substack (1000 subs = 500€/mes afiliados)
+3. Servicio doblaje a otros youtubers (20€/vídeo)
+4. Curso Automatiza tu canal (Gumroad 47€)
+5. API pública Genera vídeo IA por 5€
+6. Podcast automatizado
+7. Marketplace lofi (Envato, 100 tracks/mes)
+8. Patreon Detrás del imperio (5€/mes)
+9. SaaS KeiZ Media OS (29€/mes)
+10. Discord/Telegram comunidad
+11. Tráfico cruzado shorts → largo → blog → newsletter
+12. Vídeo de la suerte LLM random → viral
+13. Newsletter semanal
+14. Instagram DM bot
+15. Servicio Te monto un canal (500€/cliente)
+
+## PENDIENTES INMEDIATOS
+1. YouTube OAuth (10 min) → desbloquea subida
+2. WordPress credenciales (5 min)
+3. Orquestador nichos scripts/orquestador_nichos.py
+4. kaggle_rotator.py
+5. Reinventar web 7 pestañas
+6. Multiformato (9:16, cortes, subtítulos)
+7. python_master_manual.md
+
+## FILOSOFÍA
+> Un output, 6 monetizaciones posibles.
+> Lo que se regenera, se borra. Lo único, se pregunta.
+> El ecosistema crece por config, no por código.
+
+Frodo Bolsón mode: 500 pasos por delante.
+
+## REGLA CRÍTICA: INPUT EN HEREDOC
+Termux NO soporta input() dentro de python - << 'PYEOF'. Siempre crear script con cat > scripts/x.py y ejecutar con argumentos: python scripts/x.py ARG

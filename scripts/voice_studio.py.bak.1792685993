@@ -1,0 +1,142 @@
+"""Voice Studio Pro v2: Presets, Historial, MP3, Batch, Diccionario."""
+import sys, os, pathlib, wave, subprocess, json, time, uuid
+import numpy as np
+import sherpa_onnx
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+MODELS_DIR = ROOT / "assets" / "models" / "tts"
+OUT_DIR = ROOT / "output" / "audios"
+HISTORY_FILE = OUT_DIR / "history.json"
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+def _cargar_catalogo():
+    p = MODELS_DIR / "catalogo.json"
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {"voces": []}
+
+def _buscar_onnx(voz_id):
+    for d in [voz_id, "vits-piper-" + voz_id]:
+        dir_p = MODELS_DIR / d
+        if dir_p.exists():
+            onnx = list(dir_p.glob("*.onnx"))
+            if onnx: return dir_p, onnx[0]
+    return None, None
+
+def _buscar_shared():
+    shared = MODELS_DIR / "_shared"
+    if (shared / "tokens.txt").exists() and (shared / "espeak-ng-data").exists():
+        return shared / "tokens.txt", shared / "espeak-ng-data"
+    base = MODELS_DIR / "vits-piper-es_ES-davefx-medium"
+    return base / "tokens.txt", base / "espeak-ng-data"
+
+def _aplicar_presets(preset, pitch, velocidad, compresor, reverb, bass):
+    # Retorna tupla (pitch, vel, comp, rev, bass)
+    p = preset.lower()
+    if p == "podcast": return (0, 1.0, True, 5, 2)
+    if p == "documental": return (-2, 0.9, True, 15, 4)
+    if p == "tiktok": return (2, 1.15, False, 0, 6)
+    if p == "finanzas": return (-4, 0.95, True, 0, 8)
+    return (pitch, velocidad, compresor, reverb, bass)
+
+def generar_audio(texto, voz="es_ES-davefx-medium", formato="mp3", preset="ninguno",
+                  pitch=0, velocidad=1.0, distorsion=0, reverb=0, bass=0, treble=0,
+                  compresor=False, normalizar=True, diccionario=None, nombre=""):
+    if diccionario:
+        for k, v in diccionario.items():
+            texto = texto.replace(k, v)
+
+    p, v, c, r, b = _aplicar_presets(preset, pitch, velocidad, compresor, reverb, bass)
+
+    model_dir, onnx_path = _buscar_onnx(voz)
+    if onnx_path is None: return {"error": f"Voz no instalada: {voz}"}
+    tok_path, espeak_path = _buscar_shared()
+    if not tok_path.exists(): return {"error": "Faltan archivos shared (_shared/tokens.txt)"}
+
+    try:
+        config = sherpa_onnx.OfflineTtsConfig(
+            model=sherpa_onnx.OfflineTtsModelConfig(
+                vits=sherpa_onnx.OfflineTtsVitsModelConfig(
+                    model=str(onnx_path), tokens=str(tok_path), data_dir=str(espeak_path)
+                ), num_threads=1, provider="cpu",
+            )
+        )
+        tts = sherpa_onnx.OfflineTts(config)
+        audio = tts.generate(texto)
+        if not audio.samples: return {"error": "No se genero audio"}
+
+        ts = int(time.time()); uid = uuid.uuid4().hex[:6]
+        temp_wav = OUT_DIR / f"studio_{ts}_{uid}_temp.wav"
+        samples = np.array(audio.samples, dtype=np.float32)
+        s16 = (samples * 32767).clip(-32768, 32767).astype(np.int16)
+        with wave.open(str(temp_wav), 'wb') as wf:
+            wf.setnchannels(1); wf.setsampwidth(2); wf.setframerate(audio.sample_rate)
+            wf.writeframes(s16.tobytes())
+
+        # Filtros
+        f = []
+        if p != 0:
+            factor = 2 ** (p / 12.0)
+            f.append(f"asetrate={audio.sample_rate}*{factor}"); f.append(f"atempo={1/factor}")
+        if v != 1.0: f.append(f"atempo={v}")
+        if distorsion > 0: f.append(f"acrusher=bits={max(4, int(16-(distorsion/100)*12))}:mode=log:aa=1")
+        if r > 0: f.append(f"aecho=0.8:{min(0.9, 0.3+r/200)}:{500+int(r*10)}:{min(0.9, 0.3+r/200)*0.8}")
+        if b != 0: f.append(f"bass=g={b}:f=100:w=0.5")
+        if treble != 0: f.append(f"treble=g={treble}:f=3000:w=0.5")
+        if c: f.append("acompressor=threshold=-20dB:ratio=4:attack=5:release=50")
+        if normalizar: f.append("loudnorm=I=-16:LRA=11:TP=-1.5")
+
+        ext = "mp3" if formato == "mp3" else "wav"
+        final_out = OUT_DIR / f"studio_{ts}_{uid}.{ext}"
+        cmd = ["ffmpeg", "-y", "-i", str(temp_wav)]
+        if f: cmd += ["-af", ",".join(f)]
+        if ext == "mp3": cmd += ["-b:a", "192k", "-codec:a", "libmp3lame"]
+        cmd.append(str(final_out))
+        
+        subprocess.run(cmd, check=True, capture_output=True)
+        temp_wav.unlink(missing_ok=True)
+
+        # Historial
+        record = {
+            "id": f"studio_{ts}_{uid}", "nombre": nombre or f"Audio {ts}", "texto": texto[:100],
+            "voz": voz, "duracion": round(len(audio.samples)/audio.sample_rate, 2),
+            "url": f"/media/audios/{final_out.name}", "formato": ext, "ts": ts,
+            "perfil": {"preset": preset, "pitch": p, "vel": v}
+        }
+        history = json.loads(HISTORY_FILE.read_text()) if HISTORY_FILE.exists() else []
+        history.insert(0, record)
+        HISTORY_FILE.write_text(json.dumps(history[:50], indent=2)) # Guardar ultimos 50
+
+        return {"status": "ok", "audio_id": record["id"], "url": record["url"], "duracion": record["duracion"]}
+    except Exception as e:
+        return {"error": str(e)}
+
+if __name__ == "__main__":
+    import argparse
+    p = argparse.ArgumentParser()
+    p.add_argument("--texto", required=True)
+    p.add_argument("--voz", default="es_ES-davefx-medium")
+    p.add_argument("--preset", default="ninguno")
+    p.add_argument("--formato", default="mp3")
+    p.add_argument("--pitch", type=int, default=0)
+    p.add_argument("--velocidad", type=float, default=1.0)
+    p.add_argument("--distorsion", type=int, default=0)
+    p.add_argument("--reverb", type=int, default=0)
+    p.add_argument("--bass", type=int, default=0)
+    p.add_argument("--treble", type=int, default=0)
+    p.add_argument("--compresor", action="store_true")
+    p.add_argument("--no-normalizar", action="store_true")
+    p.add_argument("--perfil-dios", action="store_true")
+    a = p.parse_args()
+    if a.perfil_dios:
+        pp = ROOT / "data" / "agent" / "voz_dios.json"
+        if pp.exists():
+            perfil = json.loads(pp.read_text())
+            a.voz = perfil.get("voz", a.voz)
+            a.preset = perfil.get("preset", a.preset)
+            
+    r = generar_audio(
+        a.texto, voz=a.voz, formato=a.formato, preset=a.preset,
+        pitch=a.pitch, velocidad=a.velocidad, distorsion=a.distorsion, 
+        reverb=a.reverb, bass=a.bass, treble=a.treble, 
+        compresor=a.compresor, normalizar=not a.no_normalizar
+    )
+    print(json.dumps(r))

@@ -1,0 +1,61 @@
+site_name: Somos El Encuadre
+site_description: Análisis técnico de cómo los medios construyen tu realidad.
+
+theme:
+  name: material
+  language: es
+  logo: assets/images/logo.jpg
+  favicon: assets/images/logo.jpg
+  palette:
+    - scheme: slate
+      primary: custom
+      accent: custom
+    - scheme: default
+      primary: custom
+      accent: custom
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+
+nav:
+  - Inicio: index.md
+  - Análisis: analisis/index.md
+  - Podcast: podcast/index.md
+  - Glosario: glosario.md
+  - Sobre: sobre.md
+  - Contacto: contacto.md
+  - Próximamente: proximamente.md
+
+extra:
+  generator: false
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/sidebar_actions.js
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+plugins:
+  - search:
+      lang: es
+  - minify:
+      minify_html: true
+
+use_directory_urls: true

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://elencuadre.com/sitemap.xml

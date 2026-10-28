@@ -1,0 +1,163 @@
+# 🚀 BOOT_PROMPT — LOFIPRODUCER · MODO DIOS v5.0
+
+> Arranque del Imperio. Pegar al inicio de cada conversación.
+> Abrir con: `cat ~/LofiProducer/BOOT_PROMPT.md`
+> Última actualización: 2026-10-23
+
+## 🏠 REPO Y HOST
+- **Repo**: `~/LofiProducer` · GitHub: `keizdespania/LofiProducer-backup`
+- **Host**: Samsung A25 5G · Termux · sin root · Python 3.14
+- **Web**: `http://127.0.0.1:8001` (Flask, supervisado por `runsv keiz-web`)
+- **Arranque**: Widget 🚀 Despertar → `scripts/start_all.py` → OmniRoute + Flask + Task Worker
+
+## 🎯 QUÉ ES
+Ecosistema local-first que produce, traduce y distribuye contenido multimedia monetizable a escala industrial. Orquestado por el **Dios** (LLM vía OmniRoute → Groq). Músculo en Kaggle T4 (2 cuentas rotativas). Objetivo: 100 canales automatizados generando ingresos pasivos.
+
+**Filosofía**: "El ecosistema crece por config, no por código." Añadir nicho/red/pipeline = editar JSON + regenerar SKILL.md.
+
+## 🏗️ ARQUITECTURA (5 capas)
+
+### 1. Cerebro — `scripts/dios.py`
+- **36 tools** en `TOOL_FNS`.
+- **Bucle ReAct** hasta 25 pasos.
+- **Doble cerebro**: charla rápida (~2s) vs agente meticuloso (~30s).
+- **Memoria**: SQLite (`data/agent/memoria.db`).
+- **Pruner casero** (`brain/pruner.py`): -92% tokens.
+- **Contexto**: BOOT + MANUAL_FRODO + SKILL.md + 9 contratos JSON.
+
+### 2. Web — `web_dashboard.py` + `assets/`
+- **55 endpoints** Flask.
+- **16 pestañas** con menú acordeón (Studios, Canales, Sistema).
+- **Modal ⚙️** de parámetros en 4 studios.
+- **Director de Producción**: botón 🎬 Producir en Inicio → evalúa antes de gastar GPU.
+- **Papelera canales**: triple filtro + restaurar 30 días.
+- **Chat Jarvis**: voz streaming + Fast-Path + modo conversación.
+- **Producción**: cola + log worker en vivo (auto-refresh 3s).
+
+### 3. Cola — `scripts/task_worker.py` + `data/agent/cola.db`
+- SQLite FIFO.
+- **Batch música (5/kernel)** y **vídeo (3/kernel)** → **-72% cuota Kaggle**.
+- Detecta `session_id='musica'` y `'video'` → agrupa lotes.
+
+### 4. Motores (9 "dioses")
+| Motor | Dónde | Contrato |
+|-------|-------|----------|
+| Música (ACE-Step v11) | Kaggle T4 | `acestep_contract.json` (11 presets) |
+| Voz (Sherpa-ONNX) | Termux local | `sherpa_contract.json` (7 presets) |
+| Imagen (Cloudflare SDXL) | API externa | `image_contract.json` (8 presets) |
+| Vídeo (Wan 2.2 TI2V-5B) | Kaggle T4 | `video_contract.json` (6 presets) |
+| Vídeo rápido (Pixabay+FFmpeg) | Termux local | `pixabay_contract.json` (6 presets) |
+| Ensamblado (FFmpeg 9.0.2) | Termux local | `ffmpeg_contract.json` (12 presets) |
+| YouTube (API v3) | OAuth | `youtube_contract.json` (6 presets) |
+| Blogger (API v3) | OAuth | `blogger_contract.json` (6 presets) |
+| Cloudflare R2 | API externa | `cloudflare_contract.json` (storage) |
+
+### 5. Infra externa
+- **OmniRoute (:20128)** → Groq/OpenRouter/NVIDIA.
+- **Kaggle** (2 cuentas rotativas, ~60h/semana).
+- **Cloudflare** (SDXL).
+- **GitHub** (backup código + raw temporal; auto-borrado tras descarga).
+- **YouTube/Blogger OAuth** (`data/youtube_token.json`).
+
+## 🏛️ NICHOS (config/nichos.json con herencia)
+| Nicho | Formato | Duración | Pipeline |
+|-------|---------|----------|----------|
+| ia_news | video_voz_imagen | 90s | RSS → guion → TTS → img → vídeo |
+| finanzas_barrio | video_voz_imagen | 90s | RSS BOE → guion → TTS → img |
+| boe | video_texto_voz | 90s | RSS BOE → resumen → TTS |
+| lofi | musica_loop | 1h | ACE-Step × N → loop FFmpeg |
+
+Cada nicho tiene `skills` con `presets` (por motor) + `pipeline` (pasos).
+**Añadir nicho**: web (Canales → ➕ Crear Canal Completo) o tool `crear_nicho` (HITL). SKILL.md se regenera solo.
+
+## 📊 CONTRATOS (9 motores)
+Cada contrato tiene: `presets` (6-12), `validador` (rangos), `reglas_anti_alucinacion` (10-14), `ejemplos` (3).
+**Endpoints**: `GET /api/params/<motor>` · `POST /api/user_presets/<motor>`.
+**SKILL.md**: auto-generado por `python scripts/generate_skill_md.py`. Contiene los 9 contratos + 4 nichos + 36 tools + 10 errores. **Reemplaza los JSON en contexto del LLM** (-25 KB por llamada).
+
+## 🎬 DIRECTOR DE PRODUCCIÓN
+`scripts/evaluador_produccion.py` — 5 herramientas:
+1. `evaluar_coherencia(prompt, preset, motor)` — ¿prompt encaja con preset?
+2. `evaluar_presupuesto(motor, duracion, cantidad)` — ¿cuánta cuota GPU?
+3. `evaluar_calidad_prompt(prompt, motor)` — ¿es específico?
+4. `evaluar_encaje_nicho(plan, nicho)` — ¿presets coherentes?
+5. `consultar_alternativas(motor, preset)` — si falla, ¿qué usar?
+
+**Orquestadora**: `evaluar_produccion(...)` → veredicto 🟢🟡🔴.
+**Endpoints**: `POST /api/evaluar`. **Tool Dios**: `evaluar_produccion`.
+**Pre-flight**: al pulsar "Generar" en cualquier studio → evalúa → si 🔴 pide confirmar, si 🟡 avisa.
+
+## 📁 NAMING CONSISTENTE (`brain/naming.py`)
+**Formato**: `{canal}-{tipo}-{NNN}-{titulo-slug}.{ext}`
+**Ejemplo**: `ia_news-musica-001-tension-cinematica.mp3`
+`generar_nombre(canal, tipo, titulo, ext)` → incrementa `output/nichos/<canal>/manifiesto.json`.
+Aplicado en: música, voz, imagen, vídeo.
+
+## ✅ LO QUE FUNCIONA (verificado 2026-10-22)
+- Dios (Groq/OmniRoute): chat SSE, 36 tools, memoria, pruner.
+- Web Flask :8001: 16 pestañas, menú acordeón, modal ⚙️, Director de Producción, papelera, log worker en vivo.
+- Chat Jarvis: voz streaming + Fast-Path + caché + modo conversación.
+- TTS Sherpa-ONNX (5 voces: Davefx, Sharvard, Claude, Lessac, Ryan).
+- **Música ACE-Step v11 validada end-to-end**: 2 canciones en batch (60s cada una, 128 kbps).
+- Vídeo Wan 2.2 TI2V-5B en Kaggle T4 (6 presets).
+- Vídeo rápido (Pixabay + FFmpeg) con bypass Cloudflare.
+- Imagen Cloudflare SDXL (8 presets + 6 aspects).
+- Ensamblado FFmpeg local (12 presets).
+- Publicar YouTube (privado por defecto vía `YOUTUBE_PRIVACY`).
+- Publicar Blogger (IAGLOBALNEWS conectado).
+- Cola SQLite + worker batch + reconexión SSE.
+- Kaggle Bearer (2 cuentas rotativas).
+- Conserje (cron Job 1005 cada 24h) + Doctor + Backup diario GitHub (Job 1006, 04:00).
+- Naming consistente (música, voz, imagen, vídeo).
+- SKILL.md auto-generado.
+
+## 🔴 LO QUE FALTA (prioritario)
+
+### Bloqueantes para monetizar
+1. **Ensamblador largo** (vídeo 15 min con fade + subtítulos + logo) — SIGUIENTE GRAN HITO.
+2. **Notebook WanGP real** (49 frames + 4 steps del hito 21-oct). Actualmente 17 frames/15 steps.
+3. **Primer vídeo público** en YouTube (`_mdDfooI9W4` está privado).
+
+### Redes sociales adicionales
+4. **Spotify/Apple** (RouteNote/DistroKid): declarar IA siempre. ACE-Step MIT permite comercial. NUNCA Content ID. NUNCA clonar voces.
+5. **Instagram/Facebook** (Meta Sandbox): 1 app + tus cuentas como tester → publicar sin auditoría.
+6. **TikTok** (Sandbox): solo borradores sin auditoría. Publicar a mano. 1 email = 1 cuenta.
+7. **Telegram/Discord/Mastodon/Bluesky**: 30 min cada una.
+
+### Mejoras técnicas
+8. `kaggle_rotator.py` (contadores de cuota por cuenta).
+9. Dry-run visual en studios.
+10. Conserje ampliado: limpieza `output/` publicada >7 días.
+11. Migrar a FastAPI (Fase 1 roadmap).
+12. Integrar evaluador en `producir_nicho`.
+
+## 🚨 REGLAS FRODO (obligatorias)
+1. Todo bloque de comandos empieza por `clear`.
+2. Máx 2 cajones por mensaje. 1 comando por cajón, esperar OK.
+3. **Nano por defecto. Heredoc solo <50 líneas.** Para contenido largo → `cat > archivo` en trozos de ~40 líneas + `cat >>`.
+4. **NUNCA borrar un archivo sin permiso explícito.** Mover a `~/.trash/`.
+5. Verificar sintaxis con `python -m py_compile` tras cada `.py`.
+6. **Nunca imprimir** tokens, keys, `.env`, `token.json`.
+7. **No `git push`** sin autorización explícita.
+8. **No rehacer** lo que funciona. `git checkout` si algo rompe.
+9. Librería >100MB o GPU → Kaggle/Modal. <4GB o CLI → Termux.
+10. **Backup antes de tocar**: `cp archivo archivo.bak.$(date +%s)`.
+11. **Termux `/tmp` NO es escribible**. Usar `$HOME/tmp/` o `$TMPDIR`.
+
+## 🧠 MANUAL FRODO v5.0 (15 reglas)
+> Referencia completa: `MANUAL_FRODO_PYTHON.md`
+1. Plan-Before-Code (cambios >10 líneas → plan + OK)
+2. Verificación (no asumir librerías/funciones, `grep` antes)
+3. Test-First (si falla 2 veces → PARA y análisis causa raíz)
+4. Simplicidad (80 líneas antes que 400)
+5. Seguridad (nunca imprimir tokens, nunca borrar sin permiso)
+6. Gestión de Contexto (1 tarea a la vez, limpiar temporales)
+7. Pushback (si rompe, decirlo)
+8. Lectura antes de Escritura
+9. Fail Fast (si falla 2 veces → preguntar)
+10. Terminal (comandos destructivos → permiso)
+11. Código Limpio (PEP 8, type hints, docstrings)
+12. No Alucines (si no sabes, busca o pregunta)
+13. Verificación Final (`py_compile` + reiniciar Flask + test)
+14. Documentación (actualizar BOOT/TRASPASO al cambiar algo)
+15. Regla de Oro: si no puedes explicarlo en 1 frase, no lo hagas

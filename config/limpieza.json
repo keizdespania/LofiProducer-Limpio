@@ -1,0 +1,53 @@
+{
+  "auto_borrar": true,
+  "notificar_movil": true,
+  "reglas": [
+    {
+      "nombre": "backups_7d",
+      "patron": "*.bak*",
+      "antiguedad_dias": 7,
+      "excluir": [
+        "sandbox/",
+        ".git/"
+      ]
+    },
+    {
+      "nombre": "temporales_1d",
+      "patron": [
+        "_tmp_*",
+        "*.tmp"
+      ],
+      "antiguedad_dias": 1
+    },
+    {
+      "nombre": "logs_30d",
+      "patron": "data/logs/*.log",
+      "antiguedad_dias": 30
+    },
+    {
+      "nombre": "trash_30d",
+      "patron": "~/.trash/*",
+      "antiguedad_dias": 30
+    },
+    {
+      "nombre": "changelog_max",
+      "fichero": "AUTO_CHANGELOG.md",
+      "max_lineas": 3000
+    },
+    {
+      "nombre": "git_gc",
+      "min_mb": 300,
+      "accion": "gc"
+    },
+    {
+      "nombre": "indice_auto",
+      "fichero": "docs/INDICE.md",
+      "max_lineas": 50,
+      "regenerar": false
+    }
+  ],
+  "avisar_antes_de_borrar": {
+    "media_output_60d": "output/*/*.{mp4,mp3,wav}",
+    "voces_tts": "assets/models/tts/*.onnx"
+  }
+}

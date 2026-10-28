@@ -1,0 +1,377 @@
+
+/* ═══ EL ENCUADRE — Web Top 1 ═══ */
+:root {
+  --accent: #e63946;
+  --accent2: #f77f00;
+  --bg: #0a0a0f;
+  --surface: #14141e;
+  --border: #2a2a3a;
+  --text: #e8e8ec;
+  --muted: #8a8a9a;
+}
+
+/* Fondo con gradiente radial (AI Studio style) */
+body {
+  background: radial-gradient(ellipse at top left, rgba(230,57,70,0.15), transparent 50%),
+              radial-gradient(ellipse at bottom right, rgba(247,127,0,0.1), transparent 50%),
+              #0a0a0f !important;
+  background-attachment: fixed;
+}
+
+/* Header glassmorphism */
+.md-header {
+  background: rgba(10,10,15,0.7) !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(230,57,70,0.2);
+}
+
+.md-header__title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.md-header__topic {
+  background: linear-gradient(135deg, #fff, #e63946, #f77f00);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 5s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Hero de la home */
+.hero {
+  padding: 80px 0 60px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(230,57,70,0.15), transparent 60%);
+  animation: pulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+.hero h1 {
+  font-size: clamp(2.5em, 6vw, 5em);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 0 0 20px 0;
+  background: linear-gradient(135deg, #fff 0%, #e63946 50%, #f77f00 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 8s ease infinite;
+  position: relative;
+  z-index: 1;
+}
+
+.hero p {
+  font-size: clamp(1em, 2vw, 1.4em);
+  color: var(--muted);
+  max-width: 700px;
+  margin: 0 auto 40px auto;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-cta {
+  display: inline-flex;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-btn {
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.hero-btn-primary {
+  background: linear-gradient(135deg, #e63946, #f77f00);
+  color: #fff !important;
+  box-shadow: 0 8px 24px rgba(230,57,70,0.3);
+}
+
+.hero-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(230,57,70,0.5);
+}
+
+.hero-btn-secondary {
+  background: rgba(255,255,255,0.05);
+  color: var(--text) !important;
+  border: 1px solid var(--border);
+}
+
+.hero-btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--accent);
+}
+
+/* Tarjetas de análisis */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin: 40px 0;
+}
+
+.analysis-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.analysis-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #e63946, transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.analysis-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(230,57,70,0.5);
+  box-shadow: 0 12px 32px rgba(230,57,70,0.15);
+}
+
+.analysis-card:hover::before {
+  opacity: 1;
+}
+
+/* Tipografía */
+.md-typeset h1, .md-typeset h2, .md-typeset h3 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.md-typeset h1 {
+  font-size: clamp(2em, 5vw, 3.5em);
+  background: linear-gradient(135deg, #fff, #c8c8d8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5em;
+}
+
+.md-typeset h2 {
+  color: var(--accent2);
+  border-left: 4px solid var(--accent);
+  padding-left: 16px;
+  margin-top: 2em;
+}
+
+/* Citas académicas */
+.md-typeset blockquote {
+  border-left: 4px solid var(--accent) !important;
+  background: linear-gradient(90deg, rgba(230,57,70,0.1), transparent);
+  padding: 20px 24px;
+  border-radius: 0 12px 12px 0;
+  margin: 24px 0;
+  font-size: 1.05em;
+}
+
+.md-typeset blockquote cite {
+  display: block;
+  margin-top: 12px;
+  font-size: 0.9em;
+  color: var(--accent2);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* Código */
+.md-typeset code {
+  background: rgba(230,57,70,0.1);
+  color: var(--accent2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Links */
+.md-typeset a {
+  color: var(--accent2);
+  transition: color 0.2s;
+}
+
+.md-typeset a:hover {
+  color: var(--accent);
+}
+
+/* Footer */
+.md-footer {
+  background: rgba(10,10,15,0.9) !important;
+  border-top: 1px solid var(--border);
+}
+
+/* Animaciones fade-in al scroll */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive móvil */
+@media (max-width: 768px) {
+  .hero {
+    padding: 40px 16px;
+  }
+  .hero h1 {
+    font-size: 2em;
+  }
+  .analysis-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ═══ ARTÍCULO TOP 1 — Legible + Atractivo ═══ */
+.md-content {
+  font-size: 1.15em !important;
+  line-height: 1.8 !important;
+  color: var(--text) !important;
+}
+
+.md-content p {
+  font-size: 1.15em !important;
+  line-height: 1.8 !important;
+  margin: 0 0 1.5em 0 !important;
+  color: var(--text) !important;
+}
+
+.md-content h1 {
+  font-size: clamp(2em, 5vw, 3.5em) !important;
+  line-height: 1.15 !important;
+  margin: 0 0 0.6em 0 !important;
+  background: linear-gradient(135deg, #fff 0%, #e63946 50%, #f77f00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.md-content h2 {
+  font-size: clamp(1.5em, 3vw, 2em) !important;
+  line-height: 1.2 !important;
+  margin: 2em 0 0.8em 0 !important;
+  color: var(--accent2) !important;
+  border-left: 4px solid var(--accent) !important;
+  padding-left: 16px !important;
+}
+
+.md-content h3 {
+  font-size: 1.3em !important;
+  margin: 1.5em 0 0.5em 0 !important;
+  color: var(--accent2) !important;
+}
+
+.md-content img {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 16px !important;
+  margin: 2em 0 !important;
+  box-shadow: 0 20px 60px rgba(230,57,70,0.2) !important;
+  transition: transform 0.3s ease !important;
+}
+
+.md-content img:hover {
+  transform: scale(1.02) !important;
+}
+
+.md-content blockquote {
+  border-left: 4px solid var(--accent) !important;
+  background: linear-gradient(90deg, rgba(230,57,70,0.15), rgba(247,127,0,0.05)) !important;
+  padding: 24px 32px !important;
+  border-radius: 0 16px 16px 0 !important;
+  margin: 2em 0 !important;
+  font-size: 1.2em !important;
+  font-style: italic !important;
+}
+
+.md-content blockquote cite {
+  display: block !important;
+  margin-top: 12px !important;
+  font-size: 0.9em !important;
+  color: var(--accent2) !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+}
+
+/* Modo claro/oscuro */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f8f8fc;
+    --surface: #ffffff;
+    --border: #d8d8e0;
+    --text: #1a1a24;
+    --muted: #666;
+  }
+  body {
+    background: #f8f8fc !important;
+  }
+  .md-content p, .md-content li { color: #1a1a24 !important; }
+}
+
+/* Móvil: letras más grandes y legibles */
+@media (max-width: 768px) {
+  .md-content {
+    font-size: 1.25em !important;
+    line-height: 1.85 !important;
+    padding: 0 16px !important;
+  }
+  .md-content p {
+    font-size: 1.15em !important;
+    line-height: 1.85 !important;
+  }
+  .md-content h1 { font-size: 2em !important; }
+  .md-content h2 { font-size: 1.5em !important; }
+  .md-content img {
+    border-radius: 12px !important;
+    margin: 1.5em 0 !important;
+  }
+  .md-content blockquote {
+    padding: 16px 20px !important;
+    font-size: 1.1em !important;
+  }
+}
+
+/* Animación de entrada del artículo */
+.md-content {
+  animation: fadeUp 0.6s ease-out;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

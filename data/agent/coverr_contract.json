@@ -1,0 +1,17 @@
+{
+  "nombre": "Contrato de Coverr - Somos El Encuadre",
+  "version": "2.0",
+  "fuente": "https://coverr.co/developers",
+  "auth_rest": "Header Authorization: Bearer COVERR_API_KEY",
+  "endpoint_video": "GET https://api.coverr.co/videos?query=...&page_size=...&urls=true",
+  "licencia": "Gratis para uso comercial. Atribución requerida: 'Video by Coverr'.",
+  "limites": {"demo": "50 peticiones/hora", "produccion": "2000 peticiones/hora"},
+  "lo_que_si_tiene": ["Vídeo stock HD/4K"],
+  "lo_que_no_tiene_por_rest": ["Música (usar Tunetank)", "Imágenes stock (usar Cloudflare SDXL)"],
+  "mcp": {
+    "url": "https://mcp.coverr.co/mcp",
+    "auth": "Header x-api-key (NO funciona desde Python crudo, solo desde clientes MCP como Claude Desktop)",
+    "utilidad": "Generación IA (Nano Banana, Seedance) y búsqueda de música. Requiere créditos de IA."
+  },
+  "nota_agente": "Para vídeo, usar REST con urls=true. Para música, usar Tunetank. Para imágenes, usar Cloudflare SDXL."
+}

@@ -1,0 +1,8 @@
+bias,n_tasks,n_responses,n_participants,domain,mean_abs_effect_sd,classic_source
+Question-wording (allowed/forbidden),1,6292,6292,Opinion & policy,1.401,Rugg (1941)
+Anchoring,4,21882,6250,Everyday estimation,1.33,Jacowitz & Kahneman (1995)
+Response-scale bias,1,5899,5899,Self-report & media,0.482,"Schwarz, Hippler, Deutsch & Strack (1985)"
+Framing effect (gain/loss),1,6271,6271,Health & risk,0.574,Tversky & Kahneman (1981)
+Gambler's fallacy,1,5942,5942,Chance & gambling,0.598,Oppenheimer & Monin (2009)
+Source attribution (halo),1,6325,6325,Persuasion & media,0.318,Lorge & Curtis (1936)
+Sunk cost fallacy,1,6330,6330,Money & consumer,0.27,"Oppenheimer, Meyvis & Davidenko (2009)"

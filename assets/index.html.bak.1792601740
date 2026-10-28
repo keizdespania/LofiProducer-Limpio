@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>KeiZ Command</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css?v=7">
+</head>
+<body>
+<header>
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+  <div class="logo-small"><img src="/assets/logo.png" onerror="this.style.display='none'"> KeiZ Command</div>
+  <div style="width:24px;"></div>
+</header>
+<div class="overlay" onclick="toggleMenu()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-title">🎯 Core</div>
+    <div class="nav-item active" onclick="nav('inicio', this)">🏠 <span>Command Center</span></div>
+    <div class="nav-item" onclick="nav('chat', this)">🤖 <span>Dios</span></div>
+    <div class="nav-item" onclick="nav('produccion', this)">📋 <span>Producción</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-title">🎨 Estudios</div>
+    <div class="nav-item" onclick="nav('musica', this)">🎵 <span>Música</span></div>
+    <div class="nav-item" onclick="nav('imagen', this)">🎨 <span>Imagen</span></div>
+    <div class="nav-item" onclick="nav('voz', this)">🎙️ <span>Voz</span></div>
+    <div class="nav-item" onclick="nav('video', this)">🎬 <span>Vídeo</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-title">📊 Datos</div>
+    <div class="nav-item" onclick="nav('media', this)">🎞️ <span>Media Center</span></div>
+    <div class="nav-item" onclick="nav('analytics', this)">📊 <span>Analytics</span></div>
+    <div class="nav-item" onclick="nav('canales', this)">📺 <span>Canales</span></div>
+    <div class="nav-item" onclick="nav('rss', this)">📰 <span>RSS</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-title">🔧 Sistema</div>
+    <div class="nav-item" onclick="nav('doctor', this)">🩺 <span>Doctor</span></div>
+    <div class="nav-item" onclick="nav('especialista', this)">🧠 <span>Especialistas</span></div>
+    <div class="nav-item" onclick="nav('prompts', this)">💡 <span>Prompt Studio</span></div>
+    <div class="nav-item" onclick="nav('docs', this)">📚 <span>Docs</span></div>
+    <div class="nav-item" onclick="nav('ajustes', this)">⚙️ <span>Ajustes</span></div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="nav-item" onclick="abrirCmd()">⌨️ <span>Ctrl+K · Buscar</span></div>
+  </div>
+</aside>
+<main class="main">
+  <div id="view-inicio" class="view active">
+    <div class="dashboard">
+      <div class="dash-header">
+        <h2>🏠 Command Center</h2>
+        <span class="dash-status" id="dash-status">Cargando...</span>
+      </div>
+      <div class="dash-grid">
+        <div class="dash-card">
+          <h3>🟢 Estado del sistema</h3>
+          <div class="dash-item"><span>Flask</span><span id="dash-flask">...</span></div>
+          <div class="dash-item"><span>OmniRoute</span><span id="dash-omni">...</span></div>
+          <div class="dash-item"><span>Worker</span><span id="dash-worker">...</span></div>
+          <div class="dash-item"><span>Repo</span><span id="dash-repo">...</span></div>
+          <button class="dash-btn" onclick="apiDoctor()">🩺 Doctor</button>
+        </div>
+        <div class="dash-card">
+          <h3>🧹 Limpieza</h3>
+          <div class="dash-item"><span>Conserje</span><span>🟢 Job 1005</span></div>
+          <p class="dash-muted">Auto cada 24h · 7 reglas</p>
+          <button class="dash-btn" onclick="apiLimpiar()">🧹 Ver qué limpiaría</button>
+        </div>
+      </div>
+      <div class="dash-section">
+        <h3>🚀 Acciones rápidas</h3>
+        <div class="dash-actions">
+          <button class="action-btn" onclick="nav('musica', null)">🎵 Música</button>
+          <button class="action-btn" onclick="nav('imagen', null)">🎨 Imagen</button>
+          <button class="action-btn" onclick="nav('voz', null)">🎙️ Voz</button>
+          <button class="action-btn" onclick="nav('video', null)">🎬 Vídeo</button>
+          <button class="action-btn" onclick="nav('chat', null)">🤖 Dios</button>
+          <button class="action-btn" onclick="nav('produccion', null)">📋 Cola</button>
+        </div>
+      </div>
+      <div class="dash-section">
+        <h3>⚡ Últimas tareas</h3>
+        <div id="dash-tareas" class="dash-tasks">
+          <p class="dash-muted">Cargando...</p>
+        </div>
+      </div>
+      <p class="dash-hint">💡 Ctrl+K para command palette</p>
+    </div>
+  </div>
+  <div id="view-chat" class="view">
+    <div id="chat-messages">
+      <div class="msg assistant">> Sistema listo.<br>> Memoria conectada.<br>> ¿Qué necesitas, Arquitecto?</div>
+    </div>
+    <div class="chat-input-area">
+      <div class="chat-input-row">
+        <input id="chat-input" placeholder="Mensaje..." onkeydown="if(event.key==='Enter')enviarChat()" autocomplete="off" />
+        <button id="btn-dictado" onclick="dictar()" title="Dictar por voz">🎙️</button>
+        <button id="btn-conversacion" onclick="toggleConversacion()" title="Modo Conversacion" style="background:#222; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;">🎧</button>
+        <button onclick="enviarChat()">➤</button>
+      </div>
+    </div>
+  </div>
+  <div id="view-canales" class="view">
+    <div class="section">
+      <h2>Desplegar Nuevo Canal</h2>
+      <input id="canal-nombre" placeholder="Nombre del Canal" />
+      <input id="canal-nicho" placeholder="Nicho" />
+      <input id="canal-rpm" placeholder="RPM Objetivo" />
+      <button class="btn-primary" onclick="crearCanal()">Crear Canal</button>
+      <pre id="log-canal" style="display:none; margin-top:16px;"></pre>
+    </div>
+  </div>
+  <div id="view-musica" class="view">
+    <div class="section">
+      <h2>🎵 Música Studio (ACE-Step en Kaggle)</h2>
+      <p style="color:#888; font-size:13px;">Compila acestep.cpp en Kaggle (~30 min), genera el MP3 y lo descarga auto desde GitHub.</p>
+      <input id="music-prompt" placeholder="Prompt (ej: upbeat electronic synth instrumental, 30s)" style="width:100%; margin-bottom:8px;" />
+      <input id="music-duracion" type="number" min="10" max="180" value="30" placeholder="Duración (seg)" style="width:120px; margin-bottom:8px;" />
+      <button class="btn-primary" onclick="generarMusicaACEStep()">Generar Canción (~30 min)</button>
+      <pre id="music-log" style="display:none; max-height: 300px; overflow-y: auto; margin-top:8px;"></pre>
+    </div>
+  </div>
+  <div id="view-produccion" class="view">
+    <div class="section" style="margin-bottom:20px;">
+      <h2>🏭 Orquestador de Nichos</h2>
+      <p style="color:var(--muted); font-size:0.85em; margin-bottom:12px;">Produce vídeo completo: RSS → guion → voz → música → imagen.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="dash-btn" onclick="producirNicho('ia_news')">🤖 IA News</button>
+        <button class="dash-btn" onclick="producirNicho('lofi')">🎵 Lofi</button>
+        <button class="dash-btn" onclick="producirNicho('boe')">📜 BOE</button>
+        <button class="dash-btn" onclick="producirNicho('finanzas_barrio')">💰 Finanzas</button>
+      </div>
+      <div id="nicho-log" style="margin-top:12px; font-family:monospace; font-size:0.85em; color:var(--muted);"></div>
+    </div>
+    <div class="section">
+      <h2>⚙️ Cola de Producción</h2>
+      <div id="tareas-container" style="display: flex; flex-direction: column; gap: 12px;">
+        <p style="color: var(--muted);">No hay tareas en cola.</p>
+      </div>
+    </div>
+  
+    <h3 style="margin-top:20px; font-size:14px; color:#00ffcc;">Videos Generados</h3>
+    <div id="tareas-video-container" style="display:flex; flex-direction:column; gap:12px; margin-top:12px;"></div>
+</div>
+  <div id="view-imagen" class="view">
+    <div class="section">
+      <h2>🎨 Image Studio (Cloudflare SDXL)</h2>
+      <textarea id="imagen-prompt" rows="4" placeholder="Describe la imagen que quieres generar..."></textarea>
+      <button class="btn-primary" onclick="generarImagen()">Generar Imagen</button>
+      <pre id="imagen-log" style="display:none; margin-top:16px; max-height: 200px; overflow-y: auto;"></pre>
+    </div>
+  </div>
+  
+  <div id="view-video" class="view">
+      <h2>🎬 Video Studio (LTX-Video)</h2>
+      <p style="font-size: 13px; color: #aaa; margin-bottom: 12px;">Pega la URL de Gradio de Kaggle para generar un vídeo.</p>
+      <input type="text" id="video-url" placeholder="https://...gradio.live" style="margin-bottom: 8px;">
+      <textarea id="video-prompt" placeholder="Prompt del vídeo (ej. Un gato montando en bicicleta)..." rows="3" style="margin-bottom: 12px;"></textarea>
+      <button class="btn-primary" onclick="generarVideo()">Generar Vídeo (Tarda 1-2 min)</button>
+      <div id="video-status" style="margin-top: 12px; font-size: 13px;"></div>
+  </div>
+
+    <div id="view-doctor" class="view">
+      <h2>🩺 Doctor del Sistema</h2>
+      <p style="font-size:13px; color:#aaa; margin-bottom:12px;">Verifica y repara Flask y OmniRoute.</p>
+      <button class="btn-primary" onclick="llamarDoctor()">Diagnosticar y Sanar</button>
+      <pre id="doctor-out" style="margin-top:12px; background:#111; padding:12px; border-radius:8px; white-space:pre-wrap; font-size:12px;"></pre>
+  </div>
+
+  <div id="view-rss" class="view">
+      <h2>📰 Radar de Noticias (RSS)</h2>
+      <p style="font-size:13px; color:#aaa; margin-bottom:12px;">Lee noticias frescas en tiempo real.</p>
+      <select id="rss-fuente" style="margin-bottom:12px; padding:8px; width:100%; background:#222; color:#fff; border:1px solid #444; border-radius:6px;">
+          <option value="techcrunch">TechCrunch (Tech)</option>
+          <option value="hackernews">Hacker News (Tech)</option>
+          <option value="verge">The Verge (Tech)</option>
+          <option value="boe">BOE (Espana)</option>
+      </select>
+      <button class="btn-primary" onclick="leerRSS()">Leer Noticias</button>
+      <pre id="rss-out" style="margin-top:12px; background:#111; padding:12px; border-radius:8px; white-space:pre-wrap; font-size:12px;"></pre>
+  </div>
+
+  <div id="view-especialista" class="view">
+      <h2>🧠 Sub-Agentes Especialistas</h2>
+      <p style="font-size:13px; color:#aaa; margin-bottom:12px;">Delega tareas a expertos.</p>
+      <select id="esp-rol" style="margin-bottom:8px; padding:8px; width:100%; background:#222; color:#fff; border:1px solid #444; border-radius:6px;">
+          <option value="guionista">Guionista</option>
+          <option value="seo">SEO</option>
+          <option value="auditor">Auditor</option>
+          <option value="traductor">Traductor</option>
+          <option value="musico">Musico</option>
+      </select>
+      <textarea id="esp-tarea" rows="3" placeholder="Tarea para el especialista..." style="margin-bottom:12px; padding:8px; width:100%; background:#222; color:#fff; border:1px solid #444; border-radius:6px;"></textarea>
+      <button class="btn-primary" onclick="llamarEspecialista()">Consultar</button>
+      <pre id="esp-out" style="margin-top:12px; background:#111; padding:12px; border-radius:8px; white-space:pre-wrap; font-size:12px;"></pre>
+  </div>
+
+
+
+
+  <div id="view-voz" class="view">
+      <h2>🎙️ Voice Studio Pro</h2>
+      <div style="display:flex; gap:8px; margin-bottom:12px;">
+          <button onclick="cambiarTabVoz('single')" class="btn-primary">Individual</button>
+          <button onclick="cambiarTabVoz('batch')" style="background:#333; color:#fff; border:none; padding:8px; border-radius:6px;">Batch Mode</button>
+          <button onclick="cambiarTabVoz('history')" style="background:#333; color:#fff; border:none; padding:8px; border-radius:6px;">Historial</button>
+      </div>
+
+      
+      <!-- TAB SINGLE -->
+      <div id="voz-tab-single">
+          <textarea id="voz-texto" rows="3" placeholder="Texto a narrar..." style="width:100%; background:#111; color:#fff; border:1px solid #333; border-radius:6px; padding:8px; margin-bottom:8px; font-size:14px;" onfocus="window.scrollTo(0,0);"></textarea>
+          
+          <div style="display:flex; gap:8px; margin-bottom:8px;">
+              <select id="voz-modelo" style="flex:1; background:#111; color:#fff; border:1px solid #333; padding:8px; border-radius:6px;"></select>
+              <button onclick="abrirCatalogoVoces()" style="background:#00ffcc; color:#000; border:none; border-radius:6px; padding:8px; cursor:pointer; font-size:13px; font-weight:bold;">+ Voces</button>
+          </div>
+          
+          <div style="display:flex; gap:8px; margin-bottom:8px;">
+              <select id="voz-preset" style="flex:1; background:#111; color:#fff; border:1px solid #333; padding:8px; border-radius:6px;">
+                  <option value="ninguno">Sin estilo (natural)</option>
+                  <option value="podcast">Podcast</option>
+                  <option value="documental">Documental</option>
+                  <option value="finanzas">Finanzas</option>
+                  <option value="tiktok">TikTok (rápido)</option>
+              </select>
+              <select id="voz-formato" style="flex:1; background:#111; color:#fff; border:1px solid #333; padding:8px; border-radius:6px;">
+                  <option value="mp3">MP3 (ligero)</option>
+                  <option value="wav">WAV (calidad)</option>
+              </select>
+          </div>
+
+          <details style="margin-bottom:12px; background:#0a0a0a; padding:10px; border-radius:6px; border:1px solid #222;">
+              <summary style="cursor:pointer; color:#feca57; font-size:13px; outline:none;">📖 Diccionario de Pronunciación</summary>
+              <input type="text" id="voz-dict" placeholder="BOE=B-O-E, IBEX=I-B-E-X" style="width:100%; background:#111; color:#fff; border:1px solid #333; border-radius:6px; padding:8px; margin-top:8px; font-size:13px;" onfocus="window.scrollTo(0,0);">
+          </details>
+
+          <details style="margin-bottom:12px; background:#0a0a0a; padding:10px; border-radius:6px; border:1px solid #222;">
+              <summary style="cursor:pointer; color:#00ffcc; font-size:13px; outline:none;">🎛️ Controles Manuales (Pitch, Velocidad, EQ...)</summary>
+              
+              <div style="display:flex; gap:12px; margin-top:12px;">
+                  <div style="flex:1;">
+                      <label style="font-size:11px; color:#888;">Pitch: <span id="voz-pitch-val">0</span></label>
+                      <input type="range" id="voz-pitch" min="-12" max="12" value="0" style="width:100%;" oninput="document.getElementById('voz-pitch-val').innerText=this.value; document.getElementById('voz-preset').value='ninguno';">
+                  </div>
+                  <div style="flex:1;">
+                      <label style="font-size:11px; color:#888;">Velocidad: <span id="voz-speed-val">1.0</span>x</label>
+                      <input type="range" id="voz-speed" min="0.5" max="2.0" step="0.1" value="1.0" style="width:100%;" oninput="document.getElementById('voz-speed-val').innerText=this.value; document.getElementById('voz-preset').value='ninguno';">
+                  </div>
+              </div>
+              
+              <div style="display:flex; gap:12px; margin-top:8px;">
+                  <div style="flex:1;">
+                      <label style="font-size:11px; color:#888;">Distorsión: <span id="voz-dist-val">0</span></label>
+                      <input type="range" id="voz-dist" min="0" max="100" value="0" style="width:100%;" oninput="document.getElementById('voz-dist-val').innerText=this.value; document.getElementById('voz-preset').value='ninguno';">
+                  </div>
+                  <div style="flex:1;">
+                      <label style="font-size:11px; color:#888;">Reverb: <span id="voz-rev-val">0</span></label>
+                      <input type="range" id="voz-rev" min="0" max="100" value="0" style="width:100%;" oninput="document.getElementById('voz-rev-val').innerText=this.value; document.getElementById('voz-preset').value='ninguno';">
+                  </div>
+              </div>
+              
+              <div style="display:flex; gap:12px; margin-top:8px;">
+                  <div style="flex:1;">
+                      <label style="font-size:11px; color:#888;">Bajos: <span id="voz-bass-val">0</span>dB</label>
+                      <input type="range" id="voz-bass" min="-10" max="10" value="0" style="width:100%;" oninput="document.getElementById('voz-bass-val').innerText=this.value; document.getElementById('voz-preset').value='ninguno';">
+                  </div>
+                  <div style="flex:1;">
+                      <label style="font-size:11px; color:#888;">Agudos: <span id="voz-treble-val">0</span>dB</label>
+                      <input type="range" id="voz-treble" min="-10" max="10" value="0" style="width:100%;" oninput="document.getElementById('voz-treble-val').innerText=this.value; document.getElementById('voz-preset').value='ninguno';">
+                  </div>
+              </div>
+              
+              <div style="display:flex; gap:12px; margin-top:8px; align-items:center;">
+                  <label style="font-size:12px; color:#888;"><input type="checkbox" id="voz-compresor" onchange="document.getElementById('voz-preset').value='ninguno';"> Compresor</label>
+                  <label style="font-size:12px; color:#888;"><input type="checkbox" id="voz-normalizar" checked onchange="document.getElementById('voz-preset').value='ninguno';"> Normalizar LUFS</label>
+              </div>
+          </details>
+
+          <button class="btn-primary" onclick="document.activeElement.blur(); generarVozStudio();" style="width:100%; font-size:15px;">🎙️ Generar Audio</button>
+          <div id="voz-resultado" style="margin-top:16px;"></div>
+      </div>
+
+
+      <!-- TAB BATCH -->
+      <div id="voz-tab-batch" style="display:none;">
+          <p style="font-size:12px; color:#aaa;">Pega un texto por línea. Se generarán todos de golpe.</p>
+          <textarea id="voz-batch-textos" rows="8" placeholder="Línea 1...&#10;Línea 2...&#10;Línea 3..." style="width:100%; background:#111; color:#fff; border:1px solid #333; border-radius:6px; padding:8px; margin-bottom:8px;"></textarea>
+          <button class="btn-primary" onclick="generarBatch()">Generar Todos</button>
+          <div id="batch-resultado" style="margin-top:16px; max-height:300px; overflow-y:auto;"></div>
+      </div>
+
+      <!-- TAB HISTORIAL -->
+      <div id="voz-tab-history" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-size:15px; color:#00ffcc;">Tus Audios</h3>
+              <button onclick="borrarHistorial()" style="background:#ff6b6b; color:#fff; border:none; padding:4px 8px; border-radius:4px; font-size:11px;">Borrar Todo</button>
+          </div>
+          <div id="lista-historial" style="margin-top:12px;"></div>
+      </div>
+
+      <!-- MODAL VOCES -->
+      <div id="modal-voces" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999; overflow-y:auto; padding:20px;">
+          <div style="max-width:600px; margin:40px auto; background:#111; padding:20px; border-radius:12px; border:1px solid #333;">
+              <h3 style="color:#00ffcc;">Catálogo de Voces</h3>
+              <div id="lista-voces"></div>
+              <button onclick="document.getElementById('modal-voces').style.display='none'" style="margin-top:16px; background:#333; color:#fff; border:none; border-radius:6px; padding:8px 16px;">Cerrar</button>
+          </div>
+      </div>
+  </div>
+
+  <div id="view-media" class="view">
+    <div class="section">
+      <h2>🎬 Media Center</h2>
+      <div class="media-grid">
+        <div class="media-card">
+          <h3>🎵 Audio</h3>
+          <ul id="list-audio" class="media-list"><li>Cargando...</li></ul>
+          <div id="player-audio" class="player-container"></div>
+        </div>
+        <div class="media-card">
+          <h3>🎬 Video</h3>
+          <ul id="list-video" class="media-list"><li>Cargando...</li></ul>
+          <div id="player-video" class="player-container"></div>
+        </div>
+        <div class="media-card">
+          <h3>🖼️ Imágenes</h3>
+          <ul id="list-image" class="media-list"><li>Cargando...</li></ul>
+          <div id="player-image" class="player-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="view-prompts" class="view">
+    <div class="section">
+      <h2>💡 Prompt Studio</h2>
+<select id="prompt-type" style="margin-bottom:12px;"><option value="visual">🎬 Visual</option><option value="estrategia">📈 Estrategia</option><option value="seo">📝 SEO / Guion</option><option value="musica">🎵 Música</option></select>
+      <textarea id="prompt-input" rows="5" placeholder="Escribe una idea básica y la IA la expandirá..."></textarea>
+      <button class="btn-primary" onclick="mejorarPrompt()">✨ Mejorar con IA</button>
+      <pre id="prompt-output" style="display:none; margin-top:16px;"></pre>
+    </div>
+  </div>
+  <div id="view-analytics" class="view">
+    <div class="section">
+      <h2 id="analytics-title">📊 Analytics</h2>
+      <div id="analytics-container">Cargando...</div>
+    </div>
+  </div>
+  <div id="view-docs" class="view">
+    <div class="section" style="height: 100%; display: flex; flex-direction: column;">
+      <h2>📚 Documentación</h2>
+      <select id="doc-selector" onchange="cargarDoc(this.value)" style="margin-bottom: 15px;">
+        <option value="MANUAL_DE_USO.md">📖 Manual de Uso</option>
+        <option value="BOOT_PROMPT.md">🚀 Boot Prompt</option>
+        <option value="README_FUTURO.md">🗺️ Hoja de Ruta</option>
+        <option value="TRASPASO.md">🔄 Traspaso</option>
+        <option value="AUTO_CHANGELOG.md">📝 Auto-Changelog</option>
+      </select>
+      <pre id="doc-content" style="flex: 1; overflow-y: auto;">Selecciona un documento...</pre>
+    </div>
+  </div>
+  <div id="view-ajustes" class="view">
+    <div class="section">
+      <h2>⚙️ Ajustes / Temas</h2>
+      <select id="theme-select" onchange="cambiarTema(this.value)">
+        <option value="dark">Oscuro (Default)</option>
+        <option value="light">Claro</option>
+        <option value="midnight">Azul Medianoche</option>
+      </select>
+    </div>
+  </div>
+</main>
+<script src="/assets/app.js?v=8"></script>
+  <div id="log-console"></div>
+
+<div id="toast-container" class="toast-container"></div>
+<div id="cmd-palette" class="cmd-palette" style="display:none;">
+  <div class="cmd-box">
+    <input id="cmd-input" placeholder="Escribe un comando..." oninput="filtrarCmd()" onkeydown="cmdKeydown(event)" />
+    <div id="cmd-results" class="cmd-results"></div>
+    <p class="cmd-hint">↑↓ navegar · Enter ejecutar · Esc cerrar</p>
+  </div>
+</div>
+</body>
+</html>

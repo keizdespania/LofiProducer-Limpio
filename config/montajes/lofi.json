@@ -1,0 +1,16 @@
+{
+  "ancho": 1920,
+  "alto": 1080,
+  "crf": 20,
+  "intervalo_imagenes": 15,
+  "logo": null,
+  "duracion": 900,
+  "loop_video": true,
+  "fades": {
+    "in": 2.0,
+    "out": 2.0
+  },
+  "musica_vol": 0.15,
+  "logo_pos": "W-w-30:H-h-30",
+  "salida_path": "output/videos/lofi-final.mp4"
+}

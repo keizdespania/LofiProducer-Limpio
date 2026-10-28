@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+import json, pathlib
+
+OUT = pathlib.Path.home() / "LofiProducer/data/agent/image_contract.json"
+
+PRESETS = {
+    "cinematic": {"prompt_extra": "cinematic lighting, dramatic shadows, 35mm film, high contrast, movie still", "negative": "blurry, low quality, cartoon, anime, illustration", "params": {"num_steps": 20, "guidance": 8.0, "aspect": "16:9"}},
+    "anime": {"prompt_extra": "anime style, studio ghibli, vibrant colors, clean lineart, cel shading", "negative": "realistic, photo, 3d render, blurry", "params": {"num_steps": 20, "guidance": 7.0, "aspect": "16:9"}},
+    "realistic": {"prompt_extra": "photorealistic, 8k uhd, dslr, sharp focus, natural lighting", "negative": "cartoon, anime, illustration, painting", "params": {"num_steps": 20, "guidance": 7.5, "aspect": "16:9"}},
+    "cartoon": {"prompt_extra": "pixar style, disney, 3d render, cute, colorful", "negative": "realistic, photo, dark, scary", "params": {"num_steps": 20, "guidance": 8.0, "aspect": "16:9"}},
+    "product": {"prompt_extra": "product photography, studio lighting, white background, commercial", "negative": "people, hands, text, watermark", "params": {"num_steps": 20, "guidance": 7.5, "aspect": "1:1"}},
+    "portrait": {"prompt_extra": "portrait photography, bokeh, 85mm lens, soft light, sharp eyes", "negative": "cartoon, anime, multiple people, distorted face", "params": {"num_steps": 20, "guidance": 7.0, "aspect": "9:16"}},
+    "landscape": {"prompt_extra": "landscape photography, golden hour, wide angle, epic scale", "negative": "people, buildings, cartoon, blurry", "params": {"num_steps": 20, "guidance": 7.5, "aspect": "16:9"}},
+    "abstract": {"prompt_extra": "abstract art, geometric shapes, vibrant colors, conceptual", "negative": "realistic, people, faces, text", "params": {"num_steps": 20, "guidance": 8.5, "aspect": "1:1"}}
+}
+
+ASPECTS = {"16:9": {"width": 1344, "height": 768}, "9:16": {"width": 768, "height": 1344}, "1:1": {"width": 1024, "height": 1024}, "4:3": {"width": 1152, "height": 896}, "3:2": {"width": 1216, "height": 832}, "21:9": {"width": 1536, "height": 640}}
+
+EJEMPLOS = [
+    {"input": "un gato en bicicleta", "preset": "realistic", "params": {"prompt": "...", "preset": "realistic", "aspect": "16:9"}},
+    {"input": "portada anime lofi", "preset": "anime", "params": {"prompt": "...", "preset": "anime", "aspect": "16:9"}},
+    {"input": "miniatura finanzas", "preset": "cinematic", "params": {"prompt": "...", "preset": "cinematic", "aspect": "16:9"}}
+]
+
+VALIDADOR = {"reglas": [
+    {"campo": "num_steps", "min": 1, "max": 20, "default": 20},
+    {"campo": "guidance", "min": 1.0, "max": 15.0, "default": 7.5},
+    {"campo": "width", "min": 256, "max": 1536, "default": 1024},
+    {"campo": "height", "min": 256, "max": 1536, "default": 1024}
+]}
+
+REGLAS = [
+    "Cloudflare SDXL límite 20 num_steps (NO 50)",
+    "guidance 7.5 default; <5 no sigue prompt, >12 saturado",
+    "Width/height múltiplos de 64",
+    "16:9 = 1344x768. 9:16 = 768x1344. 1:1 = 1024x1024",
+    "NO poner texto en prompt (SDXL no renderiza texto bien)",
+    "preset 'realistic' con 'cartoon' = confusión. Ser coherente",
+    "seed=-1 aleatorio, fijo para reproducibilidad",
+    "Prompt del usuario PRIMERO, luego prompt_extra",
+    "Miniatura YouTube = aspect 16:9 + preset cinematic",
+    "Cloudflare límite 10.000 req/día gratis"
+]
+
+def main():
+    contract = {"motor": "Cloudflare SDXL", "modelo": "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+                "presets": PRESETS, "aspect_ratios": ASPECTS, "ejemplos": EJEMPLOS,
+                "validador": VALIDADOR, "reglas_anti_alucinacion": REGLAS}
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(json.dumps(contract, indent=2, ensure_ascii=False))
+    print(f"OK {OUT}")
+    print(f"  Presets: {len(PRESETS)} | Aspects: {len(ASPECTS)} | Reglas: {len(REGLAS)}")
+
+if __name__ == "__main__":
+    main()

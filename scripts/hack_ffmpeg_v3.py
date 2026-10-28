@@ -1,0 +1,74 @@
+"""hack_ffmpeg_v3.py — Contrato FFmpeg v2 con presets reales."""
+import json, pathlib, subprocess, re
+
+OUT = pathlib.Path.home() / "LofiProducer/data/agent/ffmpeg_contract.json"
+
+PRESETS = {
+    "youtube_1080p": {"desc": "YouTube 1080p", "vf": "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2", "af": "loudnorm=I=-14:LRA=11:TP=-1.5", "c:v": "libx264", "crf": 20, "preset": "medium", "c:a": "aac", "b:a": "192k", "movflags": "+faststart"},
+    "youtube_720p": {"desc": "YouTube 720p", "vf": "scale=1280:720", "c:v": "libx264", "crf": 23, "preset": "fast", "c:a": "aac", "b:a": "192k", "movflags": "+faststart"},
+    "tiktok_9x16": {"desc": "TikTok/Reels vertical", "vf": "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2", "c:v": "libx264", "crf": 23, "preset": "fast", "c:a": "aac", "b:a": "128k"},
+    "shorts_720_9x16": {"desc": "Shorts ligero vertical", "vf": "scale=720:1280:force_original_aspect_ratio=decrease,pad=720:1280:(ow-iw)/2:(oh-ih)/2", "c:v": "libx264", "crf": 25, "preset": "veryfast", "c:a": "aac", "b:a": "128k"},
+    "audio_podcast": {"desc": "Podcast -16 LUFS", "af": "loudnorm=I=-16:LRA=11:TP=-1.5", "c:a": "libmp3lame", "b:a": "192k"},
+    "audio_lofi": {"desc": "Lofi con echo + bass", "af": "aecho=0.8:0.7:1000:0.5,bass=g=3,treble=g=-1,loudnorm=I=-16", "c:a": "libmp3lame", "b:a": "192k"},
+    "fade_in_out_1s": {"desc": "Fade 1s", "vf": "fade=t=in:st=0:d=1,fade=t=out:st=END-1:d=1", "af": "afade=t=in:st=0:d=1,afade=t=out:st=END-1:d=1"},
+    "logo_overlay": {"desc": "Logo esquina", "filter_complex": "[1:v]scale=120:-1[logo];[0:v][logo]overlay=W-w-20:H-h-20"},
+    "narracion_pausada": {"desc": "Narración lenta", "af": "asetrate=22050*0.95,atempo=1.05,acompressor=threshold=-20dB:ratio=4,loudnorm=I=-16"},
+    "distorsion_reverb": {"desc": "Lo-fi crunch", "af": "acrusher=bits=12:mode=log:aa=1,aecho=0.8:0.6:900:0.4"},
+    "concat_demuxer": {"desc": "Concatenar N clips", "cmd": "ffmpeg -y -f concat -safe 0 -i lista.txt -c copy out.mp4"},
+    "subtitulos_quemados": {"desc": "Quemar SRT", "vf": "subtitles=subs.srt:force_style='FontSize=24'"}
+}
+
+ANTI_PATTERNS = [
+    {"patron": "crf 0", "problema": "Pérdida cero = archivos gigantes", "fix": "crf 18-23"},
+    {"patron": "sin -y", "problema": "Prompt bloqueante", "fix": "Añadir -y siempre"},
+    {"patron": "-c copy con filtros", "problema": "Filtros ignorados", "fix": "Quitar -c copy"},
+    {"patron": "-ss después de -i", "problema": "Lento", "fix": "-ss ANTES de -i"},
+    {"patron": "sin timeout", "problema": "Puede colgarse", "fix": "subprocess timeout=600"}
+]
+
+VALIDADOR = {"reglas": [
+    {"campo": "crf", "min": 0, "max": 51, "default": 20, "rec": "18-23"},
+    {"campo": "preset", "valores": ["ultrafast","veryfast","fast","medium","slow","veryslow"], "default": "medium"},
+    {"campo": "b:a", "valores": ["64k","96k","128k","192k","256k","320k"], "default": "192k"},
+    {"campo": "pix_fmt", "valores": ["yuv420p","yuv444p","argb"], "default": "yuv420p"}
+]}
+
+REGLAS = [
+    "SIEMPRE -y (no bloqueante)",
+    "crf 18-23 YouTube, 23-28 borradores",
+    "-ss ANTES de -i para cortes rápidos",
+    "-c copy SOLO sin filtros",
+    "pix_fmt yuv420p para YouTube/TikTok",
+    "movflags +faststart para MP4 streaming",
+    "loudnorm -14 YouTube, -16 podcast",
+    "9:16 usa force_original_aspect_ratio + pad",
+    "concat demuxer = mismo codec/fps/res",
+    "atempo máx 2.0 por filtro; >2 encadenar",
+    "aecho delays 500-1500 (fuera suena mal)"
+]
+
+EJEMPLOS = [
+    {"input": "YouTube", "preset": "youtube_1080p"},
+    {"input": "TikTok", "preset": "tiktok_9x16"},
+    {"input": "Podcast", "preset": "audio_podcast"}
+]
+
+def detectar_version():
+    try:
+        v = subprocess.run(["ffmpeg", "-version"], capture_output=True, text=True, timeout=5).stdout
+        m = re.search(r"ffmpeg version (\S+)", v)
+        return m.group(1) if m else "?"
+    except: return "?"
+
+def main():
+    c = {"motor": "FFmpeg", "version": detectar_version(), "donde": "Termux local",
+         "presets": PRESETS, "anti_patterns": ANTI_PATTERNS, "validador": VALIDADOR,
+         "ejemplos": EJEMPLOS, "reglas_anti_alucinacion": REGLAS,
+         "stats": {"presets": len(PRESETS), "anti": len(ANTI_PATTERNS), "reglas": len(REGLAS)}}
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(json.dumps(c, indent=2, ensure_ascii=False))
+    print(f"OK {OUT}")
+    print(f"  FFmpeg {c['version']} | Presets: {len(PRESETS)} | Anti: {len(ANTI_PATTERNS)} | Reglas: {len(REGLAS)}")
+
+if __name__ == "__main__":
+    main()

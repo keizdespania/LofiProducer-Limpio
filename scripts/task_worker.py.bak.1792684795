@@ -1,0 +1,77 @@
+"""Worker que procesa la cola: chat (dios.py) o video (kaggle_manager.py)."""
+import sqlite3, subprocess, sys, time, pathlib, json
+from datetime import datetime
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+DB_PATH = ROOT / "data" / "agent" / "cola.db"
+LOGS_DIR = ROOT / "data" / "logs" / "tasks"
+LOGS_DIR.mkdir(parents=True, exist_ok=True)
+
+def init_db():
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS tareas (
+                id TEXT PRIMARY KEY,
+                session_id TEXT,
+                prompt TEXT,
+                estado TEXT,
+                log_file TEXT,
+                salida TEXT,
+                creada TEXT,
+                actualizada TEXT
+            )
+        """)
+
+def procesar_cola():
+    init_db()
+    print("[Worker] Cola de tareas iniciada. Esperando tareas...", flush=True)
+    while True:
+        try:
+            with sqlite3.connect(DB_PATH) as conn:
+                conn.row_factory = sqlite3.Row
+                tarea = conn.execute("SELECT * FROM tareas WHERE estado = 'pending' ORDER BY creada ASC LIMIT 1").fetchone()
+                
+                if tarea:
+                    task_id = tarea["id"]
+                    prompt = tarea["prompt"]
+                    session_id = tarea["session_id"]
+                    log_file = LOGS_DIR / f"{task_id}.log"
+                    
+                    print(f"[Worker] Ejecutando tarea {task_id[:8]} ({session_id})...", flush=True)
+                    conn.execute("UPDATE tareas SET estado = 'running', actualizada = ? WHERE id = ?", 
+                                 (datetime.now().isoformat(), task_id))
+                    conn.commit()
+                    
+                    # Detectar si es video
+                    es_video = session_id == "video" or any(p in prompt.lower() for p in ["video", "genera un video", "crea un video"])
+                    
+                    if es_video:
+                        # Lanzar el notebook en Kaggle
+                        with open(log_file, "w") as f:
+                            subprocess.run([sys.executable, "scripts/kaggle_manager.py", prompt, task_id], 
+                                           stdout=f, stderr=subprocess.STDOUT, cwd=str(ROOT), timeout=180)
+                        # La tarea se queda en 'running'. El checker la descargara cuando Kaggle termine.
+                        print(f"[Worker] Tarea {task_id[:8]} lanzada en Kaggle. En espera de descarga.", flush=True)
+                    else:
+                        # Chat normal: ejecutar dios.py
+                        with open(log_file, "w") as f:
+                            subprocess.run([sys.executable, "scripts/dios.py", prompt], 
+                                           stdout=f, stderr=subprocess.STDOUT, cwd=str(ROOT))
+                        # Leer salida
+                        salida = ""
+                        if log_file.exists():
+                            texto = log_file.read_text()
+                            if "[dios] Tarea completada. Resumen:" in texto:
+                                salida = texto.split("[dios] Tarea completada. Resumen:")[1].strip()
+                            else:
+                                salida = texto[-500:]
+                        conn.execute("UPDATE tareas SET estado = 'done', salida = ?, actualizada = ? WHERE id = ?",
+                                     (salida, datetime.now().isoformat(), task_id))
+                        conn.commit()
+                        print(f"[Worker] Tarea {task_id[:8]} completada.", flush=True)
+        except Exception as e:
+            print(f"[Worker] Error: {e}", flush=True)
+        time.sleep(2)
+
+if __name__ == "__main__":
+    procesar_cola()
