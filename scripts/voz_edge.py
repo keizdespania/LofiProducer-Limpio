@@ -1,9 +1,24 @@
-"""voz_edge.py - Genera voz con Edge-TTS (Álvaro) y ASS Karaoke con timestamps reales."""
+"""voz_edge.py - Genera voz con Edge-TTS (Álvaro) y ASS Karaoke."""
 import asyncio, json, pathlib, sys
 import edge_tts
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
+
+async def generar_audio(texto, salida_mp3, voz="es-ES-AlvaroNeural"):
+    communicate = edge_tts.Communicate(texto, voz, rate="-5%")
+    palabras = []
+    with open(salida_mp3, "wb") as f:
+        async for chunk in communicate.stream():
+            if chunk["type"] == "audio":
+                f.write(chunk["data"])
+            elif chunk["type"] == "WordBoundary":
+                palabras.append({
+                    "palabra": chunk["text"], 
+                    "inicio": chunk["offset"] / 10_000_000, 
+                    "duracion": chunk["duration"] / 10_000_000
+                })
+    return palabras
 
 def generar_ass(palabras, salida_ass):
     def seg_a_ass(seg):
@@ -21,39 +36,33 @@ def generar_ass(palabras, salida_ass):
 
 async def main():
     fecha = sys.argv[1] if len(sys.argv) > 1 else None
-    if not fecha:
-        prod_files = sorted(list(OUT.glob("produccion_*.json")))
-        if not prod_files:
-            print("❌ No hay JSON de producción"); return
-        prod = prod_files[-1]
-        fecha = prod.stem.replace("produccion_", "") # Saca la fecha del nombre
-    else:
-        prod = OUT / f"produccion_{fecha}.json"
-    if not prod.exists():
-        print("❌ No hay JSON de producción"); return
+    prod_files = sorted(list(OUT.glob("produccion_*.json")))
+    if not prod_files: return
+    prod = OUT / f"produccion_{fecha}.json" if fecha else prod_files[-1]
+    fecha = prod.stem.replace("produccion_", "")
+    
     datos = json.loads(prod.read_text())
+    
+    # 1. Voz del vídeo largo
     texto = datos.get("texto_voz_largo", "")
-    if not texto:
-        print("❌ No hay texto_voz_largo"); return
-
-    mp3 = OUT / f"voz_largo_{fecha}.mp3"
-    ass = OUT / f"voz_largo_{fecha}.ass"
-    print(f"🎙️ Generando voz de Álvaro para {fecha}...")
+    if texto:
+        mp3 = OUT / f"voz_largo_{fecha}.mp3"
+        ass = OUT / f"voz_largo_{fecha}.ass"
+        print(f"🎙️ Generando voz del vídeo largo...")
+        palabras = await generar_audio(texto, mp3)
+        generar_ass(palabras, ass)
+        print(f"✅ Audio: {mp3.name} ({len(palabras)} palabras)")
+        print(f"✅ ASS: {ass.name}")
     
-    communicate = edge_tts.Communicate(texto, "es-ES-AlvaroNeural", rate="-5%")
-    palabras = []
-    with open(mp3, "wb") as f:
-        async for chunk in communicate.stream():
-            if chunk["type"] == "audio": f.write(chunk["data"])
-            elif chunk["type"] == "WordBoundary":
-                palabras.append({"palabra": chunk["text"], "inicio": chunk["offset"]/10_000_000, "duracion": chunk["duration"]/10_000_000})
-    
-    print(f"✅ Audio: {mp3.name} ({len(palabras)} palabras)")
-    generar_ass(palabras, ass)
-    print(f"✅ ASS: {ass.name}")
-    
-    datos["timestamps_voz"] = palabras
-    prod.write_text(json.dumps(datos, indent=2, ensure_ascii=False))
+    # 2. Voces de los shorts
+    shorts = datos.get("shorts_finales", [])[:4]
+    for i, short in enumerate(shorts):
+        texto_short = short.get("guion") or short.get("hook", "")
+        if texto_short:
+            mp3 = OUT / f"short_{i+1}_voz_{fecha}.mp3"
+            print(f"🎙️ Generando voz del short {i+1}...")
+            palabras = await generar_audio(texto_short, mp3)
+            print(f"   ✅ {mp3.name}")
 
 if __name__ == "__main__":
     asyncio.run(main())
