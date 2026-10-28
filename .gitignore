@@ -20,3 +20,6 @@ web/web/
 # Python
 __pycache__/
 *.pyc
+
+# Ignorar carpeta de Kaggle
+kaggle_src/
