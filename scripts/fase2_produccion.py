@@ -115,18 +115,8 @@ def producir_fase2(fecha=None):
         "seo": seo,
     }
     out_json = OUT / f"produccion_{fecha}.json"
-    # Generar texto limpio para la voz (Álvaro)
-    def limpiar_texto(texto):
-        texto = re.sub(r'\[.*?\]', '', texto)
-        texto = re.sub(r'\(.*?\)', '', texto)
-        texto = re.sub(r'^(NEGRO|RÓTULO|PLANO|FUNDIDO|CORTE|MÚSICA|SONIDO|IMAGEN|TEXTO).*?\.\s*', '', texto, flags=re.IGNORECASE)
-        comillas = re.findall(r'[“"]([^”"]+)[”"]', texto)
-        if comillas: return " ".join(comillas)
-        return texto.strip()
-    
-    escenas = res.get("guion_cinematografico", {}).get("guion", [])
-    texto_voz = " ".join([limpiar_texto(e.get("texto", "")) for e in escenas if e.get("texto")])
-    res["texto_voz_largo"] = texto_voz
+    # Usar el guion original (1500 palabras) como texto para la voz
+    res["texto_voz_largo"] = guiones_originales.get("guion_video_largo", "")
 
     out_json.write_text(json.dumps(res, indent=2, ensure_ascii=False))
     print(f"[fase2] ✅ Guardado en {out_json}")
