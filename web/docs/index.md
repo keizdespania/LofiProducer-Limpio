@@ -19,16 +19,16 @@
 
     <div class="post-card">
         <p style="color: var(--accent); font-size: 0.8em; font-weight: bold;">2026-10-28</p>
-        <h3>Short: s1</h3>
-        <p>Contenido para redes: s1</p>
-        <a href="analisis/2026-10-28-red-s1/">Leer análisis →</a>
+        <h3>Short: short2</h3>
+        <p>Contenido para redes: short2</p>
+        <a href="analisis/2026-10-28-red-short2/">Leer análisis →</a>
     </div>
 
     <div class="post-card">
         <p style="color: var(--accent); font-size: 0.8em; font-weight: bold;">2026-10-28</p>
-        <h3>Short: 2</h3>
-        <p>Contenido para redes: 2</p>
-        <a href="analisis/2026-10-28-red-2/">Leer análisis →</a>
+        <h3>Short: short1</h3>
+        <p>Contenido para redes: short1</p>
+        <a href="analisis/2026-10-28-red-short1/">Leer análisis →</a>
     </div>
 
     <div class="post-card">
