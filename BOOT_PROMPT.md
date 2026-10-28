@@ -551,3 +551,38 @@ Cada ejecución del pipeline genera:
 ## 🚀 HOJA DE RUTA EVOLUTIVA (Top 1 Mundial)
 Ver: agent/design/09_evolucion_top1.md
 Estado: Diseñado. Próximos pasos: predictor_viralidad y verificador_factos (Semana 1).
+
+
+## 🚀 EVOLUCIÓN TOP 1 MUNDIAL (Hoja de Ruta Completa)
+Ver documento detallado: `agent/design/09_evolucion_top1.md`.
+
+### 1. Meta-Agentes (El Sistema que se Auto-Mejora)
+- `arquitecto_sistema`: Crea nuevos agentes y scripts.
+- `auditor_codigo`: Caza bugs y refactoriza.
+- `estratega_negocio`: Decide nichos y escalado a 100 canales.
+
+### 2. Nuevos Agentes de Contenido (10)
+- **Editorial**: `analista_sentimiento`, `verificador_factos` (✅), `detector_polarizacion`.
+- **Optimización**: `predictor_viralidad` (✅), `generador_titulos_ab`, `analista_competencia`.
+- **Escalado**: `traductor_multilingue`, `doblador_voz` (XTTS v2).
+- **Comunidad**: `community_manager_auto`, `detector_tendencias_vivas`.
+
+### 3. Nuevos Scripts de Proceso (8)
+- **Feedback Loop**: `analytics_youtube`, `auto_ajuste_prompts`, `rotador_ab`.
+- **Resiliencia**: `monitor_salud`, `rollback_auto`.
+- **Planificación**: `calendario_editorial`, `detector_evergreen`.
+- **Monetización**: `optimizador_adsense`.
+
+### 4. Upgrades del Pipeline
+- **Branching**: Seguridad -> Sentimiento -> Viralidad -> Publicación.
+- **15 Assets por tema**: (Añadir EN largo, 4 shorts EN, PDF pago, miniaturas A/B).
+- **Scheduler inteligente**: Publicación según engagement.
+
+### 5. Dashboard (7 Pestañas)
+Preview · Distribución · Monetización · Analytics · A/B Testing · Calendario · Agentes · Crisis.
+
+### Priorización (Estado Actual)
+- **Semana 1**: `predictor_viralidad` + `verificador_factos` + `monitor_salud`. (Los 2 primeros YA ESTÁN).
+- **Semana 2-3**: Analytics y A/B testing.
+- **Mes 2**: Traducción y doblaje.
+- **Mes 3+**: Meta-agentes y auto-mejora.
