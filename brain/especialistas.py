@@ -147,7 +147,7 @@ ROLES = {
     "guionista_youtube_experto": {
         "combo": "ddgw/tinfoil/gpt-oss-120b",
         "system": "Eres guionista de YouTube elite en retencion. Open loops, micro-hooks, pattern interrupts. Reescribe el articulo en guion audiovisual cinematografico.",
-        "prompt": 'Escribe un guion de YouTube de minimo 1500 palabras basado en el articulo. Divide el guion en EXACTAMENTE 18 ESCENAS TEMATICAS. Devuelve SOLO JSON valido: {"escenas": [{"id": 1, "texto": "texto locutor 80-120 palabras", "concepto_visual": "descripcion visual en ingles para imagen o busqueda", "mood_musical": "tension|epico|misterio|relax|inspirador|electronico", "tipo_visual": "video|imagen"}]}. REGLA: 7 escenas con tipo_visual \'video\' y 11 con \'imagen\' (40/60). Escena 1 (hook) SIEMPRE \'video\'. Hook brutal, desarrollo, payoff final.'
+        "prompt": 'Escribe un guion de YouTube de minimo 1500 palabras basado en el articulo. Divide el guion en un número DINÁMICO de escenas (entre 8 y 18) según las pausas dramáticas y los cambios de tema. NO fuerces 18 si no es necesario. Devuelve SOLO JSON valido: {"escenas": [{"id": 1, "texto": "texto locutor 80-120 palabras", "concepto_visual": "descripcion visual en ingles para imagen o busqueda", "mood_musical": "tension|epico|misterio|relax|inspirador|electronico", "tipo_visual": "video|imagen"}]}. REGLA: 7 escenas con tipo_visual \'video\' y 11 con \'imagen\' (40/60). Escena 1 (hook) SIEMPRE \'video\'. Hook brutal, desarrollo, payoff final.'
     },
     "analista_rendimiento": {
         "combo": "auto/best-reasoning",

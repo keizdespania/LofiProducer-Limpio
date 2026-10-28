@@ -7,7 +7,9 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
 
 def generar_short(img, texto, voz_path, musica_path, salida):
-    theme = CaptionTheme(font="monospace", font_size=44, max_words=5, position=Placement(0.5, 0.85, anchor="center"))
+    import re
+    texto = re.sub(r"[\r\n]+", " ", texto).replace('"', "").strip()
+    theme = CaptionTheme(font="monospace", font_size=44, position=Placement(0.5, 0.85, anchor="center"))
     project = (
         Project(settings=RenderSettings(captions=True))
         .short_form()

@@ -62,27 +62,21 @@ def producir_fase2(fecha=None):
 
     # Fallback manual: Dividir el artículo en 18 trozos
     if len(escenas) < 5:
-        print("   Fallback: dividiendo articulo en 18 escenas", flush=True)
+        print("   Fallback: dividiendo articulo en escenas dinámicas (8-18)", flush=True)
         texto = re.sub(r'<[^>]+>', ' ', articulo)
         texto = re.sub(r'\s+', ' ', texto).strip()
         palabras = texto.split()
-        
-        # Asegurar mínimo 1800 palabras para que salgan 18 escenas de 100 palabras
-        if len(palabras) < 1800:
-            palabras = palabras * (1800 // max(1, len(palabras)) + 1)
-            palabras = palabras[:1800]
-            
-        chunk = len(palabras) // 18
+        chunk = 150
+        num_escenas = max(8, min(18, len(palabras) // chunk))
         moods = ["tension", "misterio", "epico", "inspirador", "electronico", "relax"]
-        
-        for i in range(18):
+        for i in range(num_escenas):
             ini = i * chunk
             fin_i = min(len(palabras), (i+1) * chunk)
             if ini >= len(palabras): break
             escenas.append({
                 "id": i + 1,
                 "texto": " ".join(palabras[ini:fin_i]),
-                "concepto_visual": "cinematic dark news analysis, abstract concept " + str(i+1),
+                "concepto_visual": "cinematic dark news analysis about " + str(dossier.get("tema_del_dia", "analysis")) + ", abstract",
                 "mood_musical": moods[i % len(moods)],
                 "tipo_visual": "video" if i == 0 or i % 3 == 0 else "imagen"
             })

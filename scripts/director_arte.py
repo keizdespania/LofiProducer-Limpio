@@ -90,6 +90,18 @@ def preparar(fecha):
 
         time.sleep(0.5)
 
+    # Generar imagen vertical para los shorts (9:16)
+    short_bg = MEDIA / "short_bg_01.png"
+    if not short_bg.exists():
+        print("  🖼️ Generando imagen vertical (9:16) para shorts...")
+        from generar_imagen import generar
+        r = generar("cinematic dark news analysis, vertical composition, dramatic lighting, no text", preset="cinematic", aspect="9:16", canal="encuadre")
+        if 'OK: ' in r:
+            ruta = r.split('OK: ')[1].split(' ')[0]
+            if pathlib.Path(ruta).exists():
+                shutil.copy2(ruta, short_bg)
+                print("  ✅ Imagen vertical creada")
+
     prod.write_text(json.dumps(datos, indent=2, ensure_ascii=False))
     print(f"OK {len(escenas)} escenas preparadas")
 
