@@ -547,3 +547,7 @@ Cada ejecución del pipeline genera:
 4. Probar el flujo completo: subir assets → lanzar kernel → descargar vídeo.
 
 **Coste**: 0€. Kaggle es gratis y la GPU T4 es más que suficiente.
+
+## 🚀 HOJA DE RUTA EVOLUTIVA (Top 1 Mundial)
+Ver: agent/design/09_evolucion_top1.md
+Estado: Diseñado. Próximos pasos: predictor_viralidad y verificador_factos (Semana 1).
