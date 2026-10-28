@@ -1,4 +1,4 @@
-"""recolector.py - Radar Global (Nacional + Internacional)."""
+"""recolector.py - Radar Global Definitivo (50+ medios, 15 TV, 15 Radio, Agencias)."""
 import sys, json, pathlib, datetime, re, urllib.request, subprocess
 from datetime import datetime as dt, timedelta, timezone
 
@@ -6,7 +6,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre" / "audios"
 OUT.mkdir(parents=True, exist_ok=True)
 
-# === RADAR NACIONAL (Prensa, TV, Radio, Podcasts, YouTube) ===
+# === PERIÓDICOS Y DIGITALES (Nacionales) ===
 MEDIOS_RSS = {
     "El Pais": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
     "El Mundo": "https://e00-elmundo.uecdn.es/elmundo/rss/portada.xml",
@@ -18,46 +18,82 @@ MEDIOS_RSS = {
     "OkDiario": "https://okdiario.com/feed",
     "Vozpopuli": "https://www.vozpopuli.com/rss/",
     "The Objective": "https://theobjective.com/feed/",
-    "Publico": "https://www.publico.es/rss/"
+    "Publico": "https://www.publico.es/rss/",
+    "La Razon": "https://www.larazon.es/rss/",
+    "20 Minutos": "https://www.20minutos.es/rss/",
+    "El Periodico": "https://www.elperiodico.com/es/rss/",
+    "La Voz de Galicia": "https://www.lavozdegalicia.es/rss/",
+    "El Correo": "https://www.elcorreo.com/rss/2.0/portada/",
+    "La Verdad": "https://www.laverdad.es/rss/2.0/portada/",
+    "Heraldo de Aragon": "https://www.heraldo.es/rss/",
+    "Levante-EMV": "https://www.levante-emv.com/rss/",
+    "Las Provincias": "https://www.lasprovincias.es/rss/",
+    "Diario Sur": "https://www.diariosur.es/rss/",
+    "Ideal": "https://www.ideal.es/rss/",
+    "La Nueva España": "https://www.lne.es/rss/",
+    "El Norte de Castilla": "https://www.elnortedecastilla.es/rss/2.0/portada/",
+    "Diario Vasco": "https://www.diariovasco.com/rss/",
+    "El Comercio": "https://www.elcomercio.es/rss/",
+    "Faro de Vigo": "https://www.farodevigo.es/rss/",
+    "La Informacion": "https://www.lainformacion.com/rss/",
+    "El Independiente": "https://www.elindependiente.com/feed/",
+    "Libertad Digital": "https://rss.libertaddigital.com/",
+    "HuffPost Spain": "https://www.huffingtonpost.es/feeds/index.xml",
+    "The Local Spain": "https://feeds.thelocal.com/rss/es",
+    "Madrid Metropolitan": "https://madridmetropolitan.com/feed/",
+    "Euro Weekly News": "https://euroweeklynews.com/feed/",
+    "El Diario de Cantabria": "https://www.eldiariocantabria.es/rss/",
+    "Ara": "https://www.ara.cat/rss/",
 }
 
+# === TV (YouTube) ===
 MEDIOS_TV = {
-    "La Sexta": "https://www.youtube.com/@laSexta",
+    "RTVE": "https://www.youtube.com/@rtve",
     "Antena 3": "https://www.youtube.com/@antena3",
+    "La Sexta": "https://www.youtube.com/@laSexta",
+    "Cuatro": "https://www.youtube.com/@cuatro",
+    "Telecinco": "https://www.youtube.com/@telecinco",
     "Telemadrid": "https://www.youtube.com/@telemadrid",
+    "Trece TV": "https://www.youtube.com/@trecetv",
+    "Dmax": "https://www.youtube.com/@dmax",
+    "DKISS": "https://www.youtube.com/@dkiss",
+    "Ten": "https://www.youtube.com/@ten",
+    "TV3": "https://www.youtube.com/@tv3cat",
+    "Real Madrid TV": "https://www.youtube.com/@realmadridtv",
+    "Negocios TV": "https://www.youtube.com/@NegociosTV",
+    "VisualPolitik": "https://www.youtube.com/@VisualPolitik",
+    "El Mundo (YT)": "https://www.youtube.com/@elmundo",
+}
+
+# === RADIO (YouTube) ===
+MEDIOS_RADIO = {
     "Cadena SER": "https://www.youtube.com/@cadenaser",
     "Onda Cero": "https://www.youtube.com/@ondacero",
-    "The Wild Project": "https://www.youtube.com/@TheWildProject",
-    "RTVE": "https://www.youtube.com/@rtve",
     "COPE": "https://www.youtube.com/@COPE_es",
+    "RNE": "https://www.youtube.com/@RadioNacionaldeEspana",
     "esRadio": "https://www.youtube.com/@esradio",
-    "Negocios TV": "https://www.youtube.com/@NegociosTV",
-    "El Mundo (YT)": "https://www.youtube.com/@elmundo",
-    "El País (YT)": "https://www.youtube.com/@elpais",
-    "La Vanguardia (YT)": "https://www.youtube.com/@LaVanguardia",
-    "Intereconomia": "https://www.youtube.com/@RadioIntereconomia",
-    "VisualPolitik": "https://www.youtube.com/@VisualPolitik",
-    "Cuatro": "https://www.youtube.com/@cuatro",
-    "Telecinco": "https://www.youtube.com/@telecinco"
+    "Radio Intereconomia": "https://www.youtube.com/@RadioIntereconomia",
+    "Capital Radio": "https://www.youtube.com/@capitalradio",
+    "RAC1": "https://www.youtube.com/@rac1",
+    "Cadena Dial": "https://www.youtube.com/@cadenadial",
+    "Los40": "https://www.youtube.com/@los40",
+    "Europa FM": "https://www.youtube.com/@europafm",
+    "Rock FM": "https://www.youtube.com/@rockfm",
+    "Melodia FM": "https://www.youtube.com/@melodiafm",
+    "Radio Marca": "https://www.youtube.com/@radiomarca",
+    "The Wild Project": "https://www.youtube.com/@TheWildProject",
 }
 
-# === RADAR INTERNACIONAL (Para lunes y jueves) ===
-MEDIOS_INTL_RSS = {
-    "The Guardian": "https://www.theguardian.com/world/spain/rss",
-    "Le Monde": "https://www.lemonde.fr/international/rss_full.xml",
-    "BBC": "https://feeds.bbci.co.uk/news/world/europe/rss.xml",
-    "Deutsche Welle": "https://rss.dw.com/rdf/rss-en-world",
-    "Al Jazeera": "https://www.aljazeera.com/xml/rss/all.xml",
-    "Reuters": "https://www.reutersagency.com/feed/?best-topics=politics&post_type=best",
-    "AP News": "https://apnews.com/apf-topnews?output=rss"
-}
-
-MEDIOS_INTL_YT = {
-    "France 24": "https://www.youtube.com/@FRANCE24",
-    "DW News": "https://www.youtube.com/@DWNews",
-    "Sky News": "https://www.youtube.com/@SkyNews",
-    "Al Jazeera English": "https://www.youtube.com/@aljazeeraenglish",
-    "Bloomberg TV": "https://www.youtube.com/@markets"
+# === AGENCIAS INTERNACIONALES ===
+MEDIOS_AGENCIAS = {
+    "EFE": "https://www.efe.com/efe/espana/1/rss",
+    "Europa Press": "https://www.europapress.es/rss/rss.aspx",
+    "Servimedia": "https://www.servimedia.es/rss/",
+    "Reuters": "https://feeds.reuters.com/reuters/topNews",
+    "Associated Press": "https://apnews.com/hub/ap-top-news?format=rss",
+    "AFP": "https://www.afp.com/es/rss",
+    "Bloomberg": "https://feeds.bloomberg.com/markets/news.rss",
+    "DPA": "https://www.dpa.com/de/rss/",
 }
 
 def _descargar_html(url, timeout=10):
@@ -95,8 +131,8 @@ def extraer_youtube(url_canal):
                 if "|" in line:
                     partes = line.split("|", 1)
                     if len(partes) == 2: videos.append({"id": partes[0], "titulo": partes[1]})
-            return videos[:2]
-    except Exception as e: pass
+            return videos[:1] # Solo el primero para no tardar demasiado
+    except Exception: pass
     return []
 
 def descargar_audio(video_id, nombre_medio):
@@ -105,48 +141,59 @@ def descargar_audio(video_id, nombre_medio):
     salida_base = OUT / f"{safe_name}_{video_id}"
     if salida_base.with_suffix('.mp3').exists(): return str(salida_base.with_suffix('.mp3'))
     url = f"https://www.youtube.com/watch?v={video_id}"
-    cmd = ["yt-dlp", "-x", "--audio-format", "mp3", "-o", str(salida_base), url]
+    cmd = ["yt-dlp", "-x", "--audio-format", "mp3", "-o", str(salida_base), url, "--no-warnings", "--max-filesize", "30M"]
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
         if r.returncode == 0 and salida_base.with_suffix('.mp3').exists(): return str(salida_base.with_suffix('.mp3'))
-    except Exception as e: pass
+    except Exception: pass
     return None
 
 def recolectar():
-    print("[recolector] Recogiendo prensa escrita (Nacional)...", flush=True)
-    datos = {"prensa": {}, "tv_radio": {}, "internacional": {}, "audios": []}
+    print(f"[recolector] Iniciando radar global...", flush=True)
+    datos = {"prensa": {}, "tv": {}, "radio": {}, "agencias": {}, "audios": []}
     
+    # 1. Prensa
+    print("[recolector] Recogiendo prensa escrita...", flush=True)
     for medio, url in MEDIOS_RSS.items():
         noticias = extraer_rss(url)
         if noticias: datos["prensa"][medio] = noticias; print(f"  ✅ {medio}: {len(noticias)}", flush=True)
     
-    print("\n[recolector] Recogiendo TV/Radio/Podcast/YouTube (Nacional)...", flush=True)
+    # 2. TV
+    print("\n[recolector] Recogiendo TV...", flush=True)
     for medio, url in MEDIOS_TV.items():
         videos = extraer_youtube(url)
         if videos:
-            datos["tv_radio"][medio] = videos
+            datos["tv"][medio] = videos
             print(f"  ✅ {medio}: {len(videos)} vídeos", flush=True)
-            for v in videos[:1]:
+            for v in videos:
                 audio = descargar_audio(v["id"], medio)
                 if audio:
                     datos["audios"].append({"medio": medio, "video_id": v["id"], "titulo": v["titulo"], "audio": audio})
                     print(f"     🎙️ Audio descargado", flush=True)
                     
-    print("\n[recolector] Recogiendo Internacional...", flush=True)
-    for medio, url in MEDIOS_INTL_RSS.items():
-        noticias = extraer_rss(url)
-        if noticias: datos["internacional"][medio] = noticias; print(f"  ✅ {medio}: {len(noticias)}", flush=True)
-        
-    for medio, url in MEDIOS_INTL_YT.items():
+    # 3. Radio
+    print("\n[recolector] Recogiendo Radio...", flush=True)
+    for medio, url in MEDIOS_RADIO.items():
         videos = extraer_youtube(url)
         if videos:
-            datos["internacional"][medio] = videos
+            datos["radio"][medio] = videos
             print(f"  ✅ {medio}: {len(videos)} vídeos", flush=True)
-    
+            for v in videos:
+                audio = descargar_audio(v["id"], medio)
+                if audio:
+                    datos["audios"].append({"medio": medio, "video_id": v["id"], "titulo": v["titulo"], "audio": audio})
+                    print(f"     🎙️ Audio descargado", flush=True)
+
+    # 4. Agencias
+    print("\n[recolector] Recogiendo Agencias...", flush=True)
+    for medio, url in MEDIOS_AGENCIAS.items():
+        noticias = extraer_rss(url)
+        if noticias: datos["agencias"][medio] = noticias; print(f"  ✅ {medio}: {len(noticias)}", flush=True)
+
     ts = dt.now().strftime("%Y-%m-%d")
     out_json = ROOT / "output" / "encuadre" / f"recoleccion_{ts}.json"
     out_json.write_text(json.dumps(datos, indent=2, ensure_ascii=False))
-    print(f"\n[recolector] ✅ Guardado en {out_json} ({len(datos['audios'])} audios listos)", flush=True)
+    print(f"\n[recolector] ✅ Guardado en {out_json} ({len(datos['audios'])} audios)", flush=True)
 
 if __name__ == "__main__":
     recolectar()
