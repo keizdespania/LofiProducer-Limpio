@@ -94,6 +94,10 @@ def producir_fase2(fecha=None):
             shorts_finales.extend(res_lote["shorts"])
         time.sleep(1)
     
+    if not guion_cine.get("guion") or len(guion_cine.get("guion")) == 0:
+        print("🛑 FATAL: El guion cinematográfico está vacío. Abortando para no guardar basura.")
+        return None
+
     # 5. SEO MAESTRO
     print("[fase2] 5/5 SEO Maestro...", flush=True)
     prompt_seo = """Genera el SEO. Devuelve SOLO JSON:
@@ -111,6 +115,19 @@ def producir_fase2(fecha=None):
         "seo": seo,
     }
     out_json = OUT / f"produccion_{fecha}.json"
+    # Generar texto limpio para la voz (Álvaro)
+    def limpiar_texto(texto):
+        texto = re.sub(r'\[.*?\]', '', texto)
+        texto = re.sub(r'\(.*?\)', '', texto)
+        texto = re.sub(r'^(NEGRO|RÓTULO|PLANO|FUNDIDO|CORTE|MÚSICA|SONIDO|IMAGEN|TEXTO).*?\.\s*', '', texto, flags=re.IGNORECASE)
+        comillas = re.findall(r'[“"]([^”"]+)[”"]', texto)
+        if comillas: return " ".join(comillas)
+        return texto.strip()
+    
+    escenas = res.get("guion_cinematografico", {}).get("guion", [])
+    texto_voz = " ".join([limpiar_texto(e.get("texto", "")) for e in escenas if e.get("texto")])
+    res["texto_voz_largo"] = texto_voz
+
     out_json.write_text(json.dumps(res, indent=2, ensure_ascii=False))
     print(f"[fase2] ✅ Guardado en {out_json}")
     return res

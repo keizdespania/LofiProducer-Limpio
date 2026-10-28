@@ -157,38 +157,29 @@ ROLES = {
 }
 
 def pedir_a_especialista(rol, tarea, contexto=""):
+    import requests, pathlib
+
     rol = rol.lower()
     if rol not in ROLES:
-        return "ERROR: Rol no existe. Usa: " + ", ".join(ROLES.keys())
+        return "ERROR: Rol no existe."
 
-    key = ""
     env_path = pathlib.Path(__file__).resolve().parent.parent / ".env"
+    omni_key, groq_key = "", ""
     if env_path.exists():
         for line in env_path.read_text().splitlines():
-            if line.startswith("OMNIROUTE_API_KEY="):
-                key = line.split("=", 1)[1].strip().strip('"').strip("'")
-                break
+            if line.startswith("OMNIROUTE_API_KEY="): omni_key = line.split("=", 1)[1].strip().strip('"').strip("'")
+            if line.startswith("GROQ_API_KEY="): groq_key = line.split("=", 1)[1].strip().strip('"').strip("'")
 
     system = ROLES[rol].get("system", "")
     prompt = tarea if not contexto else "CONTEXTO:\n" + contexto + "\n\nTAREA:\n" + tarea
-    
-    # --- LA CADENA DE CEREBROS (De mejor a peor) ---
-    modelos = [
-        "ddgw/tinfoil/gpt-oss-120b",  # 1. El mejor redactor (110 palabras perfectas)
-        "ddgw/gpt-5.6-luna",          # 2. El más rápido y limpio (99 palabras)
-        "ddgw/gpt-5.4-mini",          # 3. Muy bueno, equilibrado
-        "ddgw/mistral-small-2603",    # 4. Creativo y técnico
-        "ddgw/tinfoil/gemma4-31b",    # 5. El poeta
-        "auto/best-reasoning",        # 6. OmniRoute (por si revive)
-        "auto/best-chat",             # 7. Último recurso
-    ]
-    
-    for modelo in modelos:
+
+    # 1. INTENTO CON GROQ DIRECTO (Prioridad Máxima por velocidad)
+    if groq_key:
         try:
             r = requests.post(
-                "http://localhost:20128/v1/chat/completions",
+                "https://api.groq.com/openai/v1/chat/completions",
                 json={
-                    "model": modelo,
+                    "model": "openai/gpt-oss-120b",
                     "messages": [
                         {"role": "system", "content": system},
                         {"role": "user", "content": prompt},
@@ -196,14 +187,40 @@ def pedir_a_especialista(rol, tarea, contexto=""):
                     "max_tokens": 8000,
                     "temperature": 0.7
                 },
-                headers={"Authorization": "Bearer " + key},
-                timeout=120,
+                headers={"Authorization": f"Bearer {groq_key}"},
+                timeout=60,
             )
             if r.status_code == 200:
-                if modelo != modelos[0]:
-                    print(f"  [fallback] ⚠️ Usado {modelo} para {rol}")
                 return r.json()["choices"][0]["message"]["content"]
-        except Exception as e:
-            pass # Si falla, salta al siguiente
+        except Exception:
+            pass
 
-    return "ERROR: Todos los modelos de la cadena fallaron."
+    # 2. INTENTO CON OMNIROUTE (Si Groq falla o no hay key)
+    if omni_key:
+        modelos = [
+            "ddgw/tinfoil/gpt-oss-120b",
+            "ddgw/gpt-5.6-luna",
+            "auto/best-reasoning"
+        ]
+        for modelo in modelos:
+            try:
+                r = requests.post(
+                    "http://localhost:20128/v1/chat/completions",
+                    json={
+                        "model": modelo,
+                        "messages": [
+                            {"role": "system", "content": system},
+                            {"role": "user", "content": prompt},
+                        ],
+                        "max_tokens": 8000,
+                        "temperature": 0.7
+                    },
+                    headers={"Authorization": f"Bearer {omni_key}"},
+                    timeout=60,
+                )
+                if r.status_code == 200:
+                    return r.json()["choices"][0]["message"]["content"]
+            except Exception:
+                pass
+
+    return "ERROR: Todos los modelos (Groq y OmniRoute) fallaron."
