@@ -40,13 +40,9 @@ def main():
         ("analista_fase1.py", None, 1200),
         ("sintetizador.py", None, 600),
         ("fase2_produccion.py", None, 1200),
-        ("preparar_assets.py", None, 600),
-        ("voz_edge.py", None, 600),
-        ("musica_youtube_cc.py", None, 600),
-        ("analizar_musica_cc.py", None, 300),
-        ("planificador_montaje.py", None, 300),
-        ("generar_blueprint.py", None, 300),
-        ("renderizador.py", None, 1200)
+        ("voz_edge.py", None, 1800),
+        ("director_arte.py", None, 1800),
+        ("renderizador.py", None, 3600),
     ]
     
     for script, args, t in pasos:
