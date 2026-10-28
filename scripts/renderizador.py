@@ -54,7 +54,7 @@ def renderizar(fecha):
     cmd.append(str(salida))
     
     print("[render] Renderizando vídeo largo (usando plan de montaje)...")
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=3600)
     if r.returncode == 0:
         print(f"[render] ✅ {salida.name}")
     else:
