@@ -529,3 +529,21 @@ Cada ejecución del pipeline genera:
 2. Implementar la subida automática a YouTube con `publish_at`.
 3. Configurar AdSense y Afiliados.
 4. Lanzar el primer pipeline internacional (lunes/jueves).
+
+
+## ⏳ TAREAS PENDIENTES (Actualizado: 2026-10-28)
+
+### 🚀 RENDERIZADO EN KAGGLE (Pendiente)
+**Objetivo**: Usar la GPU T4 de Kaggle para renderizar los vídeos de "Somos El Encuadre" en 2-3 minutos (vs 20-30 min en Termux).
+**Scripts ya creados**:
+- `scripts/kernel_render_encuadre.py`: El código que se sube a Kaggle (usa `h264_nvenc` para codificar en GPU).
+- `scripts/renderizar_en_kaggle.py`: El orquestador local (sube assets, lanza kernel, descarga vídeo).
+- `scripts/kaggle_bearer.py`: API de Kaggle (push_kernel, estado_kernel, output_kernel).
+
+**Cómo retomarlo**:
+1. Terminar el render actual en Termux para validar la calidad.
+2. Crear un Dataset de Kaggle con los assets (`kaggle datasets create -p output/kaggle_assets`).
+3. Ajustar el `KERNEL_SLUG` en `renderizar_en_kaggle.py` con el usuario real (ej. `keizproductions/render-encuadre`).
+4. Probar el flujo completo: subir assets → lanzar kernel → descargar vídeo.
+
+**Coste**: 0€. Kaggle es gratis y la GPU T4 es más que suficiente.
