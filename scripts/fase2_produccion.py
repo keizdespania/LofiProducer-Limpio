@@ -41,6 +41,11 @@ def producir_fase2(fecha=None):
     esqueleto = _parse_json_seguro(pedir_a_especialista("arquitecto_contenido", "Crea el esqueleto del artículo.", contexto=ctx[:3000]))
     articulo = pedir_a_especialista("redactor_blog", "Escribe el artículo HTML completo.", contexto=f"ESQUELETO:\n{json.dumps(esqueleto)}\n\nDOSSIER:\n{ctx[:3000]}")
     articulo = _limpiar_html(articulo)
+    print("[fase2] Verificando hechos del articulo...")
+    verif = _parse_json_seguro(pedir_a_especialista("verificador_factos", "Revisa este articulo", contexto=articulo[:4000]))
+    if verif.get("texto_corregido"):
+        articulo = verif["texto_corregido"]
+        print(f"   ✅ Articulo verificado. Alertas: {len(verif.get('alertas', []))}")
     res["articulo_html"] = articulo
     res["esqueleto"] = esqueleto
 

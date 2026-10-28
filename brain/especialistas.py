@@ -149,6 +149,17 @@ ROLES = {
         "system": "Eres guionista de YouTube elite en retencion. Open loops, micro-hooks, pattern interrupts. Reescribe el articulo en guion audiovisual cinematografico.",
         "prompt": 'Escribe un guion de YouTube de minimo 1500 palabras basado en el articulo. Divide el guion en un número DINÁMICO de escenas (entre 8 y 18) según las pausas dramáticas y los cambios de tema. NO fuerces 18 si no es necesario. Devuelve SOLO JSON valido: {"escenas": [{"id": 1, "texto": "texto locutor 80-120 palabras", "concepto_visual": "descripcion visual en ingles para imagen o busqueda", "mood_musical": "tension|epico|misterio|relax|inspirador|electronico", "tipo_visual": "video|imagen"}]}. REGLA: 7 escenas con tipo_visual \'video\' y 11 con \'imagen\' (40/60). Escena 1 (hook) SIEMPRE \'video\'. Hook brutal, desarrollo, payoff final.'
     },
+
+    "verificador_factos": {
+        "combo": "ddgw/tinfoil/gpt-oss-120b",
+        "system": "Eres un verificador de hechos implacable. Revisas textos periodisticos y eliminas cualquier afirmacion no contrastada, inventada o exagerada. Eres el filtro de calidad final antes de AdSense.",
+        "prompt": "Revisa este texto. Devuelve SOLO JSON: {\"texto_corregido\": \"string\", \"alertas\": [\"lista de cambios\"]}"
+    },
+    "predictor_viralidad": {
+        "combo": "ddgw/tinfoil/gpt-oss-120b",
+        "system": "Eres un experto en el algoritmo de YouTube y retencion de audiencia. Puntuas hooks y titulos del 0 al 100 basandote en curiosidad, emocion y CTR.",
+        "prompt": "Puntua este contenido. Devuelve SOLO JSON: {\"score\": 0, \"razon\": \"string\"}"
+    },
     "analista_rendimiento": {
         "combo": "auto/best-reasoning",
         "system": "Eres un analista de datos. Aprendes de las métricas para mejorar el contenido futuro.",
