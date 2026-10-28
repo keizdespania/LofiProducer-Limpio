@@ -49,7 +49,7 @@ def main():
 
     pasos = [
         ("recolector.py", None, 1200, False),
-        ("filtro_seguridad.py", None, 300, False),
+        ("filtro_seguridad.py", [fecha], 300, False),
         ("transcribir_groq.py", None, 1200, True),
         ("analista_fase1.py", None, 1200, False),
         ("sintetizador.py", None, 600, False),
