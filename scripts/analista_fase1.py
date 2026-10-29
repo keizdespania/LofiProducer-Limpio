@@ -40,10 +40,18 @@ def _sanitizar_top3(top3, titulares_disponibles):
         else:
             for k in sorted(top3.keys()):
                 v = top3[k]
-                items.append(v if isinstance(v, str) else str(v))
+                items.append(v if isinstance(v, str) else (v.get("titulo") if isinstance(v,dict) else str(v)))
     elif isinstance(top3, list):
         for it in top3:
             items.append(it.get("titulo") or it.get("title") or str(it))
+    # Rellenar hasta 3 con candidatos limpios si faltan
+    while len(items) < 3:
+        for cand in titulares_disponibles:
+            if cand and cand not in items and not _malo(cand):
+                items.append(cand); break
+        else:
+            items.append(f"Tema alternativo {len(items)+1}")
+        if len(items) >= 3: break
     subs = 0
     for i, t in enumerate(items):
         if _malo(t):
@@ -87,7 +95,7 @@ def analizar_fase1(fecha=None):
                 if isinstance(v, dict): ctx += f"- {v.get('titulo','')}\n"
 
     top3 = _parse_json_seguro(pedir_a_especialista(
-        "detective_tendencias_v2", "Detecta el Top 3 de noticias del día.", contexto=ctx[:4000]))
+        "detective_tendencias_v2", "Detecta el Top 3 de noticias del día.", contexto=ctx[:4000], proveedor="groq"))
     if not top3:
         print("[fase1] ⚠️ Detective falló. Reintento simplificado...", flush=True)
         top3 = _parse_json_seguro(pedir_a_especialista(
@@ -108,7 +116,9 @@ def analizar_fase1(fecha=None):
            + list((datos.get("tv") or {}).keys()) + list((datos.get("radio") or {}).keys())
     noticia = list(top3.values())[0] if isinstance(top3, dict) else "noticias del día"
 
-    for medio in medios:
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    total = len(medios)
+    def _procesar(medio):
         textos = []
         for sec in ("prensa", "agencias"):
             for n in (datos.get(sec) or {}).get(medio, []):
@@ -119,23 +129,37 @@ def analizar_fase1(fecha=None):
         for a in datos.get("audios", []):
             if a.get("medio") == medio and a.get("transcripcion"):
                 textos.append(a["transcripcion"][:2000])
-        if not textos: continue
-
+        if not textos: return medio, None
         ctx_medio = f"MEDIO: {medio}\nTITULARES:\n" + "\n".join(textos[:3])
-        print(f"  🔍 {medio}...", flush=True)
         r = pedir_a_especialista("forense_medios",
             f"Analiza el sesgo de {medio} sobre: {noticia}. Devuelve SOLO JSON con: nombre, titular_real, titular_traducido, imd_local, framing, palabra_cuchillo, tecnica_principal, omision.",
-            contexto=ctx_medio[:800])
+            contexto=ctx_medio[:800], proveedor="auto")
         an = _parse_json_seguro(r)
-        if not an: continue
-        r_emo = pedir_a_especialista("analista_emocional", f"Analiza las emociones de {medio}", contexto=ctx_medio[:2000])
+        if not an: return medio, None
+        import time as _t; _t.sleep(0.5)
+        r_emo = pedir_a_especialista("analista_emocional", f"Analiza las emociones de {medio}", contexto=ctx_medio[:2000], proveedor="omni")
         emo = _parse_json_seguro(r_emo)
         if emo: an["emociones"] = emo
-        r_ses = pedir_a_especialista("detector_sesgos_cognitivos", f"Detecta sesgos en {medio}", contexto=ctx_medio[:2000])
+        _t.sleep(0.5)
+        r_ses = pedir_a_especialista("detector_sesgos_cognitivos", f"Detecta sesgos en {medio}", contexto=ctx_medio[:2000], proveedor="omni")
         ses = _parse_json_seguro(r_ses)
         if ses: an["sesgos_cognitivos"] = ses
-        todos[medio] = [an]
-        time.sleep(1)
+        return medio, an
+    print(f"[fase1] Analizando {total} medios (5 en paralelo)...", flush=True)
+    completados = 0
+    with ThreadPoolExecutor(max_workers=5) as ex:
+        futs = {ex.submit(_procesar, m): m for m in medios}
+        for f in as_completed(futs):
+            completados += 1
+            try:
+                medio, an = f.result()
+                if an:
+                    todos[medio] = [an]
+                    print(f"  [{completados}/{total}] OK {medio} — framing: {str(an.get('framing',''))[:40]}", flush=True)
+                else:
+                    print(f"  [{completados}/{total}] -- {medio} (sin análisis)", flush=True)
+            except Exception as e:
+                print(f"  [{completados}/{total}] X error: {e}", flush=True)
 
     # 3. Guardar
     res = {"fecha": fecha, "top3": top3, "analisis": todos, "recoleccion": datos}

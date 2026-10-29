@@ -231,7 +231,7 @@ ROLES = {
 
 }
 
-def pedir_a_especialista(rol, tarea, contexto=""):
+def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
     import requests, pathlib
 
     rol = rol.lower()
@@ -248,8 +248,11 @@ def pedir_a_especialista(rol, tarea, contexto=""):
     system = ROLES[rol].get("system", "") + "\n\nREGLA ABSOLUTA: responde SIEMPRE en castellano de España. NUNCA en inglés. Aunque el contexto esté en inglés, tu output es 100% en castellano."
     prompt = tarea if not contexto else "CONTEXTO:\n" + contexto + "\n\nTAREA:\n" + tarea
 
-    # 1. INTENTO CON GROQ DIRECTO (Prioridad Máxima por velocidad)
-    if groq_key:
+    # 1. INTENTO CON GROQ (solo si proveedor != "omni")
+    if groq_key and proveedor != "omni":
+      import time as _time
+      _max_int = 4 if proveedor == "groq" else 1
+      for _intento in range(_max_int):
         try:
             r = requests.post(
                 "https://api.groq.com/openai/v1/chat/completions",
@@ -272,16 +275,19 @@ def pedir_a_especialista(rol, tarea, contexto=""):
             )
             if r.status_code == 200:
                 return r.json()["choices"][0]["message"]["content"]
-        except Exception:
-            pass
+            if r.status_code == 429:
+                _espera = 2 ** _intento
+                print(f"[groq] 429 rate limit, espero {_espera}s...", flush=True)
+                _time.sleep(_espera)
+                continue
+            break
+        except Exception as e:
+            print(f"[groq] excepcion: {e}", flush=True)
+            _time.sleep(1)
 
-    # 2. INTENTO CON OMNIROUTE (Si Groq falla o no hay key)
-    if omni_key:
-        modelos = [
-            "ddgw/tinfoil/gpt-oss-120b",
-            "ddgw/gpt-5.6-luna",
-            "auto/best-reasoning"
-        ]
+    # 2. INTENTO CON OMNIROUTE (si proveedor != "groq")
+    if omni_key and proveedor != "groq":
+        modelos = ["ddgw/tinfoil/gpt-oss-120b","auto/best-reasoning"] if proveedor == "auto" else ["ddgw/tinfoil/gpt-oss-120b","auto/best-reasoning","auto/best-fast"]
         for modelo in modelos:
             try:
                 r = requests.post(
