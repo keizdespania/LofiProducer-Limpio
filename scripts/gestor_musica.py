@@ -40,12 +40,12 @@ def _elegir_rotando(tracks, rot):
 def _descargar_cc_para_mood(mood):
     """Busca y descarga YouTube CC para un mood."""
     QUERY_MAP = {
-        "relax": "lofi chill instrumental track",
-        "tension": "dark ambient tension cinematic",
-        "epico": "epic cinematic instrumental",
-        "inspirador": "inspiring uplifting instrumental",
-        "misterio": "mystery dark ambient track",
-        "electronico": "electronic ambient background track",
+        "relax": "lofi hip hop mix 1 hour",
+        "tension": "dark ambient mix 1 hour",
+        "epico": "epic cinematic mix 1 hour",
+        "inspirador": "inspiring instrumental mix 1 hour",
+        "misterio": "mystery ambient mix 1 hour",
+        "electronico": "electronic ambient mix 1 hour",
     }
     q = QUERY_MAP.get(mood, f"{mood} instrumental track")
     try:
@@ -122,6 +122,30 @@ def obtener_musica(mood="relax", duracion_objetivo=600):
         return fb
 
     raise RuntimeError(f"Sin música disponible para mood={mood}")
+
+
+def asegurar_duracion(track_path, duracion_objetivo, salida):
+    """Si track_path < duracion_objetivo, lo concatena consigo mismo hasta cubrir."""
+    import math, subprocess
+    dur_real = float(subprocess.run(
+        ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+         "-of", "default=noprint_wrappers=1:nokey=1", str(track_path)],
+        capture_output=True, text=True).stdout.strip() or "0")
+    if dur_real >= duracion_objetivo:
+        return track_path
+    veces = math.ceil(duracion_objetivo / dur_real) + 1
+    print(f"  Concatenando {veces}x {track_path.name} ({dur_real:.0f}s)", flush=True)
+    lista = salida.parent / ("concat_" + track_path.stem + ".txt")
+    with open(lista, "w") as f:
+        for _ in range(veces):
+            f.write(f"file '{track_path}'
+")
+    subprocess.run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
+        "-f", "concat", "-safe", "0", "-i", str(lista),
+        "-c:a", "aac", "-b:a", "192k", str(salida)],
+        capture_output=True, check=True)
+    lista.unlink(missing_ok=True)
+    return salida
 
 
 def atribuciones_dia(fecha=None):
