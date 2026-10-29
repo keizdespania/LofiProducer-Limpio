@@ -3,6 +3,18 @@ import json, pathlib, urllib.request, urllib.parse, sys, time, os, mimetypes
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TOKEN = ROOT / "data/youtube_token.json"
 
+
+def _atribuciones_para(fecha):
+    """Lee atribuciones del día y devuelve bloque de texto para la descripción."""
+    import json as _j, pathlib as _p
+    f = _p.Path(__file__).resolve().parent.parent / "output" / "encuadre" / ("atribuciones_" + fecha + ".json")
+    if not f.exists(): return ""
+    try:
+        atrs = _j.loads(f.read_text())
+        if not atrs: return ""
+        return "\n\n--- Música ---\n" + "\n".join(atrs)
+    except: return ""
+
 def _refresh(tok, token_path):
     data = urllib.parse.urlencode({
         "client_id": tok["client_id"], "client_secret": tok["client_secret"],
