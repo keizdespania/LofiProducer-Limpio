@@ -27,7 +27,9 @@ def _parse_json_seguro(texto):
 
 def analizar_fase1(fecha=None):
     fecha = fecha or datetime.date.today().isoformat()
-    recolector_json = OUT / f"recoleccion_{fecha}.json"
+    limpia = OUT / f"recoleccion_{fecha}_limpia.json"
+    recolector_json = limpia if limpia.exists() else (OUT / f"recoleccion_{fecha}.json")
+    print(f"[fase1] leyendo {recolector_json.name}", flush=True)
     if not recolector_json.exists():
         print(f"[fase1] No existe {recolector_json}")
         return None

@@ -12,8 +12,8 @@ PAT = {
 CTX = [r"\ban[aá]lisis\b",r"\bcobertura\s+medi[aá]tica",r"\btratamiento\s+medi[aá]tico",r"\bframing\b",r"\bsesgo\w*",r"\bmanipulaci[oó]n\w*",r"\bencuadre\b",r"\bc[oó]mo\s+los\s+medios",r"\bc[oó]mo\s+se\s+cubre"]
 def _m(t,ps): return [p for p in ps if re.search(p,t,re.I)]
 def _evaluar(it):
-    ti=(it.get("titulo") or it.get("title") or "").lower()
-    de=(it.get("descripcion") or it.get("summary") or it.get("texto") or "").lower()
+    ti=(it.get("titulo") or it.get("titular") or it.get("title") or "").lower()
+    de=(it.get("descripcion") or it.get("resumen") or it.get("summary") or it.get("texto") or "").lower()
     cu=(it.get("contenido") or it.get("body") or "").lower()
     fu=f"{ti} {de} {cu}"
     cr,mo,se=_m(fu,PAT["critica"]),_m(fu,PAT["moderada"]),_m(fu,PAT["sensac"])
@@ -28,6 +28,27 @@ def _evaluar(it):
     if bat and (mo or se) and not ctx: return {"segura":False,"sev":"media","razon":"baja+refuerzo","m":bat+mo+se,"ctx":False}
     if se and not ctx: return {"segura":False,"sev":"media","razon":"sensac","m":se,"ctx":False}
     return {"segura":True,"sev":"ok","razon":"ok","m":(cr+mo+se+ba)[:5],"ctx":ctx,"advertencia":bool(cr+mo+se+ba)}
+
+def _flatten(recol):
+    if isinstance(recol, list): return recol
+    items = []
+    for sec in ("prensa","agencias"):
+        for med, lst in (recol.get(sec) or {}).items():
+            if not isinstance(lst, list): continue
+            for n in lst:
+                if isinstance(n, dict):
+                    n = dict(n); n["_medio"]=med; n["_seccion"]=sec
+                    items.append(n)
+    return items
+
+def _refold(recol, seguros):
+    out = dict(recol); out["prensa"]={}; out["agencias"]={}
+    for it in seguros:
+        sec=it.get("_seccion","prensa"); med=it.get("_medio","unknown")
+        clean={k:v for k,v in it.items() if not k.startswith("_")}
+        out[sec].setdefault(med,[]).append(clean)
+    return out
+
 def _cargar(f):
     p=OUT/f"recoleccion_{f}.json"
     if p.exists(): return p,json.loads(p.read_text())
@@ -35,19 +56,29 @@ def _cargar(f):
     raise FileNotFoundError(f"sin recoleccion {f}")
 def filtrar(f,dry=False,verb=False):
     p,d=_cargar(f)
-    items=d if isinstance(d,list) else (d.get("noticias") or d.get("items") or d.get("articulos") or [])
-    if not items: print("WARN sin noticias"); return
-    ok=[];ko=[]
+    items=_flatten(d)
+    if not items:
+        print(f"WARN sin noticias en {p.name}"); return
+    ok,ko=[],[]
     for it in items:
         r=_evaluar(it); it["_filtro"]=r
         (ok if r["segura"] else ko).append(it)
     print(f"OK {p.name}: {len(items)} -> keep {len(ok)} drop {len(ko)}")
     if verb:
-        for it in ko: print(f"  X [{it['_filtro']['sev']}] {(it.get('titulo') or '?')[:70]}")
+        for it in ko:
+            ttl=(it.get("titulo") or it.get("title") or "?")[:75]
+            print(f"  X [{it['_filtro']['sev']}] {ttl} -> {it['_filtro']['razon']}")
     st=dict(Counter(it["_filtro"]["sev"] for it in ko))
     if st: print(f"  sev: {st}")
     if not dry:
-        o=OUT/f"filtrado_{f}.json"; o.write_text(json.dumps({"seguras":ok,"descartadas":ko,"stats":st},ensure_ascii=False,indent=2)); print(f"  saved {o}")
+        limpia=_refold(d, ok)
+        (OUT/f"recoleccion_{f}_limpia.json").write_text(json.dumps(limpia,ensure_ascii=False,indent=2))
+        audit={"seguras":[{k:v for k,v in it.items() if not k.startswith("_")} for it in ok],
+               "descartadas":[{k:v for k,v in it.items() if not k.startswith("_")} for it in ko],
+               "stats":st}
+        (OUT/f"filtrado_{f}.json").write_text(json.dumps(audit,ensure_ascii=False,indent=2))
+        print(f"  saved _limpia + filtrado")
+
 def _test():
     cs=[({"titulo":"La muerte de la democracia"},True),({"titulo":"Muere un hombre en accidente"},False),({"titulo":"Análisis: cómo los medios cubren el tiroteo","descripcion":"framing"},True),({"titulo":"Tiroteo en escuela"},False),({"titulo":"Guerra de aranceles EEUU China"},True),({"titulo":"Masacre en Gaza","descripcion":"conflicto"},False),({"titulo":"Impactante vídeo"},False),({"titulo":"IA transforma economía"},True),({"titulo":"Suicidio adolescente"},False),({"titulo":"Análisis del sesgo cobertura suicidio","descripcion":"framing"},True),({"titulo":"Guerrero de la libertad","descripcion":"política"},True)]
     ok=0
