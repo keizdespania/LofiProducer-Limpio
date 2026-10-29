@@ -9,7 +9,7 @@ MEDIA = ROOT / "web" / "media" / "imagenes"
 MUSICA = ROOT / "output" / "musica_temp"
 KERNEL_SLUG = "keizproductions/render-encuadre"
 DS_OWNER = "keizproductions"
-DS_SLUG = "encuadre-20261029_0604"  # ajustar si cuenta 2
+DS_SLUG = "encuadre-20261029_0611"  # ajustar si cuenta 2
 
 
 def _preparar_assets(fecha, dest):
@@ -61,12 +61,14 @@ def _subir_dataset(assets_dir, dataset_slug):
         "licenses": [{"name": "CC0-1.0"}],
     }
     (assets_dir / "dataset-metadata.json").write_text(json.dumps(meta, indent=2))
+    # 1. Create (solo crea metadata, no sube contenido real con CLI 2.2.4)
     r = subprocess.run(["kaggle", "datasets", "create", "-p", str(assets_dir), "--dir-mode", "zip"],
-                       capture_output=True, text=True, timeout=900, env=_env_kaggle())
-    if "already exists" in (r.stdout + r.stderr).lower() or r.returncode != 0:
-        print("[orq] Existe, subiendo nueva versión...")
-        r = subprocess.run(["kaggle", "datasets", "version", "-p", str(assets_dir), "-m", "update", "--dir-mode", "zip"],
-                           capture_output=True, text=True, timeout=900, env=_env_kaggle())
+                       capture_output=True, text=True, timeout=300, env=_env_kaggle())
+    print(f"[orq] create exit={r.returncode}")
+    # 2. Version SIEMPRE (esto es lo que sube el zip real)
+    print("[orq] subiendo version real (zip)...")
+    r = subprocess.run(["kaggle", "datasets", "version", "-p", str(assets_dir), "-m", "upload", "--dir-mode", "zip"],
+                       capture_output=True, text=True, timeout=1800, env=_env_kaggle())
     out = (r.stdout or "") + (r.stderr or "")
     print(f"[orq] kaggle exit={r.returncode}")
     print(f"[orq] ultimas lineas: {out.strip().splitlines()[-3:] if out.strip() else 'vacio'}")
