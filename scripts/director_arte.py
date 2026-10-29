@@ -1,4 +1,5 @@
 """director_arte.py - Prepara assets visuales (40% video / 60% imagen) y musica por escena."""
+import subprocess
 import sys, json, pathlib, shutil, time
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
