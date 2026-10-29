@@ -1,40 +1,152 @@
 {
   "nombre": "Somos El Encuadre - Pipeline Top 1 Mundial",
-  "version": "4.0",
-  "fecha_actualizacion": "2026-10-28",
-  "descripcion": "Pipeline cinematográfico de 18 escenas con mezcla 40/60 de video e imagen, música independiente por escena, y voz de Álvaro con pausas de intriga.",
+  "version": "5.0",
+  "fecha_actualizacion": "2026-10-29",
+  "descripcion": "Pipeline cinematográfico multi-formato con guion top-1 (cita medios reales + ironía + autoridad), voz humanizada Álvaro (3 capas), música YouTube CC con atribución, render robusto 4 pasadas con auto-recovery, distribución multi-canal y limpieza post-render.",
   "arquitectura": {
     "fase_1_inteligencia": {
       "script_orquestador": "pipeline_encuadre.py",
-      "pasos": ["recolector.py", "transcribir_groq.py", "analista_fase1.py", "sintetizador.py"],
-      "salida": "dossier_{fecha}.json"
+      "pasos": [
+        "recolector.py",
+        "filtro_seguridad.py",
+        "transcribir_groq.py",
+        "analista_fase1.py",
+        "sintetizador.py"
+      ],
+      "salida": "dossier_{fecha}.json",
+      "filtro_critico": "filtro_seguridad.py caza tragedias por 60+ patrones (muert/asesin/morgue/llanto/funeral/duelo/Adif/Renfe/AVE/maquinista/señalización). Umbral: media + critica.",
+      "sanitizador": "analista_fase1._sanitizar_top3() con dedupe Jaccard (>0.5 similitud) + relleno único. SIEMPRE 3 items únicos, sin tragedias.",
+      "analisis": "36 medios × 5 workers en paralelo. Forense (Groq→Omni auto) + emocional (Omni) + sesgos (Omni)."
     },
     "fase_2_produccion": {
       "script": "fase2_produccion.py",
-      "logica": "Genera artículo, 18 escenas (con LLM o fallback), shorts, SEO, y assets iniciales.",
-      "salida": "produccion_{fecha}.json"
+      "logica": "Genera artículo, 18 escenas con guion top-1, shorts, SEO, viralidad.",
+      "salida": "produccion_{fecha}.json",
+      "prompt_guionista": "Híbrido profesor + periodista + columnista irónico. Cada escena: cita titular real + descompone técnica + contraste + cierre irónico. Tono Iñaki Gabilondo con mala leche.",
+      "escena_1_intro": "Saludo único y creativo (nunca repite) + 'Somos El Encuadre y hoy, [DIA] de [MES] de [AÑO], os traemos el nuevo análisis definitivo de medios de comunicación masiva del día de hoy' + análisis.",
+      "fecha_publicacion": "Dinámica: si ejecuta antes 18h → hoy; si después → mañana. Formato castellano (29 de octubre de 2026).",
+      "contexto_medios": "El guionista recibe _analisis_medios_para_guionista() con 35 medios reales (framing + técnica + titular).",
+      "validacion": "Si LLM <1300 palabras → reintento automático. Si devuelve <12 escenas → fallback adaptativo (chunk 40-70 palabras).",
+      "sanitizer_post_parse": "Elimina frases de montaje ('El video abre', 'Vemos', 'Corte a', 'Voz en off dice', '[acotaciones]')."
     },
     "fase_3_assets": {
       "script": "director_arte.py",
-      "logica": "Genera 40% videos (Coverr) y 60% imagenes (SDXL), y 18 pistas musicales (Tunetank/YouTube CC). Guarda copias en merch/.",
-      "salida": "web/media/imagenes/escena_XX.png|mp4 y musica_temp/escena_XX.mp3"
+      "logica": "Genera imágenes SDXL con concepto_visual EN INGLÉS (nunca castellano). Música vía gestor_musica.",
+      "salida": "web/media/imagenes/escena_XX.png y musica_temp/",
+      "traduccion": "_asegurar_ingles() detecta castellano residual y traduce con OmniRoute.",
+      "imagenes_por_escena": "SDXL-only (Coverr descartado). concepto_visual 8-15 palabras: Subject + Action + Environment + Lighting + Style.",
+      "short_bg": "short_bg_01.png 9:16 SIEMPRE generada (SDXL + fallback FFmpeg color 0x0a0a0f si falla)."
     },
     "fase_4_voz": {
       "script": "voz_edge.py",
-      "logica": "Genera un MP3 por escena con Edge-TTS (voz Álvaro), los une con 2s de silencio, y guarda timeline_{fecha}.json con tiempos exactos.",
-      "salida": "voz_largo_{fecha}.mp3 y timeline_{fecha}.json"
+      "logica": "Voz Álvaro humanizada en 3 capas. 18 MP3 individuales + concat con 2s silencio + ASS.",
+      "salida": "voz_largo_{fecha}.mp3 + voz_largo_{fecha}.ass + timeline_{fecha}.json",
+      "voz": "es-ES-AlvaroNeural",
+      "capa_1_prosodia": "_humanizar_texto(): \\n entre frases, '...' antes de 'tituló/dijo/afirmó', '—' antes de 'pero/sin embargo/en cambio'.",
+      "capa_2_rate_dinamico": "RATE_MAP: tension -8%, misterio -8%, epico -5%, inspirador -5%, electronico -5%, relax -3%.",
+      "capa_3_postfx": "FFmpeg: highpass=80 + eq=180Hz+2dB (calidez) + eq=3000Hz-1.5dB (quitar aspereza) + deesser + acompressor + loudnorm=-16 LUFS.",
+      "ass_karaoke": "Generación por palabra con timing matemático (duración / num_palabras)."
     },
     "fase_5_render": {
-      "script": "renderizador.py",
-      "logica": "Renderiza cada escena (video o imagen) con su voz y su música, aplica fades, y concatena todo.",
-      "salida": "video_largo_{fecha}.mp4"
+      "script": "renderizador_local.py",
+      "robusto": "render_robusto.py con auto-recovery (3 retries + 3 estrategias audio).",
+      "pasadas": {
+        "A": "clips por escena (scale=1920x1080, crop, fps=25, libx264 ultrafast crf 25, stillimage)",
+        "B": "concat demuxer (copy, 0 re-encode) + intro/outro 3s",
+        "C": "audio: lofi_largo concatenado N veces + amix (itsoffset 2, duration=first)",
+        "D": "mux video_base + audio.m4a con -c copy"
+      },
+      "salida": "video_largo_{fecha}.mp4 (h264 1920x1080 + aac 192k)",
+      "warnings_suprimidos": "-fflags +genpts + -avoid_negative_ts make_zero",
+      "duracion_objetivo": "≥10 min (rango típico 12 min tras humanización)"
+    },
+    "fase_6_shorts": {
+      "script": "render_shorts_batch.py",
+      "logica": "4 shorts 9:16 con rot + short_bg_01.png + música CC única por short.",
+      "musica": "gestor_musica.obtener_musica(mood, contexto=short_N) → YouTube CC prioritario, Tunetank fallback.",
+      "salida": "short_{1-4}_{fecha}.mp4"
+    },
+    "fase_7_distribucion": {
+      "scripts": [
+        "generar_web_masiva.py",
+        "generar_blogs_blogger.py",
+        "generar_redes.py",
+        "cola_publicacion.py"
+      ],
+      "salida_web": "12 posts .md en output/cola_web/",
+      "salida_blogger": "5 posts .json en output/cola_blogger/",
+      "salida_redes": "X, TikTok, Instagram, LinkedIn, Threads, Telegram",
+      "youtube": "Video largo 18:00 + 2 shorts mismo día + 2 shorts día siguiente con publish_at"
+    },
+    "fase_8_limpieza": {
+      "script": "limpiar_musica_render.py",
+      "logica": "Post-render: borra yt_cc_*.mp3 + Tunetank (de paso). Archiva ACE-Step a output/musica_propia/ace_step/ para álbumes Spotify.",
+      "conserva": "Solo música propia ACE-Step (para futuros álbumes)"
     }
   },
-  "reglas_de_oro": [
-    "Usar Groq directo (openai/gpt-oss-120b) como motor principal. Es inmune a caídas de OmniRoute.",
-    "La voz de Álvaro debe dividirse en escenas independientes para generar las pausas de intriga.",
-    "El Renderizador debe hacer slideshow dinámico y mezclar música por bloques con fade in/out.",
-    "Los shorts se generan con fallback si el LLM falla.",
-    "Todo se sube a GitHub automáticamente para que Cloudflare compile."
+  "musica": {
+    "fuente_primaria": "YouTube CC (yt-dlp con verificación de licencia en campo 'license' + descripción)",
+    "fuente_secundaria": "Tunetank MCP (mood/calm/inspiring/etc, no solo mood → variedad)",
+    "fuente_propia": "ACE-Step (archivar, futuros álbumes Spotify)",
+    "rotacion": "rotacion_musica.json + historial_yt_cc.json",
+    "atribucion": "atribuciones_{fecha}.json → inyectada en descripción YouTube por subir_youtube.py",
+    "queries_instrumentales": "Todas las queries llevan 'instrumental' para evitar voces en inglés de fondo"
+  },
+  "proveedores_llm": {
+    "groq": {
+      "modelo": "openai/gpt-oss-120b",
+      "uso": "detective + forense + guionista + SEO",
+      "rpm": 30,
+      "rpd": 14400
+    },
+    "omniroute": {
+      "modelos": [
+        "ddgw/tinfoil/gpt-oss-120b",
+        "auto/best-reasoning"
+      ],
+      "uso": "emocional + sesgos + fallback",
+      "rpm": "amplio"
+    },
+    "reparto": "Groq para tareas críticas (detective, guionista), Omni para paralelizables (emocional, sesgos)"
+  },
+  "top3_garantias": {
+    "sin_tragedias": "Filtro seguridad + _sanitizar_top3 con 60+ patrones",
+    "sin_duplicados": "Jaccard >0.5 → dedupe semántico",
+    "siempre_3": "Relleno con genéricos únicos (Actualidad/Política/Economía/Sociedad/Internacional)",
+    "testeado": "4 casos (2 trágicos, duplicado BCE, todo trágico, normal) → 4/4 pass"
+  },
+  "hoja_ruta_2026_2027": {
+    "fase_1_distribuidor": "15 canales automáticos (Web, Blogger, Telegram, X, LinkedIn, Threads, Bluesky, Mastodon, Medium, Substack, IG, TikTok, YT Shorts, FB, RSS). Coste 0€.",
+    "fase_2_imd_publico": "Índice Manipulación Diario (0-100) auditable. Fórmula: 0.30×imd_LLM + 0.25×emocion + 0.25×sesgos×15 + 0.20×palabra_cuchillo. 12k páginas SEO/año.",
+    "fase_3_pool_providers": "Cerebras (1M tok/día) + Mistral (60 RPM) + GitHub Models (150 RPD) + Cloudflare (10k neuronas) + OpenRouter + SambaNova. Total ~2-3M tok/día gratis.",
+    "fase_4_auditoria_exhaustiva": "3→10→5000 artículos/día. Productos: IMD por sección, por autor, alertas personalizadas (49-199€/mes).",
+    "fase_5_modelo_negocio": "Newsletter El Pulso 5€/mes + API PulsoScore 99€/mes + PDF 9€ + White-label 999€/mes → ~3500€/mes 6 meses.",
+    "fase_6_escalado": "100 canales, multi-idioma (EN/PT/FR/DE), doblaje XTTS v2 Kaggle."
+  },
+  "decisiones_desestimadas": {
+    "antigravity": "Descartado como provider (no es API, Claude/GPT-OSS gratis desaparecen 2-nov-2026).",
+    "gemini": "Descartado (recorte free tier oct-2026, Flash solo Flash-Lite 3.5).",
+    "kokoro_python314": "Descartado (spacy/blis no compilan en Termux Python 3.14).",
+    "coverr": "Descartado (traducción ES→EN + relevancia mala). SDXL-only.",
+    "piper_deb": "Descartado (URL 404, paquete roto)."
+  },
+  "comandos_clave": {
+    "pipeline_completo": "python3 scripts/pipeline_encuadre.py",
+    "render_robusto": "python3 scripts/render_robusto.py 2026-10-29",
+    "test_voz_raw_vs_humana": "python3 -c \"import sys; sys.path.insert(0,'scripts'); from voz_edge import _humanizar_texto; print(_humanizar_texto('OkDiario tituló fraude masivo. Usa anclaje.'))\"",
+    "preview_fase2": "python3 scripts/fase2_produccion.py 2026-10-29 && python3 -c \"import json; d=json.load(open('output/encuadre/produccion_2026-10-29.json')); [print(f'[{e[\\\"id\\\"]}] {e[\\\"texto\\\"][:200]}') for e in d['escenas']]\"",
+    "test_sanitizador": "python3 -c \"import sys; sys.path.insert(0,'scripts'); from analista_fase1 import _sanitizar_top3; print(_sanitizar_top3({'noticia_1':'vida y llanto morgue','noticia_2':'BCE tipos','noticia_3':'morgue'}, ['BCE tipos','Macron calma','Sánchez medidas']))\""
+  },
+  "bugs_resueltos_2026_10_29": [
+    "Filtro Urda: morgue/llanto/funeral/duelo/via dolorosa",
+    "Sanitizador top3 duplicados: Jaccard dedupe",
+    "Helper _analisis_medios_para_guionista reescrito sin escapes rotos",
+    "voz_edge f-string concat roto: reescrita asegurar_duracion",
+    "Render colgado amix 19 inputs: 4 pasadas A/B/C/D + auto-recovery",
+    "Video mudo sin música: lofi_largo concat + amix itsoffset",
+    "Coverr irrelevante: SDXL-only con concepto EN",
+    "Música repetida: rotación + queries instrumentales",
+    "Voz atropellada: 3 capas humanización",
+    "Guion genérico: prompt top-1 cita medios + saludo variable + fecha"
   ]
 }
