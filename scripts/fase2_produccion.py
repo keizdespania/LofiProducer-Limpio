@@ -55,19 +55,27 @@ def producir_fase2(fecha=None):
     
     # Intentar con el LLM
     _PROMPT_GUION = (
-        'Devuelve EXCLUSIVAMENTE un JSON: {"escenas":[{"id":1,"texto":"NARRACION","concepto_visual":"VISUAL DESC IN ENGLISH","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"imagen"}]}. '
-        'ERES UN PROFESOR DE COMUNICACION. Enseñas como los medios usan tecnicas de framing, sesgos y encuadres. '
-        'NO acusas, NO haces politica, NO criticas gobiernos. EDUCAS con ejemplos concretos. '
-        'ESTRUCTURA por escena: dato/ejemplo -> tecnica usada -> "esto es lo que deberias observar". '
-        'TONO: analitico, calmado, profesor universitario. Sin alarmismo. Sin "intriga". Sin "manipulacion" como insulto. '
-        'REGLAS: (1) 18 escenas exactas. (2) "texto" = 80-100 palabras de NARRACION PURA (primera persona o impersonal). '
-        'PROHIBIDO: "El video abre", "Vemos", "Corte a", "Voz en off dice", descripciones visuales, acotaciones. '
-        '(3) "concepto_visual" = ENGLISH ONLY. Descripcion visual LITERAL para SDXL, 8-15 palabras. Estructura: Subject + Action + Environment + Lighting + Style. Ejemplo: "French newspapers stacked on table, close-up, dramatic side light, cinematic, moody" NUNCA en castellano. '
-        '(4) Total minimo 1450 palabras. (5) SOLO JSON.'
+        'Eres un hibrido entre profesor de comunicacion, periodista de investigacion y columnista ironico. '
+        'OBJETIVO: DEMOSTRAR con datos concretos que los medios usan tecnicas de framing. NO opinas: citas y desmontas. '
+        'ESTRUCTURA de cada escena (18 escenas): '
+        '(1) CITAS un titular real de un medio del contexto (ej: OkDiario titulo: fraude masivo). '
+        '(2) DESCOMPONES la tecnica (ej: usa anclaje y culpabilizacion, el lector asume fraude sin pruebas). '
+        '(3) CONTRASTAS con otro medio (ej: El Pais titulo: Sanchez anuncia medidas). '
+        '(4) CIERRAS con pregunta o ironia fina. '
+        'Devuelve EXCLUSIVAMENTE JSON: {"escenas":[{"id":1,"texto":"NARRACION","concepto_visual":"VISUAL DESC EN INGLES","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"imagen"}]}. '
+        'REGLAS CRITICAS: '
+        '(1) 18 escenas exactas. '
+        '(2) texto = SOLO narracion en primera persona o impersonal, como monologo periodistico. PROHIBIDO: El video abre, Vemos, Corte a, Voz en off dice, descripciones visuales. '
+        '(3) Cada texto 80-100 palabras. '
+        '(4) Cada escena cita MINIMO 1 medio real del contexto + 1 tecnica + 1 contraste. '
+        '(5) concepto_visual EN INGLES, 8-15 palabras, estructura Subject + Action + Environment + Lighting + Style. Ejemplo: Newspaper front page with FRAUD headline, dramatic side light, cinematic moody. '
+        '(6) Total minimo 1450 palabras. SOLO JSON. '
+        'TONO: educado, ironico, autoridad periodistica. Como Inaki Gabilondo con mala leche. '
+        'NO acusar de delito. Solo describir tecnicas: usa, emplea, recurre a, presenta como.'
     )
     try:
         resp = pedir_a_especialista("guionista_youtube_experto", _PROMPT_GUION,
-            contexto="ARTICULO:\n" + articulo[:6000])
+            contexto=("ARTICULO:\n" + articulo[:4000] + "\n\nANALISIS POR MEDIO:\n" + _analisis_medios_para_guionista()[:4000]))
         d = _parse_json_seguro(resp)
         if isinstance(d, dict) and "escenas" in d:
             escenas = d["escenas"]
