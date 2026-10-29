@@ -58,13 +58,33 @@ def producir_fase2(fecha=None):
     # 1. ESQUELETO Y ARTÍCULO
     print("[fase2] 1/5 Arquitecto + Redactor...", flush=True)
     esqueleto = _parse_json_seguro(pedir_a_especialista("arquitecto_contenido", "Crea el esqueleto del artículo.", contexto=ctx[:3000]))
-    articulo = pedir_a_especialista("redactor_blog", "Escribe el artículo HTML completo.", contexto=f"ESQUELETO:\n{json.dumps(esqueleto)}\n\nDOSSIER:\n{ctx[:3000]}")
+    _PROMPT_REDACTOR = (
+        'Escribe un artículo periodístico de 1200-1500 palabras en MARKDOWN PLANO. '
+        'PROHIBIDO: HTML, CSS, DOCTYPE, <head>, <style>, <body>, <div>, <p>, <h1>. '
+        'Usa SOLO: # para títulos, ## para subtítulos, **negrita**, *cursiva*, > para citas, y párrafos separados por líneas en blanco. '
+        'Cita medios reales del dossier. Tono: profesor + periodista irónico. '
+        'Devuelve SOLO el texto del artículo, sin explicaciones, sin envolver en bloques de código.'
+    )
+    articulo = pedir_a_especialista("redactor_blog", _PROMPT_REDACTOR,
+        contexto=f"ESQUELETO:\n{json.dumps(esqueleto)}\n\nDOSSIER:\n{ctx[:3000]}")
     articulo = _limpiar_html(articulo)
+    # VALIDAR: si tras limpiar hay <500 chars, abortar
+    if len(articulo.strip()) < 500:
+        print(f"   ⚠️ Articulo demasiado corto tras limpiar ({len(articulo)} chars). Reintentando con prompt simplificado...", flush=True)
+        articulo = pedir_a_especialista("redactor_blog",
+            "Escribe un artículo periodístico de 1200 palabras. SOLO TEXTO PLANO, sin HTML. Empieza directamente con el título.",
+            contexto=f"TEMAS: {list(top3.values())[:3]}")
+        articulo = _limpiar_html(articulo)
     print("[fase2] Verificando hechos del articulo...")
     verif = _parse_json_seguro(pedir_a_especialista("verificador_factos", "Revisa este articulo", contexto=articulo[:4000]))
     if verif.get("texto_corregido"):
-        articulo = verif["texto_corregido"]
-        print(f"   ✅ Articulo verificado. Alertas: {len(verif.get('alertas', []))}")
+        _vc = verif["texto_corregido"]
+        # Rechazar si el verificador devuelve HTML
+        if any(m in _vc.lower() for m in ['<!doctype', '<html', '<style', 'font-family']):
+            print(f"   ⚠️ Verificador devolvió HTML, se ignora", flush=True)
+        else:
+            articulo = _vc
+            print(f"   ✅ Articulo verificado. Alertas: {len(verif.get('alertas', []))}")
     res["articulo_html"] = articulo
     res["esqueleto"] = esqueleto
 
@@ -74,7 +94,7 @@ def producir_fase2(fecha=None):
     
     # Intentar con el LLM
     _PROMPT_GUION = (
-        'Eres un hibrido entre profesor de comunicacion, periodista de investigacion y columnista ironico. '
+        'Eres un hibrido entre profesor de comunicacion, periodista de investigacion y columnista ironico. PROHIBIDO responder con HTML, CSS o articulos. Solo JSON con narracion locutada. '
         'OBJETIVO: DEMOSTRAR con datos concretos que los medios usan tecnicas de framing. NO opinas: citas y desmontas. '
         'FORMATO: 18 escenas. '
         'ESCENA 1 (INTRO OBLIGATORIA): '
@@ -108,11 +128,32 @@ def producir_fase2(fecha=None):
     _prompt_con_fecha = _PROMPT_GUION.replace("__FECHA_PUB__", _fecha_str)
     print(f"   Fecha publicacion: {_fecha_str}", flush=True)
     try:
+        # LIMPIAR HTML del artículo (evita que LLM copie CSS)
+        import re as _re_clean
+        _art_limpio = _re_clean.sub(r'<style[^>]*>.*?</style>', '', articulo, flags=_re_clean.DOTALL|_re_clean.I)
+        _art_limpio = _re_clean.sub(r'<script[^>]*>.*?</script>', '', _art_limpio, flags=_re_clean.DOTALL|_re_clean.I)
+        _art_limpio = _re_clean.sub(r'<[^>]+>', ' ', _art_limpio)
+        _art_limpio = _re_clean.sub(r'\{[^}]*\}', ' ', _art_limpio)  # quitar CSS residual
+        _art_limpio = _re_clean.sub(r'\s+', ' ', _art_limpio).strip()
+        print(f"   Articulo limpio: {len(_art_limpio)} chars (era {len(articulo)})", flush=True)
+
         resp = pedir_a_especialista("guionista_youtube_experto", _prompt_con_fecha,
-            contexto=("ARTICULO:\n" + articulo[:4000] + "\n\nANALISIS POR MEDIO:\n" + _analisis_medios_para_guionista()[:4000]))
+            contexto=("ARTICULO:\n" + _art_limpio[:4000] + "\n\nANALISIS POR MEDIO:\n" + _analisis_medios_para_guionista()[:4000]))
         d = _parse_json_seguro(resp)
         if isinstance(d, dict) and "escenas" in d:
             escenas = d["escenas"]
+            # VALIDAR: rechazar escenas con HTML/CSS en texto
+            _html_markers = ['body {', 'font-family', '<style', '<html', '<div', '<p>', '<h1', '<h2', 'font-size:', 'margin:', 'padding:', 'color:']
+            _escenas_ok = []
+            for e in escenas:
+                txt = e.get("texto", "")
+                if any(m in txt.lower() for m in _html_markers):
+                    print(f"   ⚠️ Escena {e.get('id','?')} con HTML detectada, descartada", flush=True)
+                    continue
+                _escenas_ok.append(e)
+            if len(_escenas_ok) < len(escenas):
+                print(f"   Filtradas {len(escenas)-len(_escenas_ok)} escenas con HTML", flush=True)
+                escenas = _escenas_ok
             # Sanitizer: eliminar frases de montaje que se cuelen
             import re as _re
             _PATRONES_MONTAJE = [
@@ -162,7 +203,12 @@ def producir_fase2(fecha=None):
     num_escenas_objetivo = 15 if len(escenas) < 12 else len(escenas)
     if len(escenas) < 12:
         print(f"   ⚠️ Solo {len(escenas)} escenas. Forzando {num_escenas_objetivo} para 10 min...", flush=True)
-        texto = re.sub(r'<[^>]+>', ' ', articulo)
+        # Usar artículo limpio (no el HTML original)
+        try:
+            texto_fuente = _art_limpio
+        except NameError:
+            texto_fuente = re.sub(r'<[^>]+>', ' ', articulo)
+        texto = re.sub(r'<[^>]+>', ' ', texto_fuente)
         texto = re.sub(r'\s+', ' ', texto).strip()
         palabras = texto.split()
         chunk = max(40, len(palabras) // num_escenas_objetivo) if len(palabras) >= 400 else max(30, len(palabras) // 8)
@@ -237,9 +283,16 @@ def producir_fase2(fecha=None):
 
     # CAPA 4: Gate de Viralidad
     print("[fase2] Calculando score de viralidad...", flush=True)
+    # Usar shorts_finales (hooks reales) no la lista hooks (puede estar vacía)
+    _hooks_para_puntuar = res.get("shorts_finales", []) or hooks or []
+    _ctx_viral = json.dumps({
+        "dossier": dossier,
+        "hooks": _hooks_para_puntuar[:3],
+        "articulo_resumen": (articulo or "")[:500],
+    }, ensure_ascii=False)[:3000]
     viral_raw = pedir_a_especialista("predictor_viralidad",
         'Devuelve EXCLUSIVAMENTE este JSON: {"score": 0-100, "razon": "string", "recomendaciones": ["string"]}. SOLO JSON, sin markdown.',
-        contexto=json.dumps({"dossier": dossier, "hooks": hooks[:3]}, ensure_ascii=False)[:3000])
+        contexto=_ctx_viral, proveedor="omni")
     viral = _parse_json_seguro(viral_raw)
     if not viral or "score" not in viral:
         import re as _re
