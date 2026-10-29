@@ -105,6 +105,9 @@ def producir_fase2(fecha=None):
         'Despues del saludo+fecha, continua con el analisis del dia. '
         'REGLAS DE DISTRIBUCION TOP3 (CRITICO): '
         'Las 18 escenas DEBEN cubrir las 3 noticias del TOP3, NO solo una. '
+        'NO INVENTES noticias que no esten en el TOP3. '
+        'Las 3 noticias del TOP3 estan en el contexto, usalas TAL CUAL. '
+        'Si solo tienes 3 noticias, haz 5 escenas de cada una. NO añadas temas nuevos. '
         'Distribucion obligatoria: '
         '  - Escenas 1-2: intro + presentacion breve del TOP3 completo. '
         '  - Escenas 3-7: noticia_1 (5 escenas). '
@@ -265,6 +268,26 @@ def producir_fase2(fecha=None):
     # 4. SHORTS (Seleccionando los 4 mejores por score)
     print("[fase2] 4/5 Selector de Hooks: eligiendo los 4 mejores...", flush=True)
     
+    # Calcular score heurístico si LLM no lo dio
+    for h in hooks:
+        if not isinstance(h.get("score"), (int, float)) or h.get("score") == 0:
+            _score = 50
+            _hook = (h.get("hook") or "").lower()
+            _tipo = (h.get("tipo") or "").lower()
+            # +20 si empieza por pregunta
+            if _hook.startswith("¿") or "?" in _hook[:20]: _score += 15
+            # +10 si tiene número
+            if any(c.isdigit() for c in _hook): _score += 10
+            # +10 si tiene palabras curiosas
+            for _p in ["quién", "por qué", "cómo", "qué esconde", "verdad", "mentira", "secreto", "cifra"]:
+                if _p in _hook: _score += 5
+            # +5 si tipo bueno
+            if any(k in _tipo for k in ["cita", "dato", "confront", "psicolog", "irón", "iron"]): _score += 5
+            # +5 si hook 40-90 chars (óptimo)
+            if 40 <= len(_hook) <= 90: _score += 5
+            h["score"] = min(100, _score)
+            h["razon_score"] = "heuristico"
+
     # Ordenar todos los hooks por score (de mayor a menor)
     hooks_ordenados = sorted(hooks, key=lambda x: x.get("score", 0), reverse=True)
     

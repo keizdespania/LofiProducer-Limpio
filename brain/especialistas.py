@@ -55,7 +55,7 @@ ROLES = {
     "guionista_retencion_v2": {
         "combo": "ddgw/tinfoil/gpt-oss-120b",
         "system": "Eres un estratega de contenido viral. Puntuas hooks por su potencial de retencion y viralidad.",
-        "prompt": "Genera hooks a partir del dossier. Cada hook debe tener: noticia, tipo (dato/contradiccion/prediccion/tutorial), hook (texto corto), guion (texto de 30s) y score (0-100). Devuelve SOLO JSON: {\"hooks_totales\": [{\"noticia\": \"string\", \"tipo\": \"string\", \"hook\": \"string\", \"guion\": \"string\", \"score\": 0}]}"
+        "prompt": "Genera 20 hooks para shorts verticales. Cada hook DEBE tener score 0-100 y razon_score. Formato JSON: {hooks:[{tipo,hook,guion,score,razon_score}]}. Variedad de tipos. SOLO JSON."hooks_totales\": [{\"noticia\": \"string\", \"tipo\": \"string\", \"hook\": \"string\", \"guion\": \"string\", \"score\": 0}]}"
     },
     "bibliotecario_v2": {
         "combo": "auto/best-reasoning",
