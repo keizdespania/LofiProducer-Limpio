@@ -1,7 +1,7 @@
 """renderizar_en_kaggle.py - Orquesta: sube assets a Kaggle, lanza kernel T4, descarga mp4."""
 import sys, json, pathlib, subprocess, shutil, time, tempfile
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from kaggle_bearer import push_kernel, estado_kernel, output_kernel
+from kaggle_bearer import push_kernel, estado_kernel, output_kernel, stop_kernel
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
@@ -43,11 +43,11 @@ def _subir_dataset(assets_dir, dataset_slug):
         "licenses": [{"name": "CC0-1.0"}],
     }
     (assets_dir / "dataset-metadata.json").write_text(json.dumps(meta, indent=2))
-    r = subprocess.run(["kaggle", "datasets", "create", "-p", str(assets_dir), "--dir-mode", "zip"],
+    r = subprocess.run(["kaggle", "datasets", "create", "-p", str(assets_dir)],
                        capture_output=True, text=True, timeout=900)
     if "already exists" in (r.stdout + r.stderr).lower() or r.returncode != 0:
         print("[orq] Existe, subiendo nueva versión...")
-        r = subprocess.run(["kaggle", "datasets", "version", "-p", str(assets_dir), "-m", "update", "--dir-mode", "zip"],
+        r = subprocess.run(["kaggle", "datasets", "version", "-p", str(assets_dir), "-m", "update"],
                            capture_output=True, text=True, timeout=900)
     out = (r.stdout or "") + (r.stderr or "")
     print(f"[orq] kaggle exit={r.returncode}")
@@ -109,31 +109,57 @@ def _descargar(slug, fecha, dest):
     print("[orq] No se descargó mp4"); return None
 
 
-def main(fecha, dataset_slug=None):
+
+
+def _limpiar_kaggle(dataset_slug, kernel_slug, borrar_dataset=True):
+    """Para el kernel (si sigue vivo) y opcionalmente borra el dataset."""
+    print("[cleanup] parando kernel...", flush=True)
+    try:
+        r = stop_kernel(kernel_slug)
+        print(f"[cleanup] stop_kernel: {str(r)[:150]}", flush=True)
+    except Exception as e:
+        print(f"[cleanup] stop error: {e}", flush=True)
+    if borrar_dataset:
+        print(f"[cleanup] borrando dataset {dataset_slug}...", flush=True)
+        try:
+            r = subprocess.run(
+                ["kaggle", "datasets", "delete", dataset_slug, "--yes"],
+                capture_output=True, text=True, timeout=60)
+            print(f"[cleanup] delete exit={r.returncode} {r.stdout.strip()[:100]}", flush=True)
+        except Exception as e:
+            print(f"[cleanup] delete error: {e}", flush=True)
+
+
+def main(fecha, dataset_slug=None, borrar_dataset=True):
     global DS_OWNER, DS_SLUG
     if not dataset_slug:
         dataset_slug = f"{DS_OWNER}/{DS_SLUG}"
     tmp = pathlib.Path(tempfile.mkdtemp(prefix="kaggle_render_"))
     print(f"[orq] tmp: {tmp}")
-    assets = _preparar_assets(fecha, tmp / "assets")
-    if not _subir_dataset(assets, dataset_slug):
-        print("[orq] FALLO subir dataset"); sys.exit(1)
-    if not _renderizar_kernel(fecha):
-        print("[orq] FALLO push_kernel"); sys.exit(1)
-    if not _esperar_fin(KERNEL_SLUG):
-        print("[orq] FALLO o timeout"); sys.exit(1)
-    # Polling GitHub (patrón Wan): descargar + borrar
-    print("[orq] esperando subida a GitHub...", flush=True)
-    sys.path.insert(0, str(ROOT / "scripts"))
-    from descargar_y_borrar_github import main as _dl_git
-    _dl_git(prefijo=f"render_{fecha}", destino_dir="output/encuadre", timeout_min=55)
-    target = OUT / f"render_{fecha}.mp4"
-    if target.exists():
-        video = OUT / f"video_largo_{fecha}_kaggle.mp4"
-        target.rename(video)
-        print(f"[orq] COMPLETADO {video}")
-    else:
-        print("[orq] SIN VIDEO")
+    exito = False
+    try:
+        assets = _preparar_assets(fecha, tmp / "assets")
+        if not _subir_dataset(assets, dataset_slug):
+            print("[orq] FALLO subir dataset"); return
+        if not _renderizar_kernel(fecha):
+            print("[orq] FALLO push_kernel"); return
+        if not _esperar_fin(KERNEL_SLUG):
+            print("[orq] FALLO o timeout"); return
+        print("[orq] esperando subida a GitHub...", flush=True)
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from descargar_y_borrar_github import main as _dl_git
+        _dl_git(prefijo=f"render_{fecha}", destino_dir="output/encuadre", timeout_min=55)
+        target = OUT / f"render_{fecha}.mp4"
+        if target.exists():
+            video = OUT / f"video_largo_{fecha}_kaggle.mp4"
+            target.rename(video)
+            print(f"[orq] COMPLETADO {video}")
+            exito = True
+        else:
+            print("[orq] SIN VIDEO")
+    finally:
+        # SIEMPRE: parar kernel y borrar dataset (salvo que falle y quieras debug)
+        _limpiar_kaggle(dataset_slug, KERNEL_SLUG, borrar_dataset=borrar_dataset and exito)
 
 
 if __name__ == "__main__":
