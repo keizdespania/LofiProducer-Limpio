@@ -99,10 +99,38 @@ def _descargar_video(concepto, salida):
         print(f"    video fail: {e}", flush=True)
     return False
 
+
+def _asegurar_ingles(concepto):
+    """Si el concepto tiene castellano residual, lo traduce a inglés con LLM."""
+    import re as _re
+    # Castellano básico: palabras con ñ, tildes, o palabras comunes
+    ES_WORDS = ["periódico", "periodico", "francés", "frances", "ciudadano", "imagen",
+                "primer plano", "luz", "dramática", "dramatica", "apilado", "titular",
+                "ventana", "calle", "sombra", "gobierno", "político", "politico"]
+    es = any(w in concepto.lower() for w in ES_WORDS)
+    if not es and not _re.search(r"[ñáéíóú]", concepto.lower()):
+        return concepto
+    # Traducir con Groq
+    try:
+        sys.path.insert(0, str(ROOT / "brain"))
+        from especialistas import pedir_a_especialista
+        r = pedir_a_especialista(
+            "traductor_formatos",
+            "Traduce al INGLÉS este prompt visual para SDXL. Devuelve SOLO el prompt en inglés, 8-15 palabras, estilo cinematic. Sin comillas, sin explicaciones.",
+            contexto=concepto, proveedor="omni")
+        r = r.strip().strip('"').strip("'")
+        if r and len(r) > 10 and not _re.search(r"[ñáéíóú]", r.lower()):
+            print(f"    EN: {r[:80]}", flush=True)
+            return r
+    except Exception as e:
+        print(f"    traduccion fallo: {e}", flush=True)
+    return concepto
+
 def _generar_imagen(concepto, salida):
     try:
         from generar_imagen import generar
-        r = generar(concepto + ", cinematic, dark, no text", preset="cinematic", aspect="16:9", canal="encuadre")
+        concepto_en = _asegurar_ingles(concepto)
+        r = generar(concepto_en + ", cinematic, no text, high detail", preset="cinematic", aspect="16:9", canal="encuadre")
         if 'OK: ' in r:
             ruta = r.split('OK: ')[1].split(' ')[0]
             if pathlib.Path(ruta).exists():

@@ -55,14 +55,14 @@ def producir_fase2(fecha=None):
     
     # Intentar con el LLM
     _PROMPT_GUION = (
-        'Devuelve EXCLUSIVAMENTE un JSON: {"escenas":[{"id":1,"texto":"NARRACION","concepto_visual":"DESC VISUAL","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"imagen"}]}. '
+        'Devuelve EXCLUSIVAMENTE un JSON: {"escenas":[{"id":1,"texto":"NARRACION","concepto_visual":"VISUAL DESC IN ENGLISH","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"imagen"}]}. '
         'ERES UN PROFESOR DE COMUNICACION. Enseñas como los medios usan tecnicas de framing, sesgos y encuadres. '
         'NO acusas, NO haces politica, NO criticas gobiernos. EDUCAS con ejemplos concretos. '
         'ESTRUCTURA por escena: dato/ejemplo -> tecnica usada -> "esto es lo que deberias observar". '
         'TONO: analitico, calmado, profesor universitario. Sin alarmismo. Sin "intriga". Sin "manipulacion" como insulto. '
         'REGLAS: (1) 18 escenas exactas. (2) "texto" = 80-100 palabras de NARRACION PURA (primera persona o impersonal). '
         'PROHIBIDO: "El video abre", "Vemos", "Corte a", "Voz en off dice", descripciones visuales, acotaciones. '
-        '(3) "concepto_visual" = descripcion LITERAL para SDXL (ej: "Periodicos franceses apilados, primer plano, luz dramatica"). '
+        '(3) "concepto_visual" = ENGLISH ONLY. Descripcion visual LITERAL para SDXL, 8-15 palabras. Estructura: Subject + Action + Environment + Lighting + Style. Ejemplo: "French newspapers stacked on table, close-up, dramatic side light, cinematic, moody" NUNCA en castellano. '
         '(4) Total minimo 1450 palabras. (5) SOLO JSON.'
     )
     try:
