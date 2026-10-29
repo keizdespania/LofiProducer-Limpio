@@ -262,7 +262,7 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
                         {"role": "system", "content": system},
                         {"role": "user", "content": prompt},
                     ],
-                    "max_tokens": 8000,
+                    "max_tokens": 500,
                     "temperature": 0.7
                 },
                 headers={
@@ -287,7 +287,7 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
 
     # 2. INTENTO CON OMNIROUTE (si proveedor != "groq")
     if omni_key and proveedor != "groq":
-        modelos = ["ddgw/tinfoil/gpt-oss-120b","auto/best-reasoning"] if proveedor == "auto" else ["ddgw/tinfoil/gpt-oss-120b","auto/best-reasoning","auto/best-fast"]
+        modelos = ["auto/best-fast","auto/chat"] if proveedor == "auto" else ["auto/best-fast","auto/chat","auto/best-reasoning"]
         for modelo in modelos:
             try:
                 r = requests.post(
@@ -298,7 +298,7 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
                             {"role": "system", "content": system},
                             {"role": "user", "content": prompt},
                         ],
-                        "max_tokens": 8000,
+                        "max_tokens": 500,
                         "temperature": 0.7
                     },
                     headers={"Authorization": f"Bearer {omni_key}"},

@@ -174,7 +174,7 @@ def analizar_fase1(fecha=None):
         return medio, an
     print(f"[fase1] Analizando {total} medios (5 en paralelo)...", flush=True)
     completados = 0
-    with ThreadPoolExecutor(max_workers=5) as ex:
+    with ThreadPoolExecutor(max_workers=3) as ex:
         futs = {ex.submit(_procesar, m): m for m in medios}
         for f in as_completed(futs):
             completados += 1
