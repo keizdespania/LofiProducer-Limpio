@@ -7,37 +7,93 @@ GITHUB_REPO = "keizdespania/LofiProducer-backup"
 
 # ─── 1. FFmpeg con NVENC (descarga estática) ───
 WORK = pathlib.Path("/kaggle/working")
-FFMPEG_LOCAL = WORK / "ffmpeg_static" / "ffmpeg"
-NVENC_URL = "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz"
+FFMPEG71 = WORK / "ffmpeg_static" / "ffmpeg"
+NVENC_URLS = {
+    # BtbN 7.1 (headers NVENC 13.0 → driver 570+)
+    "7.1": "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz",
+    # BtbN master (headers 13.1 → driver 610, probablemente fallará en Kaggle)
+    "master": "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz",
+}
+FFMPEG71 = WORK / "ffmpeg71" / "ffmpeg"
 
-def _instalar_ffmpeg():
-    if FFMPEG_LOCAL.exists(): return str(FFMPEG_LOCAL)
+
+def _descargar_ffmpeg(version="7.1"):
+    """Descarga FFmpeg estático de BtbN (7.1 compatible con driver Kaggle)."""
+    if FFMPEG71.exists(): return str(FFMPEG71)
+    url = NVENC_URLS.get(version, NVENC_URLS["7.1"])
     try:
-        print("[ffmpeg] descargando NVENC static...", flush=True)
-        tar = WORK / "ffmpeg.tar.xz"
-        req = urllib.request.Request(NVENC_URL, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=120) as r, open(tar, "wb") as f:
+        print(f"[ffmpeg] descargando {version}...", flush=True)
+        tar = WORK / f"ffmpeg_{version}.tar.xz"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=180) as r, open(tar, "wb") as f:
             shutil.copyfileobj(r, f)
         print(f"[ffmpeg] {tar.stat().st_size//1024//1024}MB descargados", flush=True)
+        extract = WORK / f"ffmpeg_{version}_extract"
         with tarfile.open(tar, "r:xz") as t:
-            t.extractall(WORK / "ffmpeg_static_extract")
-        # El tar crea una carpeta ffmpeg-master-*/bin/ffmpeg
-        FFMPEG_LOCAL.parent.mkdir(parents=True, exist_ok=True)
-        for d in (WORK / "ffmpeg_static_extract").glob("ffmpeg-*/bin/ffmpeg"):
-            shutil.copy2(d, FFMPEG_LOCAL)
-            FFMPEG_LOCAL.chmod(0o755)
-            print(f"[ffmpeg] OK en {FFMPEG_LOCAL}", flush=True)
-            return str(FFMPEG_LOCAL)
+            t.extractall(extract)
+        FFMPEG71.parent.mkdir(parents=True, exist_ok=True)
+        for d in extract.glob("ffmpeg-*/bin/ffmpeg"):
+            shutil.copy2(d, FFMPEG71)
+            FFMPEG71.chmod(0o755)
+            print(f"[ffmpeg] OK en {FFMPEG71}", flush=True)
+            return str(FFMPEG71)
     except Exception as e:
-        print(f"[ffmpeg] fallo descarga: {e}, uso del sistema", flush=True)
-    return "ffmpeg"
+        print(f"[ffmpeg] fallo descarga {version}: {e}", flush=True)
+    return None
 
-FFMPEG = _instalar_ffmpeg()
-# Detectar si NVENC está disponible
-r = subprocess.run([FFMPEG, "-hide_banner", "-encoders"], capture_output=True, text=True)
-HAS_NVENC = "h264_nvenc" in r.stdout
-ENC = "h264_nvenc" if HAS_NVENC else "libx264"
-print(f"[enc] usando {ENC} (NVENC={HAS_NVENC})", flush=True)
+
+def _test_encoder(ffmpeg_bin, codec):
+    """Test REAL: encode 1 frame a null. No escribe fichero, solo verifica encoder."""
+    if not ffmpeg_bin: return False
+    if not (shutil.which(ffmpeg_bin) or Path(ffmpeg_bin).exists()): return False
+    try:
+        r = subprocess.run(
+            [ffmpeg_bin, "-hide_banner", "-loglevel", "error",
+             "-f", "lavfi", "-i", "color=c=black:s=256x256:d=0.1",
+             "-c:v", codec, "-t", "0.1", "-f", "null", "-"],
+            capture_output=True, text=True, timeout=20)
+        if r.returncode == 0:
+            print(f"[test] OK {ffmpeg_bin} + {codec}", flush=True)
+            return True
+        else:
+            err = (r.stderr or "")[:200].replace("\n", " ")
+            print(f"[test] FAIL {ffmpeg_bin} + {codec}: {err}", flush=True)
+            return False
+    except Exception as e:
+        print(f"[test] EXC {ffmpeg_bin} + {codec}: {e}", flush=True)
+        return False
+
+
+# ─── Cascada de selección (sistema primero, luego BtbN 7.1, luego CPU) ───
+# No descargamos BtbN hasta que sea necesario
+FFMPEG, ENC = None, None
+
+# 1. Sistema con NVENC (drivers Kaggle alineados, 0 descargas)
+if _test_encoder("ffmpeg", "h264_nvenc"):
+    FFMPEG, ENC = "ffmpeg", "h264_nvenc"
+
+# 2. BtbN 7.1 con NVENC
+if not FFMPEG:
+    bin71 = _descargar_ffmpeg("7.1")
+    if _test_encoder(bin71, "h264_nvenc"):
+        FFMPEG, ENC = bin71, "h264_nvenc"
+
+# 3. Sistema CPU (siempre funciona)
+if not FFMPEG:
+    if _test_encoder("ffmpeg", "libx264"):
+        FFMPEG, ENC = "ffmpeg", "libx264"
+
+# 4. BtbN 7.1 CPU
+if not FFMPEG:
+    bin71 = _descargar_ffmpeg("7.1") or str(FFMPEG71)
+    if _test_encoder(bin71, "libx264"):
+        FFMPEG, ENC = bin71, "libx264"
+
+if not FFMPEG:
+    print("[enc] SIN encoder válido, abortando", flush=True)
+    sys.exit(1)
+
+print(f"[enc] SELECCIONADO: {FFMPEG} + {ENC}", flush=True)
 
 # ─── 2. Assets ───
 KAGGLE_INPUT = pathlib.Path("/kaggle/input")
