@@ -586,3 +586,11 @@ Preview · Distribución · Monetización · Analytics · A/B Testing · Calenda
 - **Semana 2-3**: Analytics y A/B testing.
 - **Mes 2**: Traducción y doblaje.
 - **Mes 3+**: Meta-agentes y auto-mejora.
+
+## 🆕 SESIÓN 2026-10-29
+
+18 bugs resueltos: sanitizador Jaccard, filtro Urda+deportes, guionista narrativa locutada (no FADE IN), redactor markdown (no HTML), max_tokens variable (3500 largas/500 cortas), OmniRoute modelos por longitud, viralidad omni, hooks 20 con score heurístico, render robusto 4 pasadas, voz humanizada 3 capas, logo intro/outro, YouTube CC prioritario, limpieza post-render, queries instrumentales.
+
+5 reglas nuevas: #24 max_tokens variable, #25 OmniRoute por longitud, #26 system manda, #27 redactor/guionista nunca HTML, #28 git checkout si 3+ parches.
+
+Estado: pipeline hasta render OK. Pendiente: 72 imágenes cada 10s (segmentar_imagenes.py), distribución completa.
