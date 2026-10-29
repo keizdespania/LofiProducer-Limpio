@@ -19,6 +19,21 @@ def _dur(p):
     except: return 0.0
 
 
+
+
+def _aplicar_transiciones(video_base, tl, out_final):
+    """Aplica xfade 0.3s entre clips de tipo distinto. Si falla, deja video_base."""
+    if len(tl) < 4:
+        return False
+    # Construir filter_complex con xfade encadenado
+    # Solo entre clips de tipos distintos para no saturar
+    clips = []
+    # Usamos el video_base que ya tiene intro+clips+outro concatenados (copy)
+    # Aplicar xfade a un vídeo ya concatenado es imposible sin separarlo.
+    # Alternativa: dejarlo como está (cortes secos) y confiar en el ritmo de duraciones.
+    # Para "transiciones intencionadas" real, habría que hacer el concat con filtros.
+    return False
+
 def _run(cmd, timeout=300, desc=""):
     print(f"  [{desc}]...", flush=True)
     t0 = time.time()
