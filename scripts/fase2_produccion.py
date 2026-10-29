@@ -66,7 +66,29 @@ def producir_fase2(fecha=None):
         print(f"   ⚠️ LLM falló: {e}", flush=True)
 
     # Fallback manual: Dividir el artículo en 18 trozos
-    if len(escenas) < 5:
+    # Si hay pocas escenas, forzar un mínimo de 12-15 para garantizar 10 min
+    num_escenas_objetivo = 15 if len(escenas) < 12 else len(escenas)
+    if len(escenas) < 12:
+        print(f"   ⚠️ Solo {len(escenas)} escenas. Forzando {num_escenas_objetivo} para 10 min...", flush=True)
+        texto = re.sub(r'<[^>]+>', ' ', articulo)
+        texto = re.sub(r'\s+', ' ', texto).strip()
+        palabras = texto.split()
+        chunk = max(80, len(palabras) // num_escenas_objetivo)
+        moods = ["tension", "misterio", "epico", "inspirador", "electronico", "relax"]
+        escenas = []
+        for i in range(num_escenas_objetivo):
+            ini = i * chunk
+            fin_i = min(len(palabras), (i+1) * chunk)
+            if ini >= len(palabras): break
+            escenas.append({
+                "id": i + 1,
+                "texto": " ".join(palabras[ini:fin_i]),
+                "concepto_visual": "cinematic dark news analysis about " + str(dossier.get("tema_del_dia", "analysis")) + ", abstract",
+                "mood_musical": moods[i % len(moods)],
+                "tipo_visual": "video" if i == 0 or i % 3 == 0 else "imagen"
+            })
+        print(f"   ✅ {len(escenas)} escenas generadas", flush=True)
+    elif len(escenas) < 5:
         print("   Fallback: dividiendo articulo en escenas dinámicas (8-18)", flush=True)
         texto = re.sub(r'<[^>]+>', ' ', articulo)
         texto = re.sub(r'\s+', ' ', texto).strip()

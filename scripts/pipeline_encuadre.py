@@ -89,6 +89,11 @@ def main():
         tipo = _normalizar(short.get("tipo", "dato"))
         texto = short.get("guion") or short.get("hook", "")
         texto = _limpiar_texto_voz(texto)
+        # Truncar a 50 palabras máximo (rot necesita textos cortos)
+        palabras_txt = texto.split()
+        if len(palabras_txt) > 50:
+            texto = " ".join(palabras_txt[:50]) + "..."
+            print(f"     ✂️ Texto truncado a 50 palabras para rot")
         if not texto: texto = "Análisis del día en Somos El Encuadre."
 
         voz_path = OUT / f"short_{num}_voz_{fecha}.mp3"
