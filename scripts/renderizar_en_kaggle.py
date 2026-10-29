@@ -54,6 +54,14 @@ def _subir_dataset(assets_dir, dataset_slug):
 def _renderizar_kernel():
     """Lee template y lo sube como kernel."""
     tpl = (ROOT / "scripts" / "kernel_render_encuadre.py").read_text()
+    # Inyectar FECHA + GITHUB_TOKEN reales (como Wan)
+    import re as _re
+    _env = (ROOT / ".env").read_text()
+    _tok = ""
+    for _l in _env.splitlines():
+        if _l.startswith("GITHUB_TOKEN="):
+            _tok = _l.split("=", 1)[1].strip().strip(chr(34)).strip(chr(39)); break
+    tpl = tpl.replace("__FECHA__", fecha).replace("__GITHUB_TOKEN__", _tok)
     print(f"[orq] push_kernel({KERNEL_SLUG})...")
     res = push_kernel(KERNEL_SLUG, tpl, enable_gpu=True, enable_internet=True)
     print(f"[orq] push result: {str(res)[:200]}")
@@ -99,8 +107,18 @@ def main(fecha, dataset_slug="keizproductions/encuadre-assets"):
         print("[orq] FALLO push_kernel"); sys.exit(1)
     if not _esperar_fin(KERNEL_SLUG):
         print("[orq] FALLO o timeout"); sys.exit(1)
-    video = _descargar(KERNEL_SLUG, fecha, OUT)
-    print("[orq] COMPLETADO" if video else "[orq] SIN VIDEO")
+    # Polling GitHub (patrón Wan): descargar + borrar
+    print("[orq] esperando subida a GitHub...", flush=True)
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from descargar_y_borrar_github import main as _dl_git
+    _dl_git(prefijo=f"render_{fecha}", destino_dir="output/encuadre", timeout_min=55)
+    target = OUT / f"render_{fecha}.mp4"
+    if target.exists():
+        video = OUT / f"video_largo_{fecha}_kaggle.mp4"
+        target.rename(video)
+        print(f"[orq] COMPLETADO {video}")
+    else:
+        print("[orq] SIN VIDEO")
 
 
 if __name__ == "__main__":

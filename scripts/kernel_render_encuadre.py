@@ -1,5 +1,9 @@
 """kernel_render_encuadre.py - Kernel Kaggle T4 con FFmpeg NVENC + fallback CPU."""
-import subprocess, pathlib, json, sys, os, urllib.request, tarfile, shutil
+import subprocess, pathlib, json, sys, os, urllib.request, tarfile, shutil, time, base64
+
+FECHA = "__FECHA__"
+GITHUB_TOKEN = "__GITHUB_TOKEN__"
+GITHUB_REPO = "keizdespania/LofiProducer-backup"
 
 # ─── 1. FFmpeg con NVENC (descarga estática) ───
 WORK = pathlib.Path("/kaggle/working")
@@ -137,3 +141,21 @@ r = subprocess.run(cmd, capture_output=True, text=True, timeout=3300)
 if r.returncode != 0:
     print(f"FFmpeg error:\n{r.stderr[-1500:]}", flush=True); sys.exit(1)
 print(f"OK {OUT.name} ({OUT.stat().st_size//1024//1024}MB)", flush=True)
+
+# ─── 5. Subir a GitHub (patrón Wan) ───
+if GITHUB_TOKEN and not GITHUB_TOKEN.startswith("__") and OUT.exists():
+    try:
+        import requests as _rq
+        with open(str(OUT), "rb") as f:
+            content = base64.b64encode(f.read()).decode()
+        dest_path = f"output/videos/render_{FECHA}.mp4"
+        url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{dest_path}"
+        headers = {"Authorization": f"token {GITHUB_TOKEN}", "Accept": "application/vnd.github.v3+json"}
+        r = _rq.get(url, headers=headers, timeout=30)
+        sha = r.json().get("sha") if r.status_code == 200 else None
+        payload = {"message": f"render {FECHA}", "content": content, "branch": "main"}
+        if sha: payload["sha"] = sha
+        r = _rq.put(url, headers=headers, json=payload, timeout=600)
+        print(f"[github] PUT {dest_path}: {r.status_code}", flush=True)
+    except Exception as e:
+        print(f"[github] error: {e}", flush=True)
