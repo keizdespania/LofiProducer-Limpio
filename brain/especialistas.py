@@ -237,7 +237,7 @@ MAX_TOKENS_POR_ROL = {
     "analista_emocional": 400,
     "detector_sesgos_cognitivos": 500,
     "abogado_del_diablo": 400,
-    "predictor_viralidad": 300,
+    "predictor_viralidad": 500,
     "seo_maestro": 800,
     "analista_sentimiento": 500,
     "verificador_factos": 800,
