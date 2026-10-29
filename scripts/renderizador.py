@@ -1,32 +1,25 @@
-"""renderizador.py - Renderizador Top 1: Estructura de un solo comando con concat filter."""
-import sys, json, pathlib, subprocess, re
+"""renderizador.py v2 - índices FFmpeg correctos, intro+outro en concat, test sintético."""
+import json, pathlib, subprocess, sys, argparse
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
-MEDIA = ROOT / "web" / "media" / "imagenes"
-MUSICA = ROOT / "output" / "musica_temp"
-TMP = ROOT / "output" / "render_tmp"
-TMP.mkdir(parents=True, exist_ok=True)
+MEDIA = OUT / "media"
+MUSICA = OUT / "musica"
+
 
 def _generar_intro_outro():
-    """Genera intro (3s) y outro (4s) con audio silencioso para concatenar perfectamente."""
-    logo = ROOT / "assets" / "branding" / "logo_encuadre.jpg"
-    intro = TMP / "intro.mp4"
-    outro = TMP / "outro.mp4"
-    
-    if not logo.exists():
-        print("❌ Falta el logo para intro/outro")
-        return None, None
-
-    # Intro: 3s, logo centrado, audio silencioso
-    vf_intro = "scale=800:-1,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:black,fade=t=in:st=0:d=0.5,fade=t=out:st=2.5:d=0.5"
-    subprocess.run(["ffmpeg", "-y", "-loop", "1", "-i", str(logo), "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-vf", vf_intro, "-t", "3", "-c:v", "libx264", "-crf", "20", "-preset", "fast", "-c:a", "aac", "-shortest", str(intro)], capture_output=True)
-
-    # Outro: 4s, logo + texto, audio silencioso
-    vf_outro = "scale=600:-1,pad=1920:1080:(ow-iw)/2:(oh-ih)/2+50:black,drawtext=text='SOMOS EL ENCUADRE':fontcolor=white:fontsize=60:x=(w-text_w)/2:y=h-150,fade=t=in:st=0:d=0.5,fade=t=out:st=3.5:d=0.5"
-    subprocess.run(["ffmpeg", "-y", "-loop", "1", "-i", str(logo), "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-vf", vf_outro, "-t", "4", "-c:v", "libx264", "-crf", "20", "-preset", "fast", "-c:a", "aac", "-shortest", str(outro)], capture_output=True)
-
+    intro = OUT / "intro.mp4"
+    outro = OUT / "outro.mp4"
+    for pp, dur in [(intro, 2), (outro, 2)]:
+        if not pp.exists():
+            subprocess.run([
+                "ffmpeg","-y",
+                "-f","lavfi","-i",f"color=c=0x0a0a0f:s=1920x1080:d={dur}:r=25",
+                "-f","lavfi","-i",f"anullsrc=r=44100:cl=stereo:d={dur}",
+                "-shortest","-c:v","libx264","-preset","ultrafast","-c:a","aac",
+                str(pp)], capture_output=True)
     return intro, outro
+
 
 def _desplazar_ass(ass_original, ass_nuevo, offset_seg):
     """Desplaza los timestamps del ASS para que empiecen después de la intro."""
@@ -58,135 +51,150 @@ def _desplazar_ass(ass_original, ass_nuevo, offset_seg):
     ass_nuevo.write_text("\n".join(nuevas))
     return ass_nuevo
 
+
 def renderizar(fecha):
     tf = OUT / f"timeline_{fecha}.json"
     if not tf.exists():
-        print("❌ No hay timeline"); return
+        print(f"No hay timeline {tf}"); return False
     timeline = json.loads(tf.read_text())
     if not timeline:
-        print("❌ Timeline vacío"); return
-    voz = OUT / f"voz_largo_{fecha}.mp3"
-    ass_original = OUT / f"voz_largo_{fecha}.ass"
+        print("Timeline vacio"); return False
 
-    if not voz.exists():
-        print("❌ Falta la voz"); return
-
-    # 1. Generar intro y outro
-    print("🎬 Generando intro y outro...")
     intro, outro = _generar_intro_outro()
-    if not intro or not outro:
-        return
+    voz = OUT / f"voz_largo_{fecha}.mp3"
+    if not voz.exists():
+        print(f"No hay voz {voz}"); return False
+    ass_orig = OUT / f"voz_largo_{fecha}.ass"
 
-    # 2. Desplazar el ASS por la duración de la intro (3s)
-    offset = 3.0
-    if ass_original.exists():
-        ass_path = _desplazar_ass(ass_original, TMP / f"sub_{fecha}.ass", offset)
-    else:
-        ass_path = None
-
-    # 3. Construir los inputs y el filter_complex
     inputs = []
-    filtros = []
-    video_labels = []
-    audio_labels = []
-    
-    # Input 0: Intro
-    inputs += ["-i", str(intro)]
-    filtros.append("[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=25,setpts=PTS-STARTPTS[v0]")
-    filtros.append("[0:a]anull[a0]")
-    video_labels.append("[v0]")
-    audio_labels.append("[a0]")
+    counter = [0]
 
-    # Input 1: Outro (Se prepara pero NO se añade todavía a la lista)
-    inputs += ["-i", str(outro)]
-    filtros.append("[1:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=25,setpts=PTS-STARTPTS[v_out]")
-    
-    # Calcular el tiempo total del vídeo antes del outro
-    duracion_voz = timeline[-1]["fin"] if timeline else 0
-    delay_outro = int((offset + duracion_voz) * 1000)
-    filtros.append(f"[1:a]adelay={delay_outro}|{delay_outro}[a_out]")
+    def add_in(path, loop=False):
+        if loop:
+            inputs.extend(["-stream_loop", "-1", "-i", str(path)])
+        else:
+            inputs.extend(["-i", str(path)])
+        counter[0] += 1
+        return counter[0] - 1
 
-    # Input 2: Voz
-    inputs += ["-i", str(voz)]
-    voz_idx = 2
+    i_intro = add_in(intro)
+    i_outro = add_in(outro)
+    i_voz = add_in(voz)
 
-    # Escenas
+    filtros, v_labels, a_labels = [], [], []
+
+    filtros.append(f"[{i_intro}:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=25,setpts=PTS-STARTPTS[v_intro]")
+    v_labels.append("[v_intro]")
+    offset = 2.0
+
     for i, item in enumerate(timeline):
-        num = item["id"]
-        dur = item["fin"] - item["inicio"]
-        tipo = item.get("tipo_visual", "imagen")
+        num = item["id"]; dur = item["fin"] - item["inicio"]
+        tipo = item.get("tipo_visual","imagen")
         vid = MEDIA / f"escena_{num:02d}.mp4"
         img = MEDIA / f"escena_{num:02d}.png"
         mus = MUSICA / f"escena_{num:02d}.mp3"
 
-        # Visual
-        v_idx = len(inputs) // 2
         if tipo == "video" and vid.exists():
-            inputs += ["-stream_loop", "-1", "-i", str(vid)]
-            filtros.append(f"[{v_idx}:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=25,trim=duration={dur},setpts=PTS-STARTPTS[v{i+1}]")
+            iv = add_in(vid, loop=True)
+            filtros.append(f"[{iv}:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=25,trim=duration={dur},setpts=PTS-STARTPTS[v{i+1}]")
         elif img.exists():
-            inputs += ["-loop", "1", "-i", str(img)]
-            filtros.append(f"[{v_idx}:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=25,trim=duration={dur},setpts=PTS-STARTPTS[v{i+1}]")
+            iv = add_in(img, loop=True)
+            filtros.append(f"[{iv}:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=25,trim=duration={dur},setpts=PTS-STARTPTS[v{i+1}]")
         else:
-            print(f"❌ Falta visual escena {num}")
-            return
-        video_labels.append(f"[v{i+1}]")
+            print(f"Falta visual escena {num}"); return False
+        v_labels.append(f"[v{i+1}]")
 
-        # Música
-        a_idx = len(inputs) // 2
+        d = int((offset + item["inicio"]) * 1000)
         if mus.exists():
-            inputs += ["-stream_loop", "-1", "-i", str(mus)]
-            delay_ms = int((offset + item["inicio"]) * 1000)
-            fade_out_start = max(0, dur - min(2, dur/2))
-            fade_out_dur = min(2, dur/2)
-            filtros.append(f"[{a_idx}:a]atrim=0:{dur},afade=t=in:st=0:d=1,afade=t=out:st={fade_out_start}:d={fade_out_dur},volume=0.15,adelay={delay_ms}|{delay_ms}[a{i+1}]")
-            audio_labels.append(f"[a{i+1}]")
+            ia = add_in(mus, loop=True)
+            fo_s = max(0, dur - min(2, dur/2)); fo_d = min(2, dur/2)
+            filtros.append(f"[{ia}:a]atrim=0:{dur},afade=t=in:st=0:d=1,afade=t=out:st={fo_s}:d={fo_d},volume=0.15,adelay={d}|{d}[a{i+1}]")
         else:
-            # Sin música: silencio para rellenar
-            filtros.append(f"anullsrc=r=44100:cl=stereo,atrim=duration={dur}[a{i+1}]")
-            audio_labels.append(f"[a{i+1}]")
+            filtros.append(f"aevalsrc=0:d={dur}:s=44100,adelay={d}|{d}[a{i+1}]")
+        a_labels.append(f"[a{i+1}]")
 
-    # Añadir el Outro al final de las listas
-    video_labels.append("[v_out]")
-    audio_labels.append("[a_out]")
+    fin_voz = timeline[-1]["fin"]
+    dur_total = offset + fin_voz + 2.0
+    delay_outro = int((offset + fin_voz) * 1000)
+    filtros.append(f"[{i_outro}:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=25,trim=duration=2,setpts=PTS-STARTPTS[v_out]")
+    filtros.append(f"[{i_outro}:a]atrim=0:2,adelay={delay_outro}|{delay_outro}[a_out]")
+    v_labels.append("[v_out]")
+    a_labels.append("[a_out]")
 
-    # 4. Concatenar vídeo
-    todos_v = "".join(video_labels)
-    filtros.append(f"{todos_v}concat=n={len(video_labels)}:v=1:a=0[v_concat]")
+    filtros.append(f"[{i_voz}:a]adelay={int(offset*1000)}|{int(offset*1000)}[voice]")
 
-    # 5. Subtítulos (si existen)
-    if ass_path:
-        filtros.append(f"[v_concat]ass='{ass_path}'[v]")
+    filtros.append(f"{''.join(v_labels)}concat=n={len(v_labels)}:v=1:a=0[v_concat]")
+
+    if ass_orig.exists() and "_desplazar_ass" in globals():
+        try:
+            ass_d = OUT / f"voz_largo_{fecha}_despl.ass"
+            _desplazar_ass(ass_orig, ass_d, offset)
+            filtros.append(f"[v_concat]ass='{ass_d}'[v]")
+        except Exception as e:
+            print(f"  subs fallback: {e}")
+            filtros.append("[v_concat]null[v]")
     else:
         filtros.append("[v_concat]null[v]")
 
-    # 6. Audio de la voz (con delay de intro)
-    filtros.append(f"[{voz_idx}:a]adelay={int(offset*1000)}|{int(offset*1000)}[voice]")
+    todos_a = "[voice]" + "".join(a_labels)
+    filtros.append(f"{todos_a}amix=inputs={len(a_labels)+1}:duration=longest:normalize=0,apad=whole_dur={dur_total}[a]")
 
-    # 7. Mezclar toda la voz con los audios de las escenas
-    todos_a = "[voice]" + "".join(audio_labels)
-    filtros.append(f"{todos_a}amix=inputs={len(audio_labels)+1}:duration=longest:normalize=0,apad=whole_dur={dur_total}[a]")
-
-    # Calcular duración exacta total (intro + voz + outro)
-    dur_total = offset + (timeline[-1]["fin"] if timeline else 0) + 4 # 4s de outro
-    print(f"  ⏱️ Duración total calculada: {dur_total:.1f}s")
-    
-    # 8. Comando final (Un solo FFmpeg)
     final = OUT / f"video_largo_{fecha}.mp4"
-    cmd = ["ffmpeg", "-y"] + inputs + [
-        "-filter_complex", ";".join(filtros),
-        "-map", "[v]", "-map", "[a]",
-        "-c:v", "libx264", "-crf", "20", "-preset", "fast",
-        "-c:a", "aac", "-b:a", "192k", "-t", str(dur_total), str(final)
+    cmd = ["ffmpeg","-y"] + inputs + [
+        "-filter_complex",";".join(filtros),
+        "-map","[v]","-map","[a]",
+        "-c:v","libx264","-crf","20","-preset","ultrafast",
+        "-c:a","aac","-b:a","192k","-t",str(dur_total),str(final)
     ]
+    print(f"Renderizando ({len(timeline)} escenas, {dur_total:.1f}s)...")
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=7200)
+    if r.returncode != 0:
+        print(f"FFmpeg error:\n{r.stderr[-800:]}"); return False
+    if not final.exists():
+        print("Video no generado"); return False
+    d = subprocess.run(["ffprobe","-v","error","-show_entries","format=duration","-of","default=noprint_wrappers=1:nokey=1",str(final)], capture_output=True, text=True).stdout.strip()
+    print(f"OK {final.name} ({float(d)/60:.2f} min, {final.stat().st_size//1024//1024}MB)")
+    return True
 
-    print(f"🎬 Renderizando vídeo largo (un solo comando, {len(timeline)} escenas)...")
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=3600)
-    if r.returncode == 0 and final.exists():
-        dur = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", str(final)], capture_output=True, text=True).stdout.strip()
-        print(f"✅ VÍDEO FINAL: {final.name} ({float(dur)/60:.1f} min, {final.stat().st_size//1024//1024}MB)")
-    else:
-        print(f"❌ Error FFmpeg: {r.stderr[-500:]}")
+
+def _test_sintetico():
+    print("=== TEST SINTETICO 3 ESCENAS ===")
+    fecha = "sintetico"
+    MEDIA.mkdir(parents=True, exist_ok=True); MUSICA.mkdir(parents=True, exist_ok=True)
+    voz = OUT / f"voz_largo_{fecha}.mp3"
+    subprocess.run(["ffmpeg","-y","-f","lavfi","-i","sine=frequency=440:duration=6","-c:a","libmp3lame",str(voz)], capture_output=True, check=True)
+    colores = ["0x1e2840","0x40281e","0x28401e"]
+    for n in [1,2,3]:
+        vid = MEDIA / f"escena_{n:02d}.mp4"
+        subprocess.run(["ffmpeg","-y","-f","lavfi","-i",f"color=c={colores[n-1]}:s=1920x1080:d=3:r=25","-c:v","libx264","-preset","ultrafast","-an",str(vid)], capture_output=True, check=True)
+        mus = MUSICA / f"escena_{n:02d}.mp3"
+        subprocess.run(["ffmpeg","-y","-f","lavfi","-i",f"sine=frequency={200+n*50}:duration=3","-c:a","libmp3lame",str(mus)], capture_output=True, check=True)
+    tl = [{"id":1,"inicio":0.0,"fin":2.0,"tipo_visual":"video"},
+          {"id":2,"inicio":2.0,"fin":4.0,"tipo_visual":"video"},
+          {"id":3,"inicio":4.0,"fin":6.0,"tipo_visual":"video"}]
+    (OUT / f"timeline_{fecha}.json").write_text(json.dumps(tl))
+    ok = renderizar(fecha)
+    if ok:
+        final = OUT / f"video_largo_{fecha}.mp4"
+        real = float(subprocess.run(["ffprobe","-v","error","-show_entries","format=duration","-of","default=noprint_wrappers=1:nokey=1",str(final)], capture_output=True, text=True).stdout.strip())
+        esperado = 10.0
+        print(f"  dur real={real:.2f}s esperado={esperado}s")
+        if abs(real - esperado) > 0.5:
+            print(f"  DESYNC"); return False
+        a_stream = subprocess.run(["ffprobe","-v","error","-select_streams","a:0","-show_entries","stream=codec_name","-of","default=noprint_wrappers=1:nokey=1",str(final)], capture_output=True, text=True).stdout.strip()
+        print(f"  audio stream: {a_stream or 'NO'}")
+        if not a_stream: return False
+        print("  TEST OK")
+    return ok
+
 
 if __name__ == "__main__":
-    renderizar(sys.argv[1] if len(sys.argv) > 1 else None)
+    ap = argparse.ArgumentParser()
+    ap.add_argument("fecha", nargs="?")
+    ap.add_argument("--test", action="store_true")
+    a = ap.parse_args()
+    if a.test:
+        sys.exit(0 if _test_sintetico() else 1)
+    if not a.fecha:
+        print("Uso: renderizador.py YYYY-MM-DD | --test"); sys.exit(1)
+    sys.exit(0 if renderizar(a.fecha) else 1)
