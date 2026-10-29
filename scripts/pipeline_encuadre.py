@@ -103,28 +103,23 @@ def main():
         voz_path = OUT / f"short_{num}_voz_{fecha}.mp3"
         if not voz_path.exists(): asyncio.run(_gen_voz(texto, voz_path))
 
-        # Música con fallbacks
+        # Música: gestor_musica → YouTube CC primero, Tunetank fallback interno
         musica_short = None
         mood = MOODS_SHORTS.get(tipo, "epico")
-        print(f"  [{num}/{len(shorts)}] Música ({mood})...", flush=True)
+        print(f"  [{num}/{len(shorts)}] Música ({mood}) [contexto=short_{num}]...", flush=True)
         try:
-            r = descargar_por_mood(mood, 1)
-            if r: musica_short = ROOT / "output" / "musica_temp" / r[0]["archivo"]
-        except: pass
-        if not musica_short:
+            sys.path.insert(0, str(ROOT / "scripts"))
+            from gestor_musica import obtener_musica
+            _m = obtener_musica(mood=mood, duracion_objetivo=40, contexto=f"short_{num}")
+            musica_short = _m["archivo"]
+            print(f"     ✅ {musica_short.name} ({_m.get("licencia","?")})", flush=True)
+        except Exception as e:
+            print(f"     ⚠️ gestor_musica short falló: {e}", flush=True)
+            # Fallback Tunetank directo
             try:
-                r = descargar_por_mood("epico", 1)
+                r = descargar_por_mood(mood, 1)
                 if r: musica_short = ROOT / "output" / "musica_temp" / r[0]["archivo"]
             except: pass
-        if not musica_short:
-            try:
-                from musica_youtube_cc import buscar_y_descargar
-                r = buscar_y_descargar(f"{mood} instrumental", 1)
-                if r: musica_short = ROOT / "output" / "musica_temp" / r[0]["archivo"]
-            except: pass
-        if not musica_short:
-            locales = [f for f in (ROOT / "output" / "musica_temp").glob("*.mp3") if "voz" not in f.name]
-            if locales: musica_short = locales[0]
         musica_arg = str(musica_short) if musica_short else ""
 
         # Imagen vertical con fallback (SIEMPRE debe haber una)
