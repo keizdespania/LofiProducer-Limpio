@@ -245,7 +245,7 @@ def pedir_a_especialista(rol, tarea, contexto=""):
             if line.startswith("OMNIROUTE_API_KEY="): omni_key = line.split("=", 1)[1].strip().strip('"').strip("'")
             if line.startswith("GROQ_API_KEY="): groq_key = line.split("=", 1)[1].strip().strip('"').strip("'")
 
-    system = ROLES[rol].get("system", "")
+    system = ROLES[rol].get("system", "") + "\n\nREGLA ABSOLUTA: responde SIEMPRE en castellano de España. NUNCA en inglés. Aunque el contexto esté en inglés, tu output es 100% en castellano."
     prompt = tarea if not contexto else "CONTEXTO:\n" + contexto + "\n\nTAREA:\n" + tarea
 
     # 1. INTENTO CON GROQ DIRECTO (Prioridad Máxima por velocidad)
@@ -262,7 +262,12 @@ def pedir_a_especialista(rol, tarea, contexto=""):
                     "max_tokens": 8000,
                     "temperature": 0.7
                 },
-                headers={"Authorization": f"Bearer {groq_key}"},
+                headers={
+                    "Authorization": f"Bearer {groq_key}",
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
                 timeout=60,
             )
             if r.status_code == 200:

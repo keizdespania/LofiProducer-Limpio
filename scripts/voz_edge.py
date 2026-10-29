@@ -48,7 +48,14 @@ def _silencio(d, out):
 
 async def main():
     fecha = sys.argv[1] if len(sys.argv) > 1 else None
-    prod = OUT / f"produccion_{fecha}.json"
+    prod = OUT / f"produccion_{fecha}.json" if fecha else None
+    if not prod or not prod.exists():
+        candidatos = sorted(OUT.glob("produccion_*.json"), key=lambda x: x.stat().st_mtime, reverse=True)
+        if not candidatos:
+            print(f"ERROR: no hay produccion_*.json en {OUT}"); return
+        prod = candidatos[0]
+        fecha = prod.stem.replace("produccion_", "")
+        print(f"[voz] autodetectada fecha={fecha} ({prod.name})", flush=True)
     datos = json.loads(prod.read_text())
     escenas = datos.get("escenas", [])
     if not escenas:
