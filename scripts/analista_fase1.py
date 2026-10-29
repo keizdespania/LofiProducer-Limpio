@@ -53,13 +53,35 @@ def _sanitizar_top3(top3, titulares_disponibles):
             items.append(f"Tema alternativo {len(items)+1}")
         if len(items) >= 3: break
     subs = 0
-    for i, t in enumerate(items):
-        if _malo(t):
+    usados = set()
+    # Marcar los que ya están bien como usados
+    for t0 in items:
+        if t0 and not _malo(t0):
+            usados.add(t0)
+    # Sustituir los malos por candidatos ÚNICOS
+    for i, t0 in enumerate(items):
+        if _malo(t0):
             for cand in titulares_disponibles:
-                if cand and not _malo(cand):
-                    items[i] = cand; subs += 1; break
-    if subs: print(f"[fase1] sanitizados {subs} items del top3", flush=True)
-    return {f"noticia_{i+1}": t for i, t in enumerate(items[:3])}
+                if cand and cand not in usados and not _malo(cand):
+                    items[i] = cand
+                    usados.add(cand)
+                    subs += 1
+                    break
+    # Si aún quedan malos sin sustituir -> eliminar
+    items = [x for x in items if x and not _malo(x)]
+    # Rellenar hasta 3 con limpios ÚNICOS
+    for cand in titulares_disponibles:
+        if len(items) >= 3: break
+        if cand and cand not in usados and not _malo(cand):
+            items.append(cand)
+            usados.add(cand)
+    # Si aún faltan, rellenar con temas genéricos únicos
+    _GENERICOS = ['Actualidad nacional', 'Política', 'Economía', 'Sociedad', 'Internacional']
+    for g in _GENERICOS:
+        if len(items) >= 3: break
+        if g not in items: items.append(g)
+    if subs: print(f'[fase1] sanitizados {subs} items del top3', flush=True)
+    return {f'noticia_{i+1}': t0 for i, t0 in enumerate(items[:3])}
 
 
 def _titulares_de(datos):
