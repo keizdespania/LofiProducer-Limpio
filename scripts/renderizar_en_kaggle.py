@@ -61,11 +61,11 @@ def _subir_dataset(assets_dir, dataset_slug):
         "licenses": [{"name": "CC0-1.0"}],
     }
     (assets_dir / "dataset-metadata.json").write_text(json.dumps(meta, indent=2))
-    r = subprocess.run(["kaggle", "datasets", "create", "-p", str(assets_dir)],
+    r = subprocess.run(["kaggle", "datasets", "create", "-p", str(assets_dir), "--dir-mode", "zip"],
                        capture_output=True, text=True, timeout=900, env=_env_kaggle())
     if "already exists" in (r.stdout + r.stderr).lower() or r.returncode != 0:
         print("[orq] Existe, subiendo nueva versión...")
-        r = subprocess.run(["kaggle", "datasets", "version", "-p", str(assets_dir), "-m", "update"],
+        r = subprocess.run(["kaggle", "datasets", "version", "-p", str(assets_dir), "-m", "update", "--dir-mode", "zip"],
                            capture_output=True, text=True, timeout=900, env=_env_kaggle())
     out = (r.stdout or "") + (r.stderr or "")
     print(f"[orq] kaggle exit={r.returncode}")

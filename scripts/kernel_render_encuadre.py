@@ -30,11 +30,31 @@ FFMPEG, ENC = _elegir_encoder()
 
 
 def _mount():
+    import zipfile
     for _ in range(30):
         for d in pathlib.Path("/kaggle/input").glob("*/"):
-            if (d / "timeline.json").exists(): return d
+            # Caso 1: ya montado plano
+            if (d / "timeline.json").exists():
+                return d
             for sub in d.glob("*/"):
-                if (sub / "timeline.json").exists(): return sub
+                if (sub / "timeline.json").exists():
+                    return sub
+            # Caso 2: zip con --dir-mode zip
+            zips = list(d.glob("*.zip"))
+            if zips:
+                dst = WORK / "assets_extracted"
+                dst.mkdir(exist_ok=True)
+                print(f"[mount] descomprimiendo {zips[0].name} ({zips[0].stat().st_size//1024//1024}MB)...", flush=True)
+                with zipfile.ZipFile(zips[0]) as z:
+                    z.extractall(dst)
+                # Puede estar en dst o dst/assets/...
+                if (dst / "timeline.json").exists():
+                    print(f"[mount] OK desde zip: {dst}", flush=True)
+                    return dst
+                for sub in dst.glob("*/"):
+                    if (sub / "timeline.json").exists():
+                        print(f"[mount] OK desde zip sub: {sub}", flush=True)
+                        return sub
         time.sleep(10)
     return pathlib.Path("/kaggle/input/encuadre-assets-v3")
 
