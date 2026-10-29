@@ -22,6 +22,7 @@ def _instalar_ffmpeg():
         with tarfile.open(tar, "r:xz") as t:
             t.extractall(WORK / "ffmpeg_static_extract")
         # El tar crea una carpeta ffmpeg-master-*/bin/ffmpeg
+        FFMPEG_LOCAL.parent.mkdir(parents=True, exist_ok=True)
         for d in (WORK / "ffmpeg_static_extract").glob("ffmpeg-*/bin/ffmpeg"):
             shutil.copy2(d, FFMPEG_LOCAL)
             FFMPEG_LOCAL.chmod(0o755)
@@ -41,10 +42,21 @@ print(f"[enc] usando {ENC} (NVENC={HAS_NVENC})", flush=True)
 # ─── 2. Assets ───
 KAGGLE_INPUT = pathlib.Path("/kaggle/input")
 ASSETS = None
-for d in KAGGLE_INPUT.glob("*/"):
-    if (d / "timeline.json").exists():
-        ASSETS = d; break
+print("[mount] esperando dataset...", flush=True)
+for waited in range(0, 300, 10):
+    for d in KAGGLE_INPUT.glob("*/"):
+        if (d / "timeline.json").exists():
+            ASSETS = d; print(f"[mount] OK en {waited}s: {d}", flush=True); break
+        # Buscar también dentro (por si --dir-mode zip crea subcarpeta)
+        for sub in d.glob("*/"):
+            if (sub / "timeline.json").exists():
+                ASSETS = sub; print(f"[mount] OK (sub) en {waited}s: {sub}", flush=True); break
+        if ASSETS: break
+    if ASSETS: break
+    if waited % 30 == 0: print(f"[mount] {waited}s...", flush=True)
+    time.sleep(10)
 if not ASSETS:
+    print(f"[mount] fallback {KAGGLE_INPUT}", flush=True)
     ASSETS = pathlib.Path(os.environ.get("ASSETS_DIR", "/kaggle/input/encuadre-assets"))
 
 OUT = WORK / "video_largo.mp4"
