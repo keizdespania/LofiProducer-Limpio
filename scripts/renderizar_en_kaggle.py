@@ -9,7 +9,7 @@ MEDIA = ROOT / "web" / "media" / "imagenes"
 MUSICA = ROOT / "output" / "musica_temp"
 KERNEL_SLUG = "keizproductions/render-encuadre"
 DS_OWNER = "keizproductions"
-DS_SLUG = "encuadre-assets-v2"  # ajustar si cuenta 2
+DS_SLUG = "encuadre-assets-v3"  # ajustar si cuenta 2
 
 
 def _preparar_assets(fecha, dest):
@@ -53,8 +53,10 @@ def _env_kaggle():
 def _subir_dataset(assets_dir, dataset_slug):
     """Sube assets a Kaggle Dataset vía CLI (kaggle datasets create/version)."""
     print(f"[orq] Preparando dataset {dataset_slug}...")
+    import datetime as _dt
+    _suffix = _dt.datetime.now().strftime("%Y%m%d_%H%M")
     meta = {
-        "title": "Encuadre Assets",
+        "title": f"Encuadre Assets {_suffix}",
         "id": dataset_slug,
         "licenses": [{"name": "CC0-1.0"}],
     }
