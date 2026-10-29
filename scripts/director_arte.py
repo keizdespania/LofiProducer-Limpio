@@ -11,18 +11,92 @@ MUSICA = ROOT / "output" / "musica_temp"
 VIDEOS = ROOT / "output" / "encuadre" / "videos"
 for d in [MEDIA, MERCH, MUSICA, VIDEOS]: d.mkdir(parents=True, exist_ok=True)
 
+
+# Traducción conceptual visual ES->EN (Coverr/Pexels buscan en inglés)
+_VISUAL_MAP = {
+    "redaccion":"newsroom", "periodico":"newspaper", "periodicos":"newspapers",
+    "escritorio":"office", "oficina":"office", "pantalla":"screen", "luces":"lights",
+    "ciudad":"city", "noche":"night", "calle":"street", "edificio":"building",
+    "gobierno":"government", "politica":"politics", "politico":"politician",
+    "justicia":"justice", "tribunal":"courthouse", "juez":"judge",
+    "dinero":"money", "economia":"economy", "banco":"bank",
+    "policia":"police", "coche":"car", "coches":"cars",
+    "manifestacion":"protest", "protesta":"protest", "gente":"people", "multitud":"crowd",
+    "papel":"paper", "documento":"document", "datos":"data", "grafico":"chart",
+    "cristal":"glass", "roto":"broken", "espejo":"mirror", "sombra":"shadow",
+    "vacio":"empty", "oscuridad":"darkness", "tenue":"dim", "brillante":"bright",
+    "animacion":"animation", "pastel":"cake", "tarta":"cake", "cuchillo":"knife",
+    "silla":"chair", "sala":"room", "experto":"expert", "entrevista":"interview",
+    "logotipo":"logo", "texto":"text", "cartel":"sign", "titular":"headline",
+    "rompecabezas":"puzzle", "piezas":"puzzle pieces", "numerico":"numeric",
+    "frenetico":"frenetic", "frenetica":"frenetic", "desordenado":"messy",
+    "intermitente":"flashing", "detalle":"closeup", "primer plano":"closeup",
+    "movimiento":"motion", "rapido":"fast", "lento":"slow", "camara":"camera",
+    "fondo":"background", "primer":"first", "central":"central",
+    "caida":"fall", "sistema":"system", "señal":"signal", "control":"control",
+    "ordenador":"computer", "portatil":"laptop", "television":"tv", "microfono":"microphone",
+    "audifonos":"headphones", "radio":"radio", "prensa":"press", "medios":"media",
+    "masculino":"man", "hombre":"man", "mujer":"woman", "persona":"person",
+}
+
+_SUSTANTIVOS_FUERTES = {"redaccion","periodico","periodicos","ciudad","calle","edificio",
+    "gobierno","policia","coche","coches","manifestacion","protesta","gente","multitud",
+    "documento","datos","cristal","espejo","pastel","tarta","cuchillo","silla","sala",
+    "experto","entrevista","logotipo","cartel","titular","rompecabezas","piezas",
+    "ordenador","television","microfono","radio","prensa","medios","pantalla",
+    "dinero","banco","juez","tribunal","justicia","politico","sombra","vacio","noche"}
+
+def _traducir_visual(concepto):
+    """Devuelve 1-2 palabras clave (sustantivos fuertes) para Coverr."""
+    c = concepto.lower()
+    hits = []
+    # 1ª pasada: solo sustantivos fuertes
+    for es, en in _VISUAL_MAP.items():
+        if es in _SUSTANTIVOS_FUERTES and es in c and en not in hits:
+            hits.append(en)
+    # 2ª pasada: si <1, cualquier término
+    if not hits:
+        for es, en in _VISUAL_MAP.items():
+            if es in c and en not in hits:
+                hits.append(en)
+    if not hits:
+        palabras = [w for w in c.replace(","," ").split() if len(w) > 5][:2]
+        hits = palabras if palabras else ["cinematic"]
+    return " ".join(hits[:2])  # máximo 2 palabras para Coverr
+
+_GENERIC_FALLBACK = ["city night", "office people", "dark cinematic", "government building", "money finance", "police cars", "newspaper"]
+
 def _descargar_video(concepto, salida):
     try:
         from descargar_videos_stock import buscar_coverr
-        res = buscar_coverr(concepto, 1)
+        query_en = _traducir_visual(concepto)
+        print(f"    traduccion: '{query_en}'", flush=True)
+        # Pedir 3 resultados y elegir por matches de tags
+        res = buscar_coverr(query_en, 3)
+        if res and len(res) > 1:
+            # Re-rank por cuántos términos de query están en tags/title
+            terms = query_en.lower().split()
+            def _score(r):
+                blob = (r.get("query","") + " " + str(r.get("titulo",""))).lower()
+                return sum(1 for t in terms if t in blob)
+            res = sorted(res, key=_score, reverse=True)
+            print(f"    rerank: {len(res)} hits -> '{res[0].get('titulo','')}'", flush=True)
+        if not res:
+            for fb in _GENERIC_FALLBACK:
+                print(f"    retry generico: '{fb}'", flush=True)
+                res = buscar_coverr(fb, 1)
+                if res: break
         if res:
             archivo = res[0]["archivo"]
             ruta = VIDEOS / archivo
             if ruta.exists():
                 shutil.copy2(ruta, salida)
                 return True
+            print(f"    no existe {ruta}", flush=True)
+        else:
+            print(f"    0 resultados incluso con fallback", flush=True)
     except Exception as e:
-        print(f"    video fail: {e}")
+        print(f"    video fail: {e}", flush=True)
     return False
 
 def _generar_imagen(concepto, salida):
