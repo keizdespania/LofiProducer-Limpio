@@ -57,7 +57,7 @@ def main():
         ("fase2_produccion.py", None, 1200, False),
         ("director_arte.py", None, 1800, True),
         ("voz_edge.py", None, 600, False),
-        ("renderizador.py", None, 3600, False)
+        ("renderizador_local.py", [fecha], 1800, False)
     ]
 
     for script, args, t, opcional in pasos:
