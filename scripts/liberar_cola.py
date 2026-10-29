@@ -1,5 +1,5 @@
 """liberar_cola.py - Publica los posts (web y blogger) cuando llega su hora."""
-import json, pathlib, datetime, shutil, sys
+import json, pathlib, datetime, shutil, subprocess, sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
@@ -24,10 +24,16 @@ def liberar():
             if item["tipo"] == "web":
                 src = COLA_WEB / item["filename"]
                 if src.exists():
+                    WEB_POSTS.mkdir(parents=True, exist_ok=True)
                     shutil.copy2(src, WEB_POSTS / item["filename"])
                     print(f"  🌐 Web: {item['filename']}")
+                    try:
+                        subprocess.run(["python3","scripts/generar_web_masiva.py","--actualizar-indice"], cwd=str(ROOT), capture_output=True, timeout=60)
+                    except Exception: pass
                     item["publicado"] = True
                     liberados += 1
+                else:
+                    print(f"  ⚠️ Web: no existe {src}")
             elif item["tipo"] == "blogger":
                 src = COLA_BLOGGER / item["filename"]
                 if src.exists():
