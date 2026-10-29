@@ -231,10 +231,38 @@ ROLES = {
 
 }
 
+# Config max_tokens por rol (tareas cortas vs largas)
+MAX_TOKENS_POR_ROL = {
+    "forense_medios": 600,
+    "analista_emocional": 400,
+    "detector_sesgos_cognitivos": 500,
+    "abogado_del_diablo": 400,
+    "predictor_viralidad": 300,
+    "seo_maestro": 800,
+    "analista_sentimiento": 500,
+    "verificador_factos": 800,
+    "detective_tendencias_v2": 1000,
+    "guionista_youtube_experto": 3500,
+    "guionista_retencion_v2": 3000,
+    "redactor_blog": 3500,
+    "arquitecto_contenido": 1500,
+    "disenador_visual": 1500,
+    "community_manager": 800,
+    "traductor_formatos": 1500,
+    "traductor_humanizado": 2000,
+    "bibliotecario_v2": 1500,
+    "director_inteligencia_v2": 2000,
+    "generador_titulos_ab": 1000,
+    "analista_competencia": 1000,
+}
+DEFAULT_MAX_TOKENS = 800
+
+
 def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
     import requests, pathlib
 
     rol = rol.lower()
+    _max_tok = MAX_TOKENS_POR_ROL.get(rol, DEFAULT_MAX_TOKENS)
     if rol not in ROLES:
         return "ERROR: Rol no existe."
 
@@ -262,7 +290,7 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
                         {"role": "system", "content": system},
                         {"role": "user", "content": prompt},
                     ],
-                    "max_tokens": 500,
+                    "max_tokens": _max_tok,
                     "temperature": 0.7
                 },
                 headers={
@@ -287,7 +315,13 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
 
     # 2. INTENTO CON OMNIROUTE (si proveedor != "groq")
     if omni_key and proveedor != "groq":
-        modelos = ["auto/best-fast","auto/chat"] if proveedor == "auto" else ["auto/best-fast","auto/chat","auto/best-reasoning"]
+        # Modelos por necesidad de tokens
+        if _max_tok >= 3000:
+            modelos = ["auto/best-reasoning", "auto/pro-reasoning", "auto/smart", "auto"]
+        elif _max_tok >= 1500:
+            modelos = ["auto/best-fast", "auto/best-reasoning", "auto/chat"]
+        else:
+            modelos = ["auto/best-fast", "auto/chat", "auto/fast"]
         for modelo in modelos:
             try:
                 r = requests.post(
@@ -298,7 +332,7 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
                             {"role": "system", "content": system},
                             {"role": "user", "content": prompt},
                         ],
-                        "max_tokens": 500,
+                        "max_tokens": _max_tok,
                         "temperature": 0.7
                     },
                     headers={"Authorization": f"Bearer {omni_key}"},
