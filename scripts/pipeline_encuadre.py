@@ -69,13 +69,13 @@ def main():
                 print(f"\n🛑 PIPELINE DETENIDO: {script} es CRÍTICO.", flush=True)
                 return
 
-    # LIMPIAR música externa (YouTube CC, Tunetank); conservar ACE-Step
-    _run("limpiar_musica_render.py", [fecha], 300, 1)
-
     video_path = OUT / f"video_largo_{fecha}.mp4"
     if not video_path.exists():
         print("\n🛑 PIPELINE DETENIDO: El vídeo largo no se generó.", flush=True)
         return
+
+    # LIMPIAR música externa (YouTube CC, Tunetank); conservar ACE-Step
+    _run("limpiar_musica_render.py", [fecha], 300, 1)
 
     # Render Shorts
     print("\n" + "="*60 + "\nRENDERIZANDO SHORTS CON ROT\n" + "="*60, flush=True)
