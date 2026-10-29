@@ -94,14 +94,21 @@ def preparar(fecha):
     # Generar imagen vertical para los shorts (9:16)
     short_bg = MEDIA / "short_bg_01.png"
     if not short_bg.exists():
-        print("  🖼️ Generando imagen vertical (9:16) para shorts...")
-        from generar_imagen import generar
-        r = generar("cinematic dark news analysis, vertical composition, dramatic lighting, no text", preset="cinematic", aspect="9:16", canal="encuadre")
-        if 'OK: ' in r:
-            ruta = r.split('OK: ')[1].split(' ')[0]
-            if pathlib.Path(ruta).exists():
-                shutil.copy2(ruta, short_bg)
-                print("  ✅ Imagen vertical creada")
+        print("  Generando short_bg 9:16...")
+        ok_bg = False
+        try:
+            from generar_imagen import generar
+            r = generar("cinematic dark news vertical composition, dramatic lighting, no text", preset="cinematic", aspect="9:16", canal="encuadre")
+            if "OK: " in r:
+                ruta = r.split("OK: ")[1].split(" ")[0]
+                if pathlib.Path(ruta).exists():
+                    shutil.copy2(ruta, short_bg); ok_bg = True
+                    print("  short_bg via SDXL")
+        except Exception as e:
+            print(f"  SDXL fallback: {e}")
+        if not ok_bg or not short_bg.exists():
+            subprocess.run(["ffmpeg","-y","-f","lavfi","-i","color=c=0x0a0a0f:s=1080x1920:d=1","-frames:v","1",str(short_bg)], capture_output=True)
+            print("  short_bg via FFmpeg (color)")
 
     prod.write_text(json.dumps(datos, indent=2, ensure_ascii=False))
     print(f"OK {len(escenas)} escenas preparadas")
