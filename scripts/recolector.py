@@ -1,5 +1,6 @@
 """recolector.py - Radar Global Definitivo (50+ medios, 15 TV, 15 Radio, Agencias)."""
 import sys, json, pathlib, datetime, re, urllib.request, subprocess
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime as dt, timedelta, timezone
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -148,52 +149,88 @@ def descargar_audio(video_id, nombre_medio):
     except Exception: pass
     return None
 
-def recolectar():
-    print(f"[recolector] Iniciando radar global...", flush=True)
-    datos = {"prensa": {}, "tv": {}, "radio": {}, "agencias": {}, "audios": []}
-    
-    # 1. Prensa
-    print("[recolector] Recogiendo prensa escrita...", flush=True)
-    for medio, url in MEDIOS_RSS.items():
-        noticias = extraer_rss(url)
-        if noticias: datos["prensa"][medio] = noticias; print(f"  ✅ {medio}: {len(noticias)}", flush=True)
-    
-    # 2. TV
-    print("\n[recolector] Recogiendo TV...", flush=True)
-    for medio, url in MEDIOS_TV.items():
-        videos = extraer_youtube(url)
-        if videos:
-            datos["tv"][medio] = videos
-            print(f"  ✅ {medio}: {len(videos)} vídeos", flush=True)
-            for v in videos:
-                audio = descargar_audio(v["id"], medio)
-                if audio:
-                    datos["audios"].append({"medio": medio, "video_id": v["id"], "titulo": v["titulo"], "audio": audio})
-                    print(f"     🎙️ Audio descargado", flush=True)
-                    
-    # 3. Radio
-    print("\n[recolector] Recogiendo Radio...", flush=True)
-    for medio, url in MEDIOS_RADIO.items():
-        videos = extraer_youtube(url)
-        if videos:
-            datos["radio"][medio] = videos
-            print(f"  ✅ {medio}: {len(videos)} vídeos", flush=True)
-            for v in videos:
-                audio = descargar_audio(v["id"], medio)
-                if audio:
-                    datos["audios"].append({"medio": medio, "video_id": v["id"], "titulo": v["titulo"], "audio": audio})
-                    print(f"     🎙️ Audio descargado", flush=True)
+def _rss_safe(medio_url):
+    medio, url = medio_url
+    try:
+        ns = extraer_rss(url, max_n=3)
+        return medio, ns
+    except Exception as e:
+        return medio, []
 
-    # 4. Agencias
-    print("\n[recolector] Recogiendo Agencias...", flush=True)
-    for medio, url in MEDIOS_AGENCIAS.items():
-        noticias = extraer_rss(url)
-        if noticias: datos["agencias"][medio] = noticias; print(f"  ✅ {medio}: {len(noticias)}", flush=True)
+
+def _procesar_youtube(medio, url):
+    try:
+        videos = extraer_youtube(url)
+        audios = []
+        for v in videos:
+            a = descargar_audio(v["id"], medio)
+            if a:
+                audios.append({"medio": medio, "video_id": v["id"], "titulo": v["titulo"], "audio": a})
+        return medio, videos, audios
+    except Exception as e:
+        print(f"  X {medio}: {e}", flush=True)
+        return medio, [], []
+
+
+def recolectar(rapido=False):
+    print(f"[recolector] Iniciando radar global{' (RAPIDO)' if rapido else ''}...", flush=True)
+    datos = {"prensa": {}, "tv": {}, "radio": {}, "agencias": {}, "audios": []}
+
+    # 1. Prensa (paralelo)
+    print("[recolector] Prensa escrita (paralelo)...", flush=True)
+    medios = list(MEDIOS_RSS.items())
+    if rapido: medios = medios[:8]
+    with ThreadPoolExecutor(max_workers=12) as ex:
+        futs = {ex.submit(_rss_safe, (m,u)): m for m,u in medios}
+        for f in as_completed(futs):
+            medio, ns = f.result()
+            if ns:
+                datos["prensa"][medio] = ns
+                print(f"  OK {medio}: {len(ns)}", flush=True)
+
+    # 2. TV (paralelo, salvo rapido)
+    if not rapido:
+        print("\n[recolector] TV (paralelo)...", flush=True)
+        with ThreadPoolExecutor(max_workers=6) as ex:
+            futs = [ex.submit(_procesar_youtube, m, u) for m,u in MEDIOS_TV.items()]
+            for f in as_completed(futs):
+                medio, vids, auds = f.result()
+                if vids:
+                    datos["tv"][medio] = vids
+                    datos["audios"].extend(auds)
+                    print(f"  OK {medio}: {len(vids)} videos, {len(auds)} audios", flush=True)
+
+        # 3. Radio (paralelo)
+        print("\n[recolector] Radio (paralelo)...", flush=True)
+        with ThreadPoolExecutor(max_workers=6) as ex:
+            futs = [ex.submit(_procesar_youtube, m, u) for m,u in MEDIOS_RADIO.items()]
+            for f in as_completed(futs):
+                medio, vids, auds = f.result()
+                if vids:
+                    datos["radio"][medio] = vids
+                    datos["audios"].extend(auds)
+                    print(f"  OK {medio}: {len(vids)} videos, {len(auds)} audios", flush=True)
+
+    # 4. Agencias (paralelo)
+    print("\n[recolector] Agencias (paralelo)...", flush=True)
+    ags = list(MEDIOS_AGENCIAS.items())
+    if rapido: ags = ags[:3]
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        futs = {ex.submit(_rss_safe, (m,u)): m for m,u in ags}
+        for f in as_completed(futs):
+            medio, ns = f.result()
+            if ns:
+                datos["agencias"][medio] = ns
+                print(f"  OK {medio}: {len(ns)}", flush=True)
 
     ts = dt.now().strftime("%Y-%m-%d")
     out_json = ROOT / "output" / "encuadre" / f"recoleccion_{ts}.json"
     out_json.write_text(json.dumps(datos, indent=2, ensure_ascii=False))
-    print(f"\n[recolector] ✅ Guardado en {out_json} ({len(datos['audios'])} audios)", flush=True)
+    print(f"\n[recolector] OK {out_json} ({len(datos['audios'])} audios)", flush=True)
 
+
+if __name__ == "__main__":
+    rapido = "--rapido" in sys.argv
+    recolectar(rapido=rapido)
 if __name__ == "__main__":
     recolectar()
