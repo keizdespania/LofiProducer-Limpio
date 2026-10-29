@@ -10,7 +10,7 @@ def buscar_y_descargar(query, max_results=1):
     q = urllib.parse.quote(query)
     url_busqueda = f"https://www.youtube.com/results?search_query={q}&sp=EgIwAQ%253D%253D"
     
-    cmd_ids = ["yt-dlp", url_busqueda, "--flat-playlist", "--print", "%(id)s|%(title)s|%(duration)s", "--playlist-end", "3", "--no-warnings", "--no-check-certificates", "--extractor-args", "youtube:skip=hls,dash"]
+    cmd_ids = ["yt-dlp", url_busqueda, "--flat-playlist", "--print", "%(id)s|%(title)s|%(duration)s", "--playlist-end", "3", "--no-warnings", "--no-part", "--socket-timeout", "15", "--no-check-certificates", "--extractor-args", "youtube:skip=hls,dash"]
     try:
         r = subprocess.run(cmd_ids, capture_output=True, text=True, timeout=60)
         lineas = r.stdout.strip().splitlines()
@@ -41,7 +41,7 @@ def buscar_y_descargar(query, max_results=1):
         nombre = f"yt_cc_{vid_id}.mp3"
         destino = OUT / nombre
         if not destino.exists():
-            cmd_dl = ["yt-dlp", url_video, "-x", "--audio-format", "mp3", "--audio-quality", "0", "-o", str(destino.with_suffix("")), "--no-warnings", "--max-filesize", "30M"]
+            cmd_dl = ["yt-dlp", url_video, "-x", "--audio-format", "mp3", "--audio-quality", "5", "-o", str(destino.with_suffix("")), "--no-warnings", "--no-part", "--socket-timeout", "15", "--max-filesize", "150M"]
             subprocess.run(cmd_dl, capture_output=True, timeout=180)
         
         if destino.exists():
