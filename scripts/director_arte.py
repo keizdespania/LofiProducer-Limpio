@@ -136,8 +136,10 @@ def preparar(fecha):
         print("No hay escenas"); return
 
     print(f"Director de Arte: {len(escenas)} escenas")
+    _SOLO_SDXL = True  # RUTA A: solo imagenes SDXL
     for e in escenas:
         num = e["id"]
+        if _SOLO_SDXL: e["tipo_visual"] = "imagen"
         tipo = e.get("tipo_visual", "imagen")
         concepto = e.get("concepto_visual", "abstract")
         mood = e.get("mood_musical", "relax")

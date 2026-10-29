@@ -55,16 +55,15 @@ def producir_fase2(fecha=None):
     
     # Intentar con el LLM
     _PROMPT_GUION = (
-        'Devuelve EXCLUSIVAMENTE un JSON: {"escenas":[{"id":1,"texto":"NARRACION","concepto_visual":"DESCRIPCION VISUAL","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"video|imagen"}]}. '
-        'REGLAS CRITICAS: '
-        '(1) EXACTAMENTE 18 escenas. '
-        '(2) "texto" = SOLO la narración que dice el locutor en voz alta, como si fuera un monólogo periodístico. PRIMERA PERSONA o impersonal. '
-        'PROHIBIDO en "texto": "El video abre con", "Vemos", "Se ve", "Plano de", "Imagen de", "Corte a", "Fundido", "Voz en off dice:", "La cámara", "La escena muestra", cualquier descripción visual o acotación de montaje. '
-        'EJEMPLO BUENO "texto": "Mientras el ciudadano español se levanta, una tormenta mediática sacude a la vecina Francia. Los titulares gritan fraude, pero nadie muestra las pruebas." '
-        'EJEMPLO MALO "texto": "El video abre con vista aérea de París, la cámara se desliza sobre los periódicos, una voz en off dice..." '
-        '(3) "concepto_visual" = descripción para el generador de imágenes (ej: "vista aérea París amanecer, titulares rojos"). '
-        '(4) Cada "texto" 80-100 palabras, total mínimo 1450. '
-        '(5) NO markdown, SOLO JSON.'
+        'Devuelve EXCLUSIVAMENTE un JSON: {"escenas":[{"id":1,"texto":"NARRACION","concepto_visual":"DESC VISUAL","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"imagen"}]}. '
+        'ERES UN PROFESOR DE COMUNICACION. Enseñas como los medios usan tecnicas de framing, sesgos y encuadres. '
+        'NO acusas, NO haces politica, NO criticas gobiernos. EDUCAS con ejemplos concretos. '
+        'ESTRUCTURA por escena: dato/ejemplo -> tecnica usada -> "esto es lo que deberias observar". '
+        'TONO: analitico, calmado, profesor universitario. Sin alarmismo. Sin "intriga". Sin "manipulacion" como insulto. '
+        'REGLAS: (1) 18 escenas exactas. (2) "texto" = 80-100 palabras de NARRACION PURA (primera persona o impersonal). '
+        'PROHIBIDO: "El video abre", "Vemos", "Corte a", "Voz en off dice", descripciones visuales, acotaciones. '
+        '(3) "concepto_visual" = descripcion LITERAL para SDXL (ej: "Periodicos franceses apilados, primer plano, luz dramatica"). '
+        '(4) Total minimo 1450 palabras. (5) SOLO JSON.'
     )
     try:
         resp = pedir_a_especialista("guionista_youtube_experto", _PROMPT_GUION,
