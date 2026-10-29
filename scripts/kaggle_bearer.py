@@ -78,13 +78,13 @@ def estado_kernel(slug):
     # Si ambas fallan, devolvemos el error de la cuenta 1
     return r1
 
-def push_kernel(slug, codigo, enable_gpu=True, enable_internet=True):
+def push_kernel(slug, codigo, enable_gpu=True, enable_internet=True, dataset_sources=None):
     """Intenta subir a la cuenta 1. Si esta llena (max 2 GPUs), usa la cuenta 2."""
     payload = {
         "slug": slug, "newTitle": slug.split("/")[-1].replace("-", " ").title(),
         "text": codigo, "language": "python", "kernelType": "script",
         "isPrivate": True, "enableGpu": enable_gpu, "enableTpu": False,
-        "enableInternet": enable_internet, "datasetDataSources": [],
+        "enableInternet": enable_internet, "datasetDataSources": dataset_sources or [],
         "competitionDataSources": [], "kernelDataSources": [],
     }
     
