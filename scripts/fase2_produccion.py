@@ -22,6 +22,25 @@ def _limpiar_html(texto):
     if not texto: return ""
     return re.sub(r'```(?:html|json)?', '', texto, flags=re.IGNORECASE).replace('```', '').strip()
 
+
+def _analisis_medios_para_guionista():
+    import json as _j, pathlib as _p, datetime as _dt
+    fecha = _dt.date.today().isoformat()
+    af = _p.Path(__file__).resolve().parent.parent / 'output' / 'encuadre' / ('analisis_fase1_' + fecha + '.json')
+    if not af.exists(): return ''
+    try:
+        d = _j.loads(af.read_text())
+        lineas = []
+        for medio, items in (d.get('analisis') or {}).items():
+            for it in items:
+                if isinstance(it, dict) and it.get('framing'):
+                    tit = it.get('titular_traducido') or it.get('titular_real') or ''
+                    lineas.append('[' + medio + '] ' + tit[:80] + ' | framing: ' + it.get('framing','')[:60])
+        return chr(10).join(lineas[:35])
+    except Exception:
+        return ''
+
+
 def producir_fase2(fecha=None):
     fecha = fecha or datetime.date.today().isoformat()
     dossier_file = OUT / f"dossier_{fecha}.json"
