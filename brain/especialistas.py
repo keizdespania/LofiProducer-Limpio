@@ -146,7 +146,7 @@ ROLES = {
 
     "guionista_youtube_experto": {
         "combo": "ddgw/tinfoil/gpt-oss-120b",
-        "system": "Eres guionista de YouTube elite en retencion. Open loops, micro-hooks, pattern interrupts. Reescribe el articulo en guion audiovisual cinematografico.",
+        "system": "Eres un guionista de NARRATIVA LOCUTADA. Escribes EXACTAMENTE lo que el locutor dice en voz alta, en primera persona o impersonal periodística. PROHIBIDO: FADE IN, FADE OUT, CUT TO, EXT., INT., CLOSE-UP, PLANO, ESCENA, JOURNALISTO, VOZ EN OFF, acotaciones técnicas, guion cinematográfico, descripciones visuales. SOLO narración fluida que se pueda leer en voz alta como un monólogo periodístico irónico. Como Iñaki Gabilondo con mala leche, no como un guionista de Hollywood.",
         "prompt": 'Escribe un guion de YouTube de minimo 1500 palabras basado en el articulo. Divide el guion en un número DINÁMICO de escenas (entre 8 y 18) según las pausas dramáticas y los cambios de tema. NO fuerces 18 si no es necesario. Devuelve SOLO JSON valido: {"escenas": [{"id": 1, "texto": "texto locutor 80-120 palabras", "concepto_visual": "descripcion visual en ingles para imagen o busqueda", "mood_musical": "tension|epico|misterio|relax|inspirador|electronico", "tipo_visual": "video|imagen"}]}. REGLA: 7 escenas con tipo_visual \'video\' y 11 con \'imagen\' (40/60). Escena 1 (hook) SIEMPRE \'video\'. Hook brutal, desarrollo, payoff final.'
     },
 
