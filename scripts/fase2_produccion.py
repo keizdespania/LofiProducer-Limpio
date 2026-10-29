@@ -88,26 +88,6 @@ def producir_fase2(fecha=None):
                 "tipo_visual": "video" if i == 0 or i % 3 == 0 else "imagen"
             })
         print(f"   ✅ {len(escenas)} escenas generadas", flush=True)
-    elif len(escenas) < 5:
-        print("   Fallback: dividiendo articulo en escenas dinámicas (8-18)", flush=True)
-        texto = re.sub(r'<[^>]+>', ' ', articulo)
-        texto = re.sub(r'\s+', ' ', texto).strip()
-        palabras = texto.split()
-        chunk = 150
-        num_escenas = max(8, min(18, len(palabras) // chunk))
-        moods = ["tension", "misterio", "epico", "inspirador", "electronico", "relax"]
-        for i in range(num_escenas):
-            ini = i * chunk
-            fin_i = min(len(palabras), (i+1) * chunk)
-            if ini >= len(palabras): break
-            escenas.append({
-                "id": i + 1,
-                "texto": " ".join(palabras[ini:fin_i]),
-                "concepto_visual": "cinematic dark news analysis about " + str(dossier.get("tema_del_dia", "analysis")) + ", abstract",
-                "mood_musical": moods[i % len(moods)],
-                "tipo_visual": "video" if i == 0 or i % 3 == 0 else "imagen"
-            })
-
     # CAPA 4: Gate de Sentimiento
     print("[fase2] Analizando temperatura emocional...", flush=True)
     sent = _parse_json_seguro(pedir_a_especialista("analista_sentimiento", "Analiza el tono", contexto=ctx[:2000]))
