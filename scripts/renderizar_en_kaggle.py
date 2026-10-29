@@ -25,10 +25,18 @@ def _preparar_assets(fecha, dest):
         mus = MUSICA / f"escena_{n:02d}.mp3"
         if mus.exists(): shutil.copy2(mus, dest / mus.name)
         else: faltan.append(f"escena_{n:02d}.mp3")
-    for f in ("voz_largo_", "intro", "outro"):
-        for ext in ("mp3", "ass", "mp4"):
-            src = OUT / f"{f}{fecha}.{ext}" if f == "voz_largo_" else OUT / f"{f}.{ext}"
-            if src.exists(): shutil.copy2(src, dest / src.name)
+    # Voz (renombrar a voz_largo.mp3/.ass como espera el kernel)
+    for ext in ("mp3", "ass"):
+        src = OUT / f"voz_largo_{fecha}.{ext}"
+        if src.exists():
+            shutil.copy2(src, dest / f"voz_largo.{ext}")
+            print(f"  voz_largo.{ext} <- {src.name}", flush=True)
+    # Intro/outro (mismo nombre)
+    for f in ("intro", "outro"):
+        src = OUT / f"{f}.mp4"
+        if src.exists():
+            shutil.copy2(src, dest / f"{f}.mp4")
+            print(f"  {f}.mp4 <- {src.name}", flush=True)
     shutil.copy2(OUT / f"timeline_{fecha}.json", dest / "timeline.json")
     if faltan: print(f"⚠️ Faltan {len(faltan)} audios: {faltan[:3]}")
     return dest
