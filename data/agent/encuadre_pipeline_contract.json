@@ -1,6 +1,6 @@
 {
   "nombre": "Somos El Encuadre - Pipeline Top 1 Mundial",
-  "version": "5.0",
+  "version": "5.1",
   "fecha_actualizacion": "2026-10-29",
   "descripcion": "Pipeline cinematográfico multi-formato con guion top-1 (cita medios reales + ironía + autoridad), voz humanizada Álvaro (3 capas), música YouTube CC con atribución, render robusto 4 pasadas con auto-recovery, distribución multi-canal y limpieza post-render.",
   "arquitectura": {
@@ -138,15 +138,30 @@
     "test_sanitizador": "python3 -c \"import sys; sys.path.insert(0,'scripts'); from analista_fase1 import _sanitizar_top3; print(_sanitizar_top3({'noticia_1':'vida y llanto morgue','noticia_2':'BCE tipos','noticia_3':'morgue'}, ['BCE tipos','Macron calma','Sánchez medidas']))\""
   },
   "bugs_resueltos_2026_10_29": [
-    "Filtro Urda: morgue/llanto/funeral/duelo/via dolorosa",
-    "Sanitizador top3 duplicados: Jaccard dedupe",
-    "Helper _analisis_medios_para_guionista reescrito sin escapes rotos",
-    "voz_edge f-string concat roto: reescrita asegurar_duracion",
-    "Render colgado amix 19 inputs: 4 pasadas A/B/C/D + auto-recovery",
-    "Video mudo sin música: lofi_largo concat + amix itsoffset",
-    "Coverr irrelevante: SDXL-only con concepto EN",
-    "Música repetida: rotación + queries instrumentales",
-    "Voz atropellada: 3 capas humanización",
-    "Guion genérico: prompt top-1 cita medios + saludo variable + fecha"
-  ]
+    "Sanitizador top3 dedupe Jaccard",
+    "Filtro Urda +25 patrones",
+    "Filtro deportes",
+    "Guionista no inventa",
+    "Guionista distribucion 5x5x5",
+    "Guionista narrativa locutada (no FADE IN)",
+    "Redactor markdown no HTML",
+    "Articulo 1500 palabras (max_tokens 3500)",
+    "OmniRoute modelos por longitud",
+    "Sintetizador proveedor fuera json.dumps",
+    "Viralidad omni forzado",
+    "Hooks 20 con score + heuristico",
+    "Render robusto 4 pasadas A/B/C/D",
+    "Voz humanizada 3 capas",
+    "Intro/outro con logo",
+    "Musica YouTube CC prioritario + atribucion",
+    "Limpieza post-render + archivo ACE-Step",
+    "Queries instrumentales (evita ingles de fondo)"
+  ],
+  "reglas_nuevas": {
+    "REGLA 24": "max_tokens variable por rol",
+    "REGLA 25": "OmniRoute modelos por longitud (>3000 reasoning)",
+    "REGLA 26": "System del rol manda sobre prompt",
+    "REGLA 27": "Redactor/guionista NUNCA HTML",
+    "REGLA 28": "git checkout si 3+ parches encadenados"
+  }
 }
