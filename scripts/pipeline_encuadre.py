@@ -184,7 +184,24 @@ def main():
     manana = (hoy_dt + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
 
     pub_v = max(hoy_dt.replace(hour=18, minute=0), ahora + datetime.timedelta(hours=1))
-    _subir_youtube(str(video_path), f"Vídeo Largo {fecha}", "Análisis completo.", publish_at=pub_v.strftime('%Y-%m-%dT%H:%M:%SZ'))
+    # BRANCH: predictor_viralidad decide si publicar
+    _viral = {}
+    if prod_file.exists():
+        try: _viral = json.loads(prod_file.read_text()).get("viralidad", {})
+        except: pass
+    _score = _viral.get("score", 0) if isinstance(_viral, dict) else 0
+    _umbral = 50
+    if _score >= _umbral:
+        print(f"   Viralidad {_score}/100 >= {_umbral} -> PUBLICAR YouTube", flush=True)
+        _subir_youtube(str(video_path), f"Vídeo Largo {fecha}", "Análisis completo.", publish_at=pub_v.strftime('%Y-%m-%dT%H:%M:%SZ'))
+    else:
+        print(f"   Viralidad {_score}/100 < {_umbral} -> NO publicar (cola evergreen)", flush=True)
+        try:
+            _cola = ROOT / "data" / "agent" / "cola_evergreen.jsonl"
+            _cola.parent.mkdir(parents=True, exist_ok=True)
+            with open(_cola, "a") as f:
+                f.write(json.dumps({"fecha": fecha, "score": _score, "video": str(video_path)}) + "\n")
+        except Exception as e: print(f"   cola error: {e}", flush=True)
 
     for i, short in enumerate(shorts):
         num = i+1
@@ -196,6 +213,9 @@ def main():
                 base = hoy_dt.replace(hour=13, minute=0) + datetime.timedelta(days=1)
                 pub_at = max(base, ahora + datetime.timedelta(hours=1)) + datetime.timedelta(hours=(num-3)*0.5)
             _subir_youtube(str(s_path), f"Short {num} {fecha}", "Análisis rápido.", publish_at=pub_at.strftime('%Y-%m-%dT%H:%M:%SZ'))
+
+    _run("community_manager_auto.py", [fecha], 300, 1)
+    _run("detector_tendencias_vivas.py", [fecha], 300, 1)
 
     try:
         subprocess.run(["termux-notification", "-t", "🎬 Encuadre " + fecha, "-c", "Pipeline completado.", "--priority", "high"], check=False)
@@ -211,6 +231,14 @@ def main():
     # CAPA 1/3: Mantenimiento
     _run("monitor_salud.py", None, 300, 1)
     _run("rollback_auto.py", None, 300, 1)
+
+    import datetime as _dt
+    if _dt.date.today().weekday() == 6:
+        print("\n[domingo] Feedback loop + meta-agentes...", flush=True)
+        _run("analytics_youtube.py", None, 600, 1)
+        _run("auto_ajuste_prompts.py", None, 600, 1)
+        _run("rotador_ab.py", None, 300, 1)
+        _run("meta_agentes_semanal.py", None, 900, 1)
 
     print(f"\n✅ PIPELINE MASIVO {fecha} COMPLETADO CON ÉXITO")
 
