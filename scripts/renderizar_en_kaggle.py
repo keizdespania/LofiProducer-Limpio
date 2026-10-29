@@ -9,7 +9,7 @@ MEDIA = ROOT / "web" / "media" / "imagenes"
 MUSICA = ROOT / "output" / "musica_temp"
 KERNEL_SLUG = "keizproductions/render-encuadre"
 DS_OWNER = "keizproductions"
-DS_SLUG = "encuadre-assets"  # ajustar si cuenta 2
+DS_SLUG = "encuadre-assets-v2"  # ajustar si cuenta 2
 
 
 def _preparar_assets(fecha, dest):
