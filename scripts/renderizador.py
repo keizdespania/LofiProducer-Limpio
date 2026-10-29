@@ -3,8 +3,8 @@ import json, pathlib, subprocess, sys, argparse
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
-MEDIA = OUT / "media"
-MUSICA = OUT / "musica"
+MEDIA = ROOT / "web" / "media" / "imagenes"
+MUSICA = ROOT / "output" / "musica_temp"
 
 
 def _generar_intro_outro():
