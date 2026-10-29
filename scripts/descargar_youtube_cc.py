@@ -15,7 +15,7 @@ def buscar_y_descargar(query, max_results=1):
     # 1. Buscar IDs de tracks (filtrando por duración 60-360s)
     cmd_ids = [
         "yt-dlp", url_busqueda, "--flat-playlist", "--print", "%(id)s|%(title)s|%(duration)s",
-        "--playlist-end", "5", "--no-warnings"
+        "--playlist-end", "3", "--no-warnings", "--no-check-certificates", "--extractor-args", "youtube:skip=hls,dash"
     ]
     try:
         r = subprocess.run(cmd_ids, capture_output=True, text=True, timeout=60)
@@ -31,19 +31,21 @@ def buscar_y_descargar(query, max_results=1):
         # Filtrar por duración (entre 60 y 360 segundos)
         try:
             dur = int(float(duracion))
-            if dur < 60 or dur > 360: continue
+            if dur < 180: continue  # minimo 3 min, sin maximo
         except: continue
         
         url_video = f"https://www.youtube.com/watch?v={vid_id}"
         
         # 2. Verificar licencia
-        cmd_info = ["yt-dlp", url_video, "--print", "%(license)s|%(uploader)s", "--skip-download", "--no-warnings"]
+        cmd_info = ["yt-dlp", url_video, "--print", "%(license)s|%(uploader)s|%(description)s", "--skip-download", "--no-warnings"]
         r_info = subprocess.run(cmd_info, capture_output=True, text=True, timeout=30)
         if r_info.returncode != 0: continue
         info = r_info.stdout.strip().split("|")
         if len(info) < 2: continue
         licencia, uploader = info[0], info[1]
-        if "Creative Commons" not in licencia: continue
+        _desc = info[2] if len(info) > 2 else ""
+        _es_cc = ("Creative Commons" in licencia or "Creative Commons" in _desc or "CC BY" in _desc or "cc by" in _desc.lower() or "creative commons" in _desc.lower())
+        if not _es_cc: continue
         
         print(f"  ✅ CC: {titulo[:40]}... ({dur}s)")
         nombre = f"yt_cc_{vid_id}.mp3"
