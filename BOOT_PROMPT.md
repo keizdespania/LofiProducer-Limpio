@@ -594,3 +594,12 @@ Preview · Distribución · Monetización · Analytics · A/B Testing · Calenda
 5 reglas nuevas: #24 max_tokens variable, #25 OmniRoute por longitud, #26 system manda, #27 redactor/guionista nunca HTML, #28 git checkout si 3+ parches.
 
 Estado: pipeline hasta render OK. Pendiente: 72 imágenes cada 10s (segmentar_imagenes.py), distribución completa.
+
+
+## 🏭 ESTRATEGIA VERTICALES + YOUTUBE MONETIZACIÓN
+
+> Ver documento completo: `ROADMAP_VERTICALES.md`
+> 12 verticales, investigación 3 capas, roadmap 9 meses, cron realista (NO 12 vídeos/día).
+> Regla de oro: 1 largo + 2-3 shorts + 12 web + 5 blogger + 4 redes/día.
+> YPP 2026: 1.000 subs + (4.000h O 10M Shorts).
+> Verticales flagship: Cultura/Medios META + Política + Tecnología/IA.
