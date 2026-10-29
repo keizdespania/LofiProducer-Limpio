@@ -9,10 +9,23 @@ TMP.mkdir(parents=True, exist_ok=True)
 VOZ = "es-ES-AlvaroNeural"
 
 def _limpiar(texto):
+    # Acotaciones entre corchetes/paréntesis/llaves
     texto = re.sub(r'\[.*?\]', '', texto)
     texto = re.sub(r'\(.*?\)', '', texto)
     texto = re.sub(r'\{.*?\}', '', texto)
-    for w in ["fade out", "fade in", "fin", "corte", "silencio"]:
+    # Frases de montaje típicas del LLM
+    _PATRONES = [
+        r'El video (abre|empieza|cierra|termina) con[^.]*\.?\s*',
+        r'(La c[áa]mara|El plano|La escena|El montaje|El vídeo)[^.]*\.?\s*',
+        r'Corte a[^.]*\.?\s*',
+        r'Fundido a[^.]*\.?\s*',
+        r'(Vemos|Se ve|Se muestra|Se observa)[^.]*\.?\s*',
+        r'Una voz en off (dice|narra)[:\s]*[“\"]?[^”\"]*[”\"]?\s*',
+        r'^[A-ZÁÉÍÓÚÑ ]{4,}:\s*',
+    ]
+    for pat in _PATRONES:
+        texto = re.sub(pat, '', texto, flags=re.IGNORECASE | re.MULTILINE)
+    for w in ["fade out", "fade in", "fin", "silencio"]:
         texto = re.sub(r'\b' + w + r'\b', '', texto, flags=re.IGNORECASE)
     texto = re.sub(r'[*_#\`>]', '', texto)
     texto = re.sub(r'\s+', ' ', texto)

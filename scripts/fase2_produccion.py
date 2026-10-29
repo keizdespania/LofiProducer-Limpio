@@ -55,10 +55,16 @@ def producir_fase2(fecha=None):
     
     # Intentar con el LLM
     _PROMPT_GUION = (
-        'Devuelve EXCLUSIVAMENTE un JSON: {"escenas":[{"id":1,"texto":"...","concepto_visual":"...","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"video|imagen"}]}. '
-        'REGLAS: (1) EXACTAMENTE 18 escenas. (2) Cada texto 80-100 palabras (nunca menos de 80). '
-        '(3) Total minimo: 1450 palabras. Si tu respuesta suma menos, será RECHAZADA. '
-        '(4) NO markdown, NO explicaciones, SOLO JSON. Objetivo: 10-11 min de narración.'
+        'Devuelve EXCLUSIVAMENTE un JSON: {"escenas":[{"id":1,"texto":"NARRACION","concepto_visual":"DESCRIPCION VISUAL","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"video|imagen"}]}. '
+        'REGLAS CRITICAS: '
+        '(1) EXACTAMENTE 18 escenas. '
+        '(2) "texto" = SOLO la narración que dice el locutor en voz alta, como si fuera un monólogo periodístico. PRIMERA PERSONA o impersonal. '
+        'PROHIBIDO en "texto": "El video abre con", "Vemos", "Se ve", "Plano de", "Imagen de", "Corte a", "Fundido", "Voz en off dice:", "La cámara", "La escena muestra", cualquier descripción visual o acotación de montaje. '
+        'EJEMPLO BUENO "texto": "Mientras el ciudadano español se levanta, una tormenta mediática sacude a la vecina Francia. Los titulares gritan fraude, pero nadie muestra las pruebas." '
+        'EJEMPLO MALO "texto": "El video abre con vista aérea de París, la cámara se desliza sobre los periódicos, una voz en off dice..." '
+        '(3) "concepto_visual" = descripción para el generador de imágenes (ej: "vista aérea París amanecer, titulares rojos"). '
+        '(4) Cada "texto" 80-100 palabras, total mínimo 1450. '
+        '(5) NO markdown, SOLO JSON.'
     )
     try:
         resp = pedir_a_especialista("guionista_youtube_experto", _PROMPT_GUION,
@@ -66,6 +72,27 @@ def producir_fase2(fecha=None):
         d = _parse_json_seguro(resp)
         if isinstance(d, dict) and "escenas" in d:
             escenas = d["escenas"]
+            # Sanitizer: eliminar frases de montaje que se cuelen
+            import re as _re
+            _PATRONES_MONTAJE = [
+                r'El video (abre|empieza|cierra|termina) con [^.]*\.\s*',
+                r'(La c[áa]mara|El plano|La escena|El montaje)[^.]*\.\s*',
+                r'Corte a [^.]*\.\s*',
+                r'Fundido a [^.]*\.\s*',
+                r'(Vemos|Se ve|Se muestra|Se observa) [^.]*\.\s*',
+                r'Una voz en off (dice|narra):?\s*[“\"]?',
+                r'\[.*?\]', r'\(.*?\)',
+                r'^[A-ZÁÉÍÓÚÑ ]{4,}:\s*',
+            ]
+            for e in escenas:
+                t_orig = e.get("texto", "")
+                t_clean = t_orig
+                for pat in _PATRONES_MONTAJE:
+                    t_clean = _re.sub(pat, '', t_clean, flags=_re.MULTILINE)
+                t_clean = _re.sub(r'\s+', ' ', t_clean).strip()
+                if t_clean and len(t_clean) > 20:
+                    e["texto"] = t_clean
+            print(f"   sanitizadas {len(escenas)} escenas (montaje→narración)", flush=True)
         elif isinstance(d, list):
             escenas = d
         print(f"   Escenas generadas por LLM: {len(escenas)}", flush=True)
