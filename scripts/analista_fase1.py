@@ -22,16 +22,30 @@ def _parse_json_seguro(texto):
     return {}
 
 
-def _sanitizar_top3(top3, titulares_disponibles):
-    """Sustituye items del top3 con temas trágicos por alternativas seguras."""
+def _es_malo(txt):
+    """Detecta si un titular es trágico."""
+    if not txt: return False
     try:
         from filtro_seguridad import PAT as _FP
-        CRIT = _FP["critica"] + _FP["moderada"]
+        patrones = _FP["critica"] + _FP["moderada"]
     except Exception:
-        CRIT = [r"\bmuert", r"\basesin", r"\btiroteo", r"\bsiniestro", r"\btragedia", r"\bse[nñ]alizaci"]
-    def _malo(txt):
-        s = (txt or "").lower()
-        return any(re.search(p, s) for p in CRIT)
+        patrones = [r"\bmuert", r"\basesin", r"\btiroteo", r"\bsiniestro",
+                    r"\btragedia", r"\bse[nñ]alizaci", r"\bmorgue\b", r"\bllanto\b"]
+    s = txt.lower()
+    return any(re.search(p, s) for p in patrones)
+
+
+def _similares(a, b):
+    """Jaccard: mismo tema con palabras distintas."""
+    wa = set(a.lower().split())
+    wb = set(b.lower().split())
+    if not wa or not wb: return False
+    return len(wa & wb) / len(wa | wb) > 0.5
+
+
+def _sanitizar_top3(top3, titulares_disponibles):
+    """Sustituye tragedias + dedupe semántico. SIEMPRE devuelve 3 únicos."""
+    # 1. Extraer items
     items = []
     if isinstance(top3, dict):
         if "top3" in top3 and isinstance(top3["top3"], list):
@@ -40,51 +54,42 @@ def _sanitizar_top3(top3, titulares_disponibles):
         else:
             for k in sorted(top3.keys()):
                 v = top3[k]
-                items.append(v if isinstance(v, str) else (v.get("titulo") if isinstance(v,dict) else str(v)))
+                items.append(v if isinstance(v, str) else (v.get("titulo") if isinstance(v, dict) else str(v)))
     elif isinstance(top3, list):
         for it in top3:
             items.append(it.get("titulo") or it.get("title") or str(it))
-    # Rellenar hasta 3 con candidatos limpios si faltan
-    while len(items) < 3:
-        for cand in titulares_disponibles:
-            if cand and cand not in items and not _malo(cand):
-                items.append(cand); break
-        else:
-            items.append(f"Tema alternativo {len(items)+1}")
-        if len(items) >= 3: break
-    subs = 0
-    usados = set()
-    # Marcar los que ya están bien como usados
-    for t0 in items:
-        if t0 and not _malo(t0):
-            usados.add(t0)
-    # Sustituir los malos por candidatos ÚNICOS
-    for i, t0 in enumerate(items):
-        if _malo(t0):
-            for cand in titulares_disponibles:
-                if cand and cand not in usados and not _malo(cand):
-                    items[i] = cand
-                    usados.add(cand)
-                    subs += 1
-                    break
-    # Si aún quedan malos sin sustituir -> eliminar
-    items = [x for x in items if x and not _malo(x)]
-    # Rellenar hasta 3 con limpios ÚNICOS
+
+    # 2. Filtrar trágicos
+    items = [x for x in items if x and not _es_malo(x)]
+
+    # 3. Rellenar con limpios (sin trágicos)
     for cand in titulares_disponibles:
         if len(items) >= 3: break
-        if cand and cand not in usados and not _malo(cand):
+        if cand and not _es_malo(cand):
             items.append(cand)
-            usados.add(cand)
-    # Si aún faltan, rellenar con temas genéricos únicos
-    _GENERICOS = ['Actualidad nacional', 'Política', 'Economía', 'Sociedad', 'Internacional']
+
+    # 4. Dedupe semántico
+    unicos = []
+    for it in items:
+        if not any(_similares(it, u) for u in unicos):
+            unicos.append(it)
+    for cand in titulares_disponibles:
+        if len(unicos) >= 3: break
+        if cand and not _es_malo(cand) and not any(_similares(cand, u) for u in unicos):
+            unicos.append(cand)
+
+    # 5. Relleno genérico si no hay 3
+    _GENERICOS = ["Actualidad nacional", "Política", "Economía", "Sociedad", "Internacional"]
     for g in _GENERICOS:
-        if len(items) >= 3: break
-        if g not in items: items.append(g)
-    if subs: print(f'[fase1] sanitizados {subs} items del top3', flush=True)
-    return {f'noticia_{i+1}': t0 for i, t0 in enumerate(items[:3])}
+        if len(unicos) >= 3: break
+        if not any(_similares(g, u) for u in unicos):
+            unicos.append(g)
+
+    return {f"noticia_{i+1}": t0 for i, t0 in enumerate(unicos[:3])}
 
 
 def _titulares_de(datos):
+    """Lista de titulares de prensa+agencias."""
     out = []
     for sec in ("prensa", "agencias"):
         for lst in (datos.get(sec) or {}).values():
