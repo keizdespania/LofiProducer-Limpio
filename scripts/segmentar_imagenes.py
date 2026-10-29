@@ -10,7 +10,7 @@ FECHA = sys.argv[1] if len(sys.argv) > 1 else "2026-10-29"
 
 DUR_POR_TIPO = {
     "hook": 4.0, "cita": 6.0, "explicacion": 11.0, "contraste": 7.0,
-    "dato": 5.0, "cierre": 14.0, "default": 8.0,
+    "dato": 5.0, "cierre": 14.0, "pattern": 3.0, "default": 8.0,
 }
 
 
@@ -65,6 +65,26 @@ def _fusionar_a_72(frases):
         frases[0:2] = [{"inicio": frases[0]["inicio"], "fin": frases[1]["fin"], "texto": frases[0]["texto"] + " " + frases[1]["texto"]}]
     return frases
 
+
+
+
+def _insertar_pattern_interrupts(segmentos, cada_n=15):
+    """Cada N segmentos, inserta 1 pattern interrupt de 3s (imagen abstracta)."""
+    if len(segmentos) < cada_n * 2: return segmentos
+    nuevos = []
+    for i, s in enumerate(segmentos):
+        nuevos.append(s)
+        if (i + 1) % cada_n == 0 and (i + 1) < len(segmentos) - 2:
+            # Insertar 1 segmento de 3s
+            nuevos.append({
+                "inicio": s["fin"],
+                "fin": round(s["fin"] + 3.0, 2),
+                "texto": "[PATTERN INTERRUPT]",
+                "tipo": "pattern",
+                "duracion": 3.0,
+                "concepto_visual": "abstract question mark silhouette, dramatic dark background, cinematic, no text",
+            })
+    return nuevos
 
 def _conceptos_visuales(segmentos):
     print(f"[seg] {len(segmentos)} segmentos, generando conceptos visuales...", flush=True)
@@ -124,6 +144,7 @@ def main():
     for i, f in enumerate(frases):
         f["tipo"] = _detectar_tipo(f["texto"], i, len(frases))
         f["duracion"] = DUR_POR_TIPO.get(f["tipo"], 8.0)
+    frases = _insertar_pattern_interrupts(frases, cada_n=15)
     frases = _conceptos_visuales(frases)
     frases = _generar_imagenes(frases)
     # Timeline con duración variable
