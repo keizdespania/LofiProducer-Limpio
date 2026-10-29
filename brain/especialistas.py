@@ -23,7 +23,7 @@ ROLES = {
     "detective_tendencias_v2": {
         "combo": "auto/best-reasoning",
         "system": "Eres un analista de tendencias mediáticas. Tu misión es detectar el TOP 3 de noticias del día. Eres preciso y rápido. Devuelves SIEMPRE un JSON válido, nunca texto libre.",
-        "prompt": "Analiza estos titulares. Devuelve EXCLUSIVAMENTE un JSON válido con las 3 noticias más importantes del día. Formato EXACTO: {\"noticia_1\": \"string\", \"noticia_2\": \"string\", \"noticia_3\": \"string\"}. NO escribas texto, NO uses markdown, SOLO el JSON."
+        "prompt": "NO elijas noticias de deportes (futbol, tenis, Alcaraz, Nadal, liga, partido, como ver online). Analiza SOLO medios SERIOS: politica, economia, sociedad, internacional. Analiza estos titulares. Devuelve EXCLUSIVAMENTE un JSON válido con las 3 noticias más importantes del día. Formato EXACTO: {\"noticia_1\": \"string\", \"noticia_2\": \"string\", \"noticia_3\": \"string\"}. NO escribas texto, NO uses markdown, SOLO el JSON."
     },
     "forense_medios": {
         "combo": "auto/best-reasoning",
