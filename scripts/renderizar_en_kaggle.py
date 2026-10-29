@@ -7,7 +7,9 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
 MEDIA = ROOT / "web" / "media" / "imagenes"
 MUSICA = ROOT / "output" / "musica_temp"
-KERNEL_SLUG = "keizproductions/render-encuadre"  # ajustar si cuenta 2
+KERNEL_SLUG = "keizproductions/render-encuadre"
+DS_OWNER = "keizproductions"
+DS_SLUG = "encuadre-assets"  # ajustar si cuenta 2
 
 
 def _preparar_assets(fecha, dest):
@@ -63,7 +65,10 @@ def _renderizar_kernel():
             _tok = _l.split("=", 1)[1].strip().strip(chr(34)).strip(chr(39)); break
     tpl = tpl.replace("__FECHA__", fecha).replace("__GITHUB_TOKEN__", _tok)
     print(f"[orq] push_kernel({KERNEL_SLUG})...")
-    res = push_kernel(KERNEL_SLUG, tpl, enable_gpu=True, enable_internet=True)
+    # Pasar el dataset como source (monta /kaggle/input/<slug>/)
+    ds_sources = [f"{DS_OWNER}/{DS_SLUG}"] if DS_OWNER and DS_SLUG else []
+    print(f"[orq] dataset_sources: {ds_sources}")
+    res = push_kernel(KERNEL_SLUG, tpl, enable_gpu=True, enable_internet=True, dataset_sources=ds_sources)
     print(f"[orq] push result: {str(res)[:200]}")
     return not (isinstance(res, dict) and res.get("hasError"))
 
@@ -97,7 +102,10 @@ def _descargar(slug, fecha, dest):
     print("[orq] No se descargó mp4"); return None
 
 
-def main(fecha, dataset_slug="keizproductions/encuadre-assets"):
+def main(fecha, dataset_slug=None):
+    global DS_OWNER, DS_SLUG
+    if not dataset_slug:
+        dataset_slug = f"{DS_OWNER}/{DS_SLUG}"
     tmp = pathlib.Path(tempfile.mkdtemp(prefix="kaggle_render_"))
     print(f"[orq] tmp: {tmp}")
     assets = _preparar_assets(fecha, tmp / "assets")
