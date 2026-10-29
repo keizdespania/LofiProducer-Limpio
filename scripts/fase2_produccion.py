@@ -218,7 +218,13 @@ def producir_fase2(fecha=None):
             texto_fuente = _art_limpio
         except NameError:
             texto_fuente = re.sub(r'<[^>]+>', ' ', articulo)
+        # Quitar markdown (#, *, **, >, ---, links) del artículo
         texto = re.sub(r'<[^>]+>', ' ', texto_fuente)
+        texto = re.sub(r'^#{1,6}\s+', '', texto, flags=re.MULTILINE)
+        texto = re.sub(r'\*\*([^*]+)\*\*', r'\1', texto)
+        texto = re.sub(r'\*([^*]+)\*', r'\1', texto)
+        texto = re.sub(r'^>\s+', '', texto, flags=re.MULTILINE)
+        texto = re.sub(r'---', '', texto)
         texto = re.sub(r'\s+', ' ', texto).strip()
         palabras = texto.split()
         chunk = max(40, len(palabras) // num_escenas_objetivo) if len(palabras) >= 400 else max(30, len(palabras) // 8)

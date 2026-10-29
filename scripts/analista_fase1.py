@@ -22,6 +22,18 @@ def _parse_json_seguro(texto):
     return {}
 
 
+_PATRONES_DEPORTES = [
+    r"\bAlcaraz\b", r"\bNadal\b", r"\bMessi\b", r"\bCristiano\b", r"\bMbapp\w+",
+    r"\bReal\s+Madrid\b", r"\bBarça\b", r"\bBarcelona\s+FC",
+    r"\bLaLiga\b", r"\bChampions\b", r"\bCopa\s+del\s+Rey",
+    r"\bfutbol\w*", r"\btenis\b", r"\bbaloncesto\b",
+    r"\bpartido\s+(de|contra)\b", r"\bjuega\s+(Alcaraz|el\s+Real)",
+    r"\bcomo\s+ver\s+.*\b(online|directo|gratis)\b", r"\bPremier\b",
+    r"\bF1\b", r"\bFormula\s+1", r"\bMotoGP",
+    r"\bMundial\s+de\s+futbol", r"\bEurocopa",
+]
+
+
 def _es_malo(txt):
     """Detecta si un titular es trágico."""
     if not txt: return False
@@ -32,7 +44,7 @@ def _es_malo(txt):
         patrones = [r"\bmuert", r"\basesin", r"\btiroteo", r"\bsiniestro",
                     r"\btragedia", r"\bse[nñ]alizaci", r"\bmorgue\b", r"\bllanto\b"]
     s = txt.lower()
-    return any(re.search(p, s) for p in patrones)
+    return any(re.search(p, s) for p in patrones + _PATRONES_DEPORTES)
 
 
 def _similares(a, b):
