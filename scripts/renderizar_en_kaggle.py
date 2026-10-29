@@ -1,7 +1,7 @@
 """renderizar_en_kaggle.py - Orquesta: sube assets a Kaggle, lanza kernel T4, descarga mp4."""
 import sys, json, pathlib, subprocess, shutil, time, tempfile
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from kaggle_bearer import push_kernel, estado_kernel, output_kernel, stop_kernel
+from kaggle_bearer import push_kernel, estado_kernel, output_kernel, stop_kernel, _token
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
@@ -34,6 +34,14 @@ def _preparar_assets(fecha, dest):
     return dest
 
 
+def _env_kaggle():
+    """Env con KAGGLE_API_TOKEN de cuenta 1 forzado (evita auth cruzada)."""
+    import os as _os
+    env = dict(_os.environ)
+    env["KAGGLE_API_TOKEN"] = _token(1)
+    return env
+
+
 def _subir_dataset(assets_dir, dataset_slug):
     """Sube assets a Kaggle Dataset vía CLI (kaggle datasets create/version)."""
     print(f"[orq] Preparando dataset {dataset_slug}...")
@@ -44,11 +52,11 @@ def _subir_dataset(assets_dir, dataset_slug):
     }
     (assets_dir / "dataset-metadata.json").write_text(json.dumps(meta, indent=2))
     r = subprocess.run(["kaggle", "datasets", "create", "-p", str(assets_dir)],
-                       capture_output=True, text=True, timeout=900)
+                       capture_output=True, text=True, timeout=900, env=_env_kaggle())
     if "already exists" in (r.stdout + r.stderr).lower() or r.returncode != 0:
         print("[orq] Existe, subiendo nueva versión...")
         r = subprocess.run(["kaggle", "datasets", "version", "-p", str(assets_dir), "-m", "update"],
-                           capture_output=True, text=True, timeout=900)
+                           capture_output=True, text=True, timeout=900, env=_env_kaggle())
     out = (r.stdout or "") + (r.stderr or "")
     print(f"[orq] kaggle exit={r.returncode}")
     print(f"[orq] ultimas lineas: {out.strip().splitlines()[-3:] if out.strip() else 'vacio'}")
@@ -124,7 +132,7 @@ def _limpiar_kaggle(dataset_slug, kernel_slug, borrar_dataset=True):
         try:
             r = subprocess.run(
                 ["kaggle", "datasets", "delete", dataset_slug, "--yes"],
-                capture_output=True, text=True, timeout=60)
+                capture_output=True, text=True, timeout=60, env=_env_kaggle())
             print(f"[cleanup] delete exit={r.returncode} {r.stdout.strip()[:100]}", flush=True)
         except Exception as e:
             print(f"[cleanup] delete error: {e}", flush=True)
