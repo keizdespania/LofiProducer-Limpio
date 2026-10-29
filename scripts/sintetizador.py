@@ -48,7 +48,7 @@ def sintetizar(fecha=None):
     # 3. Guionista de Retención (Hooks)
     print("[sintetizador] Guionista generando hooks...", flush=True)
     prompt_guion = "Basado en el Dossier, genera TODOS los hooks posibles (mín 3 por noticia). Devuelve SOLO JSON: {\"hooks_totales\": [{\"noticia\": \"string\", \"tipo\": \"string\", \"hook\": \"string\", \"guion\": \"string\"}]}"
-    r_g = pedir_a_especialista("guionista_retencion_v2", prompt_guion, contexto=json.dumps(dossier, ensure_ascii=False, proveedor="omni")[:3000])
+    r_g = pedir_a_especialista("guionista_retencion_v2", prompt_guion, contexto=json.dumps(dossier, ensure_ascii=False)[:3000], proveedor="omni")
     guiones = _parse_json_seguro(r_g)
     print(f"[sintetizador] Hooks generados: {len(guiones.get('hooks_totales', []))}", flush=True)
     
@@ -61,7 +61,7 @@ def sintetizar(fecha=None):
                 tec = a.get("tecnica_principal") or a.get("tecnica")
                 if tec: tecnicas.append(tec)
     prompt_bib = "Para cada técnica, cita la obra académica real. Devuelve SOLO JSON: {\"tecnicas\": [{\"tecnica\": \"string\", \"autor\": \"string\", \"obra\": \"string\", \"año\": \"string\", \"cita_breve\": \"string\"}]}"
-    r_b = pedir_a_especialista("bibliotecario_v2", prompt_bib, contexto="Técnicas: " + " | ".join(tecnicas[:5], proveedor="omni"))
+    r_b = pedir_a_especialista("bibliotecario_v2", prompt_bib, contexto="Técnicas: " + " | ".join(tecnicas[:5]), proveedor="omni")
     citas = _parse_json_seguro(r_b)
     
     # 5. Guardar
