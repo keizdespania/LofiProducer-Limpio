@@ -1,5 +1,6 @@
 """pipeline_encuadre.py - Orquestador Maestro Definitivo (Blindado)."""
 import subprocess, sys, pathlib, datetime, json, asyncio, time, unicodedata
+from pathlib import Path
 import edge_tts
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
