@@ -54,8 +54,15 @@ def producir_fase2(fecha=None):
     escenas = []
     
     # Intentar con el LLM
+    _PROMPT_GUION = (
+        'Devuelve EXCLUSIVAMENTE un JSON: {"escenas":[{"id":1,"texto":"...","concepto_visual":"...","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"video|imagen"}]}. '
+        'REGLAS: (1) EXACTAMENTE 18 escenas. (2) Cada texto 80-100 palabras (nunca menos de 80). '
+        '(3) Total minimo: 1450 palabras. Si tu respuesta suma menos, será RECHAZADA. '
+        '(4) NO markdown, NO explicaciones, SOLO JSON. Objetivo: 10-11 min de narración.'
+    )
     try:
-        resp = pedir_a_especialista("guionista_youtube_experto", "Escribe guion de 18 escenas.", contexto="ARTICULO:\n" + articulo[:6000])
+        resp = pedir_a_especialista("guionista_youtube_experto", _PROMPT_GUION,
+            contexto="ARTICULO:\n" + articulo[:6000])
         d = _parse_json_seguro(resp)
         if isinstance(d, dict) and "escenas" in d:
             escenas = d["escenas"]
@@ -66,6 +73,23 @@ def producir_fase2(fecha=None):
         print(f"   ⚠️ LLM falló: {e}", flush=True)
 
     # Fallback manual: Dividir el artículo en 18 trozos
+    # VALIDACIÓN: si el LLM devolvió menos de 1300 palabras → reintento
+    _pal_actual = sum(len(e.get("texto","").split()) for e in escenas)
+    if _pal_actual < 1300 and escenas:
+        print(f"   LLM devolvio {_pal_actual} palabras (< 1300). Reintentando con enfasis...", flush=True)
+        _reintento = pedir_a_especialista("guionista_youtube_experto",
+            _PROMPT_GUION + " ATENCION: tu respuesta anterior tenia solo " + str(_pal_actual) + " palabras. Es INACEPTABLE. Amplia cada escena a 70 palabras EXACTAS. Total minimo 1430.",
+            contexto="ARTICULO:\n" + articulo[:6000])
+        _d2 = _parse_json_seguro(_reintento)
+        if isinstance(_d2, dict) and "escenas" in _d2:
+            _escenas2 = _d2["escenas"]
+            _pal_re = sum(len(e.get("texto","").split()) for e in _escenas2)
+            if _pal_re > _pal_actual:
+                escenas = _escenas2
+                print(f"   Reintento aceptado: {_pal_re} palabras", flush=True)
+            else:
+                print(f"   Reintento no mejoro ({_pal_re}), mantengo original", flush=True)
+
     # Si hay pocas escenas, forzar un mínimo de 12-15 para garantizar 10 min
     num_escenas_objetivo = 15 if len(escenas) < 12 else len(escenas)
     if len(escenas) < 12:
@@ -73,7 +97,8 @@ def producir_fase2(fecha=None):
         texto = re.sub(r'<[^>]+>', ' ', articulo)
         texto = re.sub(r'\s+', ' ', texto).strip()
         palabras = texto.split()
-        chunk = max(80, len(palabras) // num_escenas_objetivo)
+        chunk = max(40, len(palabras) // num_escenas_objetivo) if len(palabras) >= 400 else max(30, len(palabras) // 8)
+        num_escenas_objetivo = min(15, max(8, len(palabras) // max(chunk, 40)))
         moods = ["tension", "misterio", "epico", "inspirador", "electronico", "relax"]
         escenas = []
         for i in range(num_escenas_objetivo):
@@ -144,7 +169,17 @@ def producir_fase2(fecha=None):
 
     # CAPA 4: Gate de Viralidad
     print("[fase2] Calculando score de viralidad...", flush=True)
-    viral = _parse_json_seguro(pedir_a_especialista("predictor_viralidad", "Puntua este contenido", contexto=json.dumps({"dossier": dossier, "hooks": hooks[:3]}, ensure_ascii=False)[:3000]))
+    viral_raw = pedir_a_especialista("predictor_viralidad",
+        'Devuelve EXCLUSIVAMENTE este JSON: {"score": 0-100, "razon": "string", "recomendaciones": ["string"]}. SOLO JSON, sin markdown.',
+        contexto=json.dumps({"dossier": dossier, "hooks": hooks[:3]}, ensure_ascii=False)[:3000])
+    viral = _parse_json_seguro(viral_raw)
+    if not viral or "score" not in viral:
+        import re as _re
+        m = _re.search(r'(?:puntuaci[oó]n|score)[^0-9]*?(\d{1,3})\s*(?:/|de)\s*100', viral_raw or "", _re.I)
+        if m:
+            viral = {"score": int(m.group(1)), "raw": (viral_raw or "")[:300]}
+        else:
+            viral = {"score": 0, "raw": (viral_raw or "")[:300]}
     res["viralidad"] = viral
     print(f"   ✅ Score de viralidad: {viral.get('score', 'N/A')}/100", flush=True)
 
