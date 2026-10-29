@@ -56,7 +56,12 @@ def _mount():
                         print(f"[mount] OK desde zip sub: {sub}", flush=True)
                         return sub
         time.sleep(10)
-    return pathlib.Path("/kaggle/input/encuadre-assets-v3")
+    print("[mount] ERROR: no encontre timeline.json ni zip en /kaggle/input/", flush=True)
+    for d in pathlib.Path("/kaggle/input").iterdir():
+        print(f"[mount] input: {d.name}", flush=True)
+        for f in d.iterdir():
+            print(f"[mount]   {f.name} ({f.stat().st_size if f.is_file() else "dir"})", flush=True)
+    sys.exit(1)
 
 
 ASSETS = _mount()
