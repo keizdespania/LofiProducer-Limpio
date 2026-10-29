@@ -15,7 +15,7 @@ def buscar_y_descargar(query, max_results=1):
     # 1. Buscar IDs de tracks (filtrando por duración 60-360s)
     cmd_ids = [
         "yt-dlp", url_busqueda, "--flat-playlist", "--print", "%(id)s|%(title)s|%(duration)s",
-        "--playlist-end", "3", "--no-warnings", "--no-check-certificates", "--extractor-args", "youtube:skip=hls,dash"
+        "--playlist-end", "3", "--no-warnings", "--no-part", "--socket-timeout", "15", "--no-check-certificates", "--extractor-args", "youtube:skip=hls,dash"
     ]
     try:
         r = subprocess.run(cmd_ids, capture_output=True, text=True, timeout=60)
@@ -53,9 +53,9 @@ def buscar_y_descargar(query, max_results=1):
         
         if not destino.exists():
             cmd_dl = [
-                "yt-dlp", url_video, "-x", "--audio-format", "mp3", "--audio-quality", "0",
-                "-o", str(destino.with_suffix("")), "--no-warnings",
-                "--max-filesize", "30M"
+                "yt-dlp", url_video, "-x", "--audio-format", "mp3", "--audio-quality", "5",
+                "-o", str(destino.with_suffix("")), "--no-warnings", "--no-part", "--socket-timeout", "15",
+                "--max-filesize", "150M"
             ]
             subprocess.run(cmd_dl, capture_output=True, timeout=180)
         

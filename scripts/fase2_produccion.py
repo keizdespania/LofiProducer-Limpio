@@ -76,24 +76,39 @@ def producir_fase2(fecha=None):
     _PROMPT_GUION = (
         'Eres un hibrido entre profesor de comunicacion, periodista de investigacion y columnista ironico. '
         'OBJETIVO: DEMOSTRAR con datos concretos que los medios usan tecnicas de framing. NO opinas: citas y desmontas. '
-        'ESTRUCTURA de cada escena (18 escenas): '
-        '(1) CITAS un titular real de un medio del contexto (ej: OkDiario titulo: fraude masivo). '
-        '(2) DESCOMPONES la tecnica (ej: usa anclaje y culpabilizacion, el lector asume fraude sin pruebas). '
-        '(3) CONTRASTAS con otro medio (ej: El Pais titulo: Sanchez anuncia medidas). '
+        'FORMATO: 18 escenas. '
+        'ESCENA 1 (INTRO OBLIGATORIA): '
+        'Empieza con un saludo UNICO y CREATIVO dirigido a la audiencia. Ejemplos: "Hola a todos los despiertos", "Buenas, mentes inquietas", "Saludos, buscadores de la verdad", "Hola, observadores del ruido", "Bienvenidos, analistas del framing". NUNCA uses el mismo dos veces. '
+        'Despues del saludo, di EXACTAMENTE: "Somos El Encuadre y hoy, [DIA] de [MES] de [AÑO], os traemos el nuevo analisis definitivo de medios de comunicacion masiva del dia de hoy". '
+        'Sustituye [DIA] por el numero del dia, [MES] por el mes en castellano, [AÑO] por el ano. '
+        'La fecha de publicacion es: __FECHA_PUB__. '
+        'Despues del saludo+fecha, continua con el analisis del dia. '
+        'ESTRUCTURA de las escenas 2-18: '
+        '(1) CITAS un titular real de un medio del contexto. '
+        '(2) DESCOMPONES la tecnica. '
+        '(3) CONTRASTAS con otro medio. '
         '(4) CIERRAS con pregunta o ironia fina. '
         'Devuelve EXCLUSIVAMENTE JSON: {"escenas":[{"id":1,"texto":"NARRACION","concepto_visual":"VISUAL DESC EN INGLES","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"imagen"}]}. '
-        'REGLAS CRITICAS: '
+        'REGLAS: '
         '(1) 18 escenas exactas. '
-        '(2) texto = SOLO narracion en primera persona o impersonal, como monologo periodistico. PROHIBIDO: El video abre, Vemos, Corte a, Voz en off dice, descripciones visuales. '
+        '(2) texto = SOLO narracion, primera persona o impersonal. PROHIBIDO: El video abre, Vemos, Corte a, Voz en off dice, descripciones visuales. '
         '(3) Cada texto 80-100 palabras. '
-        '(4) Cada escena cita MINIMO 1 medio real del contexto + 1 tecnica + 1 contraste. '
-        '(5) concepto_visual EN INGLES, 8-15 palabras, estructura Subject + Action + Environment + Lighting + Style. Ejemplo: Newspaper front page with FRAUD headline, dramatic side light, cinematic moody. '
+        '(4) Cada escena 2-18 cita MINIMO 1 medio real + 1 tecnica + 1 contraste. '
+        '(5) concepto_visual EN INGLES, 8-15 palabras, Subject + Action + Environment + Lighting + Style. '
         '(6) Total minimo 1450 palabras. SOLO JSON. '
         'TONO: educado, ironico, autoridad periodistica. Como Inaki Gabilondo con mala leche. '
-        'NO acusar de delito. Solo describir tecnicas: usa, emplea, recurre a, presenta como.'
+        'NO acusar de delito. Solo describir tecnicas.'
     )
+    # Preparar fecha de publicación (fuera del try)
+    import datetime as _dt2
+    _ahora = _dt2.datetime.now()
+    _pub = (_dt2.date.today() + _dt2.timedelta(days=1)) if _ahora.hour >= 18 else _dt2.date.today()
+    _MESES = {1:"enero",2:"febrero",3:"marzo",4:"abril",5:"mayo",6:"junio",7:"julio",8:"agosto",9:"septiembre",10:"octubre",11:"noviembre",12:"diciembre"}
+    _fecha_str = f"{_pub.day} de {_MESES[_pub.month]} de {_pub.year}"
+    _prompt_con_fecha = _PROMPT_GUION.replace("__FECHA_PUB__", _fecha_str)
+    print(f"   Fecha publicacion: {_fecha_str}", flush=True)
     try:
-        resp = pedir_a_especialista("guionista_youtube_experto", _PROMPT_GUION,
+        resp = pedir_a_especialista("guionista_youtube_experto", _prompt_con_fecha,
             contexto=("ARTICULO:\n" + articulo[:4000] + "\n\nANALISIS POR MEDIO:\n" + _analisis_medios_para_guionista()[:4000]))
         d = _parse_json_seguro(resp)
         if isinstance(d, dict) and "escenas" in d:
