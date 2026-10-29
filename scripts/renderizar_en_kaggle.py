@@ -44,16 +44,23 @@ def _subir_dataset(assets_dir, dataset_slug):
     }
     (assets_dir / "dataset-metadata.json").write_text(json.dumps(meta, indent=2))
     r = subprocess.run(["kaggle", "datasets", "create", "-p", str(assets_dir), "--dir-mode", "zip"],
-                       capture_output=True, text=True, timeout=600)
+                       capture_output=True, text=True, timeout=900)
     if "already exists" in (r.stdout + r.stderr).lower() or r.returncode != 0:
         print("[orq] Existe, subiendo nueva versión...")
         r = subprocess.run(["kaggle", "datasets", "version", "-p", str(assets_dir), "-m", "update", "--dir-mode", "zip"],
-                           capture_output=True, text=True, timeout=600)
-    print(f"[orq] {r.stdout.strip()[:200]}")
-    return r.returncode == 0
+                           capture_output=True, text=True, timeout=900)
+    out = (r.stdout or "") + (r.stderr or "")
+    print(f"[orq] kaggle exit={r.returncode}")
+    print(f"[orq] ultimas lineas: {out.strip().splitlines()[-3:] if out.strip() else 'vacio'}")
+    if r.returncode != 0:
+        return False
+    # Kaggle tarda 60-180s en procesar dataset. Esperar explícitamente.
+    print("[orq] esperando procesado Kaggle (90s)...")
+    import time as _t; _t.sleep(90)
+    return True
 
 
-def _renderizar_kernel():
+def _renderizar_kernel(fecha):
     """Lee template y lo sube como kernel."""
     tpl = (ROOT / "scripts" / "kernel_render_encuadre.py").read_text()
     # Inyectar FECHA + GITHUB_TOKEN reales (como Wan)
@@ -111,7 +118,7 @@ def main(fecha, dataset_slug=None):
     assets = _preparar_assets(fecha, tmp / "assets")
     if not _subir_dataset(assets, dataset_slug):
         print("[orq] FALLO subir dataset"); sys.exit(1)
-    if not _renderizar_kernel():
+    if not _renderizar_kernel(fecha):
         print("[orq] FALLO push_kernel"); sys.exit(1)
     if not _esperar_fin(KERNEL_SLUG):
         print("[orq] FALLO o timeout"); sys.exit(1)
