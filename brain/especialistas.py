@@ -279,39 +279,36 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
     # 1. INTENTO CON GROQ (solo si proveedor != "omni")
     if groq_key and proveedor != "omni":
       import time as _time
-      _max_int = 4 if proveedor == "groq" else 1
-      for _intento in range(_max_int):
-        try:
-            r = requests.post(
-                "https://api.groq.com/openai/v1/chat/completions",
-                json={
-                    "model": "openai/gpt-oss-120b",
-                    "messages": [
-                        {"role": "system", "content": system},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": _max_tok,
-                    "temperature": 0.7
-                },
-                headers={
-                    "Authorization": f"Bearer {groq_key}",
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-                timeout=60,
-            )
-            if r.status_code == 200:
-                return r.json()["choices"][0]["message"]["content"]
-            if r.status_code == 429:
-                _espera = 2 ** _intento
-                print(f"[groq] 429 rate limit, espero {_espera}s...", flush=True)
-                _time.sleep(_espera)
-                continue
-            break
-        except Exception as e:
-            print(f"[groq] excepcion: {e}", flush=True)
-            _time.sleep(1)
+      # Rotación de modelos y claves de Groq
+      modelos_groq = [m for m in [groq_m1, groq_m2, groq_m3] if m]
+      claves_groq = [k for k in [groq_key, groq_key_2] if k]
+      
+      for mod in modelos_groq:
+          for key in claves_groq:
+              try:
+                  r = requests.post(
+                      "https://api.groq.com/openai/v1/chat/completions",
+                      json={
+                          "model": mod,
+                          "messages": [
+                              {"role": "system", "content": system},
+                              {"role": "user", "content": prompt},
+                          ],
+                          "max_tokens": _max_tok,
+                          "temperature": 0.7
+                      },
+                      headers={
+                          "Authorization": f"Bearer {key}",
+                          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                          "Accept": "application/json",
+                          "Content-Type": "application/json",
+                      },
+                      timeout=60,
+                  )
+                  if r.status_code == 200:
+                      return r.json()["choices"][0]["message"]["content"]
+              except Exception:
+                  pass
 
     # 1.5 INTENTO CON OPENROUTER (Cazador de modelos gratis dinámico)
     openrouter_key = ""
