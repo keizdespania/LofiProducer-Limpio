@@ -1464,26 +1464,18 @@ def _call_llm(api_key, messages, force_no_tools=False):
 
     _save_cd(cd)
 
-    # Fallback a OpenRouter directo
-    print(f"   [OmniRoute fallo: {last_err}. Cayendo a OpenRouter directo...]")
-    openrouter_key = _leer_api_key("OPENROUTER_API_KEY")
-    payload = {"model": "openrouter/free", "messages": messages, "temperature": 0.2}
-    if not force_no_tools:
-        payload["tools"] = _filtrar_tools(_extraer_prompt(messages), TOOLS)
-    for intento in range(4):
-        r = requests.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers={"Authorization": f"Bearer {openrouter_key}", "Content-Type": "application/json"},
-            json=payload, timeout=180,
-        )
-        if r.status_code == 429:
-            print(f"   [429 OpenRouter] Esperando 15s (intento {intento+1}/4)...")
-            time.sleep(15)
-            continue
-        if r.status_code >= 400:
-            raise RuntimeError(f"HTTP {r.status_code}: {r.text[:800]}")
-        return r.json()
-    raise RuntimeError("Se agotaron los reintentos por rate limit (429).")
+    # Fallback final: usar la cascada de especialistas.py
+    print(f"   [OmniRoute fallo: {last_err}. Cayendo a la cascada de 7 IAs...]")
+    try:
+        from especialistas import pedir_a_especialista
+        # Extraemos el prompt del usuario del contexto (último mensaje)
+        _prompt = messages[-1]["content"] if messages else ""
+        _ctx = messages[-2]["content"] if len(messages) > 1 else ""
+        _rol = "programador" # Usamos el rol de código para dios.py
+        res = pedir_a_especialista(_rol, _prompt, contexto=_ctx, proveedor="auto")
+        return {"choices": [{"message": {"content": res}}]}
+    except Exception as e:
+        raise RuntimeError(f"Cascada completa falló: {e}")
 
 
 
