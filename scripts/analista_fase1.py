@@ -111,6 +111,43 @@ def _procesar_medio(medio, datos, noticia):
     if ses: an["sesgos_cognitivos"] = ses
     return an
 
+
+MEDIOS_OK = ["El País", "El Mundo", "ABC", "La Vanguardia", "elDiario.es", "El Confidencial", "El Español", "OkDiario", "The Objective", "HuffPost", "Bloomberg", "Europa Press", "20 Minutos", "Ara", "El Correo", "Faro de Vigo", "El Independiente"]
+BASURA = [
+    "futbol", "athletic", "real madrid", "barça", "barcelona", "murcia", "cartagena", "valencia", "gandia", "pucela", "racing",
+    "tiempo en", "previsión meteorológica", "el tiempo", "lluvia", "temperatura", "grados", "dgt", "trafico", "tráfico", "driving", "andalucia",
+    "porno", "vídeos", "detenido", "pillan", "marroquí", "mueren", "fallece", "accidente", "sucesos", "cuidar", "final de la vida",
+    "gato con sombrero", "litera", "xavier", "arrebatador", "ilusion", "msi", "prestige", "he probado", "review",
+    "teatro", "cornejo", "colegio de abogados", "valladolid", "litio", "carbono", "bustamante", "chocolatier", "ambulance", "entrenador", "menor"
+]
+
+def _limpiar_top16(top16, datos):
+    limpios = []
+    # Primero filtramos lo que venga del LLM
+    for item in top16:
+        titulo = item.get("titular", "").lower()
+        medio = item.get("medio", "")
+        if any(m in medio for m in MEDIOS_OK) and not any(b in titulo for b in BASURA):
+            limpios.append(item)
+    
+    # Si faltan, sacamos del fallback de la recolección
+    if len(limpios) < 16:
+        for sec in ("prensa", "agencias"):
+            for medio, noticias in (datos.get(sec) or {}).items():
+                if not any(m in medio for m in MEDIOS_OK): continue
+                for n in noticias:
+                    if isinstance(n, dict) and n.get("titular") and n.get("url"):
+                        t = n["titular"].lower()
+                        if not any(b in t for b in BASURA) and not _es_malo(n["titular"]):
+                            if not any(x["titular"] == n["titular"] for x in limpios):
+                                limpios.append({"titular": n["titular"], "url": n["url"], "medio": medio})
+                                if len(limpios) >= 16: break
+                    if len(limpios) >= 16: break
+                if len(limpios) >= 16: break
+            if len(limpios) >= 16: break
+            
+    return limpios[:16]
+
 def analizar_fase1(fecha=None):
     fecha = fecha or datetime.date.today().isoformat()
     limpia = OUT / f"recoleccion_{fecha}_limpia.json"
@@ -134,6 +171,7 @@ Devuelve EXCLUSIVAMENTE este JSON:
     
     top3 = top_data.get("top3", {})
     top16 = top_data.get("top16", [])
+    top16 = _limpiar_top16(top16, datos)
 
     if not top3:
         top3 = {"noticia_1": "Actualidad", "noticia_2": "Política", "noticia_3": "Economía"}
