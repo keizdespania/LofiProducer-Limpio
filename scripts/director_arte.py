@@ -188,10 +188,7 @@ def preparar(fecha):
                 if img.exists():
                     shutil.copy2(img, MERCH / f"merch_{fecha}_{num:02d}.png")
 
-        mus = MUSICA / f"escena_{num:02d}.mp3"
-        if not mus.exists():
-            print(f"  [{num}] musica: {mood}")
-            _descargar_musica(mood, mus)
+        # Música: se gestiona en render_robusto (Lofi continuo)
 
         time.sleep(0.5)
 
