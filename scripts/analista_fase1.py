@@ -121,10 +121,14 @@ def analizar_fase1(fecha=None):
     # 1. Top3 + Top16
     print("[fase1] Detectando Top 3 (blog) y Top 16 (video)...", flush=True)
     ctx = _build_ctx(datos)
-    prompt_det = """Devuelve SOLO JSON: 
-{"top3": ["noticia 1", "noticia 2", "noticia 3"], 
- "top16": [{"titular": "titular 1", "url": "https://..."}, ... 16 items]}
-Usa los titulares y URLs del contexto. Veta tragedias y deportes."""
+    prompt_det = """Eres un editor jefe experto en manipulación mediática. 
+Lee todos los titulares y URLs del contexto.
+Tu tarea:
+1. Elige el TOP 3 de noticias más importantes del día para el blog.
+2. Elige los 16 titulares que tengan el MAYOR POTENCIAL DE MANIPULACIÓN o FRAMING para desmontar en un vídeo. Prioriza medios generalistas (El País, El Mundo, ABC, etc.). Ignora deportes, farándula y sucesos.
+Devuelve EXCLUSIVAMENTE este JSON:
+{"top3": ["noticia 1", ...], 
+ "top16": [{"titular": "titular 1", "url": "https://...", "medio": "El Pais"}, ... 16 items]}"""
     
     top_data = _parse_json(pedir_a_especialista("detective_tendencias_v2", prompt_det, contexto=ctx[:5000], proveedor="omni"))
     
