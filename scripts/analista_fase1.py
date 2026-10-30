@@ -137,7 +137,7 @@ def analizar_fase1(fecha=None):
         "detective_tendencias_v2", 
         """Detecta el Top 3 de noticias principales del día (para el blog) y extrae 16 titulares variados (política, economía, IA, trabajo, sociedad) con su URL (para el vídeo). 
         Devuelve SOLO JSON: {"top3": ["noticia 1", ...], "top16": [{"titular": "titular 1", "url": "https://..."}, ... 16 items]}.""", 
-        contexto=ctx[:4000], proveedor="groq"))
+        contexto=ctx[:4000], proveedor="auto"))
     if not top3:
         print("[fase1] ⚠️ Detective falló. Reintento simplificado...", flush=True)
         top3 = _parse_json_seguro(pedir_a_especialista(
@@ -178,18 +178,18 @@ def analizar_fase1(fecha=None):
             contexto=ctx_medio[:800], proveedor="auto")
         an = _parse_json_seguro(r)
         if not an: return medio, None
-        import time as _t; _t.sleep(0.5)
+        import time as _t; _t.sleep(2.0)
         r_emo = pedir_a_especialista("analista_emocional", f"Analiza las emociones de {medio}", contexto=ctx_medio[:2000], proveedor="omni")
         emo = _parse_json_seguro(r_emo)
         if emo: an["emociones"] = emo
-        _t.sleep(0.5)
+        _t.sleep(2.0)
         r_ses = pedir_a_especialista("detector_sesgos_cognitivos", f"Detecta sesgos en {medio}", contexto=ctx_medio[:2000], proveedor="omni")
         ses = _parse_json_seguro(r_ses)
         if ses: an["sesgos_cognitivos"] = ses
         return medio, an
     print(f"[fase1] Analizando {total} medios (5 en paralelo)...", flush=True)
     completados = 0
-    with ThreadPoolExecutor(max_workers=3) as ex:
+    with ThreadPoolExecutor(max_workers=2) as ex:
         futs = {ex.submit(_procesar, m): m for m in medios}
         for f in as_completed(futs):
             completados += 1
