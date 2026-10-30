@@ -141,8 +141,10 @@ def producir_fase2(fecha=None):
     # --- ESCENA 1: INTRO ---
     print("   [Escena 1/18] Intro...", flush=True)
     intro_inst = (
-        f"Empieza con un saludo único y creativo. Luego di EXACTAMENTE: 'Somos El Encuadre y hoy, {_fecha_str}, os traemos el nuevo análisis definitivo de medios de comunicación masiva del día de hoy'. "
-        "Después, suelta una ironía sobre la actualidad en España (ej: 'Mientras los buenos trabajadores se van al extranjero...')."
+        f"Empieza con un golpe de efecto brutal (ej: 'Hoy los medios han vuelto a intentar manipularnos, y lo han hecho con tu permiso'). "
+        f"Luego di: 'Somos El Encuadre y hoy, {_fecha_str}, abrimos la cloaca mediática'. "
+        "Suelta una promesa de lo que van a aprender (ej: 'Te voy a enseñar las 3 técnicas que han usado hoy para que no pienses'). "
+        "Cierra la escena diciendo: 'Quedate, porque esto te va a volar la cabeza'."
     )
     escenas.append(_generar_escena(1, intro_inst))
 
@@ -160,20 +162,22 @@ def producir_fase2(fecha=None):
         
         inst = (
             f"Analiza este titular como un tertuliano cabreado en un bar: '{titular}'. "
-            f"ESTRUCTURA OBLIGATORIA (no te la saltes): "
-            f"1. Empieza citando el medio y el titular: 'El [Medio] tituló: \"[Titular]\"'. "
-            f"2. Señala al malo de la película (el chivo expiatorio). "
-            f"3. Destapa al beneficiario (el que se ríe de fondo). "
-            f"4. Explica la técnica de manipulación con ironía. "
-            f"Habla con rabia, con chispa, con calle. Sin palabras de robot."
+            f"Estructura los 4 pasos de forma brutal y sin piedad: "
+            f"1. EL TITULAR: 'El [Medio] tituló: \"[Titular]\"'. "
+            f"2. LA MÁSCARA: Qué te están intentando vender (ej: 'Nos quieren vender que esto es transparencia...'). "
+            f"3. EL TRUCO: Qué técnica psicológica usan (ej: 'Es un hombre de paja de manual, te distraen con X para que no veas Y'). "
+            f"4. LA TRASTIENDA: Quién se ríe de fondo y se lleva el premio (ej: 'Mientras tanto, los de siempre se frotan las manos'). "
+            f"Usa golpes cortos de voz. Termina con una micro-pausa y una pregunta incómoda."
         )
         escenas.append(_generar_escena(num, inst, ctx_texto))
 
     # --- ESCENA 18: CIERRE ---
     print("   [Escena 18/18] Cierre...", flush=True)
     cierre_inst = (
-        "Haz un cierre mordaz resumiendo el día. "
-        "Termina con una pregunta irónica que invite al espectador a reflexionar sobre cómo los medios construyen la realidad."
+        "Haz un cierre épico y demoledor. "
+        "No resumas lo que ya has dicho. En su lugar, haz una arenga: 'Mañana, los mismos medios volverán a intentarlo. "
+        "Volverán a insultar tu inteligencia. La única diferencia es que ahora ya sabes lo que están haciendo'. "
+        "Termina con un llamado a la acción brutal: 'Dale a like, suscríbete, o comparte este video con ese amigo que todavía se cree la tele. Nos vemos en el siguiente desmontaje'."
     )
     escenas.append(_generar_escena(18, cierre_inst))
 
