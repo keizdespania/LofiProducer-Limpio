@@ -13,7 +13,7 @@ CRIT = [
     r"\bmorgue\b", r"\bllanto\b", r"\bfuneral", r"\bduelo\b", r"\bvia\s+dolorosa", r"\bcat[aá]strofe",
     r"\bdescarril", r"\bAdif\b", r"\bRenfe\b", r"\bIryo\b", r"\bmaquinista", r"\bAVE\b",
     r"\bherid", r"\btrenes?\b", r"\bchoc", r"\bv[ií]ctimas", r"\bfallecid", r"\bToledo\b",
-    r"\bReyes?\b", r"\bReales?\b", r"delitos?\s+contra\s+la\s+libertad\s+sexual",
+    r"\bReyes?\b", r"\bReales?\b", r"\burda\b", r"\bcuerpos\b", r"\bdesaparecid", r"delitos?\s+contra\s+la\s+libertad\s+sexual",
     r"\babuso", r"\bmenores", r"\bAlcaraz\b", r"\bNadal\b", r"\bLaLiga\b", r"\bfutbol",
 ]
 
@@ -112,7 +112,7 @@ def _procesar_medio(medio, datos, noticia):
     return an
 
 
-MEDIOS_OK = ["El País", "El Mundo", "ABC", "La Vanguardia", "elDiario.es", "El Confidencial", "El Español", "OkDiario", "The Objective", "HuffPost", "Bloomberg", "Europa Press", "20 Minutos", "Ara", "El Correo", "Faro de Vigo", "El Independiente"]
+MEDIOS_OK = ["El País", "El Mundo", "ABC", "La Vanguardia", "elDiario.es", "El Confidencial", "El Español", "OkDiario", "The Objective", "HuffPost", "Europa Press", "20 Minutos", "Ara", "El Correo", "Faro de Vigo", "El Independiente"]
 BASURA = [
     "futbol", "athletic", "real madrid", "barça", "barcelona", "murcia", "cartagena", "valencia", "gandia", "pucela", "racing",
     "tiempo en", "previsión meteorológica", "el tiempo", "lluvia", "temperatura", "grados", "dgt", "trafico", "tráfico", "driving", "andalucia",
