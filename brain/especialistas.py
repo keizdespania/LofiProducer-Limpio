@@ -436,6 +436,40 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
         except Exception:
             pass
 
+    # 1.9 INTENTO CON SAMBANOVA (Última bala en la recámara)
+    sambanova_key = ""
+    sambanova_model = "Meta-Llama-3.3-70B-Instruct"
+    if env_path.exists():
+        for line in env_path.read_text().splitlines():
+            if line.startswith("SAMBANOVA_API_KEY="): sambanova_key = line.split("=", 1)[1].strip()
+            if line.startswith("SAMBANOVA_MODEL="): sambanova_model = line.split("=", 1)[1].strip()
+            
+    if sambanova_key:
+        try:
+            r = requests.post(
+                "https://api.sambanova.ai/v1/chat/completions",
+                json={
+                    "model": sambanova_model,
+                    "messages": [
+                        {"role": "system", "content": system},
+                        {"role": "user", "content": prompt},
+                    ],
+                    "max_tokens": _max_tok,
+                    "temperature": 0.7
+                },
+                headers={
+                    "Authorization": f"Bearer {sambanova_key}",
+                    "Content-Type": "application/json"
+                },
+                timeout=90,
+            )
+            if r.status_code == 200:
+                content = r.json()["choices"][0]["message"].get("content")
+                if content and len(content.strip()) > 5:
+                    return content
+        except Exception:
+            pass
+
     # 2. INTENTO CON OMNIROUTE (si proveedor != "groq")
     if omni_key and proveedor != "groq":
         # Modelos por necesidad de tokens
