@@ -8,6 +8,9 @@ import time
 import uuid
 import subprocess
 import sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / 'brain'))
+from especialistas import pedir_a_especialista
+import sys
 import urllib.parse
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler, HTTPServer
