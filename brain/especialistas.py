@@ -303,7 +303,9 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
                         headers={"Authorization": f"Bearer {key}", "User-Agent": "Mozilla/5.0", "Content-Type": "application/json"},
                         timeout=60)
                     if r.status_code == 200:
-                        return r.json()["choices"][0]["message"]["content"]
+                        c = r.json()["choices"][0]["message"].get("content")
+                        if c and len(c.strip()) > 5:
+                            return c
                 except Exception: pass
     
     # 2. OPENROUTER
@@ -366,7 +368,7 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
                 return r.json()["choices"][0]["message"]["content"]
         except Exception: pass
         
-    return "ERROR: Todos los modelos fallaron."
+    return "ERROR: Todos los modelos fallaron (o devolvieron vacío)."
 
 
 if __name__ == "__main__":
