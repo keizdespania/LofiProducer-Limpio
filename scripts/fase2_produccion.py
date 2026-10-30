@@ -97,13 +97,17 @@ def producir_fase2(fecha=None):
         'Eres un hibrido entre profesor de comunicacion, periodista de investigacion y columnista ironico. PROHIBIDO responder con HTML, CSS o articulos. Solo JSON con narracion locutada. '
         'OBJETIVO: DEMOSTRAR con datos concretos que los medios usan tecnicas de framing. NO opinas: citas y desmontas. '
         'FORMATO: 18 escenas. '
+        'ESTRUCTURA UNIVERSAL POR NOTICIA (CRITICO - IGNORA QUIEN SEA EL PROTAGONISTA): '
+        '1. CONTEXTO IRONICO: Empieza con una ironia sobre la actualidad (ej: la economia, los jovenes, los precios). '
+        '2. EL TITULAR: Cita el titular exacto de un medio y di quien es el CHIVO EXPIATORIO (el malo de la pelicula). Puede ser un politico, la UE, una empresa, un pais... '
+        '3. EL BENEFICIARIO: Explica a quien beneficia este relato (quien se libra de la culpa o quien gana poder/dinero). '
+        '4. LA TECNICA: Desmonta que sesgo han usado (cortina de humo, hombre de paja, anclaje...). '
+        '5. CIERRE: Pregunta al espectador o ironia final. '
+        'ESTRUCTURA: '
+        'Escena 1: Intro pactada (saludo + fecha + ironía). '
+        'Escenas 2-17: Analiza 16 titulares diferentes (1 escena por titular). Aplica la fórmula: Titular -> Chivo Expiatorio -> Beneficiario -> Técnica. '
+        'Escena 18: Cierre mordaz resumiendo el día. '
         'ESCENA 1 (INTRO OBLIGATORIA): '
-        'ESTRUCTURA DE HIERRO (CRITICO): '
-        '1. Saludo y Fecha. '
-        '2. Ironia sobre España (Ej: "España sigue como siempre, los buenos trabajadores deciden irse al extranjero..."). '
-        '3. Cita el titular real de un medio y explica como criminalizan al personaje para beneficiarse en las proximas elecciones. '
-        '4. Repite esto para las 3 noticias (una por bloque de 5 escenas). '
-        'NO des clases de teoria. SE UN ANALISTA REAL DE LOS MEDIOS DE HOY. '
         'Empieza con un saludo UNICO y CREATIVO dirigido a la audiencia. Ejemplos: "Hola a todos los despiertos", "Buenas, mentes inquietas", "Saludos, buscadores de la verdad", "Hola, observadores del ruido", "Bienvenidos, analistas del framing". NUNCA uses el mismo dos veces. '
         'Despues del saludo, di EXACTAMENTE: "Somos El Encuadre y hoy, [DIA] de [MES] de [AÑO], os traemos el nuevo analisis definitivo de medios de comunicacion masiva del dia de hoy". '
         'Sustituye [DIA] por el numero del dia, [MES] por el mes en castellano, [AÑO] por el ano. '
@@ -129,7 +133,7 @@ def producir_fase2(fecha=None):
         '(4) CIERRAS con pregunta o ironia fina. '
         'Devuelve EXCLUSIVAMENTE JSON: {"escenas":[{"id":1,"texto":"NARRACION","concepto_visual":"VISUAL DESC EN INGLES","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"imagen"}]}. '
         'REGLAS: '
-        '(1) 18 escenas exactas. '
+        '(1) EXACTAMENTE 18 escenas (1 intro + 16 titulares + 1 cierre). '
         '(2) texto = SOLO narracion, primera persona o impersonal. PROHIBIDO: El video abre, Vemos, Corte a, Voz en off dice, descripciones visuales. '
         '(3) Cada texto 80-100 palabras. '
         '(4) Cada escena 2-18 cita MINIMO 1 medio real + 1 tecnica + 1 contraste. '
@@ -157,7 +161,7 @@ def producir_fase2(fecha=None):
         print(f"   Articulo limpio: {len(_art_limpio)} chars (era {len(articulo)})", flush=True)
 
         resp = pedir_a_especialista("guionista_youtube_experto", _prompt_con_fecha,
-            contexto=("ARTICULO:\n" + _art_limpio[:4000] + "\n\nANALISIS POR MEDIO:\n" + _analisis_medios_para_guionista()[:4000]))
+            contexto=("ARTICULO:\n" + _art_limpio[:2000] + "\n\nTOP 16 TITULARES:\n" + json.dumps(datos.get("top16", [])) + "\n\nANALISIS POR MEDIO:\n" + _analisis_medios_para_guionista()[:2000]))
         d = _parse_json_seguro(resp)
         if isinstance(d, dict) and "escenas" in d:
             escenas = d["escenas"]

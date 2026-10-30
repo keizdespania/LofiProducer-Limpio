@@ -201,7 +201,7 @@ def analizar_fase1(fecha=None):
                 print(f"  [{completados}/{total}] X error: {e}", flush=True)
 
     # 3. Guardar
-    res = {"fecha": fecha, "top3": top3, "analisis": todos, "recoleccion": datos}
+    res = {"fecha": fecha, "top3": top3, "top16": top16, "analisis": todos, "recoleccion": datos}
     out = OUT / f"analisis_fase1_{fecha}.json"
     out.write_text(json.dumps(res, indent=2, ensure_ascii=False))
     print(f"[fase1] ✅ Guardado en {out}", flush=True)
