@@ -140,11 +140,19 @@ Usa los titulares y URLs del contexto. Veta tragedias y deportes."""
     if not top16:
         # Fallback real: sacar 16 titulares CON URL de la recolección
         todos_urls = []
+        # Filtro ultra-estricto para no meter basura
+        _BASURA = ["futbol", "athletic", "real madrid", "barça", "barcelona", "murcia", "cartagena", "valencia", "gandia",
+                   "tiempo en", "previsión meteorológica", "el tiempo", "lluvia", "temperatura", "grados",
+                   "porno", "vídeos", "detenido", "pillan", "marroquí", "mueren", "fallece", "accidente", "sucesos",
+                   "gato con sombrero", "litera", "xavier", "arrebatador", "ilusion"]
+                   
         for sec in ("prensa", "agencias"):
             for medio, noticias in (datos.get(sec) or {}).items():
                 for n in noticias:
+                    t = n.get("titular", "").lower()
                     if isinstance(n, dict) and n.get("titular") and n.get("url") and not _es_malo(n["titular"]):
-                        todos_urls.append({"titular": n["titular"], "url": n["url"]})
+                        if not any(b in t for b in _BASURA):
+                            todos_urls.append({"titular": n["titular"], "url": n["url"]})
         
         # Quitar duplicados por titular
         unicos = []
