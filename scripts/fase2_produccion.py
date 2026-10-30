@@ -159,10 +159,12 @@ def producir_fase2(fecha=None):
         print(f"   [Escena {num}/18] Noticia {i+1}: {titular[:40]}...", flush=True)
         
         inst = (
-            f"Analiza este titular: '{titular}'. "
-            "Usa la fórmula: (1) Identifica al Chivo Expiatorio (a quién culpa el medio). "
-            "(2) Identifica al Beneficiario (a quién protege). "
-            "(3) Desmonta la técnica de manipulación (cortina de humo, hombre de paja, etc)."
+            f"Analiza este titular como un tertuliano cabreado en un bar: '{titular}'. "
+            "NO uses palabras de robot (ej: 'El medio usa a X como chivo expiatorio'). "
+            "En su lugar, usa la fórmula: (1) Señala al malo de la película (el que se come la culpa). "
+            "(2) Destapa al beneficiario (el que se ríe de fondo). "
+            "(3) Explica la técnica de manipulación con ironía (ej: 'Esto es una cortina de humo de manual'). "
+            "Habla con rabia, con chispa, con calle."
         )
         escenas.append(_generar_escena(num, inst, ctx_texto))
 
