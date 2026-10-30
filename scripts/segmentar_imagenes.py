@@ -54,17 +54,26 @@ def _extraer_frases(ass_path):
 
 
 def _fusionar_a_72(frases):
-    """Fusiona frases cortas hasta llegar a ~72 segmentos."""
-    total_dur = frases[-1]["fin"] if frases else 0
-    if total_dur < 60:
+    """Fusiona frases consecutivas hasta tener ~72 segmentos, SIN reordenar."""
+    if len(frases) <= 72:
         return frases
-    target = 72
-    # Si hay más de 72, fusionar las más cortas con vecinas
-    while len(frases) > target:
-        # Fusión mínima
-        frases[0:2] = [{"inicio": frases[0]["inicio"], "fin": frases[1]["fin"], "texto": frases[0]["texto"] + " " + frases[1]["texto"]}]
+    # Fusionar pares consecutivos hasta llegar a <= 72
+    while len(frases) > 72:
+        fusionadas = []
+        i = 0
+        while i < len(frases):
+            if i + 1 < len(frases) and len(fusionadas) < 72:
+                fusionadas.append({
+                    "inicio": frases[i]["inicio"],
+                    "fin": frases[i+1]["fin"],
+                    "texto": frases[i]["texto"] + " " + frases[i+1]["texto"],
+                })
+                i += 2
+            else:
+                fusionadas.append(frases[i])
+                i += 1
+        frases = fusionadas
     return frases
-
 
 
 
