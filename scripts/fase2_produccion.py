@@ -88,188 +88,89 @@ def producir_fase2(fecha=None):
     res["articulo_html"] = articulo
     res["esqueleto"] = esqueleto
 
-    # 2. GUION DE YOUTUBE (18 escenas para montaje cinematografico)
-    print("[fase2] 2/5 Guionista: 18 escenas (40% video / 60% imagen)...", flush=True)
-    escenas = []
+    # 2. GUION DE YOUTUBE (Generación secuencial, 1 por noticia)
+    print("[fase2] 2/5 Guionista: 18 escenas (Generación secuencial)...", flush=True)
     
-    # Intentar con el LLM
-    _PROMPT_GUION = (
-        'Eres un hibrido entre profesor de comunicacion, periodista de investigacion y columnista ironico. PROHIBIDO responder con HTML, CSS o articulos. Solo JSON con narracion locutada. '
-        'OBJETIVO: DEMOSTRAR con datos concretos que los medios usan tecnicas de framing. NO opinas: citas y desmontas. '
-        'FORMATO: 18 escenas. '
-        'ESTRUCTURA UNIVERSAL POR NOTICIA (CRITICO - IGNORA QUIEN SEA EL PROTAGONISTA): '
-        '1. CONTEXTO IRONICO: Empieza con una ironia sobre la actualidad (ej: la economia, los jovenes, los precios). '
-        '2. EL TITULAR: Cita el titular exacto de un medio y di quien es el CHIVO EXPIATORIO (el malo de la pelicula). Puede ser un politico, la UE, una empresa, un pais... '
-        '3. EL BENEFICIARIO: Explica a quien beneficia este relato (quien se libra de la culpa o quien gana poder/dinero). '
-        '4. LA TECNICA: Desmonta que sesgo han usado (cortina de humo, hombre de paja, anclaje...). '
-        '5. CIERRE: Pregunta al espectador o ironia final. '
-        'ESTRUCTURA: '
-        'Escena 1: Intro pactada (saludo + fecha + ironía). '
-        'Escenas 2-17: Analiza 16 titulares diferentes (1 escena por titular). Aplica la fórmula: Titular -> Chivo Expiatorio -> Beneficiario -> Técnica. '
-        'Escena 18: Cierre mordaz resumiendo el día. '
-        'ESCENA 1 (INTRO OBLIGATORIA): '
-        'Empieza con un saludo UNICO y CREATIVO dirigido a la audiencia. Ejemplos: "Hola a todos los despiertos", "Buenas, mentes inquietas", "Saludos, buscadores de la verdad", "Hola, observadores del ruido", "Bienvenidos, analistas del framing". NUNCA uses el mismo dos veces. '
-        'Despues del saludo, di EXACTAMENTE: "Somos El Encuadre y hoy, [DIA] de [MES] de [AÑO], os traemos el nuevo analisis definitivo de medios de comunicacion masiva del dia de hoy". '
-        'Sustituye [DIA] por el numero del dia, [MES] por el mes en castellano, [AÑO] por el ano. '
-        'La fecha de publicacion es: __FECHA_PUB__. '
-        'Despues del saludo+fecha, continua con el analisis del dia. '
-        'REGLAS DE DISTRIBUCION TOP3 (CRITICO): '
-        'Las 18 escenas DEBEN cubrir las 3 noticias del TOP3, NO solo una. '
-        'NO INVENTES noticias que no esten en el TOP3. '
-        'Las 3 noticias del TOP3 estan en el contexto, usalas TAL CUAL. '
-        'Si solo tienes 3 noticias, haz 5 escenas de cada una. NO añadas temas nuevos. '
-        'Distribucion obligatoria: '
-        '  - Escenas 1-2: intro + presentacion breve del TOP3 completo. '
-        '  - Escenas 3-7: noticia_1 (5 escenas). '
-        '  - Escenas 8-12: noticia_2 (5 escenas). '
-        '  - Escenas 13-17: noticia_3 (5 escenas). '
-        '  - Escena 18: cierre comparativo de las 3. '
-        'Cada noticia debe tener MINIMO 5 escenas propias. '
-        'EXCLUIR DEPORTES: NO incluyas noticias de deportes (futbol, tenis, Alcaraz, Nadal, liga, partido, como ver online). Si el TOP3 contiene deportes, sustituyelo por otra noticia de actualidad. '
-        'ESTRUCTURA de las escenas 2-18: '
-        '(1) CITAS un titular real de un medio del contexto. '
-        '(2) DESCOMPONES la tecnica. '
-        '(3) CONTRASTAS con otro medio. '
-        '(4) CIERRAS con pregunta o ironia fina. '
-        'Devuelve EXCLUSIVAMENTE JSON: {"escenas":[{"id":1,"texto":"NARRACION","concepto_visual":"VISUAL DESC EN INGLES","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"imagen"}]}. '
-        'REGLAS: '
-        '(1) EXACTAMENTE 18 escenas. USA EL EXTRACTO del articulo para descubrir QUE OCULTA el medio sobre ese titular. '
-        '(2) texto = SOLO narracion, primera persona o impersonal. PROHIBIDO: El video abre, Vemos, Corte a, Voz en off dice, descripciones visuales. '
-        '(3) Cada texto 80-100 palabras. '
-        '(4) Cada escena 2-18 cita MINIMO 1 medio real + 1 tecnica + 1 contraste. '
-        '(5) concepto_visual EN INGLES, 8-15 palabras, Subject + Action + Environment + Lighting + Style. '
-        '(6) Total minimo 1450 palabras. SOLO JSON. '
-        'TONO: educado, ironico, autoridad periodistica. Como Inaki Gabilondo con mala leche. '
-        'NO acusar de delito. Solo describir tecnicas.'
-    )
-    # Preparar fecha de publicación (fuera del try)
+    # Fecha de publicación
     import datetime as _dt2
     _ahora = _dt2.datetime.now()
     _pub = (_dt2.date.today() + _dt2.timedelta(days=1)) if _ahora.hour >= 18 else _dt2.date.today()
     _MESES = {1:"enero",2:"febrero",3:"marzo",4:"abril",5:"mayo",6:"junio",7:"julio",8:"agosto",9:"septiembre",10:"octubre",11:"noviembre",12:"diciembre"}
     _fecha_str = f"{_pub.day} de {_MESES[_pub.month]} de {_pub.year}"
-    _prompt_con_fecha = _PROMPT_GUION.replace("__FECHA_PUB__", _fecha_str)
     print(f"   Fecha publicacion: {_fecha_str}", flush=True)
-    try:
-        # LIMPIAR HTML del artículo (evita que LLM copie CSS)
-        import re as _re_clean
-        _art_limpio = _re_clean.sub(r'<style[^>]*>.*?</style>', '', articulo, flags=_re_clean.DOTALL|_re_clean.I)
-        _art_limpio = _re_clean.sub(r'<script[^>]*>.*?</script>', '', _art_limpio, flags=_re_clean.DOTALL|_re_clean.I)
-        _art_limpio = _re_clean.sub(r'<[^>]+>', ' ', _art_limpio)
-        _art_limpio = _re_clean.sub(r'\{[^}]*\}', ' ', _art_limpio)  # quitar CSS residual
-        _art_limpio = _re_clean.sub(r'\s+', ' ', _art_limpio).strip()
-        print(f"   Articulo limpio: {len(_art_limpio)} chars (era {len(articulo)})", flush=True)
 
-        resp = pedir_a_especialista("guionista_youtube_experto", _prompt_con_fecha,
-            contexto=("ARTICULO:\n" + _art_limpio[:2000] + "\n\nTOP 16 TITULARES:\n" + json.dumps([{"titular": t.get("titular"), "extracto": t.get("extracto")} for t in datos.get("top16", [])])[:4000] + "\n\nANALISIS POR MEDIO:\n" + _analisis_medios_para_guionista()[:2000]))
-        d = _parse_json_seguro(resp)
-        if isinstance(d, dict) and "escenas" in d:
-            escenas = d["escenas"]
-            # VALIDAR: rechazar escenas con HTML/CSS en texto
-            _html_markers = ['body {', 'font-family', '<style', '<html', '<div', '<p>', '<h1', '<h2', 'font-size:', 'margin:', 'padding:', 'color:']
-            _escenas_ok = []
-            for e in escenas:
-                txt = e.get("texto", "")
-                # Evitar que meta la tragedia de los trenes si no está en el top16
-                if any(m in txt.lower() for m in ["trenes de alta velocidad", "urda", "toledo", "adif"]):
-                    print(f"   ⚠️ Escena {e.get('id')} contiene tragedia, descartada", flush=True)
-                    continue
-                if any(m in txt.lower() for m in _html_markers):
-                    print(f"   ⚠️ Escena {e.get('id','?')} con HTML detectada, descartada", flush=True)
-                    continue
-                _escenas_ok.append(e)
-            if len(_escenas_ok) < len(escenas):
-                print(f"   Filtradas {len(escenas)-len(_escenas_ok)} escenas con HTML", flush=True)
-                escenas = _escenas_ok
-            # Sanitizer: eliminar frases de montaje que se cuelen
-            import re as _re
-            _PATRONES_MONTAJE = [
-                r'El video (abre|empieza|cierra|termina) con [^.]*\.\s*',
-                r'(La c[áa]mara|El plano|La escena|El montaje)[^.]*\.\s*',
-                r'Corte a [^.]*\.\s*',
-                r'Fundido a [^.]*\.\s*',
-                r'(Vemos|Se ve|Se muestra|Se observa) [^.]*\.\s*',
-                r'Una voz en off (dice|narra):?\s*[“\"]?',
-                r'\[.*?\]', r'\(.*?\)',
-                r'^[A-ZÁÉÍÓÚÑ ]{4,}:\s*',
-            ]
-            for e in escenas:
-                t_orig = e.get("texto", "")
-                t_clean = t_orig
-                for pat in _PATRONES_MONTAJE:
-                    t_clean = _re.sub(pat, '', t_clean, flags=_re.MULTILINE)
-                t_clean = _re.sub(r'\s+', ' ', t_clean).strip()
-                if t_clean and len(t_clean) > 20:
-                    e["texto"] = t_clean
-            print(f"   sanitizadas {len(escenas)} escenas (montaje→narración)", flush=True)
-        elif isinstance(d, list):
-            escenas = d
-        print(f"   Escenas generadas por LLM: {len(escenas)}", flush=True)
-    except Exception as e:
-        print(f"   ⚠️ LLM falló: {e}", flush=True)
+    top16 = datos.get("top16", [])
+    escenas = []
 
-    # Fallback manual: Dividir el artículo en 18 trozos
-    # VALIDACIÓN: si el LLM devolvió menos de 1300 palabras → reintento
-    _pal_actual = sum(len(e.get("texto","").split()) for e in escenas)
-    if _pal_actual < 1300 and escenas:
-        print(f"   LLM devolvio {_pal_actual} palabras (< 1300). Reintentando con enfasis...", flush=True)
-        _reintento = pedir_a_especialista("guionista_youtube_experto",
-            _PROMPT_GUION + " ATENCION: tu respuesta anterior tenia solo " + str(_pal_actual) + " palabras. Es INACEPTABLE. Amplia cada escena a 70 palabras EXACTAS. Total minimo 1430.",
-            contexto="ARTICULO:\n" + articulo[:6000])
-        _d2 = _parse_json_seguro(_reintento)
-        if isinstance(_d2, dict) and "escenas" in _d2:
-            _escenas2 = _d2["escenas"]
-            _pal_re = sum(len(e.get("texto","").split()) for e in _escenas2)
-            if _pal_re > _pal_actual:
-                escenas = _escenas2
-                print(f"   Reintento aceptado: {_pal_re} palabras", flush=True)
-            else:
-                print(f"   Reintento no mejoro ({_pal_re}), mantengo original", flush=True)
+    # PROMPT BASE (System para todas las escenas)
+    _SYS_GUION = (
+        "Eres un analista mediático mordaz, cercano y para todos los públicos. "
+        "Hablas como un amigo inteligente en un bar, usando ironía y sarcasmo. "
+        "SOLO NARRACIÓN LOCUTADA. Prohibido HTML, markdown o acotaciones (FADE IN, etc)."
+    )
 
-    # Si hay pocas escenas, forzar un mínimo de 12-15 para garantizar 10 min
-    num_escenas_objetivo = 15 if len(escenas) < 12 else len(escenas)
-    if len(escenas) < 12:
-        print(f"   ⚠️ Solo {len(escenas)} escenas. Forzando {num_escenas_objetivo} para 10 min...", flush=True)
-        # Usar artículo limpio (no el HTML original)
-        try:
-            texto_fuente = _art_limpio
-        except NameError:
-            texto_fuente = re.sub(r'<[^>]+>', ' ', articulo)
-        # Quitar markdown (#, *, **, >, ---, links) del artículo
-        texto = re.sub(r'<[^>]+>', ' ', texto_fuente)
-        texto = re.sub(r'^#{1,6}\s+', '', texto, flags=re.MULTILINE)
-        texto = re.sub(r'\*\*([^*]+)\*\*', r'\1', texto)
-        texto = re.sub(r'\*([^*]+)\*', r'\1', texto)
-        texto = re.sub(r'^>\s+', '', texto, flags=re.MULTILINE)
-        texto = re.sub(r'---', '', texto)
-        texto = re.sub(r'\s+', ' ', texto).strip()
-        palabras = texto.split()
-        chunk = max(40, len(palabras) // num_escenas_objetivo) if len(palabras) >= 400 else max(30, len(palabras) // 8)
-        num_escenas_objetivo = min(15, max(8, len(palabras) // max(chunk, 40)))
-        moods = ["tension", "misterio", "epico", "inspirador", "electronico", "relax"]
-        escenas = []
-        for i in range(num_escenas_objetivo):
-            ini = i * chunk
-            fin_i = min(len(palabras), (i+1) * chunk)
-            if ini >= len(palabras): break
-            escenas.append({
-                "id": i + 1,
-                "texto": " ".join(palabras[ini:fin_i]),
-                "concepto_visual": "cinematic dark news analysis about " + str(dossier.get("tema_del_dia", "analysis")) + ", abstract",
-                "mood_musical": moods[i % len(moods)],
-                "tipo_visual": "video" if i == 0 or i % 3 == 0 else "imagen"
-            })
-        print(f"   ✅ {len(escenas)} escenas generadas", flush=True)
-    # CAPA 4: Gate de Sentimiento
-    print("[fase2] Analizando temperatura emocional...", flush=True)
-    sent = _parse_json_seguro(pedir_a_especialista("analista_sentimiento", "Analiza el tono", contexto=ctx[:2000]))
-    res["sentimiento"] = sent
-    if sent.get("intensidad", 0) > 80:
-        print(f"   ⚠️ Tema caliente ({sent.get('emocion_principal')}). Ajustando...", flush=True)
+    # FUNCIÓN AUXILIAR PARA GENERAR 1 ESCENA
+    def _generar_escena(num, instruccion, contexto_noticia=""):
+        prompt = f"Genera la escena {num} del guion. {instruccion} " \
+                 "Devuelve SOLO un JSON válido con esta estructura: " \
+                 '{"id": ' + str(num) + ', "texto": "Tu narración de 80-100 palabras", "concepto_visual": "English prompt for SDXL", "mood_musical": "tension|epico|inspirador|relax|misterio|electronico", "tipo_visual": "video|imagen"}'
+        
+        ctx = f"NOTICIA DEL DÍA:\n{contexto_noticia}" if contexto_noticia else ""
+        
+        for intento in range(3):
+            resp = pedir_a_especialista("guionista_youtube_experto", prompt, contexto=ctx, proveedor="auto")
+            d = _parse_json_seguro(resp)
+            if d and isinstance(d, dict) and "texto" in d and len(d["texto"].split()) > 20:
+                return d
+            print(f"      Reintento {intento+1}/3 escena {num}...", flush=True)
+            time.sleep(2)
+        
+        # Fallback de emergencia para no romper el vídeo
+        return {"id": num, "texto": f"Error generando la escena {num}. Aquí iría el análisis de la noticia.", "concepto_visual": "newspaper abstract, cinematic", "mood_musical": "tension", "tipo_visual": "imagen"}
+
+    # --- ESCENA 1: INTRO ---
+    print("   [Escena 1/18] Intro...", flush=True)
+    intro_inst = (
+        f"Empieza con un saludo único y creativo. Luego di EXACTAMENTE: 'Somos El Encuadre y hoy, {_fecha_str}, os traemos el nuevo análisis definitivo de medios de comunicación masiva del día de hoy'. "
+        "Después, suelta una ironía sobre la actualidad en España (ej: 'Mientras los buenos trabajadores se van al extranjero...')."
+    )
+    escenas.append(_generar_escena(1, intro_inst))
+
+    # --- ESCENAS 2-17: LAS 16 NOTICIAS ---
+    for i, noticia in enumerate(top16[:16]):
+        num = i + 2
+        titular = noticia.get("titular", "Noticia sin titular")
+        url = noticia.get("url", "")
+        extracto = noticia.get("extracto", "")
+        
+        # Si no hay extracto (porque el scraper falló), usamos el titular
+        ctx_texto = f"Titular: {titular}\nExtracto: {extracto if extracto else 'No disponible, analiza solo el titular.'}"
+        
+        print(f"   [Escena {num}/18] Noticia {i+1}: {titular[:40]}...", flush=True)
+        
+        inst = (
+            f"Analiza este titular: '{titular}'. "
+            "Usa la fórmula: (1) Identifica al Chivo Expiatorio (a quién culpa el medio). "
+            "(2) Identifica al Beneficiario (a quién protege). "
+            "(3) Desmonta la técnica de manipulación (cortina de humo, hombre de paja, etc)."
+        )
+        escenas.append(_generar_escena(num, inst, ctx_texto))
+
+    # --- ESCENA 18: CIERRE ---
+    print("   [Escena 18/18] Cierre...", flush=True)
+    cierre_inst = (
+        "Haz un cierre mordaz resumiendo el día. "
+        "Termina con una pregunta irónica que invite al espectador a reflexionar sobre cómo los medios construyen la realidad."
+    )
+    escenas.append(_generar_escena(18, cierre_inst))
 
     res["escenas"] = escenas
     res["texto_voz_largo"] = " ".join([e.get("texto", "") for e in escenas])
-    print(f"   OK {len(escenas)} escenas guardadas", flush=True)
+    _palabras = len(res["texto_voz_largo"].split())
+    _min_est = _palabras / 130
+    print(f"   Validacion duracion: {_palabras} palabras -> {_min_est:.1f} min (objetivo >=10)", flush=True)
+    res["duracion_estimada_min"] = round(_min_est, 1)
+    res["palabras_totales"] = _palabras
 
     # 3. DJ MUSICAL
     print("[fase2] 3/5 DJ Musical...", flush=True)
