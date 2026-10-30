@@ -18,7 +18,10 @@ def _humanizar_texto(texto):
     texto = re.sub(r'[*_#`>]', '', texto)
     for p in [r'El video (abre|empieza|cierra|termina) con[^.]*\.?\s*', r'(La c[áa]mara|El plano|La escena|El montaje)[^.]*\.?\s*', r'Corte a[^.]*\.?\s*', r'Fundido a[^.]*\.?\s*', r'(Vemos|Se ve|Se muestra|Se observa)[^.]*\.?\s*']:
         texto = re.sub(p, '', texto, flags=re.I|re.M)
-    texto = re.sub(r'([.!?])\s+', r'\1\n', texto)
+    texto = texto.replace(', ', ', ')
+        texto = texto.replace('...', '...\n')
+        texto = re.sub(r'([.?!])\s+', r'\1\n', texto)
+        texto = re.sub(r'([,;])\s+', r'\1', texto)
     texto = re.sub(r'\n{3,}', '\n\n', texto)
     texto = re.sub(r'\b(tituló|dijo|afirmó)\s+', r'\1... ', texto)
     texto = re.sub(r'\b(pero|sin embargo|en cambio)\b', r'— \1', texto, flags=re.I)

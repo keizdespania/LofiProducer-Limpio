@@ -56,8 +56,10 @@ def main():
         ("sintetizador.py", None, 600, False),
         ("fase2_produccion.py", None, 1200, False),
         ("director_arte.py", None, 1800, True),
+        ("descargar_lofi.py", None, 600, True),
         ("voz_edge.py", None, 600, False),
-        ("renderizador_local.py", [fecha], 1800, False)
+        ("segmentar_imagenes.py", [fecha], 1800, False),
+        ("render_robusto.py", [fecha], 1800, False)
     ]
 
     for script, args, t, opcional in pasos:

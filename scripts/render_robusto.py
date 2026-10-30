@@ -156,12 +156,12 @@ dur_total = max(dur_video, dur_voz + 2)
 
 if not audio.exists() or _dur(audio) < dur_total - 10:
     print(f"\n[2] Audio (dur_total={dur_total:.1f}s)", flush=True)
+    # Solo archivos lofi válidos
+    PREFERIDOS = ["lofi_final", "yt_cc_", "relax_", "inspirador_", "misterio_", "electronico_", "sarcasmo_", "dramatico_"]
     lofi = None
-    for lista in [sorted(MUSICA.glob("yt_cc_*.mp3")), sorted(MUSICA.glob("*_*.mp3"))]:
-        for f in lista:
-            if "voz" not in f.name and "short" not in f.name:
-                lofi = f; break
-        if lofi: break
+    for pref in PREFERIDOS:
+        cands = [f for f in MUSICA.glob(f"{pref}*.mp3") if f.suffix == ".mp3"]
+        if cands: lofi = cands[0]; break
     if not lofi:
         lofi = MUSICA / "_silence.mp3"
         _run([FFMPEG,"-y","-hide_banner","-loglevel","error","-f","lavfi",
@@ -182,7 +182,7 @@ if not audio.exists() or _dur(audio) < dur_total - 10:
         return _run([FFMPEG,"-y","-hide_banner","-loglevel","error",
             "-itsoffset","2","-i",str(voz),"-i",str(lofi_largo),
             "-filter_complex",
-                f"[0:a]volume=1.0[v];[1:a]atrim=0:{dur_total:.1f},afade=t=in:st=0:d=3,afade=t=out:st={dur_total-3:.1f}:d=3,volume=0.10[m];[v][m]amix=inputs=2:duration=first:normalize=0[a]",
+                f"[0:a]volume=1.0[v];[1:a]atrim=0:{dur_total:.1f},afade=t=in:st=0:d=3,afade=t=out:st={dur_total-3:.1f}:d=3,volume=0.12[m];[m][v]sidechaincompress=threshold=0.1:ratio=5:attack=20:release=1000[duck];[v][duck]amix=inputs=2:duration=first:normalize=0[a]",
             "-map","[a]","-c:a","aac","-b:a","192k","-t",f"{dur_total:.1f}",str(audio)],
             300, "amix")
     if not _intentar(_mix, "amix"):
