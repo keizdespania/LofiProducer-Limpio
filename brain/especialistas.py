@@ -281,7 +281,7 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
       import time as _time
       # Rotación de modelos y claves de Groq
       modelos_groq = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b"]
-      claves_groq = [k for k in [groq_key, groq_key_2, groq_key_3, groq_key_4] if k]
+      claves_groq = [k for k in [getattr(locals(), "groq_key", ""), getattr(locals(), "groq_key_2", ""), getattr(locals(), "groq_key_3", ""), getattr(locals(), "groq_key_4", "")] if k]
       
       for mod in modelos_groq:
           for key in claves_groq:
