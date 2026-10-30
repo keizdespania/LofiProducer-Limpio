@@ -48,6 +48,16 @@ def producir_fase2(fecha=None):
         print(f"❌ No existe {dossier_file}"); return None
     
     datos = json.loads(dossier_file.read_text())
+    
+    # RECUPERAR EL TOP16 DEL ANALISIS (que es donde está realmente)
+    af = OUT / f"analisis_fase1_{fecha}.json"
+    if af.exists():
+        try:
+            analisis_data = json.loads(af.read_text())
+            datos["top16"] = analisis_data.get("top16", [])
+        except Exception as e:
+            print(f"⚠️ No se pudo leer el top16 del analisis: {e}")
+
     dossier = datos.get("dossier", {})
     guiones_base = datos.get("guiones", {})
     hooks = guiones_base.get("hooks_totales", [])
