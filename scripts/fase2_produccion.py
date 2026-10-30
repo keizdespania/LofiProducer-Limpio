@@ -59,7 +59,7 @@ def producir_fase2(fecha=None):
     print("[fase2] 1/5 Arquitecto + Redactor...", flush=True)
     esqueleto = _parse_json_seguro(pedir_a_especialista("arquitecto_contenido", "Crea el esqueleto del artículo.", contexto=ctx[:3000]))
     _PROMPT_REDACTOR = (
-        'Escribe un artículo periodístico de 1200-1500 palabras en MARKDOWN PLANO. '
+        'Escribe un artículo periodístico mordaz y directo de 1200-1500 palabras en MARKDOWN PLANO. Usa un tono irónico y callejero, no académico. '
         'PROHIBIDO: HTML, CSS, DOCTYPE, <head>, <style>, <body>, <div>, <p>, <h1>. '
         'Usa SOLO: # para títulos, ## para subtítulos, **negrita**, *cursiva*, > para citas, y párrafos separados por líneas en blanco. '
         'Cita medios reales del dossier. Tono: profesor + periodista irónico. '
@@ -170,6 +170,10 @@ def producir_fase2(fecha=None):
             _escenas_ok = []
             for e in escenas:
                 txt = e.get("texto", "")
+                # Evitar que meta la tragedia de los trenes si no está en el top16
+                if any(m in txt.lower() for m in ["trenes de alta velocidad", "urda", "toledo", "adif"]):
+                    print(f"   ⚠️ Escena {e.get('id')} contiene tragedia, descartada", flush=True)
+                    continue
                 if any(m in txt.lower() for m in _html_markers):
                     print(f"   ⚠️ Escena {e.get('id','?')} con HTML detectada, descartada", flush=True)
                     continue
