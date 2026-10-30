@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / 'brain'))
+from especialistas import pedir_a_especialista
 """subtitulos.py — Genera SRT desde audio + texto.
 Estrategia: 1) Groq Whisper (rápido, cloud) 2) Fallback: distribución proporcional por duración.
 """

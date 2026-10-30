@@ -1,4 +1,7 @@
 """recolector.py - Radar Global Definitivo (50+ medios, 15 TV, 15 Radio, Agencias)."""
+import sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / 'brain'))
+from especialistas import pedir_a_especialista
 import sys, json, pathlib, datetime, re, urllib.request, subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime as dt, timedelta, timezone
