@@ -137,7 +137,7 @@ def analizar_fase1(fecha=None):
         "detective_tendencias_v2", 
         """Detecta el Top 3 de noticias principales del día (para el blog) y extrae 16 titulares variados (política, economía, IA, trabajo, sociedad) con su URL (para el vídeo). 
         Devuelve SOLO JSON: {"top3": ["noticia 1", ...], "top16": [{"titular": "titular 1", "url": "https://..."}, ... 16 items]}.""", 
-        contexto=ctx[:4000], proveedor="auto"))
+        contexto=ctx[:4000], proveedor="omni"))
     if not top3:
         print("[fase1] ⚠️ Detective falló. Reintento simplificado...", flush=True)
         top3 = _parse_json_seguro(pedir_a_especialista(
@@ -175,7 +175,7 @@ def analizar_fase1(fecha=None):
         ctx_medio = f"MEDIO: {medio}\nTITULARES:\n" + "\n".join(textos[:3])
         r = pedir_a_especialista("forense_medios",
             f"Analiza el sesgo de {medio} sobre: {noticia}. Devuelve SOLO JSON con: nombre, titular_real, titular_traducido, imd_local, framing, palabra_cuchillo, tecnica_principal, omision.",
-            contexto=ctx_medio[:800], proveedor="auto")
+            contexto=ctx_medio[:800], proveedor="omni")
         an = _parse_json_seguro(r)
         if not an: return medio, None
         import time as _t; _t.sleep(2.0)
