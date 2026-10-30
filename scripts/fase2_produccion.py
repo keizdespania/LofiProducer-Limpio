@@ -154,17 +154,18 @@ def producir_fase2(fecha=None):
         extracto = noticia.get("extracto", "")
         
         # Si no hay extracto (porque el scraper falló), usamos el titular
-        ctx_texto = f"Titular: {titular}\nExtracto: {extracto if extracto else 'No disponible, analiza solo el titular.'}"
+        ctx_texto = f"Medio: {noticia.get('medio', 'Un medio')}\nTitular: {titular}\nExtracto: {extracto if extracto else 'No disponible, analiza solo el titular.'}"
         
         print(f"   [Escena {num}/18] Noticia {i+1}: {titular[:40]}...", flush=True)
         
         inst = (
             f"Analiza este titular como un tertuliano cabreado en un bar: '{titular}'. "
-            "NO uses palabras de robot (ej: 'El medio usa a X como chivo expiatorio'). "
-            "En su lugar, usa la fórmula: (1) Señala al malo de la película (el que se come la culpa). "
-            "(2) Destapa al beneficiario (el que se ríe de fondo). "
-            "(3) Explica la técnica de manipulación con ironía (ej: 'Esto es una cortina de humo de manual'). "
-            "Habla con rabia, con chispa, con calle."
+            f"ESTRUCTURA OBLIGATORIA (no te la saltes): "
+            f"1. Empieza citando el medio y el titular: 'El [Medio] tituló: \"[Titular]\"'. "
+            f"2. Señala al malo de la película (el chivo expiatorio). "
+            f"3. Destapa al beneficiario (el que se ríe de fondo). "
+            f"4. Explica la técnica de manipulación con ironía. "
+            f"Habla con rabia, con chispa, con calle. Sin palabras de robot."
         )
         escenas.append(_generar_escena(num, inst, ctx_texto))
 
