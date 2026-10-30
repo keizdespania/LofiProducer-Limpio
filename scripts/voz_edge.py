@@ -1,4 +1,4 @@
-"""voz_edge.py v3 - Alvaro humanizado: prosodia + rate dinamico + post-FX."""
+"""voz_edge.py - Genera audio por escena y timeline con pausas de intriga."""
 import asyncio, json, pathlib, sys, subprocess, re
 import edge_tts
 
@@ -12,19 +12,33 @@ RATE_MAP = {"tension":"-8%","misterio":"-8%","epico":"-5%","inspirador":"-5%","e
 
 def _humanizar_texto(texto):
     if not texto: return ""
+    # Limpiar acotaciones
     texto = re.sub(r'\[.*?\]', '', texto)
     texto = re.sub(r'\(.*?\)', '', texto)
     texto = re.sub(r'\{.*?\}', '', texto)
     texto = re.sub(r'[*_#`>]', '', texto)
-    for p in [r'El video (abre|empieza|cierra|termina) con[^.]*\.?\s*', r'(La c[áa]mara|El plano|La escena|El montaje)[^.]*\.?\s*', r'Corte a[^.]*\.?\s*', r'Fundido a[^.]*\.?\s*', r'(Vemos|Se ve|Se muestra|Se observa)[^.]*\.?\s*']:
-        texto = re.sub(p, '', texto, flags=re.I|re.M)
-    texto = texto.replace(', ', ', ')
-        texto = texto.replace('...', '...\n')
-        texto = re.sub(r'([.?!])\s+', r'\1\n', texto)
-        texto = re.sub(r'([,;])\s+', r'\1', texto)
-    texto = re.sub(r'\n{3,}', '\n\n', texto)
+    
+    # Quitar frases de montaje
+    patrones = [
+        r'El video (abre|empieza|cierra|termina) con[^.]*\.?\s*',
+        r'(La c[áa]mara|El plano|La escena|El montaje)[^.]*\.?\s*',
+        r'Corte a[^.]*\.?\s*',
+        r'Fundido a[^.]*\.?\s*',
+        r'(Vemos|Se ve|Se muestra|Se observa)[^.]*\.?\s*'
+    ]
+    for p in patrones:
+        texto = re.sub(p, '', texto, flags=re.I | re.M)
+        
+    # PAUSAS: Puntos = salto de línea (respiración). Comas = sin salto (flujo).
+    texto = texto.replace('...', '...\n')
+    texto = re.sub(r'([.!?])\s+', r'\1\n', texto)
+    texto = re.sub(r'([,;])\s+', r'\1 ', texto) # Comas no rompen la frase
+    
+    # Micro-pausas para énfasis
     texto = re.sub(r'\b(tituló|dijo|afirmó)\s+', r'\1... ', texto)
     texto = re.sub(r'\b(pero|sin embargo|en cambio)\b', r'— \1', texto, flags=re.I)
+    
+    texto = re.sub(r'\n{3,}', '\n\n', texto)
     return texto.strip()
 
 def _rate_para(escena):
