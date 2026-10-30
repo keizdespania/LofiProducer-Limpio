@@ -134,7 +134,10 @@ def analizar_fase1(fecha=None):
                 if isinstance(v, dict): ctx += f"- {v.get('titulo','')}\n"
 
     top3 = _parse_json_seguro(pedir_a_especialista(
-        "detective_tendencias_v2", "Detecta el Top 3 de noticias del día.", contexto=ctx[:4000], proveedor="groq"))
+        "detective_tendencias_v2", 
+        """Detecta el Top 3 de noticias principales del día (para el blog) y extrae 16 titulares variados (política, economía, IA, trabajo, sociedad) con su URL (para el vídeo). 
+        Devuelve SOLO JSON: {"top3": ["noticia 1", ...], "top16": [{"titular": "titular 1", "url": "https://..."}, ... 16 items]}.""", 
+        contexto=ctx[:4000], proveedor="groq"))
     if not top3:
         print("[fase1] ⚠️ Detective falló. Reintento simplificado...", flush=True)
         top3 = _parse_json_seguro(pedir_a_especialista(
