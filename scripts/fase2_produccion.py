@@ -133,7 +133,7 @@ def producir_fase2(fecha=None):
         '(4) CIERRAS con pregunta o ironia fina. '
         'Devuelve EXCLUSIVAMENTE JSON: {"escenas":[{"id":1,"texto":"NARRACION","concepto_visual":"VISUAL DESC EN INGLES","mood_musical":"tension|epico|inspirador|relax|misterio|electronico","tipo_visual":"imagen"}]}. '
         'REGLAS: '
-        '(1) EXACTAMENTE 18 escenas (1 intro + 16 titulares + 1 cierre). '
+        '(1) EXACTAMENTE 18 escenas. USA EL EXTRACTO del articulo para descubrir QUE OCULTA el medio sobre ese titular. '
         '(2) texto = SOLO narracion, primera persona o impersonal. PROHIBIDO: El video abre, Vemos, Corte a, Voz en off dice, descripciones visuales. '
         '(3) Cada texto 80-100 palabras. '
         '(4) Cada escena 2-18 cita MINIMO 1 medio real + 1 tecnica + 1 contraste. '
@@ -161,7 +161,7 @@ def producir_fase2(fecha=None):
         print(f"   Articulo limpio: {len(_art_limpio)} chars (era {len(articulo)})", flush=True)
 
         resp = pedir_a_especialista("guionista_youtube_experto", _prompt_con_fecha,
-            contexto=("ARTICULO:\n" + _art_limpio[:2000] + "\n\nTOP 16 TITULARES:\n" + json.dumps(datos.get("top16", [])) + "\n\nANALISIS POR MEDIO:\n" + _analisis_medios_para_guionista()[:2000]))
+            contexto=("ARTICULO:\n" + _art_limpio[:2000] + "\n\nTOP 16 TITULARES:\n" + json.dumps([{"titular": t.get("titular"), "extracto": t.get("extracto")} for t in datos.get("top16", [])])[:4000] + "\n\nANALISIS POR MEDIO:\n" + _analisis_medios_para_guionista()[:2000]))
         d = _parse_json_seguro(resp)
         if isinstance(d, dict) and "escenas" in d:
             escenas = d["escenas"]

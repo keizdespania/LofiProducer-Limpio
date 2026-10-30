@@ -53,6 +53,7 @@ def main():
         ("filtro_seguridad.py", [fecha], 300, False),
         ("transcribir_groq.py", None, 1200, True),
         ("analista_fase1.py", None, 1200, False),
+        ("scraper_articulos.py", [fecha], 300, True),
         ("sintetizador.py", None, 600, False),
         ("fase2_produccion.py", None, 1200, False),
         ("director_arte.py", None, 1800, True),
