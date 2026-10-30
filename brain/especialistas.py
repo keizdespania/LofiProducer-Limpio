@@ -405,6 +405,37 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
         except Exception:
             pass
 
+    # 1.8 INTENTO CON CLOUDFLARE WORKERS AI
+    cf_account = ""
+    cf_token = ""
+    cf_model = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+    if env_path.exists():
+        for line in env_path.read_text().splitlines():
+            if line.startswith("CLOUDFLARE_ACCOUNT_ID="): cf_account = line.split("=", 1)[1].strip()
+            if line.startswith("CLOUDFLARE_API_TOKEN="): cf_token = line.split("=", 1)[1].strip()
+            if line.startswith("CLOUDFLARE_MODEL="): cf_model = line.split("=", 1)[1].strip()
+            
+    if cf_account and cf_token:
+        try:
+            r = requests.post(
+                f"https://api.cloudflare.com/client/v4/accounts/{cf_account}/ai/run/{cf_model}",
+                json={
+                    "messages": [
+                        {"role": "system", "content": system},
+                        {"role": "user", "content": prompt},
+                    ],
+                    "max_tokens": _max_tok,
+                },
+                headers={"Authorization": f"Bearer {cf_token}"},
+                timeout=90,
+            )
+            if r.status_code == 200:
+                res = r.json()
+                if res.get("success") and "response" in res.get("result", {}):
+                    return res["result"]["response"]
+        except Exception:
+            pass
+
     # 2. INTENTO CON OMNIROUTE (si proveedor != "groq")
     if omni_key and proveedor != "groq":
         # Modelos por necesidad de tokens
