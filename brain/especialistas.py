@@ -281,7 +281,7 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
       import time as _time
       # Rotación de modelos y claves de Groq
       modelos_groq = [m for m in [groq_m1, groq_m2, groq_m3] if m]
-      claves_groq = [k for k in [groq_key, groq_key_2] if k]
+      claves_groq = [k for k in [groq_key, groq_key_2, groq_key_3] if k]
       
       for mod in modelos_groq:
           for key in claves_groq:
