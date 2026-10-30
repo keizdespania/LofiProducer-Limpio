@@ -138,7 +138,20 @@ Usa los titulares y URLs del contexto. Veta tragedias y deportes."""
     top3 = _sanitizar_top3(top3, limpios)
     
     if not top16:
-        top16 = [{"titular": t, "url": ""} for t in limpios[:16]]
+        # Fallback real: sacar 16 titulares CON URL de la recolección
+        todos_urls = []
+        for sec in ("prensa", "agencias"):
+            for medio, noticias in (datos.get(sec) or {}).items():
+                for n in noticias:
+                    if isinstance(n, dict) and n.get("titular") and n.get("url") and not _es_malo(n["titular"]):
+                        todos_urls.append({"titular": n["titular"], "url": n["url"]})
+        
+        # Quitar duplicados por titular
+        unicos = []
+        for t in todos_urls:
+            if t["titular"] not in [u["titular"] for u in unicos]:
+                unicos.append(t)
+        top16 = unicos[:16]
         
     print(f"[fase1] ✅ Top 3: {list(top3.values())}", flush=True)
     print(f"[fase1] ✅ Top 16: {len(top16)} titulares guardados", flush=True)
