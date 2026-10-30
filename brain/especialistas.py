@@ -259,244 +259,116 @@ DEFAULT_MAX_TOKENS = 800
 
 
 def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
-    import requests, pathlib, os
-
+    import requests, pathlib, os, time, json
+    
     rol = rol.lower()
-    _max_tok = MAX_TOKENS_POR_ROL.get(rol, DEFAULT_MAX_TOKENS)
     if rol not in ROLES:
         return "ERROR: Rol no existe."
-
+    
     env_path = pathlib.Path(__file__).resolve().parent.parent / ".env"
-    omni_key, groq_key = "", ""
+    claves_groq = []
+    omni_key = ""
+    or_key = ""
+    nv_key = ""
+    cf_acc = ""
+    cf_tok = ""
+    samba_key = ""
+    
     if env_path.exists():
         for line in env_path.read_text().splitlines():
-            if line.startswith("OMNIROUTE_API_KEY="): omni_key = line.split("=", 1)[1].strip().strip('"').strip("'")
-            if line.startswith("GROQ_API_KEY="): groq_key = line.split("=", 1)[1].strip().strip('"').strip("'")
-
-    system = ROLES[rol].get("system", "") + "\n\nREGLA ABSOLUTA: responde SIEMPRE en castellano de España. NUNCA en inglés. Aunque el contexto esté en inglés, tu output es 100% en castellano."
+            l = line.strip()
+            if l.startswith("GROQ_API_KEY="): claves_groq.append(l.split("=", 1)[1].strip().strip('"').strip("'"))
+            if l.startswith("GROQ_API_KEY_2="): claves_groq.append(l.split("=", 1)[1].strip().strip('"').strip("'"))
+            if l.startswith("GROQ_API_KEY_3="): claves_groq.append(l.split("=", 1)[1].strip().strip('"').strip("'"))
+            if l.startswith("GROQ_API_KEY_4="): claves_groq.append(l.split("=", 1)[1].strip().strip('"').strip("'"))
+            if l.startswith("OMNIROUTE_API_KEY="): omni_key = l.split("=", 1)[1].strip().strip('"').strip("'")
+            if l.startswith("OPENROUTER_API_KEY="): or_key = l.split("=", 1)[1].strip().strip('"').strip("'")
+            if l.startswith("NVIDIA_API_KEY="): nv_key = l.split("=", 1)[1].strip().strip('"').strip("'")
+            if l.startswith("CLOUDFLARE_ACCOUNT_ID="): cf_acc = l.split("=", 1)[1].strip().strip('"').strip("'")
+            if l.startswith("CLOUDFLARE_API_TOKEN="): cf_tok = l.split("=", 1)[1].strip().strip('"').strip("'")
+            if l.startswith("SAMBANOVA_API_KEY="): samba_key = l.split("=", 1)[1].strip().strip('"').strip("'")
+    
+    system = ROLES[rol].get("system", "") + "\n\nREGLA ABSOLUTA: responde SIEMPRE en castellano de España. NUNCA en inglés."
     prompt = tarea if not contexto else "CONTEXTO:\n" + contexto + "\n\nTAREA:\n" + tarea
-
-    # 1. INTENTO CON GROQ (solo si proveedor != "omni")
-    if groq_key and proveedor != "omni":
-      import time as _time
-      # Rotación de modelos y claves de Groq
-      modelos_groq = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b"]
-      claves_groq = [k for k in [getattr(locals(), "groq_key", ""), getattr(locals(), "groq_key_2", ""), getattr(locals(), "groq_key_3", ""), getattr(locals(), "groq_key_4", "")] if k]
-      
-      for mod in modelos_groq:
-          for key in claves_groq:
-              try:
-                  r = requests.post(
-                      "https://api.groq.com/openai/v1/chat/completions",
-                      json={
-                          "model": mod,
-                          "messages": [
-                              {"role": "system", "content": system},
-                              {"role": "user", "content": prompt},
-                          ],
-                          "max_tokens": _max_tok,
-                          "temperature": 0.7
-                      },
-                      headers={
-                          "Authorization": f"Bearer {key}",
-                          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                          "Accept": "application/json",
-                          "Content-Type": "application/json",
-                      },
-                      timeout=60,
-                  )
-                  if r.status_code == 200:
-                      return r.json()["choices"][0]["message"]["content"]
-              except Exception:
-                  pass
-
-    # 1.5 INTENTO CON OPENROUTER (Cazador de modelos gratis dinámico)
-    openrouter_key = ""
-    if env_path.exists():
-        for line in env_path.read_text().splitlines():
-            if line.startswith("OPENROUTER_API_KEY="):
-                openrouter_key = line.split("=", 1)[1].strip()
-                break
-                
-    if openrouter_key:
-        # 1. Preguntar a OpenRouter qué modelos :free están vivos AHORA
-        modelos_vivos = []
+    _max_tok = MAX_TOKENS_POR_ROL.get(rol, DEFAULT_MAX_TOKENS)
+    
+    # 1. GROQ (4 claves x 3 modelos)
+    modelos_groq = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b"]
+    if claves_groq and proveedor in ("auto", "groq", "omni"):
+        for key in claves_groq:
+            for mod in modelos_groq:
+                try:
+                    r = requests.post("https://api.groq.com/openai/v1/chat/completions",
+                        json={"model": mod, "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}], "max_tokens": _max_tok, "temperature": 0.7},
+                        headers={"Authorization": f"Bearer {key}", "User-Agent": "Mozilla/5.0", "Content-Type": "application/json"},
+                        timeout=60)
+                    if r.status_code == 200:
+                        return r.json()["choices"][0]["message"]["content"]
+                except Exception: pass
+    
+    # 2. OPENROUTER
+    if or_key and proveedor in ("auto", "omni"):
         try:
-            r_mods = requests.get("https://openrouter.ai/api/v1/models", timeout=15)
-            if r_mods.status_code == 200:
-                for m in r_mods.json().get("data", []):
-                    if m.get("id", "").endswith(":free"):
-                        modelos_vivos.append(m["id"])
-        except: pass
-        
-        # Si la API falla, usar estos como backup (los que suelen estar vivos)
-        if not modelos_vivos:
-            modelos_vivos = ["meta-llama/llama-3.3-70b-instruct:free", "qwen/qwen-2.5-72b-instruct:free", "google/gemma-2-9b-it:free"]
-
-        # 2. Probar los modelos hasta que uno responda
-        import time
-        for mod in modelos_vivos[:5]: # Probar máximo 5 para no tardar una eternidad
-            try:
-                r = requests.post(
-                    "https://openrouter.ai/api/v1/chat/completions",
-                    json={
-                        "model": mod,
-                        "messages": [
-                            {"role": "system", "content": system},
-                            {"role": "user", "content": prompt},
-                        ],
-                        "max_tokens": _max_tok,
-                        "temperature": 0.7
-                    },
-                    headers={
-                        "Authorization": f"Bearer {openrouter_key}",
-                        "HTTP-Referer": "https://elencuadre.com",
-                        "X-Title": "El Encuadre"
-                    },
-                    timeout=90,
-                )
-                if r.status_code == 200:
-                    content = r.json()["choices"][0]["message"].get("content")
-                    if content and len(content.strip()) > 5: # Evitar respuestas vacías (los modelos mudos)
-                        return content
-            except Exception:
-                pass
-            time.sleep(1)
-
-    # 1.7 INTENTO CON NVIDIA NIM
-    nvidia_key = ""
-    if env_path.exists():
-        for line in env_path.read_text().splitlines():
-            if line.startswith("NVIDIA_API_KEY="):
-                nvidia_key = line.split("=", 1)[1].strip()
-                break
-    if nvidia_key:
-        nvidia_model = "nvidia/nemotron-3-ultra-550b-a55b"
-        if env_path.exists():
-            for line in env_path.read_text().splitlines():
-                if line.startswith("NVIDIA_MODEL="):
-                    nvidia_model = line.split("=", 1)[1].strip()
-                    break
+            r_mods = requests.get("https://openrouter.ai/api/v1/models", timeout=10)
+            vivos = [m["id"] for m in r_mods.json().get("data", []) if m.get("id", "").endswith(":free")]
+            for mod in vivos[:5]:
+                try:
+                    r = requests.post("https://openrouter.ai/api/v1/chat/completions",
+                        json={"model": mod, "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}], "max_tokens": _max_tok},
+                        headers={"Authorization": f"Bearer {or_key}", "HTTP-Referer": "https://elencuadre.com"},
+                        timeout=90)
+                    if r.status_code == 200:
+                        c = r.json()["choices"][0]["message"].get("content")
+                        if c and len(c.strip()) > 5: return c
+                except Exception: pass
+        except Exception: pass
+    
+    # 3. NVIDIA
+    if nv_key and proveedor in ("auto", "omni"):
         try:
-            r = requests.post(
-                "https://integrate.api.nvidia.com/v1/chat/completions",
-                json={
-                    "model": nvidia_model,
-                    "messages": [
-                        {"role": "system", "content": system},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": _max_tok,
-                    "temperature": 0.7
-                },
-                headers={
-                    "Authorization": f"Bearer {nvidia_key}",
-                    "Content-Type": "application/json"
-                },
-                timeout=90,
-            )
+            r = requests.post("https://integrate.api.nvidia.com/v1/chat/completions",
+                json={"model": "nvidia/nemotron-3-ultra-550b-a55b", "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}], "max_tokens": _max_tok},
+                headers={"Authorization": f"Bearer {nv_key}"}, timeout=90)
             if r.status_code == 200:
-                content = r.json()["choices"][0]["message"].get("content")
-                if content and len(content.strip()) > 5:
-                    return content
-        except Exception:
-            pass
-
-    # 1.8 INTENTO CON CLOUDFLARE WORKERS AI
-    cf_account = ""
-    cf_token = ""
-    cf_model = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
-    if env_path.exists():
-        for line in env_path.read_text().splitlines():
-            if line.startswith("CLOUDFLARE_ACCOUNT_ID="): cf_account = line.split("=", 1)[1].strip()
-            if line.startswith("CLOUDFLARE_API_TOKEN="): cf_token = line.split("=", 1)[1].strip()
-            if line.startswith("CLOUDFLARE_MODEL="): cf_model = line.split("=", 1)[1].strip()
-            
-    if cf_account and cf_token:
+                c = r.json()["choices"][0]["message"].get("content")
+                if c and len(c.strip()) > 5: return c
+        except Exception: pass
+    
+    # 4. CLOUDFLARE
+    if cf_acc and cf_tok and proveedor in ("auto", "omni"):
         try:
-            r = requests.post(
-                f"https://api.cloudflare.com/client/v4/accounts/{cf_account}/ai/run/{cf_model}",
-                json={
-                    "messages": [
-                        {"role": "system", "content": system},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": _max_tok,
-                },
-                headers={"Authorization": f"Bearer {cf_token}"},
-                timeout=90,
-            )
-            if r.status_code == 200:
-                res = r.json()
-                if res.get("success") and "response" in res.get("result", {}):
-                    return res["result"]["response"]
-        except Exception:
-            pass
-
-    # 1.9 INTENTO CON SAMBANOVA (Última bala en la recámara)
-    sambanova_key = ""
-    sambanova_model = "Meta-Llama-3.3-70B-Instruct"
-    if env_path.exists():
-        for line in env_path.read_text().splitlines():
-            if line.startswith("SAMBANOVA_API_KEY="): sambanova_key = line.split("=", 1)[1].strip()
-            if line.startswith("SAMBANOVA_MODEL="): sambanova_model = line.split("=", 1)[1].strip()
-            
-    if sambanova_key:
-        # Probar los 2 modelos que tiene SambaNova en free tier
+            r = requests.post(f"https://api.cloudflare.com/client/v4/accounts/{cf_acc}/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+                json={"messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}], "max_tokens": _max_tok},
+                headers={"Authorization": f"Bearer {cf_tok}"}, timeout=90)
+            if r.status_code == 200 and r.json().get("success"):
+                return r.json()["result"]["response"]
+        except Exception: pass
+    
+    # 5. SAMBANOVA
+    if samba_key and proveedor in ("auto", "omni"):
         for mod in ["Meta-Llama-3.3-70B-Instruct", "gpt-oss-120b"]:
             try:
-                r = requests.post(
-                    "https://api.sambanova.ai/v1/chat/completions",
-                    json={
-                        "model": mod,
-                        "messages": [
-                            {"role": "system", "content": system},
-                            {"role": "user", "content": prompt},
-                        ],
-                        "max_tokens": _max_tok,
-                        "temperature": 0.7
-                    },
-                    headers={
-                        "Authorization": f"Bearer {sambanova_key}",
-                        "Content-Type": "application/json"
-                    },
-                    timeout=90,
-                )
+                r = requests.post("https://api.sambanova.ai/v1/chat/completions",
+                    json={"model": mod, "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}], "max_tokens": _max_tok},
+                    headers={"Authorization": f"Bearer {samba_key}"}, timeout=90)
                 if r.status_code == 200:
-                    content = r.json()["choices"][0]["message"].get("content")
-                    if content and len(content.strip()) > 5:
-                        return content
-            except Exception:
-                pass
+                    c = r.json()["choices"][0]["message"].get("content")
+                    if c and len(c.strip()) > 5: return c
+            except Exception: pass
+    
+    # 6. OMNIROUTE
+    if omni_key and proveedor in ("auto", "omni"):
+        try:
+            r = requests.post("http://localhost:20128/v1/chat/completions",
+                json={"model": "auto/best-reasoning", "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}], "max_tokens": _max_tok},
+                headers={"Authorization": f"Bearer {omni_key}"}, timeout=90)
+            if r.status_code == 200:
+                return r.json()["choices"][0]["message"]["content"]
+        except Exception: pass
+        
+    return "ERROR: Todos los modelos fallaron."
 
-    # 2. INTENTO CON OMNIROUTE (si proveedor != "groq")
-    if omni_key and proveedor != "groq":
-        # Modelos por necesidad de tokens
-        if _max_tok >= 3000:
-            modelos = ["auto/best-reasoning", "auto/pro-reasoning", "auto/smart", "auto"]
-        elif _max_tok >= 1500:
-            modelos = ["auto/best-fast", "auto/best-reasoning", "auto/chat"]
-        else:
-            modelos = ["auto/best-fast", "auto/chat", "auto/fast"]
-        for modelo in modelos:
-            try:
-                r = requests.post(
-                    "http://localhost:20128/v1/chat/completions",
-                    json={
-                        "model": modelo,
-                        "messages": [
-                            {"role": "system", "content": system},
-                            {"role": "user", "content": prompt},
-                        ],
-                        "max_tokens": _max_tok,
-                        "temperature": 0.7
-                    },
-                    headers={"Authorization": f"Bearer {omni_key}"},
-                    timeout=60,
-                )
-                if r.status_code == 200:
-                    return r.json()["choices"][0]["message"]["content"]
-            except Exception:
-                pass
 
-    return "ERROR: Todos los modelos (Groq y OmniRoute) fallaron."
+if __name__ == "__main__":
+    # Test de prueba si se ejecuta directamente
+    print(pedir_a_especialista("forense_medios", "Di OK", contexto="test"))
