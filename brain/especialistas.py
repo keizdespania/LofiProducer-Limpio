@@ -445,30 +445,32 @@ def pedir_a_especialista(rol, tarea, contexto="", proveedor="auto"):
             if line.startswith("SAMBANOVA_MODEL="): sambanova_model = line.split("=", 1)[1].strip()
             
     if sambanova_key:
-        try:
-            r = requests.post(
-                "https://api.sambanova.ai/v1/chat/completions",
-                json={
-                    "model": sambanova_model,
-                    "messages": [
-                        {"role": "system", "content": system},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": _max_tok,
-                    "temperature": 0.7
-                },
-                headers={
-                    "Authorization": f"Bearer {sambanova_key}",
-                    "Content-Type": "application/json"
-                },
-                timeout=90,
-            )
-            if r.status_code == 200:
-                content = r.json()["choices"][0]["message"].get("content")
-                if content and len(content.strip()) > 5:
-                    return content
-        except Exception:
-            pass
+        # Probar los 2 modelos que tiene SambaNova en free tier
+        for mod in ["Meta-Llama-3.3-70B-Instruct", "gpt-oss-120b"]:
+            try:
+                r = requests.post(
+                    "https://api.sambanova.ai/v1/chat/completions",
+                    json={
+                        "model": mod,
+                        "messages": [
+                            {"role": "system", "content": system},
+                            {"role": "user", "content": prompt},
+                        ],
+                        "max_tokens": _max_tok,
+                        "temperature": 0.7
+                    },
+                    headers={
+                        "Authorization": f"Bearer {sambanova_key}",
+                        "Content-Type": "application/json"
+                    },
+                    timeout=90,
+                )
+                if r.status_code == 200:
+                    content = r.json()["choices"][0]["message"].get("content")
+                    if content and len(content.strip()) > 5:
+                        return content
+            except Exception:
+                pass
 
     # 2. INTENTO CON OMNIROUTE (si proveedor != "groq")
     if omni_key and proveedor != "groq":
