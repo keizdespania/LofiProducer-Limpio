@@ -126,6 +126,25 @@ def _generar_imagenes(segmentos):
     return segmentos
 
 
+
+def _insertar_pattern_interrupts(segmentos, cada_n=15):
+    """Cada N segmentos, inserta 1 pattern interrupt de 3s (imagen abstracta)."""
+    if len(segmentos) < cada_n * 2: return segmentos
+    nuevos = []
+    for i, s in enumerate(segmentos):
+        nuevos.append(s)
+        if (i + 1) % cada_n == 0 and (i + 1) < len(segmentos) - 2:
+            nuevos.append({
+                "inicio": s["fin"],
+                "fin": round(s["fin"] + 3.0, 2),
+                "texto": "[PATTERN INTERRUPT]",
+                "tipo": "pattern",
+                "duracion": 3.0,
+                "concepto_visual": "abstract question mark silhouette, dramatic dark background, cinematic, no text",
+            })
+    return nuevos
+
+
 def main():
     ass = OUT / f"voz_largo_{FECHA}.ass"
     if not ass.exists():
