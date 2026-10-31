@@ -124,9 +124,11 @@ if not video_base.exists() or _dur(video_base) < 60:
     intro = OUT / "intro.mp4"; outro = OUT / "outro.mp4"
     for p, d in [(intro, 3), (outro, 3)]:
         if not p.exists():
-            _run([FFMPEG,"-y","-hide_banner","-loglevel","error","-f","lavfi",
-                "-i",f"color=c=0x0a0a0f:s=1920x1080:d={d}:r=25","-c:v","libx264",
-                "-preset","ultrafast","-pix_fmt","yuv420p",str(p)], 60, f"gen {p.name}")
+            _run([FFMPEG,"-y","-hide_banner","-loglevel","error",
+                "-f", "lavfi", "-i", f"color=c=0x0a0a0f:s=1920x1080:d={d}:r=25",
+                "-i", str(ROOT / "assets" / "branding" / "logo_encuadre.jpg"),
+                "-filter_complex", "[1:v]scale=800:-1[logo];[0:v][logo]overlay=(W-w)/2:(H-h)/2",
+                "-c:v","libx264", "-preset","ultrafast","-pix_fmt","yuv420p",str(p)], 60, f"gen {p.name}")
     for p, dst in [(intro, CLIPS/"000_intro.mp4"), (outro, CLIPS/"999_outro.mp4")]:
         if not dst.exists():
             _run([FFMPEG,"-y","-hide_banner","-loglevel","error","-i",str(p),
