@@ -46,7 +46,7 @@ def buscar_y_descargar_youtube():
                         "--download-sections", "*0-900", "--socket-timeout", "15",
                         "-o", str(destino), url, 
                         "--no-warnings", "--force-overwrites"
-                    ], check=True, capture_output=True, timeout=300)
+                    ], check=True, capture_output=True, timeout=600)
                     
                     if destino.exists() and destino.stat().st_size > 100000:
                         print(f"[Lofi] ✅ YouTube OK: {destino.stat().st_size//1024//1024}MB", flush=True)
