@@ -53,16 +53,20 @@ def _extraer_frases(ass_path):
     return frases
 
 
-def _fusionar_a_72(frases):
-    """Fusiona frases consecutivas hasta tener ~72 segmentos, SIN reordenar."""
-    if len(frases) <= 72:
+def _fusionar_a_72(frases, duracion_audio):
+    """Calcula cuántas imágenes necesitamos (1 cada 8.5s) y fusiona frases proporcionalmente."""
+    # REGLA: 8.5 segundos por imagen
+    num_imagenes_objetivo = max(10, int(duracion_audio / 8.5))
+    
+    if len(frases) <= num_imagenes_objetivo:
         return frases
-    # Fusionar pares consecutivos hasta llegar a <= 72
-    while len(frases) > 72:
+        
+    # Fusionar pares consecutivos hasta llegar al objetivo
+    while len(frases) > num_imagenes_objetivo:
         fusionadas = []
         i = 0
         while i < len(frases):
-            if i + 1 < len(frases) and len(fusionadas) < 72:
+            if i + 1 < len(frases) and len(fusionadas) < num_imagenes_objetivo:
                 fusionadas.append({
                     "inicio": frases[i]["inicio"],
                     "fin": frases[i+1]["fin"],
@@ -75,25 +79,6 @@ def _fusionar_a_72(frases):
         frases = fusionadas
     return frases
 
-
-
-def _insertar_pattern_interrupts(segmentos, cada_n=15):
-    """Cada N segmentos, inserta 1 pattern interrupt de 3s (imagen abstracta)."""
-    if len(segmentos) < cada_n * 2: return segmentos
-    nuevos = []
-    for i, s in enumerate(segmentos):
-        nuevos.append(s)
-        if (i + 1) % cada_n == 0 and (i + 1) < len(segmentos) - 2:
-            # Insertar 1 segmento de 3s
-            nuevos.append({
-                "inicio": s["fin"],
-                "fin": round(s["fin"] + 3.0, 2),
-                "texto": "[PATTERN INTERRUPT]",
-                "tipo": "pattern",
-                "duracion": 3.0,
-                "concepto_visual": "abstract question mark silhouette, dramatic dark background, cinematic, no text",
-            })
-    return nuevos
 
 def _conceptos_visuales(segmentos):
     print(f"[seg] {len(segmentos)} segmentos, generando conceptos visuales...", flush=True)
@@ -148,7 +133,16 @@ def main():
         sys.exit(1)
     frases = _extraer_frases(ass)
     print(f"[seg] {len(frases)} frases detectadas", flush=True)
-    frases = _fusionar_a_72(frases)
+    # Calcular duración del audio de Álvaro
+    prod = OUT / f"produccion_{FECHA}.json"
+    dur_audio = 0
+    if prod.exists():
+        d = json.loads(prod.read_text())
+        dur_audio = sum([(e.get("fin", 0) - e.get("inicio", 0)) for e in d.get("timeline", [])])
+        # Si no hay timeline en produccion, usar un valor por defecto de 10 min
+        if dur_audio == 0: dur_audio = 600
+    
+    frases = _fusionar_a_72(frases, dur_audio)
     print(f"[seg] {len(frases)} segmentos tras fusión", flush=True)
     for i, f in enumerate(frases):
         f["tipo"] = _detectar_tipo(f["texto"], i, len(frases))
