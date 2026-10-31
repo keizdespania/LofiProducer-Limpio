@@ -52,13 +52,13 @@ def analizar_fase1(fecha=None):
     prompt_top3 = 'Devuelve SOLO JSON: {"top3": ["noticia 1", "noticia 2", "noticia 3"]}.'
     top3 = _parse_json(pedir_a_especialista("detective_tendencias_v2", prompt_top3, contexto=ctx[:5000], proveedor="auto")).get("top3", ["Actualidad", "Política", "Economía"])
 
-    # 2. EDITOR JEFE + BUCLE INFINITO
+    # 2. EDITOR JEFE (Aprobación garantizada por Python)
     print("[fase1] Llamando al Editor Jefe...", flush=True)
     top16 = []
     vistos = set()
     intentos = 0
     
-    # Recopilar todas las noticias disponibles actualmente
+    # Recopilar todas las noticias
     pool_noticias = []
     for sec in ("prensa", "agencias"):
         for medio, noticias in (datos.get(sec) or {}).items():
@@ -67,39 +67,53 @@ def analizar_fase1(fecha=None):
                     pool_noticias.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio})
                     vistos.add(n["titular"])
 
-    while len(top16) < 16 and intentos < 5:
+    BASURA_FINAL = ["jamón", "jamon", "taco", "salad", "ensalada", "restaurante", "gastronomía", "cocina", "chef", "menaje", "cerámica", "cacharro", "tupper"]
+
+    while len(top16) < 16 and intentos < 3:
         intentos += 1
-        print(f"[fase1] Editor Jefe (Intento {intentos}). Pool: {len(pool_noticias)} noticias. Faltan: {16 - len(top16)}", flush=True)
+        print(f"[fase1] Editor Jefe (Intento {intentos}). Pool: {len(pool_noticias)} noticias.", flush=True)
         
-        ctx_ed = "\n".join([f"[{n['medio']}] {n['titular']} (URL: {n['url']})" for n in pool_noticias])
-        prompt_ed = """Eres el Editor Jefe de 'El Encuadre'. Selecciona hasta 16 noticias de POLÍTICA, ECONOMÍA o GEOPOLÍTICA. 
-        PROHIBIDO: gastronomía, restaurantes, ensaladas, jamón, famosos, deportes locales, loterías, sucesos.
-        EVITA la redundancia (no repitas el mismo tema).
-        Devuelve SOLO JSON: {"aprobadas": [{"titular": "", "medio": "", "url": ""}]}"""
+        # MANDAMOS AL EDITOR JEFE EL POOL COMPLETO (o lo que quede por aprobar)
+        pool_pendiente = [n for n in pool_noticias if n["titular"] not in [x["titular"] for x in top16]]
+        ctx_ed = "\n".join([f"[{n['medio']}] {n['titular']} (URL: {n['url']})" for n in pool_pendiente])
+        
+        prompt_ed = """Eres el Editor Jefe de 'El Encuadre'. Selecciona las 16 noticias más importantes. 
+        DEVUELVE SOLO JSON: {"aprobadas": [{"titular": "", "medio": "", "url": ""}]}"""
         
         res_ed = _parse_json(pedir_a_especialista("editor_jefe", prompt_ed, contexto=ctx_ed[:8000], proveedor="auto"))
         aprobadas = res_ed.get("aprobadas", [])
         
+        # Si el LLM falla o devuelve vacío, aprobamos por Python
+        if not aprobadas:
+            print("[fase1] ⚠️ Editor Jefe falló. Aprobando por Python...", flush=True)
+            aprobadas = [n for n in pool_pendiente if not any(b in n["titular"].lower() for b in BASURA_FINAL)]
+        
         for a in aprobadas:
             if len(top16) >= 16: break
-            if a.get("titular") not in [x["titular"] for x in top16]:
-                top16.append(a)
+            if a.get("titular") and a["titular"] not in [x["titular"] for x in top16]:
+                # Comprobación final de basura en Python
+                if not any(b in a["titular"].lower() for b in BASURA_FINAL):
+                    top16.append(a)
                 
         if len(top16) < 16:
-            print("[fase1] ⚠️ Faltan noticias. Lanzando mini-investigación en caliente...", flush=True)
+            print(f"[fase1] ⚠️ Faltan {16 - len(top16)} noticias. Buscando más...", flush=True)
             try:
                 subprocess.run(["python3", "scripts/recolector_oro.py", fecha], check=True, capture_output=True, timeout=120)
                 oro = json.loads((OUT / f"recoleccion_oro_{fecha}.json").read_text())
+                nuevas = 0
                 for medio, ns in oro.items():
                     for n in ns:
                         if n["titular"] not in vistos:
                             pool_noticias.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio})
                             vistos.add(n["titular"])
+                            nuevas += 1
+                if nuevas == 0:
+                    print("[fase1] No hay noticias nuevas. Cortando búsqueda.", flush=True)
+                    break
             except Exception as e:
                 print(f"[fase1] Fallo investigación: {e}", flush=True)
 
-    if len(top16) < 16:
-        print(f"[fase1] ❌ Imposible llegar a 16. Nos quedamos con {len(top16)} noticias.", flush=True)
+    print(f"[fase1] Top16 final: {len(top16)} noticias.", flush=True)
 
     # 3. ANÁLISIS DE MEDIOS
     print("[fase1] Analizando medios...", flush=True)
