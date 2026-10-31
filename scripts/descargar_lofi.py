@@ -51,7 +51,7 @@ def buscar_y_descargar():
 
 if not destino.exists() or destino.stat().st_size < 1024*1024:
     if not buscar_y_descargar():
-        print("[Lofi] ❌ Todos los intentos fallaron. Generando 15 min de silencio.", flush=True)
-        subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-t", "900", "-c:a", "libmp3lame", str(destino)], check=True)
+        print("[Lofi] ❌ YouTube falló. Intentando Bandcamp...", flush=True)
+        subprocess.run(["python3", "scripts/descargar_lofi_bandcamp.py"], check=False)
 else:
     print("[Lofi] Ya existe lofi_base.mp3, saltando.", flush=True)
