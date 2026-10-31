@@ -37,7 +37,7 @@ def buscar_y_descargar():
                     "yt-dlp", "-x", "--audio-format", "mp3", "--audio-quality", "5",
                     "--download-sections", "*0-900",
                     "-o", str(destino), url, "--no-warnings", "--force-overwrites"
-                ], check=True, capture_output=True, timeout=300)
+                ], check=True, capture_output=True, timeout=60)
                 
                 if destino.exists() and destino.stat().st_size > 100000:
                     print(f"[Lofi] ✅ Descargado: {destino.stat().st_size//1024//1024}MB", flush=True)
