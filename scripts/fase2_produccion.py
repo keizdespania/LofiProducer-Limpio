@@ -59,6 +59,8 @@ def _generar_escena(num, instruccion, contexto_noticia=""):
         resp = pedir_a_especialista("guionista_youtube_experto", prompt, contexto=ctx, proveedor="auto")
         d = _parse_json_seguro(resp)
         if d and isinstance(d, dict) and "texto" in d and len(d["texto"].split()) > 20:
+            # Limpiar "El El", "La La", etc.
+            d["texto"] = re.sub(r'\b(El|La|Los|Las)\s+\1\b', r'\1', d["texto"], flags=re.IGNORECASE)
             return d
         print(f"      Reintento {intento+1}/3 escena {num}...", flush=True)
         time.sleep(2)
@@ -113,7 +115,7 @@ def producir_fase2(fecha=None):
         vistos.add(n["titular"])
         cat = _clasificar_noticia(n)
         if cat == "BASURA": continue
-        if len(bloques[cat]) < 3:
+        if len(bloques[cat]) < 5:
             bloques[cat].append(n)
 
     escenas = []

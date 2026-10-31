@@ -170,7 +170,7 @@ Devuelve EXCLUSIVAMENTE este JSON:
     top_data = _parse_json(pedir_a_especialista("detective_tendencias_v2", prompt_det, contexto=ctx[:5000], proveedor="omni"))
     
     top3 = top_data.get("top3", {})
-    top16 = top_data.get("top16", [])
+    top40 = top_data.get("top40", [])
     top16 = _limpiar_top16(top16, datos)
 
     if not top3:
@@ -232,7 +232,7 @@ Devuelve EXCLUSIVAMENTE este JSON:
                 print(f"  [{completados}/{total}] X {e}", flush=True)
 
     # 3. Guardar
-    res = {"fecha": fecha, "top3": top3, "top16": top16, "analisis": todos, "recoleccion": datos}
+    res = {"fecha": fecha, "top3": top3, "top16": top40, "analisis": todos, "recoleccion": datos}
     out = OUT / f"analisis_fase1_{fecha}.json"
     out.write_text(json.dumps(res, indent=2, ensure_ascii=False))
     print(f"[fase1] ✅ Guardado en {out}", flush=True)
