@@ -25,17 +25,22 @@ def _limpiar_html(texto):
 # ─── CLASIFICADOR EDITORIAL ───
 def _clasificar_noticia(n):
     t = (n.get("titular","") + " " + n.get("extracto","")).lower()
-    # BASURA: fuera del vídeo
-    if any(x in t for x in ["balón", "balon", "mbappé", "blocus", "futbol", "fútbol", "pucela", "racing"]):
+    # LISTA NEGRA BRUTAL (Si contiene alguna de estas, se descarta)
+    BASURA = [
+        "balón", "balon", "mbappé", "blocus", "futbol", "fútbol", "pucela", "racing", "athletic", "real madrid", "barça",
+        "muere", "muerte", "fallece", "fallecimiento", "suicidio", "accidente", "detenido", "detenida", "policía", "policia", "guardia civil", 
+        "intocable", "cine", "cineasta", "película", "pelicula", "actor", "actriz", "prensa rosa", "corazón", "corazon", "boda", "divorcio",
+        "bustamante", "triguero", "concierto", "música", "musica", "alcalá norte", "dgt", "tráfico", "trafico", "tiempo", "lluvia", "temperatura"
+    ]
+    if any(x in t for x in BASURA):
         return "BASURA"
-    # PUENTE / AVE
-    if any(x in t for x in ["puente", "dimitir", "ave", "lzb", "señaliz", "atocha", "adif", "renfe"]):
+        
+    # CLASIFICACIÓN TEMÁTICA
+    if any(x in t for x in ["puente", "dimitir", "ave", "lzb", "señaliz", "atocha", "adif", "renfe", "gobierno", "sánchez"]):
         return "PUENTE"
-    # INTERNACIONAL
-    if any(x in t for x in ["rusia", "polonia", "onu", "sáhara", "sahara", "machado", "venezuela"]):
+    if any(x in t for x in ["rusia", "polonia", "onu", "sáhara", "sahara", "machado", "venezuela", "zelenski", "putin"]):
         return "INTERNACIONAL"
-    # ECONOMÍA
-    if any(x in t for x in ["gobierno", "presupuesto", "economía", "economia", "banco", "inflación"]):
+    if any(x in t for x in ["economía", "economia", "presupuesto", "banco", "inflación", "pensión", "pension", "seguridad social"]):
         return "ECONOMIA"
     return "SOCIEDAD"
 
@@ -123,36 +128,32 @@ def producir_fase2(fecha=None):
     )
     escenas.append(_generar_escena(num, intro_inst)); num += 1
 
-    # Función para generar bloques
-    def _generar_bloque(nombre, lista_noticias):
-        nonlocal num
-        if not lista_noticias or num >= 17: return
-        titulos = " | ".join([n["titular"] for n in lista_noticias])
-        
-        print(f"   [Escena {num}/18] Intro Bloque {nombre}...", flush=True)
-        inst = (
-            f"Estás empezando el bloque de {nombre}. Las noticias son: {titulos}. "
-            "Haz una intro mordaz que conecte estas noticias bajo un hilo conductor de MANIPULACIÓN mediática. "
-            "Habla como el contramedio."
-        )
-        escenas.append(_generar_escena(num, inst, titulos)); num += 1
-        
-        for n in lista_noticias:
-            if num >= 18: break
-            print(f"   [Escena {num}/18] Bloque {nombre}: {n['titular'][:30]}...", flush=True)
+    # Juntar todas las noticias limpias en una sola lista
+    noticias_limpias = bloques["PUENTE"] + bloques["INTERNACIONAL"] + bloques["ECONOMIA"] + bloques["SOCIEDAD"]
+    
+    # Si tenemos menos de 16 noticias, duplicamos el análisis (2 escenas por noticia)
+    # Ejemplo: Escena A -> El titular y la máscara. Escena B -> La técnica y el beneficiario.
+    if len(noticias_limpias) < 16:
+        print(f"   ⚠️ Solo {len(noticias_limpias)} noticias limpias. Haciendo 2 escenas por noticia para llegar a 18.", flush=True)
+        for n in list(noticias_limpias):
+            if num >= 17: break
+            print(f"   [Escena {num}/18] Análisis Profundo (1/2): {n['titular'][:30]}...", flush=True)
             ctx_n = f"Medio: {n.get('medio', '?')}\nTitular: {n['titular']}\nExtracto: {n.get('extracto', '')[:200]}"
-            inst = (
-                f"Analiza cómo el medio '{n.get('medio', '?')}' manipula este titular: '{n['titular']}'. "
-                "Explica la trampa, el beneficiario y la técnica psicológica. "
-                "Sin fórmulas robóticas. Tono de auditor cabreado."
-            )
+            inst1 = f"Analiza el titular y la máscara del medio '{n.get('medio','?')}': '{n['titular']}'. ¿Qué te intentan vender? Tono mordaz."
+            escenas.append(_generar_escena(num, inst1, ctx_n)); num += 1
+            
+            if num >= 17: break
+            print(f"   [Escena {num}/18] Análisis Profundo (2/2): {n['titular'][:30]}...", flush=True)
+            inst2 = f"Analiza la técnica de manipulación y el beneficiario de '{n['titular']}'. ¿Quién se ríe de fondo? Tono de auditor cabreado."
+            escenas.append(_generar_escena(num, inst2, ctx_n)); num += 1
+    else:
+        # Si tenemos 16 o más, hacemos 1 escena por noticia
+        for n in noticias_limpias:
+            if num >= 18: break
+            print(f"   [Escena {num}/18] Noticia: {n['titular'][:30]}...", flush=True)
+            ctx_n = f"Medio: {n.get('medio', '?')}\nTitular: {n['titular']}\nExtracto: {n.get('extracto', '')[:200]}"
+            inst = f"Analiza la manipulación del medio '{n.get('medio','?')}' en el titular '{n['titular']}'. Tono de auditor cabreado."
             escenas.append(_generar_escena(num, inst, ctx_n)); num += 1
-
-    # Generar los 4 bloques en orden
-    _generar_bloque("El Caso Puente y el AVE", bloques["PUENTE"])
-    _generar_bloque("El Poder y sus Máscaras (Internacional)", bloques["INTERNACIONAL"])
-    _generar_bloque("La Economía y los Medios", bloques["ECONOMIA"])
-    _generar_bloque("El Ruido de Fondo (Sociedad)", bloques["SOCIEDAD"])
 
     # Escena 18: Cierre épico
     print(f"   [Escena 18/18] Cierre...", flush=True)
