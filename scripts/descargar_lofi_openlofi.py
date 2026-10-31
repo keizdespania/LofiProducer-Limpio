@@ -1,49 +1,44 @@
-"""descargar_lofi_openlofi.py - Descarga 1 track CC0 de Open-LoFi (sin bajar el ZIP entero)."""
+"""descargar_lofi_openlofi.py - Descarga 1 track CC0 de Open-LoFi desde Internet Archive."""
 import json, pathlib, random, subprocess, sys, urllib.request
-from remotezip import RemoteZip
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "musica_temp"
 OUT.mkdir(parents=True, exist_ok=True)
 destino = OUT / "lofi_base.mp3"
-ZIP_URL = "https://github.com/btahir/open-lofi/releases/latest/download/openlofi.zip"
-CATALOG_URL = "https://raw.githubusercontent.com/btahir/open-lofi/main/catalog.json"
+
+# Identificador del item en Internet Archive (OpenLo-Fi de btahir)
+IA_ITEM = "openlofi"
+IA_META_URL = f"https://archive.org/metadata/{IA_ITEM}"
 
 def elegir_track():
-    print("[OpenLoFi] Leyendo catálogo...", flush=True)
-    data = json.loads(urllib.request.urlopen(CATALOG_URL, timeout=30).read())
-    
-    # Buscar la lista de tracks (puede estar en 'tracks' o en las categorías)
-    tracks = data.get("tracks", [])
-    if not tracks:
-        # Si no hay lista plana, sacar de las categorías
-        for cat in data.get("categories", []):
-            tracks.extend(cat.get("tracks", []))
-    
-    if not tracks:
-        print("[OpenLoFi] ❌ No hay tracks en el catálogo"); sys.exit(1)
-    
-    # Elegir uno que sea de 'chillhop' o 'jazzhop' (los más neutros)
-    neutros = [t for t in tracks if t.get("category") in ("chillhop", "jazzhop", "ambient-lofi")]
-    elegido = random.choice(neutros if neutros else tracks)
-    print(f"[OpenLoFi] Elegido: {elegido.get('title', '?')} ({elegido.get('file', '?')})", flush=True)
-    return elegido.get("file") or elegido.get("path")
+    print("[OpenLoFi] Leyendo metadatos de Internet Archive...", flush=True)
+    try:
+        data = json.loads(urllib.request.urlopen(IA_META_URL, timeout=30).read())
+        files = data.get("files", [])
+        # Filtrar solo MP3s
+        mp3s = [f for f in files if f.get("name", "").endswith(".mp3")]
+        if not mp3s:
+            print("[OpenLoFi] ❌ No hay MP3s en el item"); sys.exit(1)
+        
+        elegido = random.choice(mp3s)
+        nombre = elegido["name"]
+        print(f"[OpenLoFi] Elegido: {nombre}", flush=True)
+        # URL de descarga directa
+        return f"https://archive.org/download/{IA_ITEM}/{urllib.parse.quote(nombre)}"
+    except Exception as e:
+        print(f"[OpenLoFi] Error leyendo metadatos: {e}", flush=True)
+        sys.exit(1)
 
-def descargar_y_recortar(archivo):
-    print(f"[OpenLoFi] Abriendo ZIP remoto (solo se descarga {archivo})...", flush=True)
+def descargar_y_recortar(url):
+    print(f"[OpenLoFi] Descargando: {url[:80]}...", flush=True)
     raw = OUT / "lofi_raw.mp3"
-    for intento in range(3):
-        try:
-            print(f"[OpenLoFi] Intento {intento+1}/3...", flush=True)
-            with RemoteZip(ZIP_URL, timeout=300) as z:
-                with z.open(archivo) as f:
-                    raw.write_bytes(f.read())
-            if raw.exists() and raw.stat().st_size > 100000:
-                break
-        except Exception as e:
-            print(f"[OpenLoFi] Fallo intento {intento+1}: {e}", flush=True)
+    try:
+        urllib.request.urlretrieve(url, raw)
+    except Exception as e:
+        print(f"[OpenLoFi] ❌ Fallo descarga: {e}", flush=True); sys.exit(1)
+    
     if not raw.exists() or raw.stat().st_size < 100000:
-        print("[OpenLoFi] ❌ Todos los intentos fallaron.", flush=True); sys.exit(1)
+        print("[OpenLoFi] ❌ Archivo vacío o corrupto"); sys.exit(1)
     
     print(f"[OpenLoFi] Recortando a 15 min...", flush=True)
     subprocess.run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
@@ -54,5 +49,5 @@ def descargar_y_recortar(archivo):
 if __name__ == "__main__":
     if destino.exists() and destino.stat().st_size > 1024*1024:
         print("[OpenLoFi] Ya existe lofi_base.mp3, saltando."); sys.exit(0)
-    archivo = elegir_track()
-    descargar_y_recortar(archivo)
+    url = elegir_track()
+    descargar_y_recortar(url)
