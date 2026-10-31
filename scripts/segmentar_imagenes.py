@@ -54,30 +54,36 @@ def _extraer_frases(ass_path):
 
 
 def _fusionar_a_72(frases, duracion_audio):
-    """Calcula cuántas imágenes necesitamos (1 cada 8.5s) y fusiona frases proporcionalmente."""
-    # REGLA: 8.5 segundos por imagen
-    num_imagenes_objetivo = max(10, int(duracion_audio / 8.5))
+    """Corta el audio en trozos exactos de 8.5s, ignorando los saltos del ASS."""
+    if not frases: return []
     
-    if len(frases) <= num_imagenes_objetivo:
-        return frases
+    # REGLA DE ORO: 1 imagen cada 8.5 segundos
+    num_imagenes_objetivo = max(10, int(duracion_audio / 8.5))
+    duracion_por_trozo = duracion_audio / num_imagenes_objetivo
+    
+    # Juntar todo el texto para trocearlo
+    texto_completo = " ".join([f["texto"] for f in frases])
+    palabras = texto_completo.split()
+    
+    # Dividir en trozos iguales de palabras (proporcional al tiempo)
+    pal_por_trozo = max(10, len(palabras) // num_imagenes_objetivo)
+    
+    nuevos_segmentos = []
+    for i in range(num_imagenes_objetivo):
+        inicio = i * duracion_por_trozo
+        fin = (i + 1) * duracion_por_trozo
+        if fin > duracion_audio: fin = duracion_audio
         
-    # Fusionar pares consecutivos hasta llegar al objetivo
-    while len(frases) > num_imagenes_objetivo:
-        fusionadas = []
-        i = 0
-        while i < len(frases):
-            if i + 1 < len(frases) and len(fusionadas) < num_imagenes_objetivo:
-                fusionadas.append({
-                    "inicio": frases[i]["inicio"],
-                    "fin": frases[i+1]["fin"],
-                    "texto": frases[i]["texto"] + " " + frases[i+1]["texto"],
-                })
-                i += 2
-            else:
-                fusionadas.append(frases[i])
-                i += 1
-        frases = fusionadas
-    return frases
+        texto_trozo = " ".join(palabras[i*pal_por_trozo : (i+1)*pal_por_trozo])
+        if not texto_trozo: texto_trozo = "Análisis de técnicas de manipulación."
+        
+        nuevos_segmentos.append({
+            "inicio": round(inicio, 2),
+            "fin": round(fin, 2),
+            "texto": texto_trozo
+        })
+        
+    return nuevos_segmentos
 
 
 def _conceptos_visuales(segmentos):
