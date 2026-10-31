@@ -235,6 +235,12 @@ ROLES = {
         "prompt": "Basado en el guion, elige musica. Devuelve EXCLUSIVAMENTE este JSON: {\"pistas\": [{\"momento\": \"string\", \"mood\": \"string\", \"archivo\": \"string\"}]}"
     },
 
+
+    "community_manager_seo": {
+        "combo": "groq/llama-3.3-70b-versatile",
+        "system": "Eres community manager SEO de elite. Devuelves SIEMPRE JSON valido, sin markdown, sin HTML, sin explicaciones antes ni despues. Cada texto respeta el limite de la plataforma: TikTok 150 chars, X 280 chars, Instagram 2200 chars, Threads 500 chars. Los copys enganchan en la primera linea y terminan con CTA. NUNCA incluyes enlaces de una red social dentro de su propia red.",
+        "prompt": ""
+    }
 }
 
 # Config max_tokens por rol (tareas cortas vs largas)
@@ -254,6 +260,7 @@ MAX_TOKENS_POR_ROL = {
     "arquitecto_contenido": 1500,
     "disenador_visual": 1500,
     "community_manager": 800,
+    "community_manager_seo": 3500,
     "traductor_formatos": 1500,
     "traductor_humanizado": 2000,
     "bibliotecario_v2": 1500,
