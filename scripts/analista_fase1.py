@@ -14,7 +14,9 @@ BASURA = [
     "muere", "muerte", "fallece", "fallecimiento", "suicidio", "accidente", "detenido", "detenida", "policía", "policia", "guardia civil", 
     "intocable", "cine", "cineasta", "película", "pelicula", "actor", "actriz", "prensa rosa", "corazón", "corazon", "boda", "divorcio",
     "bustamante", "triguero", "concierto", "música", "musica", "alcalá norte", "dgt", "tráfico", "trafico", "tiempo", "lluvia", "temperatura",
-    "urda", "toledo", "tren", "ave", "adif", "renfe", "señaliz", "lzb", "herid", "cuerpo", "desaparecid", "morgue", "llanto"
+    "urda", "toledo", "tren", "ave", "adif", "renfe", "señaliz", "lzb", "herid", "cuerpo", "desaparecid", "morgue", "llanto",
+    "recoletas", "baloncesto", "metal", "psicología", "psicologia", "deporte", "liga", "fichaje", "partido", "entrenador", "jugador",
+    "receta", "cocina", "viajes", "turismo", "moda", "tendencias", "horóscopo", "celebridades"
 ]
 
 def _parse_json(texto):

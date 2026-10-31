@@ -130,32 +130,32 @@ def producir_fase2(fecha=None):
     )
     escenas.append(_generar_escena(num, intro_inst)); num += 1
 
-    # Juntar todas las noticias limpias en una sola lista
+    # Juntar todas las noticias limpias
     noticias_limpias = bloques["PUENTE"] + bloques["INTERNACIONAL"] + bloques["ECONOMIA"] + bloques["SOCIEDAD"]
     
-    # Si tenemos menos de 16 noticias, duplicamos el análisis (2 escenas por noticia)
-    # Ejemplo: Escena A -> El titular y la máscara. Escena B -> La técnica y el beneficiario.
-    if len(noticias_limpias) < 16:
-        print(f"   ⚠️ Solo {len(noticias_limpias)} noticias limpias. Haciendo 2 escenas por noticia para llegar a 18.", flush=True)
-        for n in list(noticias_limpias):
-            if num >= 17: break
-            print(f"   [Escena {num}/18] Análisis Profundo (1/2): {n['titular'][:30]}...", flush=True)
-            ctx_n = f"Medio: {n.get('medio', '?')}\nTitular: {n['titular']}\nExtracto: {n.get('extracto', '')[:200]}"
-            inst1 = f"Analiza el titular y la máscara del medio '{n.get('medio','?')}': '{n['titular']}'. ¿Qué te intentan vender? Tono mordaz."
-            escenas.append(_generar_escena(num, inst1, ctx_n)); num += 1
-            
-            if num >= 17: break
-            print(f"   [Escena {num}/18] Análisis Profundo (2/2): {n['titular'][:30]}...", flush=True)
-            inst2 = f"Analiza la técnica de manipulación y el beneficiario de '{n['titular']}'. ¿Quién se ríe de fondo? Tono de auditor cabreado."
-            escenas.append(_generar_escena(num, inst2, ctx_n)); num += 1
-    else:
-        # Si tenemos 16 o más, hacemos 1 escena por noticia
-        for n in noticias_limpias:
-            if num >= 18: break
-            print(f"   [Escena {num}/18] Noticia: {n['titular'][:30]}...", flush=True)
-            ctx_n = f"Medio: {n.get('medio', '?')}\nTitular: {n['titular']}\nExtracto: {n.get('extracto', '')[:200]}"
-            inst = f"Analiza la manipulación del medio '{n.get('medio','?')}' en el titular '{n['titular']}'. Tono de auditor cabreado."
-            escenas.append(_generar_escena(num, inst, ctx_n)); num += 1
+    # Bucle blindado: queremos exactamente las escenas de la 2 a la 17
+    for n in noticias_limpias:
+        if num > 17: break # Si ya hemos llegado a la 17, salimos al cierre (18)
+        
+        # Escena 1 de la noticia
+        print(f"   [Escena {num}/18] Análisis (1/2): {n['titular'][:30]}...", flush=True)
+        ctx_n = f"Medio: {n.get('medio', '?')}\nTitular: {n['titular']}\nExtracto: {n.get('extracto', '')[:200]}"
+        inst1 = f"Analiza el titular y la máscara del medio '{n.get('medio','?')}': '{n['titular']}'. ¿Qué te intentan vender? Tono mordaz."
+        escenas.append(_generar_escena(num, inst1, ctx_n)); num += 1
+        
+        if num > 17: break # Comprobación antes de la segunda escena
+        
+        # Escena 2 de la noticia
+        print(f"   [Escena {num}/18] Análisis (2/2): {n['titular'][:30]}...", flush=True)
+        inst2 = f"Analiza la técnica de manipulación y el beneficiario de '{n['titular']}'. ¿Quién se ríe de fondo? Tono de auditor cabreado."
+        escenas.append(_generar_escena(num, inst2, ctx_n)); num += 1
+
+    # FALLBACK: Si nos hemos quedado cortos (menos de 17 escenas), rellenamos con análisis de técnicas
+    while num <= 17:
+        print(f"   [Escena {num}/18] Relleno (Análisis de Técnica)...", flush=True)
+        tecnica = "cortina de humo" if num % 2 == 0 else "hombre de paja"
+        inst_fill = f"Haz una escena analizando la técnica de manipulación '{tecnica}'. Explica cómo los medios la usan hoy. Tono mordaz."
+        escenas.append(_generar_escena(num, inst_fill, "Análisis genérico de técnicas de manipulación")); num += 1
 
     # Escena 18: Cierre épico
     print(f"   [Escena 18/18] Cierre...", flush=True)
