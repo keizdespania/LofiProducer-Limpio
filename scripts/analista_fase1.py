@@ -29,19 +29,36 @@ def _parse_json(texto):
         except: pass
     return {}
 
-def _filtrar_basura(noticias):
-    """Recibe una lista de dicts y devuelve las 16 mejores sin basura."""
+def _filtrar_noticias_serias(noticias):
+    """ANTIFILTRO: Solo deja pasar noticias de Politica, Economia, Geopolitica o Sociedad."""
+    PALABRAS_SERIAS = [
+        # Política
+        "gobierno", "sanchez", "feijoo", "psoe", "pp", "vox", "sumar", "congreso", "senado", "elecciones", "partido", "ministro", "presidente", "diputado", "senador", "politica", "política", "ley", "reforma", "corrupcion", "corrupción", "dimision", "dimisión", "oposicion", "oposición", "monarquia", "monarquía", "rey", "felipe", "parlament", "parlamento", "jueces", "constitucional", "justicia", "fiscal", "abogado", "tribunal",
+        # Economía
+        "economia", "economía", "inflacion", "inflación", "banco", "pension", "pensión", "presupuesto", "impuesto", "hacienda", "deuda", "pib", "empleo", "paro", "empresa", "sueldo", "salario", "precio", "vivienda", "alquiler", "hipoteca", "bolsa", "ibex", "euribor", "bce", "interes", "interés", "arancel", "comercio", "industria",
+        # Geopolítica / Internacional
+        "rusia", "ucrania", "zelenski", "putin", "eeuu", "ee uu", "trump", "biden", "china", "taiwan", "israel", "gaza", "palestina", "hamas", "iran", "irak", "siria", "onu", "ue", "union europea", "unión europea", "bruselas", "otan", "macron", "francia", "alemania", "reino unido", "europa", "venezuela", "machado", "maduro", "america latina", "américa latina", "mexico", "méxico", "argentina", "milei", "brasil", "lula", "diplomacia", "guerra", "conflicto", "sanciones", "embajada",
+        # Sociedad (temas serios)
+        "educacion", "educación", "sanidad", "salud", "hospital", "medico", "médico", "colegio", "instituto", "universidad", "inmigracion", "inmigración", "patera", "frontera", "refugiado", "desigualdad", "pobreza", "violencia", "machismo", "feminicidio", "medio ambiente", "clima", "sequia", "sequía", "energia", "energía", "nuclear", "renovable",
+        # Medios
+        "medio", "prensa", "periodista", "television", "televisión", "radio", "titular", "manipulacion", "manipulación", "desinformacion", "desinformación", "fake news", "bulos", "propaganda", "censura"
+    ]
     limpias = []
     vistos = set()
     for n in noticias:
         if not isinstance(n, dict): continue
-        tit = n.get("titular", "").lower()
-        if any(b in tit for b in BASURA): continue
+        tit = (n.get("titular", "") + " " + n.get("extracto", "")).lower()
+        # 1. Debe tener alguna palabra de la lista blanca
+        if not any(p in tit for p in PALABRAS_SERIAS): continue
+        # 2. No puede ser tragedia/suceso
+        if any(b in tit for b in ["muere", "muerte", "accidente", "suicidio", "fallece", "detenido", "asesinato", "herido"]): continue
+        
         if tit in vistos: continue
         vistos.add(tit)
         limpias.append(n)
         if len(limpias) >= 16: break
     return limpias
+
 
 def _procesar_medio(medio, datos, noticia):
     textos = []
@@ -114,7 +131,7 @@ Usa los titulares y URLs del contexto. Descarta tragedias y deportes."""
                     top40_raw.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio})
     
     # 2. ADUANA: Filtrar la basura de las 40 noticias y quedarnos con 16
-    top16 = _filtrar_basura(top40_raw)
+    top16 = _filtrar_noticias_serias(top40_raw)
     
     # Si el LLM ha fallado y no hay 16, sacamos de la recolección directamente
     if len(top16) < 10:
@@ -125,7 +142,7 @@ Usa los titulares y URLs del contexto. Descarta tragedias y deportes."""
                 for n in noticias:
                     if isinstance(n, dict) and n.get("titular"):
                         fallback.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio})
-        top16 = _filtrar_basura(fallback)
+        top16 = _filtrar_noticias_serias(fallback)
         
     print(f"[fase1] ✅ Top 3: {top3}", flush=True)
     print(f"[fase1] ✅ Top 16: {len(top16)} noticias limpias", flush=True)
