@@ -123,9 +123,11 @@ def producir_fase2(fecha=None):
 
     # Escena 1: Intro asesina
     print(f"   [Escena {num}/18] Intro...", flush=True)
+    _tema_principal = top16[0].get("titular", "la manipulación mediática") if top16 else "la actualidad"
     intro_inst = (
         f"Empieza con un golpe de efecto brutal. Luego di: 'Somos El Encuadre y hoy, {fecha_str}, abrimos la cloaca mediática'. "
-        "Suelta una promesa de lo que van a aprender. "
+        f"Después, di EXACTAMENTE: 'Hoy analizamos cómo los medios manipulan la actualidad, empezando por esta noticia: {_tema_principal}'. "
+        "Suelta una promesa de lo que van a aprender (ej: 'Te voy a enseñar las 3 técnicas que han usado hoy para que no pienses'). "
         "Cierra con: 'Quedate, porque esto te va a volar la cabeza'."
     )
     escenas.append(_generar_escena(num, intro_inst)); num += 1
