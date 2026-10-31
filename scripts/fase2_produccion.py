@@ -148,28 +148,45 @@ def producir_fase2(fecha=None):
     )
     escenas.append(_generar_escena(1, intro_inst))
 
-    # --- ESCENAS 2-17: LAS 16 NOTICIAS ---
-    for i, noticia in enumerate(top16[:16]):
-        num = i + 2
-        titular = noticia.get("titular", "Noticia sin titular")
-        url = noticia.get("url", "")
-        extracto = noticia.get("extracto", "")
+    # --- ESCENAS 2-17: 4 BLOQUES TEMÁTICOS ---
+    # Agrupamos las noticias en 4 bloques de 4 (si sobran, se ignoran, si faltan, el bloque es más pequeño)
+    bloques = [top16[i:i + 4] for i in range(0, len(top16), 4)]
+    
+    num = 2
+    for idx_bloque, bloque in enumerate(bloques):
+        if len(bloque) == 0: continue
         
-        # Si no hay extracto (porque el scraper falló), usamos el titular
-        ctx_texto = f"Medio: {noticia.get('medio', 'Un medio')}\nTitular: {titular}\nExtracto: {extracto if extracto else 'No disponible, analiza solo el titular.'}"
+        # Unir todos los titulares del bloque en un solo contexto
+        ctx_bloque = "\n".join([
+            f"Medio: {n.get('medio', '?')} | Titular: {n.get('titular', '?')} | Extracto: {n.get('extracto', '')[:200]}"
+            for n in bloque
+        ])
         
-        print(f"   [Escena {num}/18] Noticia {i+1}: {titular[:40]}...", flush=True)
-        
-        inst = (
-            f"Analiza este titular como un tertuliano cabreado en un bar: '{titular}'. "
-            f"Estructura los 4 pasos de forma brutal y sin piedad: "
-            f"1. EL TITULAR: 'El [Medio] tituló: \"[Titular]\"'. "
-            f"2. LA MÁSCARA: Qué te están intentando vender (ej: 'Nos quieren vender que esto es transparencia...'). "
-            f"3. EL TRUCO: Qué técnica psicológica usan (ej: 'Es un hombre de paja de manual, te distraen con X para que no veas Y'). "
-            f"4. LA TRASTIENDA: Quién se ríe de fondo y se lleva el premio (ej: 'Mientras tanto, los de siempre se frotan las manos'). "
-            f"Usa golpes cortos de voz. Termina con una micro-pausa y una pregunta incómoda."
+        # 1 escena de "Intro del bloque"
+        print(f"   [Escena {num}/18] Intro Bloque {idx_bloque+1}...", flush=True)
+        inst_intro = (
+            f"Estás empezando el bloque {idx_bloque+1} de 4. "
+            f"Tienes estas noticias: {ctx_bloque[:500]}. "
+            "Haz una introducción mordaz que conecte todas estas noticias bajo un mismo hilo conductor (ej: 'Hoy en política, todos nos quieren vender lo mismo...'). "
+            "Sin fórmulas robóticas. Habla como un tertuliano que ha descubierto la mentira."
         )
-        escenas.append(_generar_escena(num, inst, ctx_texto))
+        escenas.append(_generar_escena(num, inst_intro, ctx_bloque))
+        num += 1
+        
+        # 2 o 3 escenas de "Análisis de las noticias del bloque"
+        for j, noticia in enumerate(bloque):
+            if num >= 18: break
+            titular = noticia.get("titular", "Noticia")
+            print(f"   [Escena {num}/18] Bloque {idx_bloque+1}, noticia {j+1}: {titular[:30]}...", flush=True)
+            
+            ctx_noticia = f"Medio: {noticia.get('medio', '?')}\nTitular: {titular}\nExtracto: {noticia.get('extracto', 'No disponible.')}"
+            inst_analisis = (
+                f"Analiza este titular: '{titular}'. "
+                "No repitas la estructura A+B+C+D. Varía el ritmo: a veces empieza por la conclusión, a veces por una pregunta, a veces por una anécdota. "
+                "Expón la manipulación de forma directa, sin sonar a profesor."
+            )
+            escenas.append(_generar_escena(num, inst_analisis, ctx_noticia))
+            num += 1
 
     # --- ESCENA 18: CIERRE ---
     print("   [Escena 18/18] Cierre...", flush=True)

@@ -182,7 +182,7 @@ if not audio.exists() or _dur(audio) < dur_total - 10:
         return _run([FFMPEG,"-y","-hide_banner","-loglevel","error",
             "-itsoffset","2","-i",str(voz),"-i",str(lofi_largo),
             "-filter_complex",
-                f"[0:a]volume=1.0[v];[1:a]atrim=0:{dur_total:.1f},afade=t=in:st=0:d=3,afade=t=out:st={dur_total-3:.1f}:d=3,volume=0.12[m];[m][v]sidechaincompress=threshold=0.1:ratio=5:attack=20:release=1000[duck];[v][duck]amix=inputs=2:duration=first:normalize=0[a]",
+                f"[0:a]volume=1.0,asplit=2[voz_mix][voz_sc];[1:a]atrim=0:{dur_total:.1f},afade=t=in:st=0:d=3,afade=t=out:st={dur_total-3:.1f}:d=3,volume=0.12[mus];[mus][voz_sc]sidechaincompress=threshold=0.1:ratio=5:attack=20:release=1000[duck];[voz_mix][duck]amix=inputs=2:duration=first:normalize=0[a]",
             "-map","[a]","-c:a","aac","-b:a","192k","-t",f"{dur_total:.1f}",str(audio)],
             300, "amix")
     if not _intentar(_mix, "amix"):
