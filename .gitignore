@@ -37,3 +37,14 @@ output/tmp_voz/
 data/agent/cola*.db
 *.log
 *.part
+
+# Backups automáticos
+*.bak*
+*.py.bak*
+
+# Datos runtime
+data/musica_libre/*.mp3
+data/musica_libre/*/*.mp3
+
+# Call logs
+data/call_logs/
