@@ -125,14 +125,14 @@ Usa los titulares y URLs del contexto. Descarta tragedias y deportes."""
                         fallback.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio})
         top16 = _filtrar_basura(fallback)
         
-    print(f"[fase1] ✅ Top 3: {list(top3.values())}", flush=True)
+    print(f"[fase1] ✅ Top 3: {top3}", flush=True)
     print(f"[fase1] ✅ Top 16: {len(top16)} noticias limpias", flush=True)
 
     # 3. ANÁLISIS DE MEDIOS
     print("[fase1] Analizando medios...", flush=True)
     medios = list((datos.get("prensa") or {}).keys()) + list((datos.get("agencias") or {}).keys()) \
            + list((datos.get("tv") or {}).keys()) + list((datos.get("radio") or {}).keys())
-    noticia = list(top3.values())[0] if isinstance(top3, dict) else "noticias del día"
+    noticia = top3[0] if isinstance(top3, list) and top3 else "noticias del día"
 
     todos = {}
     total = len(medios)
@@ -153,7 +153,8 @@ Usa los titulares y URLs del contexto. Descarta tragedias y deportes."""
                 print(f"  [{completados}/{total}] X {e}", flush=True)
 
     # 4. GUARDAR
-    res = {"fecha": fecha, "top3": top3, "top16": top16, "analisis": todos, "recoleccion": datos}
+    top3_dict = {f"noticia_{i+1}": n for i, n in enumerate(top3)}
+    res = {"fecha": fecha, "top3": top3_dict, "top16": top16, "analisis": todos, "recoleccion": datos}
     out = OUT / f"analisis_fase1_{fecha}.json"
     out.write_text(json.dumps(res, indent=2, ensure_ascii=False))
     print(f"[fase1] ✅ Guardado en {out}", flush=True)
