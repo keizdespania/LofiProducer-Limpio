@@ -148,7 +148,9 @@ if not video_base.exists() or _dur(video_base) < 60:
         sys.exit(1)
 
 dur_video = _dur(video_base)
-print(f"video_base: {dur_video:.1f}s", flush=True)
+dur_voz = _dur(voz)
+dur_total = max(dur_video, dur_voz + 2.0)  # Usar la duración del AUDIO como referencia real
+print(f"video_base: {dur_video:.1f}s | voz: {dur_voz:.1f}s | dur_total: {dur_total:.1f}s", flush=True)
 
 # ═══ PASO 2: AUDIO ═══
 audio = WORK / "audio.m4a"
@@ -199,7 +201,7 @@ def _mux():
     return _run([FFMPEG,"-y","-hide_banner","-loglevel","error",
         "-i",str(video_base),"-i",str(audio),
         "-map","0:v","-map","1:a","-c","copy",
-        "-t",f"{min(dur_video,dur_total):.1f}",
+        "-t",f"{dur_total:.1f}",
         "-movflags","+faststart","-avoid_negative_ts","make_zero",str(final)],
         180, "mux")
 if not _intentar(_mux, "mux"): sys.exit(1)
