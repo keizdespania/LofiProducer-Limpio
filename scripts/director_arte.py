@@ -142,7 +142,7 @@ def _generar_imagen(concepto, salida):
 
 def _descargar_musica(mood, salida):
     try:
-        from descargar_musica_dinamica import descargar_por_mood
+        # TUNETANK ELIMINADO
         res = descargar_por_mood(mood, 1)
         if res:
             nombre = res[0]["archivo"]

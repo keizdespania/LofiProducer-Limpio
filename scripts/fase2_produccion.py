@@ -167,11 +167,8 @@ def producir_fase2(fecha=None):
     res["texto_voz_largo"] = " ".join([e.get("texto", "") for e in escenas])
     res["palabras_totales"] = len(res["texto_voz_largo"].split())
 
-    # 3. DJ MUSICAL (Omitido - usamos Lofi continuo)
-    print("[fase2] 3/5 DJ Musical: Omitido (Lofi continuo)", flush=True)
-    res["musica"] = {"tipo": "lofi_continuo"}
-
-    # 4. VIRALIDAD
+    # 3. DJ MUSICAL: Omitido (Lofi continuo)
+# 4. VIRALIDAD
     print("[fase2] 4/5 Calculando viralidad...", flush=True)
     viral = _parse_json_seguro(pedir_a_especialista("predictor_viralidad", "Puntua 0-100. Devuelve SOLO JSON con 'score'.", contexto=str(res)[:3000], proveedor="auto"))
     if not viral or "score" not in viral:
