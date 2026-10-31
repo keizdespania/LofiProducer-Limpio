@@ -1,3 +1,4 @@
+import pathlib
 """recolector.py - Radar Global Definitivo (50+ medios, 15 TV, 15 Radio, Agencias)."""
 import sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / 'brain'))
