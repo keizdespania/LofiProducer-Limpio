@@ -22,12 +22,12 @@ def _run(script, args=None, timeout=1200, retries=3):
         time.sleep(3)
     return False
 
-def _subir_youtube(archivo, titulo, desc, publish_at=None, retries=3):
+def _subir_youtube(archivo, titulo, desc, tags=None, publish_at=None, retries=3):
     sys.path.insert(0, str(ROOT / "scripts"))
     from subir_youtube import subir
     for intento in range(retries):
         try:
-            r = subir(archivo, titulo, desc, privacidad="private", publish_at=publish_at, token_file=TOKEN_ENC)
+            r = subir(archivo, titulo, desc, tags=tags, privacidad="private", publish_at=publish_at, token_file=TOKEN_ENC)
             print(f"✅ YouTube: https://youtu.be/{r['id']}")
             return True
         except Exception as e:
@@ -192,9 +192,25 @@ def main():
         except: pass
     _score = _viral.get("score", 0) if isinstance(_viral, dict) else 0
     _umbral = 50
+    # Cargar/generar SEO ANTES del branch de viralidad (para que shorts también lo usen)
+    _seo = {}
+    _seo_path = OUT / f"seo_{fecha}.json"
+    if not _seo_path.exists():
+        try:
+            import subprocess as _sp
+            print(f"   Generando SEO con generar_seo.py...", flush=True)
+            _sp.run([sys.executable, str(ROOT / "scripts" / "generar_seo.py"), fecha],
+                    check=False, timeout=60, capture_output=True)
+        except Exception as _e:
+            print(f"   ⚠️ generar_seo falló: {_e}", flush=True)
+    if _seo_path.exists():
+        try: _seo = json.loads(_seo_path.read_text())
+        except: pass
+
     if _score >= _umbral:
         print(f"   Viralidad {_score}/100 >= {_umbral} -> PUBLICAR YouTube", flush=True)
-        _subir_youtube(str(video_path), f"Vídeo Largo {fecha}", "Análisis completo.", publish_at=pub_v.strftime('%Y-%m-%dT%H:%M:%SZ'))
+        _sl = _seo.get("largo", {})
+        _subir_youtube(str(video_path), _sl.get("titulo", f"Vídeo Largo {fecha}"), _sl.get("descripcion", "Análisis completo."), tags=_sl.get("tags"), publish_at=pub_v.strftime('%Y-%m-%dT%H:%M:%SZ'))
     else:
         print(f"   Viralidad {_score}/100 < {_umbral} -> NO publicar (cola evergreen)", flush=True)
         try:
@@ -213,7 +229,8 @@ def main():
             else:
                 base = hoy_dt.replace(hour=13, minute=0) + datetime.timedelta(days=1)
                 pub_at = max(base, ahora + datetime.timedelta(hours=1)) + datetime.timedelta(hours=(num-3)*0.5)
-            _subir_youtube(str(s_path), f"Short {num} {fecha}", "Análisis rápido.", publish_at=pub_at.strftime('%Y-%m-%dT%H:%M:%SZ'))
+            _ss = next((s for s in _seo.get("shorts", []) if s.get("num") == num), {})
+            _subir_youtube(str(s_path), _ss.get("titulo", f"Short {num} {fecha}"), _ss.get("descripcion", "Análisis rápido."), publish_at=pub_at.strftime('%Y-%m-%dT%H:%M:%SZ'))
 
     _run("community_manager_auto.py", [fecha], 300, 1)
     _run("detector_tendencias_vivas.py", [fecha], 300, 1)
