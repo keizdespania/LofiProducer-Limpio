@@ -114,9 +114,10 @@ def producir_fase2(fecha=None):
 
     # PROMPT BASE (System para todas las escenas)
     _SYS_GUION = (
-        "Eres un analista mediático mordaz, cercano y para todos los públicos. "
-        "Hablas como un amigo inteligente en un bar, usando ironía y sarcasmo. "
-        "SOLO NARRACIÓN LOCUTADA. Prohibido HTML, markdown o acotaciones (FADE IN, etc)."
+        "Eres el CONTRAMEDIO de 'El Encuadre'. Tu misión NO es contar la noticia, sino AUDITAR la manipulación. "
+        "Señalas cómo el medio utiliza el titular para manipular al lector. "
+        "Eres irónico, mordaz y directo. No hablas como un periodista oficial, hablas como alguien que ha descubierto la trampa. "
+        "SOLO NARRACIÓN LOCUTADA."
     )
 
     # FUNCIÓN AUXILIAR PARA GENERAR 1 ESCENA
@@ -167,8 +168,9 @@ def producir_fase2(fecha=None):
         inst_intro = (
             f"Estás empezando el bloque {idx_bloque+1} de 4. "
             f"Tienes estas noticias: {ctx_bloque[:500]}. "
-            "Haz una introducción mordaz que conecte todas estas noticias bajo un mismo hilo conductor (ej: 'Hoy en política, todos nos quieren vender lo mismo...'). "
-            "Sin fórmulas robóticas. Habla como un tertuliano que ha descubierto la mentira."
+            "Haz una introducción que conecte todas estas noticias bajo un mismo hilo conductor de MANIPULACIÓN mediática. "
+            "Explica cómo los medios usan este bloque temático para construir un relato. "
+            "Habla como el contramedio."
         )
         escenas.append(_generar_escena(num, inst_intro, ctx_bloque))
         num += 1
