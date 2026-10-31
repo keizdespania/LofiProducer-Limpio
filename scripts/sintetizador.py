@@ -1,5 +1,5 @@
-"""sintetizador.py - Genera el Dossier, Hooks y Citas desde el análisis de medios."""
-import sys, json, pathlib, datetime, re
+"""sintetizador.py - Genera el Dossier Brutal, Hooks y Bibliotecario."""
+import sys, json, pathlib, datetime
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "brain"))
 from especialistas import pedir_a_especialista
@@ -7,85 +7,81 @@ from especialistas import pedir_a_especialista
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
 
-def _parse_json_seguro(texto):
+def _parse_json(texto):
+    import re
     if not texto: return {}
-    t = re.sub(r'```(?:json)?', '', texto, flags=re.IGNORECASE).replace('```', '').strip()
+    t = re.sub(r'```(?:json)?', '', texto, flags=re.I).replace('```', '').strip()
     try: return json.loads(t)
     except: pass
-    matches = re.findall(r'\{.*?\}', texto, re.DOTALL)
-    for m in sorted(matches, key=len, reverse=True):
+    for m in sorted(re.findall(r'\{.*?\}', texto, re.DOTALL), key=len, reverse=True):
         try: return json.loads(m)
         except: pass
     return {}
 
-def sintetizar(fecha=None):
-    fecha = fecha or datetime.date.today().isoformat()
-    analisis_file = OUT / f"analisis_fase1_{fecha}.json"
-    if not analisis_file.exists():
-        print(f"❌ No existe {analisis_file}")
-        return None
-    
-    datos = json.loads(analisis_file.read_text())
-    top3 = datos.get("top3", {})
-    medios = datos.get("analisis", {})
-    
-    # 1. Preparar contexto de forma segura (evitando errores de listas)
-    ctx = f"TOP 3 NOTICIAS:\n{json.dumps(top3, ensure_ascii=False)}\n\nANÁLISIS POR MEDIO:\n"
-    for m, arr in medios.items():
-        if not arr: continue
-        a = arr[0]
-        if isinstance(a, list) and len(a) > 0: a = a[0]
-        if isinstance(a, dict):
-            ctx += f"\n[{m}] IMD: {a.get('imd_local', '?')}, Framing: {a.get('framing', '?')}, Cuchillo: {a.get('palabra_cuchillo', '?')}\n"
-    
-    # 2. Director de Inteligencia (Dossier)
-    print("[sintetizador] Director de Inteligencia generando Dossier Base...", flush=True)
-    prompt_dir = "Basado en estos análisis, genera el Dossier Base. Devuelve SOLO JSON: {\"tema_del_dia\": \"string\", \"indice_manipulacion_global\": 0, \"el_relato_oficial\": \"string\", \"la_contra_narrativa\": \"string\", \"analisis_psicologico\": \"string\", \"cita_bomba\": \"string\", \"sarcasmo_del_dia\": \"string\", \"protagonista\": \"string\", \"villano\": \"string\"}"
-    # METER EL TOP16 Y LOS MEDIOS EN EL CONTEXTO DEL DOSSIER
+def main():
+    fecha = sys.argv[1] if len(sys.argv) > 1 else datetime.date.today().isoformat()
     af = OUT / f"analisis_fase1_{fecha}.json"
-    if af.exists():
-        _d = json.loads(af.read_text())
-        _top16 = _d.get("top16", [])
-        _medios = _d.get("analisis", {})
-        ctx_extra = f"\n\nTOP16 NOTICIAS:\n{json.dumps(_top16, ensure_ascii=False)}\n\nMEDIOS ANALIZADOS:\n{json.dumps(list(_medios.keys()), ensure_ascii=False)}"
-        ctx += ctx_extra
+    if not af.exists():
+        print(f"❌ No existe {af}"); return
+    datos = json.loads(af.read_text())
+    
+    top3 = datos.get("top3", {})
+    top16 = datos.get("top16", [])
+    medios = list(datos.get("analisis", {}).keys())
 
-    r = pedir_a_especialista("director_inteligencia_v2", prompt_dir, contexto=ctx[:8000], proveedor="auto")
-    dossier = _parse_json_seguro(r)
+    # Contexto para el LLM
+    ctx = f"TOP 3: {json.dumps(top3, ensure_ascii=False)}\n\n"
+    ctx += f"TOP 16 NOTICIAS: {json.dumps(top16, ensure_ascii=False)}\n\n"
+    ctx += f"MEDIOS ANALIZADOS ({len(medios)}): {json.dumps(medios, ensure_ascii=False)}\n\n"
+    
+    # Añadir extractos de los medios para el dossier
+    for m, ans in list(datos.get("analisis", {}).items())[:10]:
+        for a in ans:
+            if a.get("framing"):
+                ctx += f"[{m}] Framing: {a.get('framing')} | Técnica: {a.get('tecnica_principal')}\n"
+
+    print("[sintetizador] Generando Dossier Brutal...", flush=True)
+    prompt_dir = """Devuelve SOLO un JSON válido para un DOSSIER PERIODÍSTICO:
+{
+  "titular_brutal": "Titular mordaz para el blog",
+  "resumen_ejecutivo": "3 párrafos resumiendo la manipulación",
+  "contexto_historico": "2 párrafos de contexto",
+  "desglose_medios": "Análisis de cómo los medios tratan la noticia",
+  "tecnicas_manipulacion": ["Técnica 1", "Técnica 2", "Técnica 3", "Técnica 4", "Técnica 5"],
+  "citas_bomba": ["Cita 1", "Cita 2", "Cita 3"],
+  "conclusion": "1 párrafo final"
+}
+NO uses markdown, SOLO JSON."""
+    dossier = _parse_json(pedir_a_especialista("director_inteligencia_v2", prompt_dir, contexto=ctx[:12000], proveedor="auto"))
     print(f"[sintetizador] Dossier: {len(dossier)} claves", flush=True)
-    
-    # 3. Guionista de Retención (Hooks)
-    print("[sintetizador] Guionista generando hooks...", flush=True)
-    prompt_guion = "Basado en el Dossier, genera TODOS los hooks posibles (mín 3 por noticia). Devuelve SOLO JSON: {\"hooks_totales\": [{\"noticia\": \"string\", \"tipo\": \"string\", \"hook\": \"string\", \"guion\": \"string\"}]}"
-    r_g = pedir_a_especialista("guionista_retencion_v2", prompt_guion, contexto=json.dumps(dossier, ensure_ascii=False)[:3000], proveedor="omni")
-    guiones = _parse_json_seguro(r_g)
-    print(f"[sintetizador] Hooks generados: {len(guiones.get('hooks_totales', []))}", flush=True)
-    
-    # 4. Bibliotecario (Citas)
-    print("[sintetizador] Bibliotecario buscando respaldo académico...", flush=True)
-    tecnicas = []
-    for m, arr in medios.items():
-        for a in arr:
-            if isinstance(a, dict):
-                tec = a.get("tecnica_principal") or a.get("tecnica")
-                if tec: tecnicas.append(tec)
-    prompt_bib = "Para cada técnica, cita la obra académica real. Devuelve SOLO JSON: {\"tecnicas\": [{\"tecnica\": \"string\", \"autor\": \"string\", \"obra\": \"string\", \"año\": \"string\", \"cita_breve\": \"string\"}]}"
-    r_b = pedir_a_especialista("bibliotecario_v2", prompt_bib, contexto="Técnicas: " + " | ".join(tecnicas[:5]), proveedor="omni")
-    citas = _parse_json_seguro(r_b)
-    
-    # 5. Guardar
+
+    print("[sintetizador] Generando Hooks...", flush=True)
+    prompt_hooks = """Devuelve SOLO un JSON: 
+{"hooks": [{"tipo": "Cita", "hook": "Texto", "guion": "Texto", "score": 85}, ...]}
+Genera 10 hooks para shorts basados en el top16. SOLO JSON."""
+    guiones = _parse_json(pedir_a_especialista("guionista_retencion_v2", prompt_hooks, contexto=ctx[:8000], proveedor="auto"))
+    hooks = guiones.get("hooks", [])
+    print(f"[sintetizador] Hooks: {len(hooks)}", flush=True)
+
+    print("[sintetizador] Bibliotecario buscando respaldo...", flush=True)
+    prompt_bib = """Devuelve SOLO un JSON:
+{"citas": [{"autor": "Nombre", "frase": "Texto", "contexto": "Texto"}, ...]}
+Busca 3 citas académicas o de expertos sobre manipulación mediática. SOLO JSON."""
+    bib = _parse_json(pedir_a_especialista("bibliotecario_v2", prompt_bib, contexto="Técnicas: framing, anclaje, hombre de paja", proveedor="auto"))
+    citas = bib.get("citas", [])
+    print(f"[sintetizador] Citas: {len(citas)}", flush=True)
+
     res = {
         "fecha": fecha,
         "top3": top3,
         "dossier": dossier,
-        "guiones": guiones,
+        "guiones": {"hooks_totales": hooks},
         "citas": citas,
-        "medios": medios,
+        "medios": medios
     }
-    out_json = OUT / f"dossier_{fecha}.json"
-    out_json.write_text(json.dumps(res, indent=2, ensure_ascii=False))
-    print(f"[sintetizador] ✅ Guardado en {out_json}", flush=True)
-    return res
+    out = OUT / f"dossier_{fecha}.json"
+    out.write_text(json.dumps(res, indent=2, ensure_ascii=False))
+    print(f"[sintetizador] ✅ Guardado en {out}", flush=True)
 
 if __name__ == "__main__":
-    sintetizar(sys.argv[1] if len(sys.argv) > 1 else None)
+    main()
