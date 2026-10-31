@@ -41,7 +41,16 @@ def sintetizar(fecha=None):
     # 2. Director de Inteligencia (Dossier)
     print("[sintetizador] Director de Inteligencia generando Dossier Base...", flush=True)
     prompt_dir = "Basado en estos análisis, genera el Dossier Base. Devuelve SOLO JSON: {\"tema_del_dia\": \"string\", \"indice_manipulacion_global\": 0, \"el_relato_oficial\": \"string\", \"la_contra_narrativa\": \"string\", \"analisis_psicologico\": \"string\", \"cita_bomba\": \"string\", \"sarcasmo_del_dia\": \"string\", \"protagonista\": \"string\", \"villano\": \"string\"}"
-    r = pedir_a_especialista("director_inteligencia_v2", prompt_dir, contexto=ctx[:4000], proveedor="omni")
+    # METER EL TOP16 Y LOS MEDIOS EN EL CONTEXTO DEL DOSSIER
+    af = OUT / f"analisis_fase1_{fecha}.json"
+    if af.exists():
+        _d = json.loads(af.read_text())
+        _top16 = _d.get("top16", [])
+        _medios = _d.get("analisis", {})
+        ctx_extra = f"\n\nTOP16 NOTICIAS:\n{json.dumps(_top16, ensure_ascii=False)}\n\nMEDIOS ANALIZADOS:\n{json.dumps(list(_medios.keys()), ensure_ascii=False)}"
+        ctx += ctx_extra
+
+    r = pedir_a_especialista("director_inteligencia_v2", prompt_dir, contexto=ctx[:8000], proveedor="auto")
     dossier = _parse_json_seguro(r)
     print(f"[sintetizador] Dossier: {len(dossier)} claves", flush=True)
     

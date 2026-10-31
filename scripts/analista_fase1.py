@@ -50,7 +50,12 @@ def _procesar_medio(medio, datos, noticia):
         for v in (datos.get(sec) or {}).get(medio, []):
             if isinstance(v, dict) and v.get("titulo"): textos.append(v["titulo"])
     
-    if not textos: return None
+    if not textos: 
+        # Si no hay titulares, intentar coger transcripción o extracto
+        for a in datos.get("audios", []):
+            if a.get("medio") == medio and a.get("transcripcion"):
+                textos.append(a["transcripcion"][:500])
+        if not textos: return None
     ctx = f"MEDIO: {medio}\nTITULARES:\n" + "\n".join(textos[:3])
     
     r = pedir_a_especialista("forense_medios",
@@ -93,17 +98,25 @@ def analizar_fase1(fecha=None):
  "top40": [{"titular": "titular 1", "url": "https://...", "medio": "El Pais"}, ... 40 items]}
 Usa los titulares y URLs del contexto. Descarta tragedias y deportes."""
     
-    top_data = _parse_json(pedir_a_especialista("detective_tendencias_v2", prompt_det, contexto=ctx[:5000], proveedor="auto"))
+    # LLM solo para el top3 (es rápido)
+    prompt_top3 = 'Devuelve SOLO JSON: {"top3": ["noticia 1", "noticia 2", "noticia 3"]}. Usa los titulares del contexto.'
+    top3_data = _parse_json(pedir_a_especialista("detective_tendencias_v2", prompt_top3, contexto=ctx[:5000], proveedor="auto"))
+    top3 = top3_data.get("top3", ["Actualidad", "Política", "Economía"])
     
-    top3 = top_data.get("top3", {"noticia_1": "Actualidad", "noticia_2": "Política", "noticia_3": "Economía"})
-    top40 = top_data.get("top40", [])
+    # top40 lo sacamos DIRECTAMENTE de la recolección (adiós fallos del LLM)
+    top40_raw = []
+    for sec in ("prensa", "agencias"):
+        for medio, noticias in (datos.get(sec) or {}).items():
+            for n in noticias:
+                if isinstance(n, dict) and n.get("titular"):
+                    top40_raw.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio})
     
     # 2. ADUANA: Filtrar la basura de las 40 noticias y quedarnos con 16
-    top16 = _filtrar_basura(top40)
+    top16 = _filtrar_basura(top40_raw)
     
     # Si el LLM ha fallado y no hay 16, sacamos de la recolección directamente
     if len(top16) < 10:
-        print("[fase1] ⚠️ Pocas noticias del LLM. Usando fallback de recolección...", flush=True)
+        print("[fase1] ⚠️ Pocas noticias limpias. Ampliando fallback...", flush=True)
         fallback = []
         for sec in ("prensa", "agencias"):
             for medio, noticias in (datos.get(sec) or {}).items():
