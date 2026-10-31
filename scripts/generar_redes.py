@@ -8,6 +8,26 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
 WEB = "https://elencuadre.pages.dev"
 
+# URLs de las redes (rellenar con las reales cuando estén creadas)
+REDES_URLS = {
+    "youtube": "https://youtube.com/@SomosElEncuadre",
+    "tiktok": "https://tiktok.com/@somoselencuadre",
+    "instagram": "https://instagram.com/somoselencuadre",
+    "x": "https://x.com/SomosElEncuadre",
+    "threads": "https://threads.net/@somoselencuadre",
+    "blogger": "https://iaglobalnews.blogspot.com",
+    "web": "https://elencuadre.pages.dev",
+}
+
+def _otros_enlaces(red_actual):
+    """Devuelve string con enlaces a las OTRAS redes (excluye la actual)."""
+    lineas = []
+    for red, url in REDES_URLS.items():
+        if red != red_actual and red != "web":
+            lineas.append(f"{red.capitalize()}: {url}")
+    return " | ".join(lineas)
+
+
 def _parse_json(texto):
     if not texto: return None
     t = re.sub(r"```(?:json)?", "", texto, flags=re.IGNORECASE).replace("```", "").strip()
@@ -26,12 +46,12 @@ def _parse_json(texto):
     return None
 
 PROMPTS = {
-    "youtube": 'Genera SOLO un objeto JSON con los campos SEO para YouTube de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\nCONTEXTO: {contexto}\n\nREGLAS LEGALES OBLIGATORIAS:\n- NUNCA acuses directamente a personas o medios (ej. "X es corrupto", "Y miente"). Usa: "los hechos", "el caso", "el análisis sugiere", "según el medio".\n- NUNCA uses: muerte, muerto, sangre, tragedia, saqueo, víctima, asesinato, crimen, corrupción, fraude, guerra, genocidio, dictador, nazi, fascista.\n- Reformula con: "el suceso", "la situación", "el caso", "los hechos", "la polémica".\n- Si no puedes evitar la palabra, cambia el enfoque al MECANISMO (cómo se cuenta), no al hecho.\n\nEstructura EXACTA:\n{{\n  "titulo": "Máx 60 chars, keyword al inicio, gancho SIN palabras prohibidas",\n  "descripcion": "300-500 chars. Keyword al inicio. CTA a {web} al final. Sin acusaciones.",\n  "primer_comentario": "Comentario CTA con enlace a {web}",\n  "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"]\n}}\n\nREGLAS: NO markdown. NO ```json. Respeta 60 chars en titulo.',
-    "tiktok": 'Genera SOLO un objeto JSON para TikTok de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\n\nREGLAS LEGALES:\n- NUNCA acuses directamente. Usa "el caso", "los hechos", "el análisis sugiere".\n- NUNCA uses: muerte, muerto, sangre, tragedia, saqueo, víctima, asesinato, crimen, corrupción, fraude, guerra, nazi, fascista.\n- Reformula con: "el suceso", "la situación", "la polémica".\n\nEstructura EXACTA:\n{{\n  "texto": "Máx 150 chars. Gancho en primera línea. Emojis (1-2). Sin enlaces. Sin palabras prohibidas.",\n  "hashtags": "#fyp #parati #medios #psicologia #manipulacion"\n}}\n\nREGLAS: NO markdown. NO ```json.',
-    "instagram": 'Genera SOLO un objeto JSON para Instagram Reel de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\n\nREGLAS LEGALES:\n- NUNCA acuses directamente. Usa "el caso", "los hechos", "el análisis sugiere".\n- NUNCA uses: muerte, muerto, sangre, tragedia, saqueo, víctima, asesinato, crimen, corrupción, fraude, guerra.\n- Reformula con: "el suceso", "la situación", "la polémica".\n\nEstructura EXACTA:\n{{\n  "texto": "200-400 chars. Tono emocional, emojis (2-3). Sin enlaces en caption. Sin palabras prohibidas.",\n  "hashtags": "#medios #sesgo #manipulacion #periodismo #analisis",\n  "primer_comentario": "Enlace a {web}"\n}}\n\nREGLAS: NO markdown. NO ```json.',
-    "x": 'Genera SOLO un objeto JSON para X (Twitter) de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\n\nREGLAS LEGALES:\n- NUNCA acuses directamente. Usa "el caso", "los hechos", "el análisis sugiere".\n- NUNCA uses: muerte, muerto, sangre, tragedia, saqueo, víctima, asesinato, crimen, corrupción, guerra.\n- Reformula con: "el suceso", "la situación", "la polémica".\n\nEstructura EXACTA:\n{{\n  "texto": "Máx 280 chars. Gancho + enlace a {web}. Tono mordaz pero SIN palabras prohibidas."\n}}\n\nREGLAS: NO markdown. NO ```json.',
-    "threads": 'Genera SOLO un objeto JSON para Threads de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\n\nREGLAS LEGALES:\n- NUNCA acuses directamente. Sin palabras prohibidas (muerte, sangre, tragedia, saqueo, víctima, crimen, corrupción, guerra).\n\nEstructura EXACTA:\n{{\n  "texto": "200-400 chars. Tono conversacional. Enlace a {web} al final. Sin palabras prohibidas."\n}}\n\nREGLAS: NO markdown. NO ```json.',
-    "blogger": 'Genera SOLO un objeto JSON para Blogger de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\nCONTEXTO: {contexto}\n\nREGLAS LEGALES:\n- NUNCA acuses directamente. Sin palabras prohibidas (muerte, sangre, tragedia, saqueo, víctima, crimen, corrupción, guerra).\n\nEstructura EXACTA:\n{{\n  "titulo": "Título atractivo, 40-70 chars, con keyword, sin palabras prohibidas",\n  "resumen": "Resumen 2 frases con gancho, sin acusaciones"\n}}\n\nREGLAS: NO markdown. NO ```json.',
+    "youtube": 'Genera SOLO un objeto JSON con los campos SEO para YouTube de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\nCONTEXTO: {contexto}\n\nREGLAS LEGALES OBLIGATORIAS:\n- NUNCA acuses directamente a personas o medios. Usa: "los hechos", "el caso", "el análisis sugiere".\n- NUNCA uses: muerte, muerto, sangre, tragedia, saqueo, víctima, asesinato, crimen, corrupción, fraude, guerra, nazi, fascista.\n- Reformula con: "el suceso", "la situación", "el caso", "los hechos", "la polémica".\n\nSEO CRUZADO (obligatorio al final de la descripción):\nIncluye esta línea al final:\n"Síguenos en: TikTok https://tiktok.com/@somoselencuadre | IG https://instagram.com/somoselencuadre | X https://x.com/SomosElEncuadre | Threads https://threads.net/@somoselencuadre"\n\nEstructura EXACTA:\n{{\n  "titulo": "Máx 60 chars, keyword al inicio, gancho SIN palabras prohibidas",\n  "descripcion": "300-500 chars. Keyword al inicio + CTA + al final la línea SEO CRUZADO con enlaces a OTRAS redes",\n  "primer_comentario": "Comentario CTA con enlace a {web} + 2 enlaces cruzados",\n  "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"]\n}}\n\nREGLAS: NO markdown. NO ```json. Respeta 60 chars en titulo.',
+    "tiktok": 'Genera SOLO un objeto JSON para TikTok de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\n\nREGLAS LEGALES:\n- NUNCA acuses directamente.\n- NUNCA uses: muerte, muerto, sangre, tragedia, saqueo, víctima, asesinato, crimen, corrupción, fraude, guerra, nazi, fascista.\n\nSEO CRUZADO: Menciona brevemente OTRAS plataformas al final del texto (NO TikTok, obviamente):\n"Análisis completo en YouTube @SomosElEncuadre y web elencuadre.pages.dev"\n\nEstructura EXACTA:\n{{\n  "texto": "Máx 150 chars. Gancho en primera línea + mención a YouTube o web al final. Sin enlaces directos (TikTok penaliza links externos en texto).",\n  "hashtags": "#fyp #parati #medios #psicologia #manipulacion"\n}}\n\nREGLAS: NO markdown. NO ```json.',
+    "instagram": 'Genera SOLO un objeto JSON para Instagram Reel de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\n\nREGLAS LEGALES:\n- NUNCA acuses directamente.\n- NUNCA uses: muerte, muerto, sangre, tragedia, saqueo, víctima, asesinato, crimen, corrupción, fraude, guerra.\n\nSEO CRUZADO:\n- En el texto: "Análisis completo en YouTube @SomosElEncuadre"\n- En primer_comentario: enlaces a TODAS las otras redes:\n"YouTube: https://youtube.com/@SomosElEncuadre | TikTok: https://tiktok.com/@somoselencuadre | X: https://x.com/SomosElEncuadre | Threads: https://threads.net/@somoselencuadre | Web: https://elencuadre.pages.dev"\n\nEstructura EXACTA:\n{{\n  "texto": "200-400 chars. Tono emocional, emojis (2-3). Mención a YouTube al final. Sin enlaces en caption.",\n  "hashtags": "#medios #sesgo #manipulacion #periodismo #analisis",\n  "primer_comentario": "Enlaces cruzados a TODAS las otras redes + web"\n}}\n\nREGLAS: NO markdown. NO ```json.',
+    "x": 'Genera SOLO un objeto JSON para X (Twitter) de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\n\nREGLAS LEGALES:\n- NUNCA acuses directamente.\n- NUNCA uses: muerte, muerto, sangre, tragedia, saqueo, víctima, asesinato, crimen, corrupción, guerra.\n\nSEO CRUZADO (obligatorio):\n- Incluye enlaces a web + 2 otras redes al final:\n"Análisis completo: https://elencuadre.pages.dev | YouTube: https://youtube.com/@SomosElEncuadre | TikTok: https://tiktok.com/@somoselencuadre"\n\nEstructura EXACTA:\n{{\n  "texto": "Máx 280 chars. Gancho + enlace web + 2 enlaces cruzados. Los enlaces cuentan ~23 chars cada uno."\n}}\n\nREGLAS: NO markdown. NO ```json.',
+    "threads": 'Genera SOLO un objeto JSON para Threads de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\n\nREGLAS LEGALES:\n- NUNCA acuses directamente.\n- Sin palabras prohibidas (muerte, sangre, tragedia, saqueo, víctima, crimen, corrupción, guerra).\n\nSEO CRUZADO:\n- En el texto: mención a YouTube\n- Al final del texto: "Análisis completo: https://elencuadre.pages.dev | YouTube: https://youtube.com/@SomosElEncuadre"\n\nEstructura EXACTA:\n{{\n  "texto": "200-400 chars. Tono conversacional. Mención a YouTube + web al final."\n}}\n\nREGLAS: NO markdown. NO ```json.',
+    "blogger": 'Genera SOLO un objeto JSON para Blogger de un short de análisis mediático.\n\nHOOK: "{hook}"\nÁNGULO: {tipo}\nCONTEXTO: {contexto}\n\nREGLAS LEGALES:\n- NUNCA acuses directamente.\n- Sin palabras prohibidas (muerte, sangre, tragedia, saqueo, víctima, crimen, corrupción, guerra).\n\nSEO CRUZADO (obligatorio): el resumen debe terminar con mención a TODAS las redes:\n"También puedes seguirnos en YouTube, TikTok, Instagram, X y Threads como @SomosElEncuadre"\n\nEstructura EXACTA:\n{{\n  "titulo": "Título atractivo, 40-70 chars, con keyword",\n  "resumen": "Resumen 2-3 frases con gancho + mención a redes al final"\n}}\n\nREGLAS: NO markdown. NO ```json.',
 }
 
 def _fallback_red(hook, red):
@@ -53,14 +73,14 @@ def _fallback_red(hook, red):
 import re as _re_cens
 
 SUSTITUCIONES = {
-    "muertos": "afectados", "muerto": "fallecido", "muerta": "fallecida",
+    "muertos": "afectados", "muerto": "afectado", "muerta": "afectada", "muertas": "afectadas",
     "muerte": "suceso", "muertes": "sucesos",
     "sangre": "violencia", "sangriento": "violento", "sangrienta": "violenta",
     "tragedia": "suceso", "trágico": "grave", "trágica": "grave",
     "saqueo": "disturbio", "saqueos": "disturbios", "saquear": "alterar el orden",
     "víctima": "afectado", "víctimas": "afectados", "victima": "afectado",
     "asesinato": "caso grave", "asesino": "autor", "asesinos": "autores",
-    "fallecido": "afectado", "fallecida": "afectada", "fallecidos": "afectados",
+    "fallecido": "afectado", "fallecida": "afectada", "fallecidos": "afectados", "fallecidas": "afectadas",
     "crimen": "caso", "criminal": "presunto", "criminales": "presuntos",
     "corrupción": "irregularidad", "corrupto": "cuestionado", "corruptos": "cuestionados",
     "fraude": "irregularidad", "estafa": "irregularidad", "estafador": "presunto",
@@ -88,9 +108,30 @@ def _censurar_bloque(bloque):
 
 # --- Fin censura ---
 
+# Campos esperados por red (para validar que el LLM no devuelve vacíos)
+CAMPOS_ESPERADOS = {
+    "youtube": ["titulo", "descripcion", "primer_comentario", "tags"],
+    "tiktok": ["texto", "hashtags"],
+    "instagram": ["texto", "hashtags", "primer_comentario"],
+    "x": ["texto"],
+    "threads": ["texto"],
+    "blogger": ["titulo", "resumen"],
+}
+
+def _validar_bloque(bloque, red):
+    """Devuelve True si el bloque tiene todos los campos esperados y no están vacíos."""
+    if not isinstance(bloque, dict): return False
+    esperados = CAMPOS_ESPERADOS.get(red, [])
+    for campo in esperados:
+        if campo not in bloque: return False
+        v = bloque[campo]
+        if isinstance(v, str) and not v.strip(): return False
+        if isinstance(v, list) and not v: return False
+    return True
+
 def _llamar_red(red, hook, tipo, contexto):
     prompt_tpl = PROMPTS.get(red)
-    if not prompt_tpl: return {}
+    if not prompt_tpl: return _censurar_bloque(_fallback_red(hook, red))
     prompt = prompt_tpl.format(hook=hook, tipo=tipo, contexto=contexto, web=WEB)
     try:
         r = pedir_a_especialista("community_manager_seo", prompt, contexto="")
@@ -98,10 +139,12 @@ def _llamar_red(red, hook, tipo, contexto):
         print(f"    ⚠️ {red} exception: {e}")
         return _censurar_bloque(_fallback_red(hook, red))
     parsed = _parse_json(r) if r else None
-    if parsed and isinstance(parsed, dict):
-        # Censura in-place: SIEMPRE antes de devolver
+    if parsed and _validar_bloque(parsed, red):
         return _censurar_bloque(parsed)
-    print(f"    ⚠️ {red} parse falló")
+    if parsed and isinstance(parsed, dict):
+        print(f"    ⚠️ {red} bloque incompleto (faltan campos), usando fallback")
+    else:
+        print(f"    ⚠️ {red} parse falló")
     return _censurar_bloque(_fallback_red(hook, red))
 
 def generar_redes(fecha=None):
