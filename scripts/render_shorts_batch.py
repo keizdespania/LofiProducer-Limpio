@@ -48,24 +48,11 @@ def _limpiar_texto(texto, hook):
     return texto
 
 def _crear_fondo_negro_logo():
-    """Crea una imagen 1080x1920 con fondo negro y el logo en la parte superior."""
-    destino = MEDIA / "short_bg_negro_logo.png"
-    if destino.exists():
-        return destino
-    
-    logo = ROOT / "assets" / "branding" / "logo_encuadre.jpg"
-    if not logo.exists():
-        # Fallback: fondo negro sin logo
-        subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "color=c=0x0a0a0f:s=1080x1920:d=1", "-frames:v", "1", str(destino)], check=True)
-        return destino
-    
-    # Fondo negro 1080x1920 con logo arriba (centrado)
-    subprocess.run([
-        "ffmpeg", "-y", "-f", "lavfi", "-i", "color=c=0x0a0a0f:s=1080x1920:d=1",
-        "-i", str(logo),
-        "-filter_complex", "[1:v]scale=300:-1[logo];[0:v][logo]overlay=(W-w)/2:80",
-        "-frames:v", "1", str(destino)
-    ], check=True, capture_output=True)
+    """Devuelve el fondo futurista con logo (creado por crear_fondo_short.py)."""
+    destino = MEDIA / "short_bg_futurista.png"
+    if not destino.exists():
+        # Generarlo ahora mismo
+        subprocess.run([sys.executable, "scripts/crear_fondo_short.py"], check=True)
     return destino
 
 def _cortar_musica_en_peak(musica_path):
