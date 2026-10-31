@@ -122,7 +122,7 @@ Usa los titulares y URLs del contexto. Descarta tragedias y deportes."""
     top3_data = _parse_json(pedir_a_especialista("detective_tendencias_v2", prompt_top3, contexto=ctx[:5000], proveedor="auto"))
     top3 = top3_data.get("top3", ["Actualidad", "Política", "Economía"])
     
-    # top40 lo sacamos DIRECTAMENTE de la recolección (adiós fallos del LLM)
+    # top40 lo sacamos de la recolección
     top40_raw = []
     for sec in ("prensa", "agencias"):
         for medio, noticias in (datos.get(sec) or {}).items():
@@ -130,8 +130,55 @@ Usa los titulares y URLs del contexto. Descarta tragedias y deportes."""
                 if isinstance(n, dict) and n.get("titular"):
                     top40_raw.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio})
     
-    # 2. ADUANA: Filtrar la basura de las 40 noticias y quedarnos con 16
-    top16 = _filtrar_noticias_serias(top40_raw)
+    # 2. AGENTE EDITOR JEFE (Filtro Semántico con Bucle de Relleno)
+    print("[fase1] Llamando al Editor Jefe para seleccionar noticias...", flush=True)
+    import random
+    
+    def pedir_a_editor(noticias):
+        ctx_ed = "\n".join([f"[{n['medio']}] {n['titular']} (URL: {n['url']})" for n in noticias])
+        prompt = "Selecciona 16 noticias lógicas. RECHAZA ensaladas, jamón, famosos, deportes y loterías. EVITA redundancias. Devuelve SOLO JSON: {\"aprobadas\": [{\"titular\":\"\",\"medio\":\"\",\"url\":\"\"}], \"descartadas\": [\"\"]}"
+        r = pedir_a_especialista("editor_jefe", prompt, contexto=ctx_ed[:8000], proveedor="auto")
+        return _parse_json(r)
+
+    resultado_ed = pedir_a_editor(top40_raw)
+    top16 = resultado_ed.get("aprobadas", [])
+    
+    # BUCLE DE RELLENO
+    intentos = 0
+    while len(top16) < 16 and intentos < 3:
+        faltan = 16 - len(top16)
+        print(f"[fase1] ⚠️ Faltan {faltan} noticias. Lanzando mini-investigación (Intento {intentos+1})...", flush=True)
+        try:
+            # Llamar al recolector de oro para traer más noticias
+            subprocess.run(["python3", "scripts/recolector_oro.py", fecha], check=True, capture_output=True, timeout=300)
+            oro = json.loads((OUT / f"recoleccion_oro_{fecha}.json").read_text())
+            
+            # Extraer noticias nuevas
+            noticias_nuevas = []
+            ya_vistas = [t["titular"] for t in top16]
+            for medio, ns in oro.items():
+                for n in ns:
+                    if n["titular"] not in ya_vistas:
+                        noticias_nuevas.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio})
+            
+            if not noticias_nuevas: break
+            
+            # Pasar las nuevas + las que ya teníamos al editor
+            resultado_relleno = pedir_a_editor(noticias_nuevas[:40])
+            top16.extend(resultado_relleno.get("aprobadas", []))
+            
+            # Quitar duplicados de la lista final
+            vistos = set()
+            top16 = [t for t in top16 if not (t["titular"] in vistos or vistos.add(t["titular"]))]
+            
+        except Exception as e:
+            print(f"[fase1] Fallo en mini-investigación: {e}", flush=True)
+        intentos += 1
+
+    # Fallback final por si acaso (nunca debería llegar aquí)
+    if len(top16) < 10:
+        print("[fase1] ⚠️ Editor Jefe falló. Usando fallback antiguo...", flush=True)
+        top16 = _filtrar_noticias_serias(top40_raw)
     
     # Si el LLM ha fallado y no hay 16, sacamos de la recolección directamente
     if len(top16) < 10:
