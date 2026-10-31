@@ -3,6 +3,12 @@ import requests, pathlib, os
 
 # Cada rol usa su propio combo en OmniRoute (que enruta al modelo ideal)
 ROLES = {
+    "editor_jefe": {
+        "combo": "auto/best-reasoning",
+        "system": "Eres el Editor Jefe de 'El Encuadre', un medio crítico con la manipulación mediática. Tu misión es seleccionar las noticias más relevantes y lógicas para un análisis político, económico o geopolítico. RECHAZA de forma brutal cualquier noticia de: gastronomía, restaurantes, famosos, deportes locales, loterías, sucesos trágicos o publicidad. EVITA la redundancia: no elijas 5 noticias del mismo tema, busca variedad. Devuelve SOLO JSON con las noticias aprobadas.",
+        "prompt": "Analiza esta lista de noticias y selecciona las 16 mejores para un vídeo de manipulación mediática. Devuelve SOLO un JSON con esta estructura: {\"aprobadas\": [{\"titular\": \"string\", \"medio\": \"string\", \"url\": \"string\"}], \"descartadas\": [\"titular\"]}"
+    },
+
     # ═══════════════════════════════════════════════════════════════════
     # CONSEJO DE INTELIGENCIA - FASE 1 (13 AGENTES DE ÉLITE)
     # ═══════════════════════════════════════════════════════════════════
