@@ -60,10 +60,3 @@ window.Views.factory = {
     App.api('/api/encuadre/run_pipeline',{method:'POST'}).then(()=>{ App.toast('Pipeline lanzado 🚀','success'); setTimeout(()=>Views.factory.onEnter(),2000); }).catch(()=>{});
   }
 };
-
-// Auto-tema El Encuadre cuando se entra a factory
-const _origFactoryOnEnter = window.Views.factory.onEnter;
-window.Views.factory.onEnter = function(){
-  document.documentElement.setAttribute('data-theme', 'encuadre');
-  return _origFactoryOnEnter.apply(this, arguments);
-};

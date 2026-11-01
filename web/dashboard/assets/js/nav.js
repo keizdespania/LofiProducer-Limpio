@@ -85,5 +85,4 @@ window.Nav = (function(){
     el.innerHTML = '<a href="#inicio" style="color:var(--muted);text-decoration:none">KEIZ OS</a> / <strong style="color:var(--text)">'+label+'</strong>';
   }
   return { init, updateActive, exists, getLabel, structure, all, setBreadcrumb };
-};
 })();

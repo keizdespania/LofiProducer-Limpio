@@ -172,6 +172,11 @@ def guardian_de_acceso():
     
     return jsonify({"error": "Acceso pendiente. Revisa la notificación en el móvil."}), 403
 
+@app.route("/ui/assets/<path:filename>")
+def dashboard_assets(filename):
+    from flask import send_from_directory
+    return send_from_directory(str(ROOT / "web" / "dashboard" / "assets"), filename)
+
 @app.route("/v2")
 @app.route("/v2/<path:filename>")
 def dashboard_v2(filename=None):

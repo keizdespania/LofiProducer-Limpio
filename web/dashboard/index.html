@@ -7,11 +7,11 @@
 <title>KEIZ OS · Content Factory</title>
 <link rel="manifest" href="/assets/manifest.json">
 <link rel="icon" href="/assets/logo.png">
-<link rel="stylesheet" href="/v2/assets/css/tokens.css">
-<link rel="stylesheet" href="/v2/assets/css/base.css">
-<link rel="stylesheet" href="/v2/assets/css/layout.css">
-<link rel="stylesheet" href="/v2/assets/css/components.css">
-<link rel="stylesheet" href="/v2/assets/css/views.css">
+<link rel="stylesheet" href="/ui/assets/css/tokens.css">
+<link rel="stylesheet" href="/ui/assets/css/base.css">
+<link rel="stylesheet" href="/ui/assets/css/layout.css">
+<link rel="stylesheet" href="/ui/assets/css/components.css">
+<link rel="stylesheet" href="/ui/assets/css/views.css">
 </head>
 <body>
 <div id="app">
@@ -44,37 +44,55 @@
     <div id="cmd-footer"><span><span class="kbd">↑↓</span> navegar</span><span><span class="kbd">Enter</span> abrir</span><span><span class="kbd">Esc</span> cerrar</span></div>
   </div>
 </div>
-<script defer src="/v2/assets/js/core.js"></script>
-<script defer src="/v2/assets/js/nav.js"></script>
-<script defer src="/v2/assets/js/command-palette.js"></script>
-<script defer src="/v2/assets/js/jarvis.js"></script>
-<script defer src="/v2/assets/js/notify.js"></script>
-<script defer src="/v2/assets/js/presets.js"></script>
-<script defer src="/v2/assets/js/views/inicio.js"></script>
-<script defer src="/v2/assets/js/views/factory.js"></script>
-<script defer src="/v2/assets/js/views/chat.js"></script>
-<script defer src="/v2/assets/js/views/musica.js"></script>
-<script defer src="/v2/assets/js/views/imagen.js"></script>
-<script defer src="/v2/assets/js/views/voz.js"></script>
-<script defer src="/v2/assets/js/views/video.js"></script>
-<script defer src="/v2/assets/js/views/media.js"></script>
-<script defer src="/v2/assets/js/views/produccion.js"></script>
-<script defer src="/v2/assets/js/views/analytics.js"></script>
-<script defer src="/v2/assets/js/views/prompts.js"></script>
-<script defer src="/v2/assets/js/views/ajustes.js"></script>
-<script defer src="/v2/assets/js/views/papelera.js"></script>
-<script defer src="/v2/assets/js/views/docs.js"></script>
-<script defer src="/v2/assets/js/views/especialista.js"></script>
-<script defer src="/v2/assets/js/views/rss.js"></script>
-<script defer src="/v2/assets/js/views/doctor.js"></script>
-<script defer src="/v2/assets/js/views/informe.js"></script>
-<script defer src="/v2/assets/js/views/blogs.js"></script>
-<script defer src="/v2/assets/js/views/tendencias.js"></script>
-<script defer src="/v2/assets/js/views/canales.js"></script>
+<script>
+window.onerror = function(msg, url, line, col, err){
+  document.body.innerHTML = '<div style="padding:20px;font-family:monospace;background:#111;color:#ff6b6b;min-height:100vh"><h1>🚨 ERROR JS</h1><pre style="white-space:pre-wrap">'+msg+'\n\nURL: '+url+'\nLínea: '+line+':'+col+'\n\nStack:\n'+(err&&err.stack?err.stack:'(no stack)')+'</pre><button onclick="location.reload(true)" style="padding:10px 20px;background:#3b82f6;color:white;border:none;border-radius:8px;margin-top:20px;cursor:pointer">Recargar</button></div>';
+  return false;
+};
+</script>
+<script defer src="/ui/assets/js/core.js"></script>
+<script defer src="/ui/assets/js/nav.js"></script>
+<script defer src="/ui/assets/js/command-palette.js"></script>
+<script defer src="/ui/assets/js/jarvis.js"></script>
+<script defer src="/ui/assets/js/notify.js"></script>
+<script defer src="/ui/assets/js/presets.js"></script>
+<script defer src="/ui/assets/js/views/inicio.js"></script>
+<script defer src="/ui/assets/js/views/factory.js"></script>
+<script defer src="/ui/assets/js/views/chat.js"></script>
+<script defer src="/ui/assets/js/views/musica.js"></script>
+<script defer src="/ui/assets/js/views/imagen.js"></script>
+<script defer src="/ui/assets/js/views/voz.js"></script>
+<script defer src="/ui/assets/js/views/video.js"></script>
+<script defer src="/ui/assets/js/views/media.js"></script>
+<script defer src="/ui/assets/js/views/produccion.js"></script>
+<script defer src="/ui/assets/js/views/analytics.js"></script>
+<script defer src="/ui/assets/js/views/prompts.js"></script>
+<script defer src="/ui/assets/js/views/ajustes.js"></script>
+<script defer src="/ui/assets/js/views/papelera.js"></script>
+<script defer src="/ui/assets/js/views/docs.js"></script>
+<script defer src="/ui/assets/js/views/especialista.js"></script>
+<script defer src="/ui/assets/js/views/rss.js"></script>
+<script defer src="/ui/assets/js/views/doctor.js"></script>
+<script defer src="/ui/assets/js/views/informe.js"></script>
+<script defer src="/ui/assets/js/views/blogs.js"></script>
+<script defer src="/ui/assets/js/views/tendencias.js"></script>
+<script defer src="/ui/assets/js/views/canales.js"></script>
 <script>
 window.addEventListener('DOMContentLoaded', () => {
-  Nav.init(); App.route(); Jarvis.init(); CommandPalette.init();
-  window.addEventListener('hashchange', App.route);
+  const tryInit = (name, fn) => { try { fn(); } catch(e){ console.error('[BOOT] '+name+' falló:', e); } };
+  tryInit('Nav', () => Nav.init());
+  tryInit('Route', () => App.route());
+  tryInit('Jarvis', () => Jarvis.init());
+  tryInit('CommandPalette', () => CommandPalette.init());
+  window.addEventListener('hashchange', () => tryInit('Route', () => App.route()));
+  // Diagnóstico visible
+  setTimeout(() => {
+    const outlet = document.getElementById('outlet');
+    if(outlet && !outlet.querySelector('.view.active')){
+      console.error('[BOOT] Ninguna vista activa. outlet:', outlet.innerHTML.substring(0,200));
+      outlet.innerHTML = '<div style="padding:40px;text-align:center;color:#ef4444"><h2>⚠️ Error de arranque</h2><p>Abre la consola (F12) para ver el error.</p></div>';
+    }
+  }, 1000);
 });
 </script>
 </body>

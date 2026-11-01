@@ -2,6 +2,8 @@
 window.Views = window.Views || {};
 window.Views.inicio = {
   onEnter: async function(){
+    if(Views.inicio._iv) clearInterval(Views.inicio._iv);
+    Views.inicio._iv = setInterval(()=>{ if(location.hash === "#inicio" || location.hash === "") Views.inicio.onEnter(); }, 30000);
     const v = document.getElementById('view-inicio');
     v.innerHTML = `
       <h1>Buenas, Arquitecto 👋</h1>
