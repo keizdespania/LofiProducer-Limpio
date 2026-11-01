@@ -1,0 +1,197 @@
+{
+  "version": "1.0",
+  "fecha_creacion": "2026-11-01",
+  "descripcion": "Contrato del pipeline de generación de posts web (largo + mediano + dossier)",
+  "objetivo": "2 posts/día: 1 largo (2.000-2.500 palabras) + 1 mediano (1.000-1.500) con citas textuales verificables y cero alucinaciones",
+  "fuentes_de_datos": {
+    "produccion_{fecha}.json": "18 escenas + articulo_html + texto_voz_largo + viralidad",
+    "dossier_{fecha}.json": "top3, hooks, citas, dossier resumido",
+    "dossier_{fecha}_enriquecido.json": "15 medios con técnica del glosario (51 técnicas) + omisión",
+    "scrapeado_{fecha}.json": "8-10 medios con texto real (4K chars) + titular + url",
+    "seo_{fecha}.json": "10 capítulos reales del timeline",
+    "redes_{fecha}.json": "24 bloques (6 redes × 4 shorts) con filtro legal"
+  },
+  "post_largo": {
+    "longitud_min": 2000,
+    "longitud_max": 2500,
+    "frecuencia": "1/día",
+    "script": "scripts/generar_web_v3.py",
+    "estructura": {
+      "h1": "Generado por LLM (1 llamada corta) con gancho mordaz",
+      "entradilla": "2 frases generadas por LLM",
+      "intro": "3-4 líneas generadas por LLM",
+      "secciones": "1 H2 por cada medio con texto real (8 típicos)",
+      "seccion_formato": {
+        "h2": "[Medio]: [Técnica del glosario]",
+        "titular_real": "<p><strong>Titular real:</strong> «...»</p>",
+        "fuente": "<p><strong>Fuente:</strong> <a href=url>Leer en [Medio]</a></p>",
+        "analisis": "150-180 palabras del LLM con cita TEXTUAL del texto real",
+        "detector": "Cómo detectarlo la próxima vez"
+      },
+      "cierre": "<h2>El mecanismo, expuesto</h2> + 2-3 frases",
+      "descargo_legal": "DIV con aviso legal art. 32 LPI"
+    },
+    "generacion": {
+      "fase_1": "8 llamadas cortas (1 por medio) con texto real (1.500 chars) → análisis de 150-180 palabras",
+      "fase_2": "1 llamada corta para H1 + entradilla + intro",
+      "ensamblaje": "DETERMINISTA en Python (no LLM): H1 + entradilla + 8 secciones + cierre + descargo"
+    },
+    "reglas_anti_alucinacion": [
+      "Usa SOLO el texto del contexto real",
+      "NUNCA inventes qué dijo un medio",
+      "Nombres propios EXACTOS (Óscar Puente, no José Luis)",
+      "NUNCA inventes frases entre comillas",
+      "Solo medios con texto real > 200 chars"
+    ]
+  },
+  "post_mediano": {
+    "longitud_min": 1000,
+    "longitud_max": 1500,
+    "frecuencia": "1/día (rota por día de semana)",
+    "script": "scripts/generar_web_v3.py",
+    "rotacion_por_dia": {
+      "lunes": "quirurgico — hook más fuerte del día",
+      "martes": "tutorial — cómo detectar 1 técnica del glosario",
+      "miercoles": "radar — comparativa de 3 medios sobre el mismo tema",
+      "jueves": "cita — disección de una cita del dossier",
+      "viernes": "medio_analizado — 1 medio del enriquecido con su técnica",
+      "sabado": "dossier — resumen ejecutivo (5 H2 + tabla HTML)",
+      "domingo": "medio_crudo — 1 medio sin analizar del recolección"
+    },
+    "estructura_comun": {
+      "h1": "Del LLM con gancho",
+      "entradilla": "3-4 líneas",
+      "cuerpo": "3-5 H2 según tipo",
+      "titular_real": "Al final (determinista)",
+      "fuente": "Al final (determinista)",
+      "tecnica": "Al final (determinista)",
+      "descargo_legal": "DIV art. 32 LPI (determinista)"
+    }
+  },
+  "post_dossier_v2": {
+    "longitud_min": 1000,
+    "longitud_max": 1500,
+    "script": "scripts/generar_web_dossier.py",
+    "estructura_obligatoria": {
+      "h1": "Título completo (NO cortar)",
+      "entradilla": "3-4 líneas con contexto",
+      "h2_noticias": "Resumen de 2-3 noticias + citas textuales",
+      "h2_medios": "Tabla HTML: Medio | Técnica | Omite",
+      "h2_tecnicas": "Por cada técnica: nombre, medio, cita textual, cómo detectar",
+      "h2_sesgos": "Patrones que se repiten entre medios",
+      "h2_conclusion": "Cierre: 'El mecanismo, expuesto'"
+    },
+    "elementos_deterministas": {
+      "tabla_html": "Generada por LLM pero validada (8 medios)",
+      "fuentes": "Lista <ul> con todas las fuentes (determinista)",
+      "descargo_legal": "DIV art. 32 LPI (determinista)"
+    }
+  },
+  "autocorrector": {
+    "script": "scripts/auto_corregir_post.py",
+    "idempotente": true,
+    "correcciones": {
+      "yaml": "Reconstruir frontmatter limpio sin comillas anidadas",
+      "html_basura": "Quitar <html>, <head>, <body>, <style>",
+      "nombres": "'doctrina Mar' → 'doctrina Marlaska', 'Oscar Puente' → 'Óscar Puente', 'José Luis Puente' → 'Óscar Puente', 'blocus' → 'Blocus'",
+      "frases_inventadas": "'justicia valenciana' → 'la justicia de Torrent (Valencia)', 'rueda de prensa' → 'declaraciones públicas', 'antiguo funcionario' → 'un trabajador'",
+      "concordancia": "'la suceso' → 'el suceso', 'de el' → 'del', 'la problema' → 'el problema'",
+      "censura": "35 sustituciones (muertos→afectados, guerra→conflicto, tragedia→suceso, ...)",
+      "ortografia": "Tildes comunes SIN tocar HTML/atributos (sin comillas tipográficas, sin doble espacio, sin mayúscula post-punto)",
+      "semantica": "Redundancias ('violencia violenta' → 'violencia')",
+      "frase_cortada": "Punto final si falta"
+    },
+    "validacion": "2 pasadas seguidas = 0 cambios (idempotente)",
+    "llamada": "Automática desde _guardar() en los 2 generadores"
+  },
+  "filtros_legales": {
+    "en_generacion": [
+      "Palabras prohibidas en prompts",
+      "Censura in-place en autocorrector"
+    ],
+    "antes_de_publicar": [
+      "abogado_legal: valida citas <50 palabras, enlaces públicos, no imágenes sin licencia",
+      "abogado_del_diablo: detecta acusaciones directas sin pruebas",
+      "verificador_factos: nombres, cifras, citas verificables"
+    ],
+    "descargo_legal_obligatorio": "Aviso art. 32 LPI en TODOS los posts"
+  },
+  "publicacion": {
+    "web": {
+      "destino": "web/docs/analisis/",
+      "build": "cd web && mkdocs build",
+      "deploy": "git push → Cloudflare Pages despliega solo (1-2 min)",
+      "url_esperada": "https://elencuadre.pages.dev/analisis/{fecha}-{tipo}/"
+    },
+    "blogger": {
+      "script": "scripts/publicar_5_blogs_visual.py",
+      "estado": "BLOQUEADO por anti-spam (7-14 días)",
+      "alternativa": "manual copiar/pegar desde output/cola_blogger/"
+    },
+    "redes": {
+      "dashboard": "http://127.0.0.1:8001/encuadre",
+      "fichero": "output/encuadre/redes_{fecha}.json",
+      "redes": [
+        "youtube",
+        "tiktok",
+        "instagram",
+        "x",
+        "threads",
+        "blogger"
+      ]
+    }
+  },
+  "metricas_calidad": {
+    "post_largo": {
+      "h2_min": 5,
+      "enlaces_a_medios_min": 8,
+      "citas_textuales_min": 8,
+      "palabras_min": 2000,
+      "descargo_legal": "obligatorio"
+    },
+    "post_mediano": {
+      "h2_min": 2,
+      "palabras_min": 1000,
+      "fuente_enlazada": "obligatorio si hay medio"
+    },
+    "post_dossier": {
+      "h2_min": 5,
+      "tabla_html": "obligatorio",
+      "fuentes_listadas_min": 5
+    }
+  },
+  "reglas_globales": [
+    "NUNCA tocar lo que funciona (pipeline de YouTube, redes, etc.)",
+    "Si un post falla validación → fallback al articulo_html",
+    "Si el LLM devuelve <html>/<head>/<body>/<style> → limpiar en autocorrector",
+    "Si hay alucinación de nombre → autocorrector la corrige",
+    "Si hay frase inventada conocida → autocorrector la sustituye",
+    "Si hay palabra prohibida → autocorrector la censura",
+    "Si el último párrafo está cortado → autocorrector añade punto",
+    "El autocorrector SIEMPRE se ejecuta tras generar (idempotente)"
+  ],
+  "flujo_diario": [
+    "06:00 cron → pipeline_encuadre.py",
+    "  → recolector → analista → sintetizador → dossier",
+    "  → enriquecer_dossier (15 medios con técnica)",
+    "  → scrapear_medios_completo (8-10 medios con texto)",
+    "  → fase2_produccion (18 escenas + articulo_html)",
+    "  → voz + música + imágenes + render",
+    "  → generar_seo (10 capítulos)",
+    "  → generar_redes (24 bloques + filtro legal)",
+    "  → _subir_youtube (largo + 4 shorts programados)",
+    "  → generar_web_v3 (largo + mediano rotativo)",
+    "  → auto_corregir_post (10 correcciones)",
+    "  → publicar_5_blogs_visual (Blogger, bloqueado)",
+    "  → publicar en web (mkdocs build + git push)"
+  ],
+  "estado_actual": {
+    "post_largo": "✅ Funciona con 8 fuentes + 8 titulares + 8 enlaces + descargo",
+    "post_mediano": "✅ 7 tipos con rotación diaria",
+    "post_dossier": "✅ 5 H2 + tabla + fuentes",
+    "autocorrector": "✅ Idempotente, 10 correcciones",
+    "web": "✅ Publicado en Cloudflare Pages",
+    "blogger": "⏳ Bloqueado anti-spam (7-14 días)",
+    "redes": "✅ Dashboard relleno"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "descripcion": "Índice de pistas CC. Se regenera con scripts/actualizar_indice_musica.py",
+  "moods": [
+    "dramatic",
+    "intriga",
+    "cinematic",
+    "ambient"
+  ],
+  "mapping_angulos": {
+    "controversia": "dramatic",
+    "urgencia": "intriga",
+    "justicia": "cinematic",
+    "curiosidad": "ambient"
+  },
+  "pistas": []
+}
