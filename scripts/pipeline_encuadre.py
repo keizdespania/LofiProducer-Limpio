@@ -118,6 +118,15 @@ def _publicar_web(fecha):
         _sp.run(["git", "commit", "-m", f"content: posts web {fecha} (largo + dossier + mediano)"], cwd=str(ROOT), timeout=30, capture_output=True)
         _sp.run(["git", "push", "origin", "main"], cwd=str(ROOT), timeout=60)
         print(f"   ✅ Push OK (Cloudflare despliega en 1-2 min)", flush=True)
+        
+        # Generar informe PDF (opcional, no rompe el pipeline si falla)
+        try:
+            print(f"   📄 Generando informe PDF...", flush=True)
+            _sp.run([sys.executable, "scripts/generar_informe_pdf.py", fecha],
+                    cwd=str(ROOT), timeout=120, check=False)
+        except Exception as _e:
+            print(f"   ⚠️ Informe PDF falló: {_e}", flush=True)
+        
         return True
     except Exception as e:
         print(f"   ⚠️ git exception: {e}", flush=True)
