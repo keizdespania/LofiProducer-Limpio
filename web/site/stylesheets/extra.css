@@ -1062,3 +1062,26 @@ body::after {
 .md-header__topic:first-child {
   opacity: 1 !important;
 }
+
+/* Botón fuente en cards de análisis */
+.holo-card { position: relative; }
+.holo-fuente {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  font-size: 0.78em;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 8px;
+  color: #60a5fa;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  font-weight: 500;
+}
+.holo-fuente:hover {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.7);
+  color: #93c5fd;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}

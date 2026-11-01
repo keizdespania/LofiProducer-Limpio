@@ -22,6 +22,34 @@ def _categoria(nombre):
     if "-mediano" in nombre: return ("📄 Análisis Mediano", "badge-guide", "mediano")
     return ("📄 Artículo", "badge-guide", "otros")
 
+def _extraer_url_fuente(md_path):
+    """Extrae la primera URL externa del cuerpo (la noticia original analizada)."""
+    try:
+        txt = md_path.read_text(encoding="utf-8")
+        # Buscar primer href a dominio externo
+        matches = re.findall(r'href="(https?://[^"]+)"', txt)
+        excluir = ['youtube.com/@SomosElEncuadre', 'tiktok.com/@somoselencuadre',
+                   'instagram.com/somoselencuadre', 'x.com/somoselencuadre',
+                   'files.catbox.moe', 'youtube.com/', 'twitter.com/',
+                   'facebook.com/', 'linkedin.com/']
+        for url in matches:
+            if not any(x in url for x in excluir):
+                return url
+    except Exception:
+        pass
+    return ""
+
+
+def _dominio(url):
+    """Devuelve el dominio limpio de una URL (sin www, sin protocolo)."""
+    try:
+        from urllib.parse import urlparse
+        dom = urlparse(url).netloc
+        return dom.replace("www.", "").replace("m.", "")
+    except Exception:
+        return ""
+
+
 def _todos_los_posts():
     posts = []
     if not ANALISIS.exists(): return posts
@@ -33,8 +61,10 @@ def _todos_los_posts():
         titulo = fm.get("title", f.stem)
         desc = fm.get("description", "")[:150]
         badge, badge_class, cat = _categoria(f.stem)
+        fuente = _extraer_url_fuente(f)
         posts.append({"fecha": fecha, "titulo": titulo, "desc": desc,
-                      "slug": f.stem, "badge": badge, "badge_class": badge_class, "cat": cat})
+                      "slug": f.stem, "badge": badge, "badge_class": badge_class, "cat": cat,
+                      "fuente_url": fuente, "fuente_dom": _dominio(fuente) if fuente else ""})
     posts.sort(key=lambda p: (p["fecha"], p["slug"]), reverse=True)
     return posts
 
@@ -42,14 +72,23 @@ def _card(post, con_data_cat=False, con_imagen=False):
     img = ""
     if con_imagen and post["cat"] == "largo":
         img = "<img src=\"https://files.catbox.moe/ofpbyw.png\" alt=\"Hero\" loading=\"lazy\">"
-    dc = f" data-category=\"{post[chr(99)+chr(97)+chr(116)]}\"" if con_data_cat else ""
-    return (f"  <a href=\"{post[chr(115)+chr(108)+chr(117)+chr(103)]}/\" class=\"holo-card\"{dc}>\n"
-            f"    <div class=\"holo-badge {post[chr(98)+chr(97)+chr(100)+chr(103)+chr(101)+chr(95)+chr(99)+chr(108)+chr(97)+chr(115)+chr(115)]}\">{post[chr(98)+chr(97)+chr(100)+chr(103)+chr(101)]}</div>\n"
+    dc = f" data-category=\"{post['cat']}\"" if con_data_cat else ""
+    fuente = post.get("fuente_url", "")
+    fuente_html = ""
+    if fuente:
+        dom = post.get("fuente_dom", "fuente")
+        fuente_html = (f'\n    <a href="{fuente}" target="_blank" rel="noopener" '
+                       f'onclick="event.stopPropagation()" class="holo-fuente">'
+                       f'🔗 Ver fuente · {dom}</a>')
+    return (f"  <div class=\"holo-card\" style=\"cursor:pointer\" "
+            f"onclick=\"window.location.href='{post['slug']}/'\"{dc}>\n"
+            f"    <div class=\"holo-badge {post['badge_class']}\">{post['badge']}</div>\n"
             f"    {img}\n"
-            f"    <h3>{post[chr(116)+chr(105)+chr(116)+chr(117)+chr(108)+chr(111)]}</h3>\n"
-            f"    <p>{post[chr(100)+chr(101)+chr(115)+chr(99)]}</p>\n"
-            f"    <div class=\"holo-meta\"><span>📅 {post[chr(102)+chr(101)+chr(99)+chr(104)+chr(97)]}</span></div>\n"
-            f"  </a>")
+            f"    <h3>{post['titulo']}</h3>\n"
+            f"    <p>{post['desc']}</p>\n"
+            f"    <div class=\"holo-meta\"><span>📅 {post['fecha']}</span></div>\n"
+            f"    {fuente_html}\n"
+            f"  </div>")
 
 GLOSARIO_CARD = """  <a href="glosario/" class="holo-card">
     <div class="holo-badge badge-guide">📚 Guía Definitiva</div>

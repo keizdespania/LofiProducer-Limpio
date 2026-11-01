@@ -13,27 +13,33 @@ hide:
 <h2 class="holo-section-title">Últimos Análisis</h2>
 
 <div class="holo-grid">
-  <a href="2026-11-01-mediano-medio_crudo/" class="holo-card">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-01-mediano-medio_crudo/'">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     
     <h3>HuffPost Spain: la tecnica del fear appeal</h3>
     <p>Analisis medio_crudo: HuffPost Spain: la tecnica del fear appeal</p>
     <div class="holo-meta"><span>📅 2026-11-01</span></div>
-  </a>
-  <a href="2026-11-01-largo/" class="holo-card">
+    
+    <a href="https://www.huffingtonpost.es/sociedad/el-origen-refugio-manuel-carrasco-tsunami-arraso-costa-huelva-1755-dejo-isla-nueva-comenzo-habitada-f202611.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · huffingtonpost.es</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-01-largo/'">
     <div class="holo-badge badge-new">🔥 Análisis Diario</div>
     
     <h3>El Encuadre: Santander abona este lunes 1.850 millones de eu</h3>
     <p>Analisis largo: El Encuadre: Santander abona este lunes 1.850 millones de eu</p>
     <div class="holo-meta"><span>📅 2026-11-01</span></div>
-  </a>
-  <a href="2026-11-01-dossier-v2/" class="holo-card">
+    
+    <a href="https://theobjective.com/deportes/futbol/laliga/2026-11-01/television-estatal-china-laliga-mbappe/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-01-dossier-v2/'">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
     
     <h3>Dossier del día: El Encuadre: Santander abona este lunes 1.850 millones de eu</h3>
     <p>Dossier ejecutivo: El Encuadre: Santander abona este lunes 1.850 millones de euros en dividendo en </p>
     <div class="holo-meta"><span>📅 2026-11-01</span></div>
-  </a>
+    
+    <a href="https://theobjective.com/deportes/futbol/laliga/2026-11-01/television-estatal-china-laliga-mbappe/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+  </div>
   <a href="glosario/" class="holo-card">
     <div class="holo-badge badge-guide">📚 Guía Definitiva</div>
     <h3>Las 51 técnicas de manipulación y sesgos cognitivos</h3>
