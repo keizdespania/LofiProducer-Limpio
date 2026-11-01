@@ -401,6 +401,32 @@ def api_jarvis_listen():
     except Exception as e:
         return jsonify({"status":"error","msg":str(e)}), 500
 
+@app.route("/api/jarvis/chat", methods=["POST"])
+def api_jarvis_chat():
+    """Chat con Dios COMPLETO: dios.py con 43 tools + ReAct."""
+    import subprocess as _sp
+    data = request.json or {}
+    texto = data.get("texto", "").strip()
+    if not texto:
+        return jsonify({"status":"error","msg":"Falta texto"}), 400
+    try:
+        r = _sp.run(
+            ["python", "scripts/dios.py", texto],
+            capture_output=True, text=True, cwd=str(ROOT), timeout=180
+        )
+        respuesta = ""
+        if "[dios] Tarea completada. Resumen:" in r.stdout:
+            respuesta = r.stdout.split("[dios] Tarea completada. Resumen:")[-1].strip()
+        elif r.stdout.strip():
+            respuesta = r.stdout.strip()[-1500:]
+        else:
+            respuesta = "Sin respuesta (stderr: " + (r.stderr[:200] if r.stderr else "nada") + ")"
+        return jsonify({"status":"ok","respuesta":respuesta,"raw_len":len(r.stdout)})
+    except _sp.TimeoutExpired:
+        return jsonify({"status":"error","msg":"Timeout 180s"}), 504
+    except Exception as e:
+        return jsonify({"status":"error","msg":str(e)}), 500
+
 @app.route("/api/jarvis/tools", methods=["GET"])
 def api_jarvis_tools():
     """Devuelve las tools disponibles para que el LLM las use."""

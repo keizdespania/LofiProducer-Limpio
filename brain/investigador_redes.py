@@ -117,14 +117,17 @@ def investigar(nicho, region="ES"):
     print(f"[investigador] Guardado: {out_path}", flush=True)
     return resultados
 
-def resumen_texto(nicho="ia_news", top=10):
+def resumen_texto(nicho="ia_news", top=10, region="ES"):
     try:
         r = investigar(nicho)
         lineas = [f"=== TENDENCIAS {nicho} ==="]
         for v in r["youtube"][:top]:
             lineas.append(f"YT: {v.get(chr(116)+chr(105)+chr(116)+chr(117)+chr(108)+chr(111), chr(63))} ({v.get(chr(118)+chr(105)+chr(115)+chr(116)+chr(97)+chr(115), 0)} vistas)")
-        for t in r["trends"]:
-            lineas.append(f"Trends: {t[chr(107)+chr(101)+chr(121)+chr(119)+chr(111)+chr(114)+chr(100)]} ({chr(83)+chr(85)+chr(66)+chr(69) if t[chr(115)+chr(117)+chr(98)+chr(101)] else chr(66)+chr(65)+chr(74)+chr(65)})")
+        for t in r.get("trends", []):
+            keyword = t.get("keyword", "?")
+            sube = t.get("sube", False)
+            estado = "SUBE" if sube else "BAJA"
+            lineas.append(f"Trends: {keyword} ({estado})")
         for p in r["reddit"][:5]:
             lineas.append(f"Reddit/{p[chr(115)+chr(117)+chr(98)+chr(114)+chr(101)+chr(100)+chr(100)+chr(105)+chr(116)]}: {p[chr(116)+chr(105)+chr(116)+chr(117)+chr(108)+chr(111)]}")
         return chr(10).join(lineas)

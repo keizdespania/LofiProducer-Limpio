@@ -120,11 +120,11 @@ window.Views.chat = {
         Views.chat.burbuja('assistant', '❌ Error: ' + e.message);
       }
     } else {
-      // Fallback a Dios
-      const pend = '⏳ Pensando...';
+      // Fallback a Dios COMPLETO (43 tools + ReAct)
+      const pend = '⏳ Pensando con las 43 tools...';
       Views.chat.burbuja('assistant', pend);
       try {
-        const r = await App.api('/api/dios_hablar', { method:'POST', body:{ texto } });
+        const r = await App.api('/api/jarvis/chat', { method:'POST', body:{ texto } });
         const resp = r.respuesta || r.msg || 'Sin respuesta';
         const msgs = document.getElementById('chat-msgs');
         msgs.lastElementChild.remove();

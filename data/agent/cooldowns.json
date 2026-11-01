@@ -1,3 +1,6 @@
 {
-  "mi-groq/qwen/qwen3.8-27b": 1792719068.2315335
+  "mi-groq/qwen/qwen3.8-27b": 1793573660.725558,
+  "orfree/cohere/north-mini-code:free": 1793573662.8098686,
+  "orfree/nvidia/nemotron-3-ultra-550b-a55b:free": 1793573664.8869042,
+  "mi-groq/openai/gpt-oss-120b": 1793573667.1138477
 }
