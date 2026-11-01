@@ -1,4 +1,5 @@
 site_name: Somos El Encuadre
+site_url: https://elencuadre.pages.dev/
 site_description: Análisis técnico de cómo los medios construyen tu realidad.
 
 theme:
@@ -20,9 +21,17 @@ theme:
     - navigation.tabs
     - navigation.sections
     - navigation.top
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.indexes
     - search.highlight
     - search.suggest
+    - search.share
     - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - announce.dismiss
 
 nav:
   - Inicio: index.md
@@ -60,5 +69,12 @@ plugins:
       lang: es
   - minify:
       minify_html: true
+  - social:
+      cards: true
+      cards_color:
+        fill: '#0a0a0f'
+        text: '#e63946'
+  - rss:
+      enabled: true
 
 use_directory_urls: true
