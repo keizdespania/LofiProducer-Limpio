@@ -2,7 +2,7 @@
 import sys, json, pathlib, subprocess, datetime, asyncio, re
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "brain"))
-from render_short_rot import generar_short
+from render_short_rot import generar_short, generar_short_multi
 from especialistas import pedir_a_especialista
 from analista_audio import analizar_pista
 import edge_tts
@@ -141,7 +141,44 @@ def main():
         salida = OUT / f"short_{num}_{FECHA}.mp4"
         print(f"[{num}/4] Renderizando short...", flush=True)
         try:
-            generar_short(str(img_fondo), texto, str(voz_path), str(musica), str(salida))
+            # Multi-imagen: 3-4 fondos del día + logo
+            from generar_imagenes_shorts import FONDOS
+            img_dir = MEDIA
+            fecha_actual = FECHA
+            
+            # Buscar las imágenes del short (fondo por ángulo o short_bg_futurista)
+            imgs_short = []
+            
+            # 1. Fondos nuevos por ángulo (si existen)
+            for num_fondo, (angulo, _) in FONDOS.items():
+                p = img_dir / f"short_fondo_{num_fondo}_{fecha_actual}_{angulo}.png"
+                if p.exists():
+                    imgs_short.append(str(p))
+            
+            # 2. Fallback: short_bg_futurista
+            if not imgs_short:
+                fallback = img_dir / "short_bg_futurista.png"
+                if fallback.exists():
+                    imgs_short = [str(fallback)]
+            
+            # 3. Fallback final: img_fondo del día
+            if not imgs_short and pathlib.Path(img_fondo).exists():
+                imgs_short = [str(img_fondo)]
+            
+            # Logo (para intro/outro overlay)
+            logo = img_dir / "logo.jpg"
+            if not logo.exists():
+                logo = img_dir / "logo.png"
+            logo_path = str(logo) if logo.exists() else None
+            
+            if len(imgs_short) >= 2:
+                # MULTI-IMAGEN: usar 3-4 imágenes, cambio cada ~10s
+                print(f"    🖼️ Multi-imagen: {len(imgs_short)} fondos", flush=True)
+                generar_short_multi(imgs_short, texto, str(voz_path), str(musica), str(salida), logo_path=logo_path)
+            else:
+                # Single imagen (fallback)
+                print(f"    🖼️ Single-imagen (fallback)", flush=True)
+                generar_short(imgs_short[0] if imgs_short else str(img_fondo), texto, str(voz_path), str(musica), str(salida))
             print(f"  ✅ {salida.name}", flush=True)
         except Exception as e:
             print(f"  ❌ Fallo: {e}", flush=True)

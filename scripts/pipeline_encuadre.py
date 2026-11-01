@@ -148,6 +148,7 @@ def main():
         ("fase2_produccion.py", None, 1200, False),
         ("director_arte.py", None, 1800, True),
         ("generar_imagenes_web.py", [fecha], 600, False),
+        ("generar_imagenes_shorts.py", [fecha], 600, False),
         ("descargar_lofi.py", None, 600, True),
         ("voz_edge.py", None, 600, False),
         ("segmentar_imagenes.py", [fecha], 1800, False),
