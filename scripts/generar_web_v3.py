@@ -83,18 +83,24 @@ def _tecnicas_del_dia(ctx):
     return tecnicas
 
 def _medios_con_tecnica(ctx):
-    """Lista de {medio, titular, framing, tecnica, omite}."""
+    """Lista de {medio, titular, framing, tecnica, omite, url, texto}."""
     desglose = ctx["dossier"].get("desglose_medios", "")
+    scrapeado = ctx.get("scrapeado", {})
     medios = []
     for line in desglose.split("\n"):
         m = re.match(r"\*\*([^*]+)\*\*: '([^']*)' -> \*\*Framing:\*\* ([^|]+) \| \*\*Técnica:\*\* ([^|]+) \| \*\*Omite:\*\* (.+)", line)
         if m:
+            nombre = m.group(1).strip()
+            datos_scr = scrapeado.get(nombre, {})
             medios.append({
-                "medio": m.group(1).strip(),
+                "medio": nombre,
                 "titular": m.group(2).strip(),
                 "framing": m.group(3).strip(),
                 "tecnica": m.group(4).strip(),
                 "omite": m.group(5).strip(),
+                "url": datos_scr.get("url", ""),
+                "texto": datos_scr.get("texto_completo", ""),
+                "chars": datos_scr.get("chars", 0),
             })
     return medios
 

@@ -26,7 +26,10 @@ theme:
 
 nav:
   - Inicio: index.md
-  - Análisis: analisis/index.md
+  - Análisis:
+    - Índice: analisis/index.md
+    - "El escudo de Puente": analisis/2026-10-31-largo.md
+    - "Dossier del día": analisis/2026-10-31-dossier-v2.md
   - Podcast: podcast/index.md
   - Glosario: glosario.md
   - Sobre: sobre.md

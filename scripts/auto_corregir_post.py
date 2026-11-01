@@ -39,6 +39,16 @@ CENSURA = {
 
 # Concordancia de género (la/el + sustantivo masculino)
 CONCORDANCIA = {
+    r"\bde el suceso\b": "del suceso",
+    r"\bde el caso\b": "del caso",
+    r"\bde el tema\b": "del tema",
+    r"\bde el informe\b": "del informe",
+    r"\bde el gobierno\b": "del gobierno",
+    r"\bde el medio\b": "del medio",
+    r"\bde el proceso\b": "del proceso",
+    r"\bde el grupo\b": "del grupo",
+    r"\bde el país\b": "del país",
+    r"\bde el mundo\b": "del mundo",
     r"\bla suceso\b": "el suceso",
     r"\bla problema\b": "el problema",
     r"\bla tema\b": "el tema",
