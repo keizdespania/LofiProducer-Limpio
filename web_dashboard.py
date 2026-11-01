@@ -172,6 +172,12 @@ def guardian_de_acceso():
     
     return jsonify({"error": "Acceso pendiente. Revisa la notificación en el móvil."}), 403
 
+@app.route("/v2")
+@app.route("/v2/<path:filename>")
+def dashboard_v2(filename="index.html"):
+    from flask import send_from_directory
+    return send_from_directory(str(ROOT / "web" / "dashboard"), filename)
+
 @app.route("/aprobar/<ip>")
 def aprobar_ip(ip):
     IPs_Aprobadas.add(ip)

@@ -1,0 +1,29 @@
+:root {
+  --bg: #08060e;
+  --bg-2: #0d0a18;
+  --surface: rgba(20, 16, 35, 0.55);
+  --surface-2: rgba(30, 24, 50, 0.7);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(139, 92, 246, 0.3);
+  --text: #f5f5f7;
+  --muted: #8e8ea0;
+  --blue: #3b82f6;
+  --blue-glow: rgba(59, 130, 246, 0.5);
+  --cyan: #06b6d4;
+  --purple: #8b5cf6;
+  --purple-glow: rgba(139, 92, 246, 0.5);
+  --pink: #d946ef;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --grad: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  --grad-2: linear-gradient(135deg, #06b6d4, #d946ef);
+  --font: 'Outfit', -apple-system, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', 'Courier New', monospace;
+  --radius: 16px;
+  --radius-lg: 20px;
+  --radius-sm: 10px;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 24px var(--purple-glow);
+  --t: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}

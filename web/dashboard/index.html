@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#08060e">
+<title>KEIZ OS · Content Factory</title>
+<link rel="manifest" href="/assets/manifest.json">
+<link rel="icon" href="/assets/logo.png">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/views.css">
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="logo"><img src="/assets/logo.png" alt=""> KEIZ OS</div>
+    <nav id="nav-root"></nav>
+  </aside>
+  <div id="overlay-mobile" onclick="App.closeSidebar()"></div>
+  <main id="main">
+    <header id="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button id="mobile-toggle" class="btn btn-ghost btn-icon" onclick="App.toggleSidebar()">☰</button>
+        <div id="breadcrumb"><span>KEIZ OS</span> <span class="text-muted">/</span> <strong id="bc-current">Inicio</strong></div>
+      </div>
+      <div id="topbar-actions">
+        <button class="btn btn-ghost btn-icon" onclick="CommandPalette.open()" title="Buscar (Ctrl+K)">🔍</button>
+        <button class="btn btn-ghost btn-icon" onclick="Jarvis.toggle()" title="Jarvis (voz)">🎙️</button>
+        <button class="btn btn-ghost btn-icon" onclick="App.toggleTheme()" title="Cambiar tema">🌓</button>
+      </div>
+    </header>
+    <section id="outlet"></section>
+  </main>
+</div>
+<button id="jarvis-fab" onclick="Jarvis.toggle()" title="Hablar con Dios">🤖</button>
+<div id="toast-container"></div>
+<div id="cmd-palette" onclick="if(event.target.id==='cmd-palette')CommandPalette.close()">
+  <div id="cmd-box">
+    <input id="cmd-input" placeholder="Buscar vistas, acciones, canales... (escribe > para acciones)" autocomplete="off">
+    <div id="cmd-results"></div>
+    <div id="cmd-footer"><span><span class="kbd">↑↓</span> navegar</span><span><span class="kbd">Enter</span> abrir</span><span><span class="kbd">Esc</span> cerrar</span></div>
+  </div>
+</div>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/command-palette.js"></script>
+<script src="assets/js/jarvis.js"></script>
+<script src="assets/js/views/inicio.js"></script>
+<script src="assets/js/views/factory.js"></script>
+<script src="assets/js/views/chat.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  Nav.init(); App.route(); Jarvis.init(); CommandPalette.init();
+  window.addEventListener('hashchange', App.route);
+});
+</script>
+</body>
+</html>
