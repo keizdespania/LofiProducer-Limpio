@@ -54,3 +54,17 @@ window.App = (function(){
   if(state.theme==='light') document.documentElement.setAttribute('data-theme','light');
   return { state, toast, api, route, toggleTheme, toggleSidebar, closeSidebar };
 })();
+
+// ═══ Atajos globales ═══
+document.addEventListener('keydown', e => {
+  if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if(e.key === 'g' && !e.ctrlKey && !e.metaKey){ window._gPressed = Date.now(); return; }
+  if(window._gPressed && Date.now() - window._gPressed < 1000){
+    const map = { i:'inicio', d:'chat', m:'musica', v:'video', p:'imagen', c:'canales', f:'factory', b:'blogs', t:'tendencias', a:'analytics', s:'ajustes', r:'produccion', o:'doctor', e:'especialista' };
+    if(map[e.key]){ location.hash = map[e.key]; App.route(); }
+    window._gPressed = 0;
+  }
+  if(e.key === '?'){
+    App.toast('Ctrl+K buscar · G+I inicio · G+D dios · G+M música · G+V vídeo · G+F factory · G+B blogs', 'info', 8000);
+  }
+});
