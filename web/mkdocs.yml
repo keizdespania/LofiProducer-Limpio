@@ -41,7 +41,7 @@ nav:
     - "Dossier del día": analisis/2026-10-31-dossier-v2.md
   - Podcast: podcast/index.md
   - Glosario: glosario.md
-  - Sobre: sobre.md
+
   - Contacto: contacto.md
   - Próximamente: proximamente.md
 
@@ -54,6 +54,8 @@ extra_css:
 extra_javascript:
   - javascripts/sidebar_actions.js
   - javascripts/holo.js
+  - javascripts/analisis.js
+  - javascripts/glosario.js
 
 markdown_extensions:
   - admonition

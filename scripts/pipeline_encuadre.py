@@ -55,6 +55,18 @@ def _publicar_web(fecha):
     ficheros = list(cola.glob(f"{fecha}-*.md"))
     publicar = [f for f in ficheros if any(k in f.name for k in ["-largo", "-dossier-v2", "-mediano-"])]
     
+    # Copiar podcast también
+    podcast_src = ROOT / "output" / "encuadre" / "podcast"
+    podcast_dst = ROOT / "web" / "docs" / "podcast"
+    podcast_dst.mkdir(parents=True, exist_ok=True)
+    if podcast_src.exists():
+        for ep in podcast_src.glob("*.mp3"):
+            _shutil.copy(ep, podcast_dst / ep.name)
+            print(f"   ✅ Podcast copiado: {ep.name}", flush=True)
+        idx = podcast_src / "index.md"
+        if idx.exists():
+            _shutil.copy(idx, podcast_dst / "index.md")
+    
     if not publicar:
         print(f"   ⚠️ _publicar_web: no hay posts para {fecha}", flush=True)
         return False
@@ -237,6 +249,7 @@ def main():
     # ===== NUEVO FLUJO WEB (v3 + dossier + verificación + publicación) =====
     _run("enriquecer_dossier.py", [fecha], 300, 1)
     _run("scrapear_medios_completo.py", [fecha], 300, 1)
+    _run("generar_podcast.py", [fecha], 600, 1)
     _run("generar_web_v3.py", [fecha], 900, 1)
     _run("generar_web_dossier.py", [fecha], 600, 1)
     _run("verificar_alucinaciones.py", [fecha], 120, 1)

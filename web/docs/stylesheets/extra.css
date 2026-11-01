@@ -590,3 +590,475 @@ body::after {
   box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
   transform: translateX(2px);
 }
+
+/* ============================================================
+   23. HOME — HERO + GRID DE TARJETAS HOLOGRÁFICAS
+   ============================================================ */
+
+.holo-hero {
+  text-align: center;
+  padding: 3rem 1rem 4rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.holo-hero::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%; height: 120%;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, transparent 60%);
+  z-index: -1;
+  animation: heroPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes heroPulse {
+  from { transform: translate(-50%, -50%) scale(0.9); opacity: 0.5; }
+  to { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+
+.holo-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem) !important;
+  margin-bottom: 1rem !important;
+  line-height: 1.1 !important;
+  font-weight: 900 !important;
+}
+
+.holo-hero p {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--holo-muted);
+  max-width: 700px;
+  margin: 0 auto 2rem auto;
+  line-height: 1.5;
+}
+
+.holo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.holo-card {
+  background: rgba(10, 10, 18, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.holo-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--holo-cyan), var(--holo-magenta), var(--holo-purple));
+  background-size: 200% 100%;
+  animation: holoLine 3s linear infinite;
+}
+
+.holo-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 40px rgba(0, 240, 255, 0.2);
+  border-color: rgba(0, 240, 255, 0.5);
+}
+
+.holo-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  transition: transform 0.5s ease;
+}
+
+.holo-card:hover img {
+  transform: scale(1.05);
+}
+
+.holo-badge {
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.8rem;
+  align-self: flex-start;
+}
+
+.badge-new {
+  background: rgba(255, 0, 170, 0.15);
+  color: var(--holo-magenta);
+  border: 1px solid rgba(255, 0, 170, 0.3);
+  box-shadow: 0 0 10px rgba(255, 0, 170, 0.2);
+}
+
+.badge-dossier {
+  background: rgba(0, 240, 255, 0.15);
+  color: var(--holo-cyan);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+.badge-guide {
+  background: rgba(139, 0, 255, 0.15);
+  color: #b28cff;
+  border: 1px solid rgba(139, 0, 255, 0.3);
+  box-shadow: 0 0 10px rgba(139, 0, 255, 0.2);
+}
+
+.holo-card h3 {
+  font-size: 1.2rem !important;
+  line-height: 1.3 !important;
+  margin: 0 0 0.8rem 0 !important;
+  color: var(--holo-text) !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+}
+
+.holo-card p {
+  font-size: 0.9rem;
+  color: var(--holo-muted);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.holo-meta {
+  font-size: 0.75rem;
+  color: var(--holo-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 0.8rem;
+}
+
+.holo-section-title {
+  font-size: 1.5rem !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 3rem 0 1.5rem 0 !important;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.holo-section-title::after {
+  content: '';
+  height: 2px;
+  flex-grow: 1;
+  background: linear-gradient(90deg, var(--holo-cyan), transparent);
+}
+
+/* ============================================================
+   24. FILTROS DEL ARCHIVO DE ANÁLISIS
+   ============================================================ */
+
+.holo-filters {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 2rem 0 3rem 0;
+}
+
+.holo-filter-btn {
+  background: rgba(10, 10, 18, 0.6);
+  border: 1px solid var(--holo-border);
+  color: var(--holo-muted);
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.holo-filter-btn:hover {
+  background: rgba(0, 240, 255, 0.05);
+  border-color: var(--holo-cyan);
+  color: var(--holo-cyan);
+}
+
+.holo-filter-btn.active {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: var(--holo-cyan);
+  color: var(--holo-cyan);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+/* Transiciones para las tarjetas al filtrar */
+#archivo-grid .holo-card {
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* ============================================================
+   25. GLOSARIO — TARJETAS EXPANDIBLES
+   ============================================================ */
+
+.glossary-card {
+  cursor: pointer;
+  user-select: none;
+}
+
+.glossary-front {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.glossary-front h3 {
+  font-size: 1.1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.term-en {
+  font-size: 0.8rem;
+  color: var(--holo-muted);
+  font-weight: 400;
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.author {
+  font-size: 0.8rem;
+  color: var(--holo-cyan);
+  font-family: monospace;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.glossary-back {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.4s ease;
+  margin-top: 0;
+  border-top: 0 solid transparent;
+}
+
+.glossary-card.expanded .glossary-back {
+  max-height: 300px; /* Ajusta si hay definiciones muy largas */
+  margin-top: 1rem;
+  border-top: 1px solid var(--holo-border);
+  padding-top: 1rem;
+}
+
+.glossary-back p {
+  font-size: 0.9rem;
+  color: var(--holo-text);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.glossary-card.expanded {
+  border-color: var(--holo-cyan);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+}
+
+.glossary-card.expanded::before {
+  animation: holoLine 1s linear infinite;
+}
+
+/* ============================================================
+   25b. GLOSARIO v2 — LISTA ACORDEÓN COMPACTA (auto-height)
+   ============================================================ */
+
+.glossary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 2rem 0;
+}
+
+.glossary-row {
+  background: rgba(10, 10, 18, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--holo-border);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.glossary-row:hover {
+  border-color: rgba(0, 240, 255, 0.3);
+  background: rgba(10, 10, 18, 0.85);
+}
+
+.glossary-row.expanded {
+  border-color: var(--holo-cyan);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+}
+
+.glossary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  user-select: none;
+  gap: 1rem;
+}
+
+.glossary-header:hover {
+  background: rgba(0, 240, 255, 0.03);
+}
+
+.glossary-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.glossary-term {
+  font-size: 1rem;
+  color: var(--holo-text);
+  line-height: 1.3;
+}
+
+.glossary-term strong {
+  color: var(--holo-text);
+}
+
+.glossary-term-en {
+  color: var(--holo-muted);
+  font-size: 0.85em;
+  font-weight: 400;
+}
+
+.glossary-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-shrink: 0;
+}
+
+.glossary-author {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--holo-cyan);
+  white-space: nowrap;
+}
+
+.glossary-arrow {
+  color: var(--holo-muted);
+  font-size: 0.9rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.glossary-row.expanded .glossary-arrow {
+  transform: rotate(180deg);
+  color: var(--holo-cyan);
+}
+
+/* AUTO-HEIGHT: la clave para que la definición nunca se corte */
+.glossary-definition {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glossary-row.expanded .glossary-definition {
+  grid-template-rows: 1fr;
+}
+
+.glossary-definition > div {
+  overflow: hidden;
+  padding: 0 1.2rem;
+  transition: padding 0.35s ease;
+}
+
+.glossary-row.expanded .glossary-definition > div {
+  padding: 0 1.2rem 1.2rem 1.2rem;
+}
+
+.glossary-definition p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--holo-text);
+  border-top: 1px solid var(--holo-border);
+  padding-top: 1rem;
+}
+
+/* Móvil: acortar padding del header */
+@media screen and (max-width: 600px) {
+  .glossary-header {
+    padding: 0.8rem 1rem;
+  }
+  .glossary-header-left {
+    gap: 0.5rem;
+  }
+  .glossary-term {
+    font-size: 0.9rem;
+  }
+  .glossary-author {
+    display: none; /* En móvil ocultamos el autor para no apretar */
+  }
+  .glossary-definition p {
+    font-size: 0.9rem;
+  }
+}
+
+/* ============================================================
+   26. FIX HEADER TITLE (evitar letras superpuestas)
+   ============================================================ */
+
+/* 1. Resetear el contenedor principal para quitar el gradiente del padre */
+.md-header__title {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  animation: none !important;
+  color: var(--holo-text) !important;
+}
+
+/* 2. Aplicar el gradiente SOLO al texto real del título de la web */
+.md-header__title .md-header__topic:first-child .md-ellipsis {
+  font-weight: 800 !important;
+  letter-spacing: 0.05em;
+  background: linear-gradient(90deg, var(--holo-cyan), var(--holo-magenta), var(--holo-cyan));
+  background-size: 200% 100%;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: holoText 8s linear infinite;
+  text-shadow: none !important;
+}
+
+/* 3. Asegurarse de que el título de la página (cuando haces scroll) se vea blanco y no se superponga */
+.md-header__title .md-header__topic:not(:first-child) .md-ellipsis {
+  color: var(--holo-text) !important;
+  background: none !important;
+  -webkit-text-fill-color: unset !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+/* 4. Ocultar el topic inactivo para que no se vea el "eco" */
+.md-header__topic + .md-header__topic {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.md-header__topic:first-child {
+  opacity: 1 !important;
+}
