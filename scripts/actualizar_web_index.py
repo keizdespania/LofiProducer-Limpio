@@ -1,0 +1,117 @@
+"""actualizar_web_index.py - Regenera home + analisis/index.md desde los .md existentes."""
+import pathlib, re, sys
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+DOCS = ROOT / "web" / "docs"
+ANALISIS = DOCS / "analisis"
+
+def _parsear_fm(md_path):
+    txt = md_path.read_text(encoding="utf-8")
+    m = re.match(r"^---\n(.*?)\n---\n", txt, re.DOTALL)
+    if not m: return None
+    datos = {}
+    for line in m.group(1).split("\n"):
+        if ":" in line:
+            k, v = line.split(":", 1)
+            datos[k.strip()] = v.strip().strip(chr(34)).strip(chr(39))
+    return datos
+
+def _categoria(nombre):
+    if "-largo" in nombre: return ("🔥 Análisis Diario", "badge-new", "diario")
+    if "-dossier" in nombre: return ("📁 Dossier Ejecutivo", "badge-dossier", "dossier")
+    if "-mediano" in nombre: return ("📄 Análisis Mediano", "badge-guide", "mediano")
+    return ("📄 Artículo", "badge-guide", "otros")
+
+def _todos_los_posts():
+    posts = []
+    if not ANALISIS.exists(): return posts
+    for f in ANALISIS.glob("*.md"):
+        if f.name == "index.md": continue
+        fm = _parsear_fm(f)
+        if not fm: continue
+        fecha = fm.get("date", "2026-01-01")
+        titulo = fm.get("title", f.stem)
+        desc = fm.get("description", "")[:150]
+        badge, badge_class, cat = _categoria(f.stem)
+        posts.append({"fecha": fecha, "titulo": titulo, "desc": desc,
+                      "slug": f.stem, "badge": badge, "badge_class": badge_class, "cat": cat})
+    posts.sort(key=lambda p: (p["fecha"], p["slug"]), reverse=True)
+    return posts
+
+def _card(post, con_data_cat=False, con_imagen=False):
+    img = ""
+    if con_imagen and post["cat"] == "largo":
+        img = "<img src=\"https://files.catbox.moe/ofpbyw.png\" alt=\"Hero\" loading=\"lazy\">"
+    dc = f" data-category=\"{post[chr(99)+chr(97)+chr(116)]}\"" if con_data_cat else ""
+    return (f"  <a href=\"{post[chr(115)+chr(108)+chr(117)+chr(103)]}/\" class=\"holo-card\"{dc}>\n"
+            f"    <div class=\"holo-badge {post[chr(98)+chr(97)+chr(100)+chr(103)+chr(101)+chr(95)+chr(99)+chr(108)+chr(97)+chr(115)+chr(115)]}\">{post[chr(98)+chr(97)+chr(100)+chr(103)+chr(101)]}</div>\n"
+            f"    {img}\n"
+            f"    <h3>{post[chr(116)+chr(105)+chr(116)+chr(117)+chr(108)+chr(111)]}</h3>\n"
+            f"    <p>{post[chr(100)+chr(101)+chr(115)+chr(99)]}</p>\n"
+            f"    <div class=\"holo-meta\"><span>📅 {post[chr(102)+chr(101)+chr(99)+chr(104)+chr(97)]}</span></div>\n"
+            f"  </a>")
+
+GLOSARIO_CARD = """  <a href="glosario/" class="holo-card">
+    <div class="holo-badge badge-guide">📚 Guía Definitiva</div>
+    <h3>Las 51 técnicas de manipulación y sesgos cognitivos</h3>
+    <p>El arsenal completo. Desde el anclaje de Kahneman hasta la fabricación de consentimiento de Chomsky.</p>
+    <div class="holo-meta"><span>📅 Evergreen</span><span>⏱️ 20 min</span></div>
+  </a>"""
+
+def _generar_home(posts):
+    recientes = posts[:3]
+    cards = [_card(p, con_imagen=True) for p in recientes]
+    cards.append(GLOSARIO_CARD)
+    contenido = "---\nhide:\n  - navigation\n  - toc\n---\n\n"
+    contenido += "<div class=\"holo-hero\">\n"
+    contenido += "  <h1>Desmontamos la manipulación mediática</h1>\n"
+    contenido += "  <p>No te contamos las noticias. Te enseñamos la maquinaria que hay detrás. Análisis técnico, académico e irónico.</p>\n"
+    contenido += "  <a href=\"analisis/\" class=\"md-button md-button--primary\">Ver todos los análisis →</a>\n"
+    contenido += "</div>\n\n"
+    contenido += "<h2 class=\"holo-section-title\">Últimos Análisis</h2>\n\n"
+    contenido += "<div class=\"holo-grid\">\n"
+    contenido += "\n".join(cards)
+    contenido += "\n</div>\n\n"
+    contenido += "<h2 class=\"holo-section-title\">Arsenal del Anti-Medio</h2>\n\n"
+    contenido += "<div class=\"holo-grid\">\n"
+    contenido += "  <div class=\"holo-card\" style=\"cursor: default;\"><h3>🗞️ El Fin del Periodismo Pasivo</h3><p>No te decimos qué pensar. Te damos las herramientas para que veas el truco.</p></div>\n"
+    contenido += "  <div class=\"holo-card\" style=\"cursor: default;\"><h3>🔍 Verificable y Transparente</h3><p>Cada afirmación está enlazada a la fuente original. Citamos titulares y exponemos datos ocultos.</p></div>\n"
+    contenido += "  <div class=\"holo-card\" style=\"cursor: default;\"><h3>⚖️ Rigor Legal (Art. 32 LPI)</h3><p>Analizamos bajo el derecho de cita. No acusamos de delitos, describimos técnicas.</p></div>\n"
+    contenido += "</div>\n"
+    (DOCS / "index.md").write_text(contenido, encoding="utf-8")
+    print(f"✅ index.md: {len(recientes)} posts + glosario")
+
+def _generar_analisis(posts):
+    cards = [_card(p, con_data_cat=True, con_imagen=True) for p in posts]
+    contenido = "---\nhide:\n  - navigation\n---\n\n"
+    contenido += "<div class=\"holo-hero\">\n"
+    contenido += "  <h1>El Archivo del Anti-Medio</h1>\n"
+    contenido += f"  <p>Todo nuestro arsenal. {len(posts)} análisis publicados. Sin filtros, con enlaces verificables.</p>\n"
+    contenido += "</div>\n\n"
+    contenido += "<div class=\"holo-filters\">\n"
+    contenido += f"  <button class=\"holo-filter-btn active\" data-filter=\"all\">Todos ({len(posts)})</button>\n"
+    n_diario = sum(1 for p in posts if p["cat"] == "diario")
+    n_dossier = sum(1 for p in posts if p["cat"] == "dossier")
+    n_mediano = sum(1 for p in posts if p["cat"] == "mediano")
+    if n_diario: contenido += f"  <button class=\"holo-filter-btn\" data-filter=\"diario\">Diarios ({n_diario})</button>\n"
+    if n_dossier: contenido += f"  <button class=\"holo-filter-btn\" data-filter=\"dossier\">Dossiers ({n_dossier})</button>\n"
+    if n_mediano: contenido += f"  <button class=\"holo-filter-btn\" data-filter=\"mediano\">Medianos ({n_mediano})</button>\n"
+    contenido += "</div>\n\n"
+    contenido += "<div class=\"holo-grid\" id=\"archivo-grid\">\n"
+    contenido += "\n".join(cards)
+    contenido += "\n</div>\n\n"
+    contenido += "<div style=\"text-align:center;margin:4rem 0 2rem 0;\"><p style=\"color:var(--holo-muted);font-size:0.9rem;\"><strong>El pipeline genera 2 posts nuevos al día.</strong><br>Vuelve mañana.</p></div>\n"
+    (ANALISIS / "index.md").write_text(contenido, encoding="utf-8")
+    print(f"✅ analisis/index.md: {len(posts)} posts ({n_diario} diarios, {n_dossier} dossiers, {n_mediano} medianos)")
+
+def main():
+    posts = _todos_los_posts()
+    if not posts:
+        print("❌ No hay posts para regenerar")
+        return False
+    _generar_home(posts)
+    _generar_analisis(posts)
+    return True
+
+if __name__ == "__main__":
+    sys.exit(0 if main() else 1)

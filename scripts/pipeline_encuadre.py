@@ -90,6 +90,14 @@ def _publicar_web(fecha):
                     mtxt = mtxt.replace('  - Análisis: analisis/index.md\n', f'  - Análisis:\n    - Índice: analisis/index.md\n{entrada}', 1)
         mkdocs.write_text(mtxt)
     
+    # Regenerar home + analisis/index.md (antes del build)
+    try:
+        import subprocess as _sp
+        _sp.run([sys.executable, "scripts/actualizar_web_index.py"], cwd=str(ROOT), timeout=60, check=False)
+        print(f"   ✅ Home + análisis regenerados", flush=True)
+    except Exception as _e:
+        print(f"   ⚠️ actualizar_web_index falló: {_e}", flush=True)
+    
     # Build
     try:
         import subprocess as _sp
