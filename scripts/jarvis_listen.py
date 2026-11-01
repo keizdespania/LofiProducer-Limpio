@@ -24,6 +24,8 @@ DIOS_API = "http://127.0.0.1:8001/api/dios_hablar"
 LOG = ROOT / "data" / "logs" / "jarvis_listen.log"
 LOG.parent.mkdir(parents=True, exist_ok=True)
 DURACION = 6  # segundos de grabación
+STOP_WORDS = ["para", "parar", "stop", "cállate", "callate", "silencio",
+              "detente", "deten", "basta", "quieto", "shh"]
 
 def log(msg):
     linea = f"[{time.strftime('%H:%M:%S')}] {msg}"
@@ -126,6 +128,23 @@ def formatear(res):
         return "Hecho."
     return str(res)[:400]
 
+def es_stop(texto):
+    """True si el texto es una orden de parar."""
+    t = texto.lower().strip()
+    for w in STOP_WORDS:
+        if w in t and len(t) < 30:  # solo si es un comando corto
+            return True
+    return False
+
+def parar_todo():
+    """Para cualquier reproducción activa + confirma."""
+    subprocess.run(["termux-media-player", "stop"], capture_output=True)
+    # Matar TTS si sigue hablando (SIGTERM a procesos tts)
+    subprocess.run(["pkill", "-f", "termux-tts-speak"], capture_output=True)
+    toast("🛑 Parado")
+    notif("🛑 Jarvis", "Parado")
+    log("🛑 Comando STOP detectado")
+
 def main():
     log("🚀 Jarvis Listen (push-to-talk)")
     toast("🎙️ Escuchando 6s...")
@@ -143,6 +162,10 @@ def main():
         return
     log(f"🗣️ Comando: {texto}")
     notif("🗣️ Tú", texto)
+    # CHECK: ¿es orden de parar?
+    if es_stop(texto):
+        parar_todo()
+        return
     res = ejecutar(texto)
     resp = formatear(res)
     log(f"🤖 Respuesta: {resp[:100]}")
