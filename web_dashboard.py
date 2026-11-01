@@ -174,8 +174,10 @@ def guardian_de_acceso():
 
 @app.route("/v2")
 @app.route("/v2/<path:filename>")
-def dashboard_v2(filename="index.html"):
-    from flask import send_from_directory
+def dashboard_v2(filename=None):
+    from flask import redirect, send_from_directory
+    if filename is None or filename == "index.html":
+        return redirect("/")
     return send_from_directory(str(ROOT / "web" / "dashboard"), filename)
 
 @app.route("/aprobar/<ip>")
@@ -186,8 +188,14 @@ def aprobar_ip(ip):
 
 
 @app.route("/")
-def index():
-    return send_from_directory(app.static_folder, "index.html")
+def __REEMPLAZAR__():
+    from flask import send_from_directory
+    dashboard = ROOT / "web" / "dashboard" / "index.html"
+    if dashboard.exists():
+        return send_from_directory(str(ROOT / "web" / "dashboard"), "index.html")
+    # Fallback: servir el HTML viejo inline si existe
+    return "<h1>KEIZ OS</h1><p>Dashboard v2 no encontrado. Usa /v2</p>"
+
 
 @app.route("/api/docs")
 def get_docs():
