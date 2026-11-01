@@ -134,6 +134,8 @@ def main():
         ("analista_fase1.py", None, 1200, False),
         ("scraper_articulos.py", [fecha], 300, True),
         ("sintetizador.py", None, 600, False),
+        ("enriquecer_dossier.py", [fecha], 300, False),
+        ("scrapear_medios_completo.py", [fecha], 300, False),
         ("fase2_produccion.py", None, 1200, False),
         ("director_arte.py", None, 1800, True),
         ("descargar_lofi.py", None, 600, True),
@@ -264,8 +266,6 @@ def main():
     # Publicación
     print("\n" + "="*60 + "\nPUBLICACIÓN MASIVA\n" + "="*60, flush=True)
     # ===== NUEVO FLUJO WEB (v3 + dossier + verificación + publicación) =====
-    _run("enriquecer_dossier.py", [fecha], 300, 1)
-    _run("scrapear_medios_completo.py", [fecha], 300, 1)
     _run("generar_podcast.py", [fecha], 600, 1)
     _run("generar_web_v3.py", [fecha], 900, 1)
     _run("generar_web_dossier.py", [fecha], 600, 1)

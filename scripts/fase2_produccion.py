@@ -76,6 +76,26 @@ def producir_fase2(fecha=None):
 
     datos = json.loads(dossier_file.read_text())
     res = {"fecha": fecha, "dossier": datos.get("dossier", {})}
+    
+    # Cargar scrapeado + enriquecido para guion con datos REALES
+    scrapeado_path = OUT / f"scrapeado_{fecha}.json"
+    scrapeado = json.loads(scrapeado_path.read_text()) if scrapeado_path.exists() else {}
+    
+    enr_path = OUT / f"dossier_{fecha}_enriquecido.json"
+    enr_por_medio = {}
+    if enr_path.exists():
+        d_enr = json.loads(enr_path.read_text())
+        desglose = d_enr.get("dossier", {}).get("desglose_medios", "")
+        for line in desglose.split("\n"):
+            m = re.match(r"\*\*([^*]+)\*\*: '([^']*)' -> \*\*Framing:\*\* ([^|]+) \| \*\*Técnica:\*\* ([^|]+) \| \*\*Omite:\*\* (.+)", line)
+            if m:
+                enr_por_medio[m.group(1).strip()] = {
+                    "titular": m.group(2).strip(),
+                    "framing": m.group(3).strip(),
+                    "tecnica": m.group(4).strip(),
+                    "omite": m.group(5).strip(),
+                }
+    print(f"   Guion enriquecido: {len(scrapeado)} scrapeados, {len(enr_por_medio)} con tecnica", flush=True)
 
     # 1. REDACTOR (Artículo para el blog)
     print("[fase2] 1/5 Arquitecto + Redactor...", flush=True)
@@ -138,18 +158,55 @@ def producir_fase2(fecha=None):
     # Bucle blindado: queremos exactamente las escenas de la 2 a la 17
     for n in noticias_limpias:
         if num > 17: break # Si ya hemos llegado a la 17, salimos al cierre (18)
-        
+
+        # Enriquecer con datos REALES del scrapeado + enriquecido
+        medio = n.get('medio', '?')
+        scr = scrapeado.get(medio, {})
+        enr = enr_por_medio.get(medio, {})
+
+        titular_real = scr.get("titular", n['titular'])
+        texto_real = scr.get("texto_completo", "")[:1500]
+        tecnica = enr.get("tecnica") or "Framing editorial"
+        framing = enr.get("framing", "")
+        omite = enr.get("omite", "")
+
+        # Extraer cita textual
+        citas = re.findall(r'[«"]([^»"]{40,200})[»"]', texto_real)
+        citas_validas = [c for c in citas if c.strip() and len(c.strip()) > 40]
+        cita_real = citas_validas[0] if citas_validas else (texto_real[:150] + "..." if texto_real else "Sin cita disponible")
+
+        ctx_n = f"""Medio: {medio}
+TITULAR REAL: «{titular_real}»
+TECNICA DETECTADA: {tecnica}
+FRAMING: {framing}
+QUE OMITE: {omite}
+CITA TEXTUAL: "{cita_real}"
+EXTRACTO: {texto_real[:800]}
+"""
+
         # Escena 1 de la noticia
-        print(f"   [Escena {num}/18] Análisis (1/2): {n['titular'][:30]}...", flush=True)
-        ctx_n = f"Medio: {n.get('medio', '?')}\nTitular: {n['titular']}\nExtracto: {n.get('extracto', '')[:200]}"
-        inst1 = f"Analiza el titular y la máscara del medio '{n.get('medio','?')}': '{n['titular']}'. ¿Qué te intentan vender? Tono mordaz."
+        print(f"   [Escena {num}/18] Analisis (1/2): {titular_real[:40]}...", flush=True)
+        inst1 = f"""Escena de analisis del medio '{medio}'.
+INSTRUCCIONES OBLIGATORIAS:
+1. Empieza LITERALMENTE con: {medio} titulo: «{titular_real}»
+2. Luego explica que te intentan vender (usa la CITA TEXTUAL del contexto)
+3. Tono mordaz tipo Inaki Gabilondo con mala leche
+4. Minimo 80 palabras. NO inventes datos, usa el contexto."""
+
         escenas.append(_generar_escena(num, inst1, ctx_n)); num += 1
-        
+
         if num > 17: break # Comprobación antes de la segunda escena
-        
+
         # Escena 2 de la noticia
-        print(f"   [Escena {num}/18] Análisis (2/2): {n['titular'][:30]}...", flush=True)
-        inst2 = f"Analiza la técnica de manipulación y el beneficiario de '{n['titular']}'. ¿Quién se ríe de fondo? Tono de auditor cabreado."
+        print(f"   [Escena {num}/18] Analisis (2/2): tecnica {tecnica}...", flush=True)
+        inst2 = f"""Analiza la TECNICA DE MANIPULACION del medio '{medio}'.
+INSTRUCCIONES OBLIGATORIAS:
+1. Di LITERALMENTE el nombre de la tecnica: «{tecnica}»
+2. Explica COMO funciona (usa la cita del contexto)
+3. Di QUE OMITE el medio: {omite}
+4. Cierra con 'quien se rie de fondo?' (auditor cabreado)
+5. Minimo 80 palabras"""
+
         escenas.append(_generar_escena(num, inst2, ctx_n)); num += 1
 
     # FALLBACK: Si nos hemos quedado cortos (menos de 17 escenas), rellenamos con análisis de técnicas
