@@ -1,0 +1,415 @@
+/* ============================================================
+   EL ENCUADRE — UNIVERSO HOLOGRÁFICO
+   ============================================================ */
+
+/* 1. VARIABLES HOLOGRÁFICAS */
+:root {
+  --holo-cyan: #00f0ff;
+  --holo-magenta: #ff00aa;
+  --holo-purple: #8b00ff;
+  --holo-red: #e63946;
+  --holo-bg: #05050a;
+  --holo-bg-2: #0a0a12;
+  --holo-text: #e8e8f0;
+  --holo-muted: #8888a0;
+  --holo-border: rgba(0, 240, 255, 0.15);
+  --holo-glow: 0 0 20px rgba(0, 240, 255, 0.3);
+}
+
+/* 2. FONDO ANIMADO HOLOGRÁFICO */
+body {
+  background: var(--holo-bg) !important;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(139, 0, 255, 0.12), transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(0, 240, 255, 0.10), transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 0, 170, 0.06), transparent 70%),
+    var(--holo-bg);
+  animation: holoShift 20s ease-in-out infinite;
+}
+
+@keyframes holoShift {
+  0%, 100% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg); }
+  50% { transform: scale(1.1) rotate(2deg); filter: hue-rotate(15deg); }
+}
+
+/* Grid holográfico sutil */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 30s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+/* 3. HEADER GLASSMORPHISM */
+.md-header {
+  background: rgba(5, 5, 10, 0.7) !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--holo-border);
+  box-shadow: 0 4px 30px rgba(0, 240, 255, 0.08);
+}
+
+.md-header__title {
+  font-weight: 800 !important;
+  letter-spacing: 0.05em;
+  background: linear-gradient(90deg, var(--holo-cyan), var(--holo-magenta), var(--holo-cyan));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: holoText 8s linear infinite;
+}
+
+@keyframes holoText {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* 4. NAV TABS FUTURISTAS */
+.md-tabs {
+  background: rgba(10, 10, 18, 0.8) !important;
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid var(--holo-border);
+}
+
+.md-tabs__link {
+  font-weight: 600 !important;
+  letter-spacing: 0.03em;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.md-tabs__link::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%; transform: translateX(-50%);
+  width: 0; height: 2px;
+  background: var(--holo-cyan);
+  box-shadow: 0 0 10px var(--holo-cyan);
+  transition: width 0.3s ease;
+}
+
+.md-tabs__link:hover::before,
+.md-tabs__link--active::before {
+  width: 80%;
+}
+
+.md-tabs__link:hover {
+  color: var(--holo-cyan) !important;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+}
+
+/* 5. H1, H2 CON GLOW */
+.md-typeset h1 {
+  font-weight: 900 !important;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #fff 0%, var(--holo-cyan) 50%, var(--holo-magenta) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+  margin-bottom: 1.5rem !important;
+}
+
+.md-typeset h2 {
+  color: var(--holo-text) !important;
+  border-left: 4px solid var(--holo-cyan);
+  padding-left: 1rem;
+  margin-top: 2.5rem !important;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+.md-typeset h3 {
+  color: var(--holo-cyan) !important;
+  text-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+/* 6. LINKS CON UNDERLINE HOLOGRÁFICO */
+.md-typeset a {
+  color: var(--holo-cyan) !important;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.md-typeset a:hover {
+  color: var(--holo-magenta) !important;
+  text-shadow: 0 0 15px rgba(255, 0, 170, 0.6);
+}
+
+/* 7. BLOCKQUOTES CON BORDE HOLOGRÁFICO */
+.md-typeset blockquote {
+  border-left: 3px solid var(--holo-magenta) !important;
+  background: rgba(139, 0, 255, 0.05);
+  padding: 1rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  box-shadow: inset 0 0 30px rgba(255, 0, 170, 0.05);
+}
+
+/* 8. TABLAS CON GLOW */
+.md-typeset table {
+  border: 1px solid var(--holo-border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--holo-glow);
+}
+
+.md-typeset table th {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(139, 0, 255, 0.15));
+  color: var(--holo-cyan) !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85em;
+}
+
+.md-typeset table tr:hover {
+  background: rgba(0, 240, 255, 0.05);
+}
+
+/* 9. IMÁGENES CON GLOW */
+.md-typeset img {
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.15), 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.md-typeset img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 50px rgba(0, 240, 255, 0.3), 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* 10. BOTONES HOLOGRÁFICOS */
+.md-button {
+  background: linear-gradient(135deg, var(--holo-cyan), var(--holo-purple)) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: var(--holo-bg) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.8rem 2rem !important;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.md-button::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.md-button:hover::before {
+  left: 100%;
+}
+
+.md-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.6);
+}
+
+/* 11. SIDEBAR CON GLASS */
+.md-sidebar {
+  background: rgba(10, 10, 18, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.md-nav__link:hover {
+  color: var(--holo-cyan) !important;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+.md-nav__link--active {
+  color: var(--holo-magenta) !important;
+  font-weight: 700 !important;
+}
+
+/* 12. BÚSQUEDA HOLOGRÁFICA */
+.md-search__input {
+  background: rgba(10, 10, 18, 0.6) !important;
+  border: 1px solid var(--holo-border) !important;
+  border-radius: 8px !important;
+  backdrop-filter: blur(10px);
+}
+
+.md-search__input:focus {
+  border-color: var(--holo-cyan) !important;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 13. FOOTER HOLOGRÁFICO */
+.md-footer {
+  background: rgba(5, 5, 10, 0.9) !important;
+  border-top: 1px solid var(--holo-border);
+  backdrop-filter: blur(10px);
+}
+
+.md-footer__inner {
+  position: relative;
+}
+
+/* 14. SCROLLBAR CUSTOM */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--holo-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--holo-cyan), var(--holo-purple));
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--holo-magenta), var(--holo-cyan));
+}
+
+/* 15. SELECCIÓN DE TEXTO */
+::selection {
+  background: rgba(0, 240, 255, 0.3);
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+}
+
+/* 16. SCROLL REVEAL ANIMATIONS */
+.md-content > article > * {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.md-content > article > *:nth-child(1) { animation-delay: 0.1s; }
+.md-content > article > *:nth-child(2) { animation-delay: 0.2s; }
+.md-content > article > *:nth-child(3) { animation-delay: 0.3s; }
+.md-content > article > *:nth-child(4) { animation-delay: 0.4s; }
+.md-content > article > *:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 17. CURSOR GLOW (solo desktop) */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  .md-content a, .md-typeset a, button, .md-button {
+    cursor: none;
+  }
+  #holo-cursor {
+    position: fixed;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--holo-cyan);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6), inset 0 0 20px rgba(0, 240, 255, 0.2);
+    pointer-events: none;
+    z-index: 99999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: screen;
+  }
+  #holo-cursor::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 4px; height: 4px;
+    background: var(--holo-cyan);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px var(--holo-cyan);
+  }
+}
+
+/* 18. CARDS HOLOGRÁFICAS (para grid de posts futuros) */
+.holo-card {
+  background: rgba(10, 10, 18, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--holo-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.holo-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--holo-cyan), var(--holo-magenta), var(--holo-purple));
+  animation: holoLine 3s linear infinite;
+}
+
+@keyframes holoLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.holo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.2);
+  border-color: rgba(0, 240, 255, 0.4);
+}
+
+/* 19. HERO SECTION (si hay) */
+.holo-hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+}
+
+.holo-hero h1 {
+  font-size: clamp(2rem, 6vw, 4rem) !important;
+  margin-bottom: 1rem !important;
+}
+
+.holo-hero p {
+  font-size: 1.2rem;
+  color: var(--holo-muted);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* 20. RESPETO A PREFERENCIAS DEL USUARIO */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
