@@ -68,3 +68,29 @@ document.addEventListener('keydown', e => {
     App.toast('Ctrl+K buscar · G+I inicio · G+D dios · G+M música · G+V vídeo · G+F factory · G+B blogs', 'info', 8000);
   }
 });
+
+// ═══ Status footer persistente ═══
+function initStatusFooter(){
+  if(document.getElementById('status-footer')) return;
+  const f = document.createElement('div');
+  f.id = 'status-footer';
+  f.innerHTML = `
+    <span><span class="dot" id="sf-flask">●</span>Flask</span>
+    <span><span class="dot" id="sf-omni">●</span>OmniRoute</span>
+    <span><span class="dot" id="sf-worker">●</span>Worker</span>
+    <span><span class="dot ok">●</span>Cron</span>
+    <span style="margin-left:auto" id="sf-hora"></span>
+  `;
+  document.body.appendChild(f);
+  async function update(){
+    try {
+      const r = await fetch('/api/dashboard', {timeout:3000}).then(x=>x.json()).catch(()=>({}));
+      document.getElementById('sf-flask').className = 'dot ok';
+      document.getElementById('sf-omni').className = 'dot ' + (r.omni_ok?'ok':'warn');
+      document.getElementById('sf-worker').className = 'dot ' + (r.worker_ok?'ok':'warn');
+    } catch(e){ document.getElementById('sf-flask').className = 'dot err'; }
+    document.getElementById('sf-hora').textContent = new Date().toLocaleTimeString();
+  }
+  update(); setInterval(update, 15000);
+}
+setTimeout(initStatusFooter, 500);

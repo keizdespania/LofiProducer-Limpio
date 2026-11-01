@@ -78,5 +78,12 @@ window.Nav = (function(){
   }
   function exists(id){ return !!all[id]; }
   function getLabel(id){ return all[id] ? all[id].label : id; }
-  return { init, updateActive, exists, getLabel, structure, all };
+  
+  function setBreadcrumb(id){
+    const el = document.getElementById('bc-current');
+    const label = getLabel(id);
+    el.innerHTML = '<a href="#inicio" style="color:var(--muted);text-decoration:none">KEIZ OS</a> / <strong style="color:var(--text)">'+label+'</strong>';
+  }
+  return { init, updateActive, exists, getLabel, structure, all, setBreadcrumb };
+};
 })();
