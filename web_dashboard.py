@@ -427,6 +427,20 @@ def api_jarvis_chat():
     except Exception as e:
         return jsonify({"status":"error","msg":str(e)}), 500
 
+@app.route("/api/pipeline/dryrun", methods=["POST"])
+def api_pipeline_dryrun():
+    import subprocess as _sp
+    try:
+        r = _sp.run(
+            ["python3", "scripts/pipeline_dryrun.py"],
+            capture_output=True, text=True, cwd=str(ROOT), timeout=60
+        )
+        return jsonify({"status":"ok","output":r.stdout,"rc":r.returncode})
+    except _sp.TimeoutExpired:
+        return jsonify({"status":"error","msg":"Timeout 60s"}), 504
+    except Exception as e:
+        return jsonify({"status":"error","msg":str(e)}), 500
+
 @app.route("/api/jarvis/tools", methods=["GET"])
 def api_jarvis_tools():
     """Devuelve las tools disponibles para que el LLM las use."""
