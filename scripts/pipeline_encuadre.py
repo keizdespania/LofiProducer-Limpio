@@ -376,5 +376,69 @@ def main():
     except Exception as _e:
         print(f"   ⚠️ No se pudo crear marcador: {_e}")
 
+    # 📱 NOTIFICAR A TELEGRAM (canal público + admin)
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(ROOT / "brain"))
+        from notificador_encuadre import publicar_analisis, publicar_dossier, publicar_pipeline_completado
+
+        print("\n[telegram] Publicando en el canal @somoselencuadre...")
+        pub_count = 0
+
+        # Buscar los .md recién generados hoy
+        analisis_dir = ROOT / "web" / "docs" / "analisis"
+        if analisis_dir.exists():
+            for md in sorted(analisis_dir.glob(f"{fecha}-*.md")):
+                slug = md.stem
+                # Parsear frontmatter
+                txt = md.read_text(encoding="utf-8")
+                titulo = slug
+                desc = ""
+                if txt.startswith("---"):
+                    try:
+                        fm_end = txt.find("---", 3)
+                        fm_txt = txt[3:fm_end].strip()
+                        for line in fm_txt.split("\n"):
+                            if line.startswith("title:"):
+                                titulo = line.split(":", 1)[1].strip().strip('"').strip("'")
+                            elif line.startswith("description:"):
+                                desc = line.split(":", 1)[1].strip().strip('"').strip("'")
+                    except Exception:
+                        pass
+
+                # Extraer URL fuente del cuerpo
+                import re
+                urls = re.findall(r'href="(https?://[^"]+)"', txt)
+                excluir = ['youtube.com/@SomosElEncuadre', 'tiktok.com/@somoselencuadre',
+                           'instagram.com/somoselencuadre', 'x.com/somoselencuadre',
+                           'files.catbox.moe']
+                fuente_url = ""
+                for u in urls:
+                    if not any(x in u for x in excluir):
+                        fuente_url = u
+                        break
+
+                # Decidir tipo (dossier vs análisis normal)
+                if "dossier" in slug:
+                    r = publicar_dossier(titulo, slug, desc, fuente_url)
+                else:
+                    r = publicar_analisis(titulo, slug, desc, fuente_url)
+
+                if r.get("ok"):
+                    pub_count += 1
+                    print(f"   ✅ Publicado: {slug}")
+                else:
+                    print(f"   ❌ Falló: {slug} — {r.get('error')}")
+
+        # Resumen del pipeline
+        n_short = len(list((ROOT / "output" / "encuadre").glob(f"short_*_{fecha}.mp4")))
+        n_post = pub_count
+        r = publicar_pipeline_completado(pub_count, n_short, n_post)
+        if r.get("ok"):
+            print(f"   ✅ Resumen publicado ({pub_count} análisis, {n_short} shorts)")
+
+    except Exception as _e:
+        print(f"   ⚠️ Telegram falló: {_e}")
+
 if __name__ == "__main__":
     main()
