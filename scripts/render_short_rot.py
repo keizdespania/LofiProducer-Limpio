@@ -92,10 +92,11 @@ def generar_short_multi(imagenes, texto, voz_path, musica_path, salida, logo_pat
             try:
                 project = project.overlay_image(
                     str(logo_path),
-                    start=0.0,
+                    at=0.0,
                     duration=0.8,
                     position=Placement(0.5, 0.4, anchor="center"),
                     opacity=1.0,
+                    animation="pop",
                 )
             except Exception as _e:
                 print(f"  ⚠️ Intro overlay falló: {_e}", flush=True)
@@ -104,11 +105,14 @@ def generar_short_multi(imagenes, texto, voz_path, musica_path, salida, logo_pat
         try:
             project = project.overlay_text(
                 "SUSCRÍBETE",
-                start=max(0, dur_total - 3),
+                at=max(0.0, dur_total - 3.0),
                 duration=3.0,
-                position=Placement(0.5, 0.5, anchor="center"),
+                position="center",
                 font_size=72,
                 color="#e63946",
+                outline_color="#000000",
+                outline_width=4,
+                bold=True,
             )
         except Exception as _e:
             print(f"  ⚠️ Outro overlay falló: {_e}", flush=True)
