@@ -105,6 +105,20 @@ def _conceptos_visuales(segmentos):
     return segmentos
 
 
+PROMPTS_FIJOS = {
+    "hook": "dramatic close-up symbolic image, cinematic, high contrast, red accent, dark background, no text",
+    "explicacion": "abstract representation of media manipulation, geometric shapes, red grid, cinematic",
+    "contraste": "split screen comparison, opposing imagery, red and blue lighting, cinematic",
+    "default": "cinematic newspaper scene, dramatic light, red accent, no text",
+    "cierre": "dark background with red grid, ominous atmosphere, cinematic",
+    "fichado": "anonymous man silhouette, red grid background, B&W, dramatic, no face",
+    "politica": "anonymous politician silhouette at podium, dramatic side lighting, red tie, dark background, cinematic",
+    "economia": "stock market screens, trader silhouette, red numbers falling, dark blue tones, cinematic",
+    "medios": "vintage TV wall with static, newspapers scattered, red accent, moody, cinematic",
+    "geopolitica": "world map hologram, red dots, dark room, spy agency vibe, cinematic",
+    "collage": "newspaper clippings collage, red stamps, black background, chaotic but organized",
+}
+
 def _generar_imagenes(segmentos):
     from generar_imagen import generar
     img_dir = ROOT / "web" / "media" / "imagenes"
@@ -151,7 +165,24 @@ def _insertar_pattern_interrupts(segmentos, cada_n=15):
     return nuevos
 
 
+def _limpiar_imagenes_antiguas():
+    """Borra escenas y segmentos del día anterior antes de regenerar."""
+    import pathlib
+    img_dir = pathlib.Path("web/media/imagenes")
+    if not img_dir.exists():
+        return
+    borradas = 0
+    for pattern in ("escena_*.png", "seg_*.png"):
+        for f in img_dir.glob(pattern):
+            try:
+                f.unlink()
+                borradas += 1
+            except: pass
+    if borradas:
+        print(f"[seg] 🗑️ Borradas {borradas} imágenes del día anterior", flush=True)
+
 def main():
+    _limpiar_imagenes_antiguas()
     ass = OUT / f"voz_largo_{FECHA}.ass"
     if not ass.exists():
         print(f"FALTA {ass}")

@@ -147,6 +147,7 @@ def main():
         ("scrapear_medios_completo.py", [fecha], 300, False),
         ("fase2_produccion.py", None, 1200, False),
         ("director_arte.py", None, 1800, True),
+        ("generar_imagenes_web.py", [fecha], 600, False),
         ("descargar_lofi.py", None, 600, True),
         ("voz_edge.py", None, 600, False),
         ("segmentar_imagenes.py", [fecha], 1800, False),
