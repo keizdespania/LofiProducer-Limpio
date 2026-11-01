@@ -41,6 +41,16 @@ def analizar_fase1(fecha=None):
     if not rec_json.exists(): rec_json = OUT / f"recoleccion_{fecha}.json"
     if not rec_json.exists(): return None
     datos = json.loads(rec_json.read_text())
+    
+    # Cargar scrapeado (extractos) si existe
+    scrapeada_path = OUT / f"recoleccion_{fecha}_scrapeada.json"
+    scrapeado_map = {}
+    if scrapeada_path.exists():
+        try:
+            scr_data = json.loads(scrapeada_path.read_text())
+            for item in scr_data.get("pool", []):
+                scrapeado_map[item["titular"]] = item.get("extracto", "")
+        except: pass
 
     # 1. DETECTIVE: Top3
     print("[fase1] Detectando Top 3...", flush=True)
@@ -64,10 +74,33 @@ def analizar_fase1(fecha=None):
         for medio, noticias in (datos.get(sec) or {}).items():
             for n in noticias:
                 if isinstance(n, dict) and n.get("titular") and n["titular"] not in vistos:
-                    pool_noticias.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio})
+                    extracto = scrapeado_map.get(n["titular"], "")
+                    pool_noticias.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio, "extracto": extracto})
                     vistos.add(n["titular"])
 
-    BASURA_FINAL = ["jamón", "jamon", "taco", "salad", "ensalada", "restaurante", "gastronomía", "cocina", "chef", "menaje", "cerámica", "cacharro", "tupper"]
+    BASURA_FINAL = [
+        # Gastronomia/virales
+        "jamón", "jamon", "taco", "salad", "ensalada", "restaurante", "gastronomía", "cocina", "chef",
+        "menaje", "cerámica", "cacharro", "tupper",
+        # Deportes
+        "márquez", "marquez", "alcaraz", "nadal", "motogp", "moto gp", "laliga", "la liga",
+        "mundial", "champions", "copa del rey", "europa league", "fichaje", "entrenador",
+        "delantero", "portero", "imbatibilidad", "imbatible", "partido de fútbol",
+        "jugador", "atleti", "betis", "valencia cf", "sevilla fc", "balón", "balon",
+        "futbol", "fútbol", "real madrid", "barça", "mbappé", "pucela", "racing", "athletic",
+        # Farandula
+        "javis", "carrasco", "sálvame", "supervivientes", "gran hermano", "operación triunfo",
+        "masterchef", "bake off", "guiño", "disfraz", "halloween", "influencer", "instagram",
+        "tiktok", "famoso", "celebridad", "reconciliación", "ruptura", "embarazo",
+        "boda", "divorcio", "prensa rosa", "corazón", "corazon", "actor", "actriz",
+        "cine", "cineasta", "película", "pelicula", "concierto", "música", "musica",
+        # Sucesos sin gestion
+        "argelino", "argelinos", "marroquí", "marroquíes", "migrante", "inmigrante",
+        "asalto", "asaltan", "robo", "robar", "atraco", "apuñal", "apuñalan", "agredido",
+        # Misc
+        "intocable", "dgt", "tráfico", "trafico", "tiempo", "lluvia", "temperatura", "blocus",
+        "apagón", "apagon", "sin suministro", "sin luz", "vidas truncadas", "tragedia ferroviaria"
+    ]
 
     while len(top16) < 16 and intentos < 3:
         intentos += 1
@@ -90,8 +123,11 @@ def analizar_fase1(fecha=None):
         
         for a in aprobadas:
             if len(top16) >= 16: break
+            # Si el LLM marcó es_valida=false, saltar
+            if a.get("es_valida") is False:
+                continue
             if a.get("titular") and a["titular"] not in [x["titular"] for x in top16]:
-                # Comprobación final de basura en Python
+                # Comprobación final de basura en Python (solo titular)
                 if not any(b in a["titular"].lower() for b in BASURA_FINAL):
                     top16.append(a)
                 
