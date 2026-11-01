@@ -23,13 +23,22 @@ def buscar_y_descargar_youtube():
         print(f"[Lofi] YouTube buscando: '{query}'...", flush=True)
         try:
             r = subprocess.run([
-                "yt-dlp", f"ytsearch5:{query}", "--get-id", "--get-title", "--flat-playlist", "--no-warnings"
-            ], capture_output=True, text=True, timeout=45)
+                "yt-dlp", f"ytsearch10:{query}",
+                "--match-filter", "duration > 900",  # solo videos >15 min
+                "--get-id", "--get-title", "--get-duration",
+                "--flat-playlist", "--no-warnings"
+            ], capture_output=True, text=True, timeout=60)
             
-            lineas = r.stdout.strip().split("\n")
+            lineas = [l.strip() for l in r.stdout.strip().split("\n") if l.strip()]
             videos = []
-            for i in range(0, len(lineas)-1, 2):
-                videos.append({"titulo": lineas[i], "id": lineas[i+1]})
+            # Con --get-id --get-title --get-duration son 3 lineas por video
+            i = 0
+            while i + 2 < len(lineas):
+                try:
+                    videos.append({"titulo": lineas[i], "id": lineas[i+1], "duracion": lineas[i+2]})
+                    i += 3
+                except:
+                    i += 1
                 
             if not videos:
                 print("[Lofi] YouTube: No se encontraron videos para esta búsqueda.", flush=True)
@@ -60,9 +69,12 @@ def buscar_y_descargar_youtube():
             
     return False
 
-if not destino.exists() or destino.stat().st_size < 1024*1024:
-    if not buscar_y_descargar_youtube():
-        print("[Lofi] ❌ YouTube agotó todas las opciones. Activando fallback a Bandcamp (CC0)...", flush=True)
-        subprocess.run(["python3", "scripts/descargar_lofi_bandcamp.py"], check=False)
-else:
-    print("[Lofi] Ya existe lofi_base.mp3, saltando.", flush=True)
+# SIEMPRE descargar (nunca reutilizar del dia anterior)
+if destino.exists():
+    size_mb = destino.stat().st_size // 1024 // 1024
+    print(f"[Lofi] Borrando musica anterior ({size_mb}MB) para descargar nueva...", flush=True)
+    destino.unlink()
+
+if not buscar_y_descargar_youtube():
+    print("[Lofi] ❌ YouTube agotó todas las opciones. Activando fallback a Bandcamp (CC0)...", flush=True)
+    subprocess.run(["python3", "scripts/descargar_lofi_bandcamp.py"], check=False)

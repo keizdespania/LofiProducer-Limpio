@@ -155,7 +155,16 @@ def main():
     print("\n" + "="*60 + "\nRENDERIZANDO SHORTS CON ROT\n" + "="*60, flush=True)
     from render_short_rot import generar_short
     from descargar_musica_dinamica import descargar_por_mood
-    from voz_edge import _limpiar as _limpiar_texto_voz
+    # Cleaner local (voz_edge ya no tiene _limpiar)
+    import re as _re_local
+    def _limpiar_texto_voz(texto):
+        if not texto: return ""
+        texto = _re_local.sub(r'\[[^\]]*\]', '', texto)   # [Fade out], [Pausa]
+        texto = _re_local.sub(r'\([^\)]*\)', '', texto)   # (silencio), (énfasis)
+        texto = _re_local.sub(r'\*[^\*]*\*', '', texto)   # *cursiva*
+        texto = _re_local.sub(r'#+\s*', '', texto)        # markdown headers
+        texto = _re_local.sub(r'\s+', ' ', texto).strip()
+        return texto
 
     MOODS_SHORTS = {"dato": "tension", "contradiccion": "epico", "prediccion": "electronico", "tutorial": "relax"}
     prod_file = OUT / f"produccion_{fecha}.json"
