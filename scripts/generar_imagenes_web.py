@@ -37,12 +37,19 @@ def generar_todas(fecha=None):
         
         print(f"  🎨 {tipo}: generando...", end=" ", flush=True)
         try:
-            ok = generar(prompt, str(destino))
-            if ok and destino.exists() and destino.stat().st_size > 50000:
-                print(f"✅ {destino.stat().st_size//1024}KB")
-                urls[tipo] = nombre
+            import shutil
+            r = generar(prompt, preset="cinematic", aspect="16:9", canal="encuadre")
+            if "OK: " in r:
+                ruta = r.split("OK: ")[1].split(" ")[0]
+                src = pathlib.Path(ruta)
+                if src.exists() and src.stat().st_size > 50000:
+                    shutil.copy(src, destino)
+                    print(f"✅ {destino.stat().st_size//1024}KB")
+                    urls[tipo] = nombre
+                else:
+                    print("⚠️ vacio")
             else:
-                print("⚠️ vacio")
+                print(f"⚠️ {r[:100]}")
         except Exception as e:
             print(f"❌ {e}")
     

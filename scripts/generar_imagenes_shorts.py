@@ -1,58 +1,161 @@
-"""generar_imagenes_shorts.py - 4 fondos/día (uno por short, según ángulo)."""
-import sys, pathlib, datetime, json
+"""generar_imagenes_shorts.py v3 - 3 imagenes POR short, con keywords del dia."""
+import sys, pathlib, datetime, json, shutil, re
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 IMG = ROOT / "web" / "media" / "imagenes"
+OUT = ROOT / "output" / "encuadre"
 IMG.mkdir(parents=True, exist_ok=True)
 FECHA = sys.argv[1] if len(sys.argv) > 1 else datetime.date.today().isoformat()
 
-# 4 fondos, uno por ángulo del short. Prompts fijos.
-FONDOS = {
-    1: ("controversia", "shattered boardroom, overturned chairs, broken glass, red emergency lighting, dramatic, cinematic, no text"),
-    2: ("urgencia", "wall of broken TV screens, static, breaking news red alert, sparks, cinematic, no text"),
-    3: ("justicia", "giant broken scales of justice, falling paper currency, red spotlight, dark background, cinematic, no text"),
-    4: ("curiosidad", "infinite library, floating books, warm light filtering through dust, cinematic, no text"),
+# Mapeo tipo -> mood visual base (3 variantes cada uno)
+MOODS = {
+    "cita": [
+        "dramatic quote scene, newspaper clippings with highlighted phrase, red stamp, cinematic, no text",
+        "anonymous speaker silhouette at podium, spotlight, controversial atmosphere, cinematic, no text",
+        "megaphone in dark room with red light, symbolic speech, cinematic, no text",
+    ],
+    "pregunta": [
+        "cracked mirror reflecting distorted image, symbolic doubt, red accent, cinematic, no text",
+        "question mark symbol broken on dark background, red lighting, cinematic, no text",
+        "anonymous person thinking, shadows and light contrast, red accent, cinematic, no text",
+    ],
+    "dato_impactante": [
+        "giant broken scales with falling numbers, red spotlight, dramatic, cinematic, no text",
+        "stock market screen crashing red, dramatic dark background, cinematic, no text",
+        "shattered glass with red emergency lights, impact moment, cinematic, no text",
+    ],
+    "default": [
+        "cinematic newspaper scene, dramatic light, red accent, no text",
+        "dark office with red glow, mysterious mood, cinematic, no text",
+        "broken television screens, static noise, red accent, cinematic, no text",
+    ],
 }
+
+# Keywords seguras por defecto (si no se detectan nombres propios)
+KEYWORDS_SEGURAS = {
+    1: "banking dividends controversy",
+    2: "political crisis resignation",
+    3: "political debate regional tension",
+    4: "political party alternative debate",
+}
+
+def _extraer_keywords(hook_obj, num_short):
+    """Extrae keywords del hook del dia (sin LLM, solo regex)."""
+    hook_txt = (hook_obj.get("hook") or "").lower()
+    guion_txt = (hook_obj.get("guion") or "").lower()
+    texto = hook_txt + " " + guion_txt
+    
+    # Extraer entidades clave (mapa manual de conceptos frecuentes)
+    conceptos = {
+        "santander": "banking",
+        "dividendo": "banking dividends",
+        "banco": "banking",
+        "puente": "political crisis",
+        "dimisión": "resignation demand",
+        "dimision": "resignation demand",
+        "ministro": "minister under pressure",
+        "feijóo": "political debate",
+        "feijoo": "political debate",
+        "cataluña": "regional politics",
+        "catalunya": "regional politics",
+        "illa": "political response",
+        "vox": "political party",
+        "abascal": "political leader",
+        "alternativa": "political alternative",
+        "crisis": "crisis",
+        "74": "74 percent",
+        "1.850": "1850 million",
+        "1850": "1850 million",
+    }
+    
+    detectadas = []
+    for palabra, concepto in conceptos.items():
+        if palabra in texto and concepto not in detectadas:
+            detectadas.append(concepto)
+    
+    if detectadas:
+        return ", ".join(detectadas[:3])
+    return KEYWORDS_SEGURAS.get(num_short, "media analysis")
+
+def _cargar_hooks(fecha):
+    dossier_path = OUT / f"dossier_{fecha}.json"
+    if not dossier_path.exists(): return []
+    d = json.loads(dossier_path.read_text())
+    return d.get("guiones", {}).get("hooks_totales", [])[:4]
+
+def _normalizar_tipo(tipo):
+    t = (tipo or "").lower().strip()
+    if "cita" in t: return "cita"
+    if "pregunta" in t: return "pregunta"
+    if "dato" in t or "impactante" in t: return "dato_impactante"
+    return "default"
 
 def generar_todos(fecha=None):
     fecha = fecha or FECHA
     from generar_imagen import generar
     
-    print(f"Generando 4 fondos de shorts para {fecha}...")
+    hooks = _cargar_hooks(fecha)
+    if not hooks:
+        print(f"⚠️ No hay hooks en dossier_{fecha}.json, generando genéricas")
+        hooks = [{"tipo": "default", "hook": "", "guion": ""}] * 4
+    
+    print(f"Generando 3 imagenes por short ({len(hooks)} shorts, {fecha})...")
     print("=" * 60)
     
     rutas = {}
-    for num, (angulo, prompt) in FONDOS.items():
-        nombre = f"short_fondo_{num}_{fecha}_{angulo}.png"
-        destino = IMG / nombre
-        
-        if destino.exists() and destino.stat().st_size > 50000:
-            print(f"  ♻️  Short {num} ({angulo}): ya existe")
-            rutas[num] = str(destino)
-            continue
-        
-        print(f"  🎨 Short {num} ({angulo}): generando...", end=" ", flush=True)
-        try:
-            ok = generar(prompt, str(destino))
-            if ok and destino.exists() and destino.stat().st_size > 50000:
-                print(f"✅ {destino.stat().st_size//1024}KB")
-                rutas[num] = str(destino)
-            else:
-                # Fallback: usar short_bg_futurista.png
-                fallback = IMG / "short_bg_futurista.png"
-                if fallback.exists():
-                    rutas[num] = str(fallback)
-                    print("⚠️ fallback a short_bg_futurista.png")
-        except Exception as e:
-            print(f"❌ {e}")
-            fallback = IMG / "short_bg_futurista.png"
-            if fallback.exists():
-                rutas[num] = str(fallback)
+    total_gen = 0
+    total_fallidos = 0
     
+    for i, hook in enumerate(hooks, 1):
+        tipo = _normalizar_tipo(hook.get("tipo", ""))
+        keywords = _extraer_keywords(hook, i)
+        prompts = MOODS.get(tipo, MOODS["default"])
+        
+        print(f"\n[Short {i}] tipo={tipo} | keywords: {keywords}")
+        rutas[i] = []
+        
+        for j, prompt_base in enumerate(prompts, 1):
+            # Inyectar keywords al principio del prompt
+            prompt = f"{keywords}, {prompt_base}"
+            archivo = f"short_{i}_{fecha}_{tipo}_{j}.png"
+            destino = IMG / archivo
+            
+            if destino.exists() and destino.stat().st_size > 50000:
+                print(f"  ♻️  {archivo[:40]}: ya existe")
+                rutas[i].append(str(destino))
+                continue
+            
+            print(f"  🎨 {j}/3: generando...", end=" ", flush=True)
+            try:
+                r = generar(prompt, preset="cinematic", aspect="9:16", canal="encuadre")
+                if "OK: " in r:
+                    ruta = r.split("OK: ")[1].split(" ")[0]
+                    src = pathlib.Path(ruta)
+                    if src.exists() and src.stat().st_size > 50000:
+                        shutil.copy(src, destino)
+                        print(f"✅ {destino.stat().st_size//1024}KB")
+                        rutas[i].append(str(destino))
+                        total_gen += 1
+                        continue
+                print(f"⚠️ fallback")
+                total_fallidos += 1
+            except Exception as e:
+                print(f"❌ {e}")
+                total_fallidos += 1
+    
+    # Fallback global
+    fallback = IMG / "short_bg_futurista.png"
+    for i in range(1, 5):
+        if not rutas.get(i) and fallback.exists():
+            rutas[i] = [str(fallback)]
+    
+    # Guardar
     out = IMG / f"short_urls_{fecha}.json"
     out.write_text(json.dumps(rutas, indent=2, ensure_ascii=False))
-    print(f"\n✅ {len(rutas)}/4 fondos listos")
+    print(f"\n" + "=" * 60)
+    print(f"✅ {total_gen} imagenes generadas, {total_fallidos} fallidas")
+    print(f"   Mapa: {out}")
     return rutas
 
 if __name__ == "__main__":
