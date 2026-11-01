@@ -379,6 +379,28 @@ JARVIS_TOOLS = {
     "auto_mejora":       {"method":"POST", "path":"/api/jarvis/auto_mejora",       "desc":"Dios analiza y mejora sus prompts", "params":[]},
 }
 
+@app.route("/api/jarvis/listen", methods=["POST"])
+def api_jarvis_listen():
+    """Lanza jarvis_listen.py en background. Devuelve inmediato."""
+    import subprocess
+    from pathlib import Path
+    script = ROOT / "scripts" / "jarvis_listen.py"
+    if not script.exists():
+        return jsonify({"status":"error","msg":"jarvis_listen.py no existe"}), 500
+    log = ROOT / "data" / "logs" / "jarvis_listen.log"
+    log.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        subprocess.Popen(
+            ["python3", str(script)],
+            cwd=str(ROOT),
+            stdout=open(log, "a"),
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+        )
+        return jsonify({"status":"ok","msg":"Escuchando 6s..."})
+    except Exception as e:
+        return jsonify({"status":"error","msg":str(e)}), 500
+
 @app.route("/api/jarvis/tools", methods=["GET"])
 def api_jarvis_tools():
     """Devuelve las tools disponibles para que el LLM las use."""

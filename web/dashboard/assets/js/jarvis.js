@@ -65,7 +65,22 @@ window.Jarvis = (function(){
     } catch(e){ App.toast('❌ ' + e.message, 'error'); }
   }
 
-  function toggle(){
+  async function toggle(){
+    // Push-to-talk: UNA escucha, no daemon
+    const fab = document.getElementById('jarvis-fab');
+    if(fab){ fab.classList.add('active'); fab.textContent = '🔴'; }
+    App.toast('🎙️ Escuchando 6s... habla ahora', 'info', 6000);
+    try {
+      await App.api('/api/jarvis/listen', {method:'POST'});
+      setTimeout(()=>{
+        if(fab){ fab.classList.remove('active'); fab.textContent = '🤖'; }
+      }, 7000);
+    } catch(e){
+      App.toast('❌ '+e.message, 'error');
+      if(fab){ fab.classList.remove('active'); fab.textContent = '🤖'; }
+    }
+  }
+  function toggleOLD(){
     const fab = document.getElementById('jarvis-fab');
     if(activo){ detener(); return; }
     activo = true; fab.classList.add('active'); fab.textContent = '🔴';

@@ -32,8 +32,8 @@ window.Views.chat = {
         </div>
         <div class="flex gap-2">
           <input id="chat-input" class="input" placeholder="Ej: genera música lofi chill · ver canales · lanza pipeline..." onkeydown="if(event.key==='Enter')Views.chat.ejecutar()">
-          <button class="btn btn-ghost btn-icon" onclick="Jarvis.toggle()" title="Voz">🎙️</button>
-          <button class="btn btn-primary" onclick="Views.chat.ejecutar()">Enviar →</button>
+          <button class="btn btn-primary" onclick="Views.chat.escuchar()" title="Escuchar 6s">🎙️ Hablar</button>
+          <button class="btn btn-ghost" onclick="Views.chat.ejecutar()">Enviar →</button>
         </div>
       </div>
     `;
@@ -76,6 +76,26 @@ window.Views.chat = {
     App.toast('Historial limpiado','success');
   },
 
+  escuchar: async function(){
+    App.toast('🎙️ Escuchando 6s... habla ahora', 'info', 6000);
+    try {
+      await App.api('/api/jarvis/listen', {method:'POST'});
+      setTimeout(()=>App.toast('⏳ Procesando...', 'info', 3000), 7000);
+      setTimeout(()=>Views.chat.cargarUltima(), 12000);
+    } catch(e){ App.toast('❌ '+e.message, 'error'); }
+  },
+  cargarUltima: async function(){
+    try {
+      const r = await App.api('/api/jarvis/memoria').catch(()=>({historial:[]}));
+      const h = r.historial || [];
+      if(h.length > 0){
+        const ultima = h[h.length-1];
+        if(ultima && ultima.texto){
+          Views.chat.burbuja('assistant', ultima.texto.substring(0,500));
+        }
+      }
+    } catch(e){}
+  },
   ejecutar: async function(textoDirecto){
     const input = document.getElementById('chat-input');
     const texto = textoDirecto || (input && input.value.trim());
