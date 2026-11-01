@@ -44,6 +44,65 @@ async def _gen_voz(txt, salida):
 def _normalizar(s):
     return unicodedata.normalize("NFKD", str(s)).encode("ASCII", "ignore").decode("ASCII").lower()
 
+def _publicar_web(fecha):
+    """Copia posts a web/docs/analisis/ + build + git push (Cloudflare despliega solo)."""
+    import shutil as _shutil
+    cola = ROOT / "output" / "cola_web"
+    dest = ROOT / "web" / "docs" / "analisis"
+    dest.mkdir(parents=True, exist_ok=True)
+    
+    # Ficheros a publicar: largo + dossier-v2 + mediano-*
+    ficheros = list(cola.glob(f"{fecha}-*.md"))
+    publicar = [f for f in ficheros if any(k in f.name for k in ["-largo", "-dossier-v2", "-mediano-"])]
+    
+    if not publicar:
+        print(f"   ⚠️ _publicar_web: no hay posts para {fecha}", flush=True)
+        return False
+    
+    for f in publicar:
+        _shutil.copy(f, dest / f.name)
+        print(f"   ✅ Copiado: {f.name}", flush=True)
+    
+    # Actualizar mkdocs.yml si falta
+    mkdocs = ROOT / "web" / "mkdocs.yml"
+    if mkdocs.exists():
+        mtxt = mkdocs.read_text()
+        for f in publicar:
+            slug = f.stem
+            if f"analisis/{f.name}" not in mtxt:
+                titulo = slug.replace(f"{fecha}-", "").replace("-", " ").title()
+                entrada = f'    - "{titulo}": analisis/{f.name}\n'
+                if '    - Índice: analisis/index.md\n' in mtxt:
+                    mtxt = mtxt.replace('    - Índice: analisis/index.md\n', f'    - Índice: analisis/index.md\n{entrada}', 1)
+                elif '  - Análisis: analisis/index.md\n' in mtxt:
+                    mtxt = mtxt.replace('  - Análisis: analisis/index.md\n', f'  - Análisis:\n    - Índice: analisis/index.md\n{entrada}', 1)
+        mkdocs.write_text(mtxt)
+    
+    # Build
+    try:
+        import subprocess as _sp
+        r = _sp.run(["mkdocs", "build"], cwd=str(ROOT / "web"), capture_output=True, timeout=120)
+        if r.returncode == 0:
+            print(f"   ✅ mkdocs build OK", flush=True)
+        else:
+            print(f"   ⚠️ mkdocs build falló (código {r.returncode})", flush=True)
+            return False
+    except Exception as e:
+        print(f"   ⚠️ mkdocs build exception: {e}", flush=True)
+        return False
+    
+    # Git add + commit + push (solo ficheros web)
+    try:
+        import subprocess as _sp
+        _sp.run(["git", "add", "web/docs/analisis/", "web/mkdocs.yml"], cwd=str(ROOT), timeout=30)
+        _sp.run(["git", "commit", "-m", f"content: posts web {fecha} (largo + dossier + mediano)"], cwd=str(ROOT), timeout=30, capture_output=True)
+        _sp.run(["git", "push", "origin", "main"], cwd=str(ROOT), timeout=60)
+        print(f"   ✅ Push OK (Cloudflare despliega en 1-2 min)", flush=True)
+        return True
+    except Exception as e:
+        print(f"   ⚠️ git exception: {e}", flush=True)
+        return False
+
 def main():
     fecha = datetime.date.today().isoformat()
     print(f"🚀 INICIANDO PIPELINE MASIVO - {fecha}", flush=True)
@@ -175,7 +234,15 @@ def main():
 
     # Publicación
     print("\n" + "="*60 + "\nPUBLICACIÓN MASIVA\n" + "="*60, flush=True)
-    _run("generar_web_masiva.py", [fecha], 600, 1)
+    # ===== NUEVO FLUJO WEB (v3 + dossier + verificación + publicación) =====
+    _run("enriquecer_dossier.py", [fecha], 300, 1)
+    _run("scrapear_medios_completo.py", [fecha], 300, 1)
+    _run("generar_web_v3.py", [fecha], 900, 1)
+    _run("generar_web_dossier.py", [fecha], 600, 1)
+    _run("verificar_alucinaciones.py", [fecha], 120, 1)
+    _publicar_web(fecha)
+    # ===== FIN NUEVO FLUJO WEB =====
+    
     _run("generar_blogs_blogger.py", [fecha], 600, 1)
     _run("generar_redes.py", [fecha], 300, 1)
 
