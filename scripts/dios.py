@@ -1496,7 +1496,26 @@ def _call_llm(api_key, messages, force_no_tools=False):
                 print(f"   [Groq#{idx+1}] HTTP {r.status_code}: {r.text[:300]}")
             except Exception as e:
                 print(f"   [Groq#{idx+1}] {str(e)[:80]}, siguiente...")
-        print("   [4 Groq directas fallaron -> OmniRoute]")
+        print("   [4 Groq directas fallaron. Esperando 15s y reintentando...]")
+        import time as _t
+        _t.sleep(15)
+        for idx, gk in enumerate(claves_groq[:2]):  # solo 2 reintentos
+            modelo = modelos_groq[idx] if idx < len(modelos_groq) else modelos_defecto[idx]
+            try:
+                payload = {"model": modelo, "messages": comprimir_mensajes(messages), "temperature": 0.2, "max_tokens": 1500}
+                if not force_no_tools:
+                    payload["tools"] = _filtrar_tools(_extraer_prompt(messages), TOOLS)
+                r = requests.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers={"Authorization": f"Bearer {gk}", "Content-Type": "application/json", "User-Agent": CHROME_UA},
+                    json=payload, timeout=60,
+                )
+                if r.status_code < 400:
+                    print(f"   [Groq#{idx+1} reintento OK]")
+                    return r.json()
+            except Exception:
+                pass
+        print("   [Reintento fallido -> especialistas]")
 
     omniroute_key = _leer_api_key("OMNIROUTE_API_KEY")
     omniroute_models = [
