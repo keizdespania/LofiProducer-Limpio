@@ -1409,6 +1409,41 @@ def _call_llm(api_key, messages, force_no_tools=False):
         except Exception:
             pass
 
+    # ═══ CASCADA GROQ DIRECTA (4 cuentas) → OmniRoute → especialistas ═══
+    # Primero 4 Groq directas (4x cuota). Si todas fallan → OmniRoute. Ultimo recurso especialistas.
+    claves_groq = []
+    modelos_groq = []
+    for k_name, m_name in [("GROQ_API_KEY","GROQ_MODEL_1"),("GROQ_API_KEY_2","GROQ_MODEL_2"),("GROQ_API_KEY_3","GROQ_MODEL_2"),("GROQ_API_KEY_4","GROQ_MODEL_3")]:
+        try:
+            k = _leer_api_key(k_name)
+            if k: claves_groq.append(k)
+            m = _leer_api_key(m_name)
+            if m: modelos_groq.append(m)
+        except Exception:
+            pass
+
+    # Si hay 4 Groq disponibles → usar directas
+    if claves_groq:
+        modelos_defecto = ["llama-3.3-70b-versatile", "openai/gpt-oss-120b", "llama-3.1-8b-instant", "qwen/qwen3-32b"]
+        for idx, gk in enumerate(claves_groq):
+            modelo = modelos_groq[idx] if idx < len(modelos_groq) else modelos_defecto[idx % len(modelos_defecto)]
+            try:
+                payload = {"model": modelo, "messages": comprimir_mensajes(messages), "temperature": 0.2, "max_tokens": 4096}
+                if not force_no_tools:
+                    payload["tools"] = _filtrar_tools(_extraer_prompt(messages), TOOLS)
+                r = requests.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers={"Authorization": f"Bearer {gk}", "Content-Type": "application/json"},
+                    json=payload, timeout=60,
+                )
+                if r.status_code < 400:
+                    print(f"   [Groq#{idx+1} {modelo}] OK directo")
+                    return r.json()
+                print(f"   [Groq#{idx+1}] HTTP {r.status_code}, siguiente...")
+            except Exception as e:
+                print(f"   [Groq#{idx+1}] {str(e)[:80]}, siguiente...")
+        print("   [4 Groq directas fallaron -> OmniRoute]")
+
     omniroute_key = _leer_api_key("OMNIROUTE_API_KEY")
     omniroute_models = [
         "mi-groq/qwen/qwen3.8-27b",
