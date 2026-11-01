@@ -603,3 +603,74 @@ Estado: pipeline hasta render OK. Pendiente: 72 imágenes cada 10s (segmentar_im
 > Regla de oro: 1 largo + 2-3 shorts + 12 web + 5 blogger + 4 redes/día.
 > YPP 2026: 1.000 subs + (4.000h O 10M Shorts).
 > Verticales flagship: Cultura/Medios META + Política + Tecnología/IA.
+
+
+---
+
+## 🆕 SESIÓN 2026-11-01 (DASHBOARD V2 + DIOS INFINITY)
+
+### ✅ LO HECHO
+1. Bug START ALL eliminado (Regla #30)
+2. Botón pipeline_start.sh idempotente
+3. Dashboard v2 completo (21 vistas modulares)
+4. Web vieja jubilada: / sirve v2, /v2 redirige
+5. 6 canales reales en output/nichos/*/canal.json
+6. Dios Infinity: 43 tools + ReAct
+7. Contexto dinámico _contexto_proyecto(prompt)
+8. Jarvis push-to-talk (scripts/jarvis_listen.py)
+9. Trending YouTube real vía buscar_youtube
+
+### 🏗️ WEB v2
+web/dashboard/
+  index.html
+  assets/css/{tokens,base,layout,components,views}.css
+  assets/js/{core,nav,command-palette,jarvis,notify,presets}.js
+  assets/js/views/*.js (21 ficheros)
+Rutas: /ui/assets/ (NO /assets/, colisión vieja)
+
+### 🔧 CASCADA dios.py._call_llm
+1. Groq#1 (GROQ_API_KEY)   → openai/gpt-oss-120b
+2. Groq#2 (GROQ_API_KEY_2) → openai/gpt-oss-20b
+3. Groq#3 (GROQ_API_KEY_3) → openai/gpt-oss-20b
+4. Groq#4 (GROQ_API_KEY_4) → qwen/qwen3.8-27b
+   [retry 15s, max_tokens=1500]
+5. OmniRoute DESACTIVADO (429/502 gratis saturado)
+6. brain/especialistas.py
+
+### 🚨 REGLAS NUEVAS #35-#42
+#35: OmniRoute gratis saturado → Groq directo PRIMERO
+#36: max_tokens=1500 + retry 15s (evita 429 8000 TPM)
+#37: _contexto_proyecto(prompt) dinámico (47KB→18KB)
+#38: Modelos Groq válidos: gpt-oss-120b, gpt-oss-20b, qwen3.8-27b
+     INVÁLIDOS: llama-3.3-70b, llama-3.1-8b (404)
+#39: User-Agent Chrome OBLIGATORIO en Groq (403 Cloudflare sin él)
+#40: Rutas v2 = /ui/assets/ NO /assets/
+#41: Verificar endpoints con re.findall antes de añadir
+#42: Push-to-talk > always-on (batería + falsos positivos)
+
+### 📡 ENDPOINTS JARVIS
+POST /api/jarvis/chat      → dios.py completo (43 tools)
+POST /api/jarvis/execute   → 1 tool concreta
+GET  /api/jarvis/tools     → lista
+POST /api/jarvis/listen    → push-to-talk 6s
+GET  /api/jarvis/memoria   → historial
+POST /api/jarvis/sanar     → self-healing
+GET  /api/jarvis/estratega → recomendaciones
+
+### 🎙️ JARVIS PUSH-TO-TALK
+- scripts/jarvis_listen.py (grabación 6s + Whisper ES + Davefx TTS)
+- ~/.shortcuts/jarvis_listen.sh (botón widget)
+- STOP_WORDS = para/stop/cállate/silencio/basta/detente
+- NO daemon always-on
+
+### 🔴 PENDIENTE
+P1: Regenerar OmniRoute key, limpiar backups 564MB, fix sv duplicado
+P2: Multi-agente paralelo, Termux:GUI, custom "Hey Jarvis"
+P3: Auto-arranque Termux:Boot
+
+### 🚨 NO TOCAR
+- web_dashboard.py endpoints (todos funcionan)
+- config/nichos.json (6 nichos)
+- scripts/pipeline_encuadre.py (cron 06:00)
+- ~/.shortcuts/*.sh
+- output/nichos/*/canal.json
