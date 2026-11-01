@@ -142,26 +142,33 @@ def main():
         print(f"[{num}/4] Renderizando short...", flush=True)
         try:
             # Multi-imagen: 3-4 fondos del día + logo
-            from generar_imagenes_shorts import FONDOS
             img_dir = MEDIA
             fecha_actual = FECHA
             
             # Buscar las imágenes del short (fondo por ángulo o short_bg_futurista)
             imgs_short = []
-            
-            # 1. Fondos nuevos por ángulo (si existen)
-            for num_fondo, (angulo, _) in FONDOS.items():
-                p = img_dir / f"short_fondo_{num_fondo}_{fecha_actual}_{angulo}.png"
-                if p.exists():
-                    imgs_short.append(str(p))
-            
-            # 2. Fallback: short_bg_futurista
+            imgs_short = []
+
+            # Leer mapa JSON (generado por generar_imagenes_shorts.py)
+            mapa_path = img_dir / f"short_urls_{fecha_actual}.json"
+            if mapa_path.exists():
+                import json as _json
+                try:
+                    mapa = _json.loads(mapa_path.read_text())
+                    imgs_short = mapa.get(str(num), [])
+                    imgs_short = [p for p in imgs_short if pathlib.Path(p).exists()]
+                    if imgs_short:
+                        print(f"    🗂️ Mapa: {len(imgs_short)} imágenes para short {num}", flush=True)
+                except Exception as _e:
+                    print(f"    ⚠️ Error leyendo mapa: {_e}", flush=True)
+
+            # Fallback: short_bg_futurista
             if not imgs_short:
                 fallback = img_dir / "short_bg_futurista.png"
                 if fallback.exists():
                     imgs_short = [str(fallback)]
-            
-            # 3. Fallback final: img_fondo del día
+
+            # Fallback final: img_fondo del día
             if not imgs_short and pathlib.Path(img_fondo).exists():
                 imgs_short = [str(img_fondo)]
             
