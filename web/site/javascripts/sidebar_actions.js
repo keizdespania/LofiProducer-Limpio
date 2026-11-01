@@ -4,10 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const actionsContainer = document.createElement('div');
     actionsContainer.id = 'custom-sidebar-actions';
-    actionsContainer.style.marginTop = '20px';
-    actionsContainer.style.paddingTop = '20px';
-    actionsContainer.style.borderTop = '1px solid rgba(255,255,255,0.1)';
-    actionsContainer.innerHTML = '<h5 style="font-size: 0.7rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px;">Acciones</h5>';
+    actionsContainer.innerHTML = '<h5>Acciones</h5>';
 
     // 1. BÚSQUEDA
     const searchAction = document.createElement('div');
@@ -19,32 +16,40 @@ document.addEventListener("DOMContentLoaded", function() {
     };
     actionsContainer.appendChild(searchAction);
 
-    // 2. MODO OSCURO/CLARO
+    // 2. MODO OSCURO/CLARO (disparar el checkbox real de Material)
     const themeAction = document.createElement('div');
     themeAction.className = 'sidebar-action';
-    themeAction.innerHTML = '🌓 Cambiar Tema';
+    themeAction.innerHTML = '🌓 Cambiar tema';
     themeAction.onclick = () => {
-        const html = document.documentElement;
-        const current = html.getAttribute('data-md-color-scheme');
-        html.setAttribute('data-md-color-scheme', current === 'slate' ? 'default' : 'slate');
+        const scheme = document.documentElement.getAttribute('data-md-color-scheme');
+        // Material escucha el media query del sistema + input checkbox
+        const palette = document.querySelector('[data-md-component="palette"]');
+        if (palette) {
+            const current = palette.checked;
+            palette.checked = !current;
+            palette.dispatchEvent(new Event('change', { bubbles: true }));
+            localStorage.setItem('__palette', !current ? 'slate' : 'default');
+        } else {
+            // Fallback: cambiar manualmente el atributo
+            const newScheme = scheme === 'slate' ? 'default' : 'slate';
+            document.documentElement.setAttribute('data-md-color-scheme', newScheme);
+            localStorage.setItem('__palette', newScheme);
+        }
     };
     actionsContainer.appendChild(themeAction);
 
-    // 3. IDIOMA (Lógica adaptada a GitHub Pages)
+    // 3. ENLACE A LA VERSIÓN EN INGLÉS (solo si existe, si no, aviso)
     const currentPath = window.location.pathname;
-    // Detecta si estamos en la carpeta /en/
     const isEnglish = currentPath.includes('/en/');
-    
-    // Calcula la ruta base (sacando el /en/ si estamos en ella)
-    let basePath = currentPath.replace(/\/en\/.*$/, '/');
-    if (!basePath.endsWith('/')) basePath += '/';
-
     const langAction = document.createElement('a');
     langAction.className = 'sidebar-action';
-    // Si estamos en inglés, volvemos a la raíz de la web (quitando /en/)
-    // Si estamos en español, añadimos /en/
-    langAction.href = isEnglish ? basePath : basePath + 'en/';
-    langAction.innerHTML = isEnglish ? '🇪🇸 Español' : '🇬🇧 English';
+    if (isEnglish) {
+        langAction.href = '/';
+        langAction.innerHTML = '🇪🇸 Español';
+    } else {
+        langAction.href = '/en/';
+        langAction.innerHTML = '🇬🇧 English';
+    }
     actionsContainer.appendChild(langAction);
 
     navList.appendChild(actionsContainer);

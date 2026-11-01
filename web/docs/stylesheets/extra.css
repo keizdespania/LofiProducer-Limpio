@@ -413,3 +413,180 @@ body::after {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============================================================
+   21. MENÚ LATERAL HOLOGRÁFICO (drawer móvil + sidebar desktop)
+   ============================================================ */
+
+/* Drawer móvil (el que sale al pulsar la hamburguesa) */
+.md-nav--primary .md-nav__title,
+.md-nav--primary .md-nav__title[for="__drawer"] {
+  background: rgba(10, 10, 18, 0.95) !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  color: var(--holo-cyan) !important;
+  border-bottom: 1px solid var(--holo-border);
+  box-shadow: 0 4px 30px rgba(0, 240, 255, 0.1);
+  font-weight: 800 !important;
+  letter-spacing: 0.03em;
+}
+
+/* Lista de navegación del drawer */
+.md-nav--primary .md-nav__list {
+  background: rgba(5, 5, 10, 0.98) !important;
+  backdrop-filter: blur(20px);
+}
+
+/* Links del drawer */
+.md-nav--primary .md-nav__link {
+  color: var(--holo-text) !important;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.05);
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.md-nav--primary .md-nav__link:hover {
+  color: var(--holo-cyan) !important;
+  background: rgba(0, 240, 255, 0.05);
+  padding-left: 0.5rem;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+/* Link activo (Inicio, Análisis, etc.) */
+.md-nav--primary .md-nav__link--active,
+.md-nav--primary .md-nav__link--active:focus,
+.md-nav--primary .md-nav__item--active > .md-nav__link {
+  color: var(--holo-magenta) !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 15px rgba(255, 0, 170, 0.5);
+  border-left: 3px solid var(--holo-magenta);
+  padding-left: 0.8rem !important;
+  background: linear-gradient(90deg, rgba(255, 0, 170, 0.1), transparent);
+}
+
+/* Icono hamburguesa activo */
+.md-nav--primary .md-nav__icon {
+  color: var(--holo-cyan) !important;
+}
+
+/* Overlay del drawer (fondo oscuro detrás) */
+.md-overlay {
+  background: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(5px);
+}
+
+/* Sidebar desktop (barra izquierda) */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary {
+    background: rgba(5, 5, 10, 0.5);
+    border-right: 1px solid var(--holo-border);
+    backdrop-filter: blur(10px);
+  }
+  
+  .md-sidebar--primary .md-nav__title {
+    color: var(--holo-cyan) !important;
+    font-weight: 800 !important;
+    text-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    border-bottom: 1px solid var(--holo-border);
+    padding-bottom: 0.5rem;
+  }
+  
+  .md-sidebar--primary .md-nav__link {
+    color: var(--holo-text) !important;
+    transition: all 0.3s ease;
+  }
+  
+  .md-sidebar--primary .md-nav__link:hover {
+    color: var(--holo-cyan) !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    padding-left: 0.3rem;
+  }
+  
+  .md-sidebar--primary .md-nav__link--active {
+    color: var(--holo-magenta) !important;
+    font-weight: 700 !important;
+  }
+}
+
+/* Botón "ACCIONES" (sidebar_actions.js custom) */
+.md-nav__title + .md-nav__list .md-nav__link {
+  color: var(--holo-muted) !important;
+  font-size: 0.85em !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+}
+
+/* Header móvil (barra superior del móvil) */
+.md-header {
+  background: rgba(5, 5, 10, 0.95) !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--holo-border);
+}
+
+.md-header__topic,
+.md-header__topic .md-ellipsis {
+  color: var(--holo-cyan) !important;
+  font-weight: 700 !important;
+}
+
+/* Botón búsqueda del header */
+.md-header__button {
+  color: var(--holo-text) !important;
+}
+
+.md-header__button:hover {
+  color: var(--holo-cyan) !important;
+}
+
+/* ============================================================
+   FIN MENÚ LATERAL
+   ============================================================ */
+
+/* ============================================================
+   22. BOTONES DE ACCIONES DEL SIDEBAR
+   ============================================================ */
+
+#custom-sidebar-actions {
+  border-top: 1px solid var(--holo-border);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+#custom-sidebar-actions h5 {
+  color: var(--holo-muted) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  padding-left: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.sidebar-action {
+  display: flex !important;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  margin: 0.3rem 0;
+  background: rgba(0, 240, 255, 0.03);
+  border: 1px solid var(--holo-border);
+  border-radius: 6px;
+  color: var(--holo-text) !important;
+  font-size: 0.85em;
+  font-weight: 500;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sidebar-action:hover,
+.sidebar-action:active {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: var(--holo-cyan);
+  color: var(--holo-cyan) !important;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+  transform: translateX(2px);
+}
