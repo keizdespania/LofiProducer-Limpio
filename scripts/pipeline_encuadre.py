@@ -367,6 +367,14 @@ def main():
         _run("meta_agentes_semanal.py", None, 900, 1)
 
     print(f"\n✅ PIPELINE MASIVO {fecha} COMPLETADO CON ÉXITO")
+    # Marcar pipeline como completado (para recuperación)
+    try:
+        marker = ROOT / "data" / "agent" / f"pipeline_done_{fecha}.txt"
+        marker.parent.mkdir(parents=True, exist_ok=True)
+        marker.write_text(f"{fecha} OK a las {datetime.datetime.now().isoformat()}")
+        print(f"   ✅ Marcador: {marker.name}")
+    except Exception as _e:
+        print(f"   ⚠️ No se pudo crear marcador: {_e}")
 
 if __name__ == "__main__":
     main()
