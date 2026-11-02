@@ -419,10 +419,19 @@ def main():
                         break
 
                 # Decidir tipo (dossier vs análisis normal)
-                if "dossier" in slug:
-                    r = publicar_dossier(titulo, slug, desc, fuente_url)
-                else:
-                    r = publicar_analisis(titulo, slug, desc, fuente_url)
+                # Usar comentar_y_publicar.py (comentario Dios + post)
+                import subprocess as _sp
+                tipo = "dossier" if "dossier" in slug else "analisis"
+                url_analisis = f"https://elencuadre.pages.dev/analisis/{slug}/"
+                try:
+                    _sp.run(
+                        ["python3", "scripts/comentar_y_publicar.py",
+                         tipo, titulo, url_analisis, fuente_url],
+                        cwd=str(ROOT), timeout=180, capture_output=True
+                    )
+                    r = {"ok": True}  # Asumir OK si el subprocess no falla
+                except Exception as _e:
+                    r = {"ok": False, "error": str(_e)}
 
                 if r.get("ok"):
                     pub_count += 1
