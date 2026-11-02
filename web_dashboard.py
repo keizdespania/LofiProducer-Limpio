@@ -311,12 +311,8 @@ def api_dashboard():
                 salud[name] = "ok" if r.status < 500 else "error"
         except Exception:
             salud[name] = "down"
-    try:
-        import subprocess as _sp
-        r = _sp.run(["pgrep", "-f", "task_worker.py"], capture_output=True, timeout=3)
-        salud["worker"] = "ok" if r.returncode == 0 else "down"
-    except Exception:
-        salud["worker"] = "?"
+    # Worker eliminado 2026-11-02 (deprecado, cola vacía)
+    salud["worker"] = "deprecado"
     try:
         import subprocess as _sp
         r = _sp.run(["du", "-sh", "."], capture_output=True, text=True, timeout=5, cwd=str(ROOT))
