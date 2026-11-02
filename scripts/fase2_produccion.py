@@ -237,6 +237,53 @@ INSTRUCCIONES OBLIGATORIAS:
         viral = {"score": 75, "razon": "Fallback"}
     res["viralidad"] = viral
 
+    # 5. GENERAR SHORTS FINALES (4 shorts multi-ángulo)
+    print("[fase2] 5/5 Generando 4 shorts finales...", flush=True)
+    tipos_short = ["dato", "contradiccion", "prediccion", "tutorial"]
+    hooks_base = [
+        str(res.get("dossier", {}).get("titular_brutal", "") or ""),
+        str(res.get("dossier", {}).get("resumen_ejecutivo", "") or ""),
+        str(res.get("dossier", {}).get("citas_bomba", "") or ""),
+        str(res.get("dossier", {}).get("conclusion", "") or ""),
+    ]
+    shorts_finales = []
+    for i, tipo in enumerate(tipos_short, 1):
+        try:
+            print(f"   [Short {i}/4] Generando guion ({tipo})...", flush=True)
+            hook_ctx = str(hooks_base[i-1] if i-1 < len(hooks_base) and hooks_base[i-1] else res.get("dossier", {}).get("titular_brutal", "") or "")
+            prompt = (
+                f"Eres guionista de shorts de 'El Encuadre'. Tu misión es desmontar la manipulación mediática. "
+                f"Tipo: {tipo}. Contexto: '{hook_ctx[:200]}'. "
+                "Escribe 50-60 palabras para un short de 40 segundos. "
+                "Empieza con pregunta que despierte curiosidad. "
+                "Menciona el medio y la técnica de manipulación. "
+                "TERMINA EXACTAMENTE con: 'Somos El Encuadre, analistas de la manipulación. Suscríbete para más'. "
+                "Sin markdown, sin acotaciones, sin comillas."
+            )
+            guion = pedir_a_especialista("guionista_retencion_v2", prompt, contexto=hook_ctx[:500], proveedor="auto")
+            if not guion or len(guion.split()) < 20:
+                # Fallback mínimo
+                guion = f"¿Sabes cómo {tipo} los medios manipulan la información? {hook_ctx[:100]}... Somos El Encuadre, analistas de la manipulación. Suscríbete para más."
+            # Limpiar
+            import re as _re
+            guion = _re.sub(r'\[[^\]]*\]', '', guion)
+            guion = _re.sub(r'\s+', ' ', guion).strip()
+            # Truncar a 50 palabras
+            palabras = guion.split()
+            if len(palabras) > 50:
+                guion = " ".join(palabras[:50]) + "..."
+            shorts_finales.append({
+                "tipo": tipo,
+                "guion": guion,
+                "hook": hook_ctx[:100] if hook_ctx else guion[:100],
+            })
+            print(f"      ✅ {len(guion.split())} palabras", flush=True)
+        except Exception as _e:
+            print(f"      ⚠️ Short {i} falló: {_e}", flush=True)
+
+    res["shorts_finales"] = shorts_finales
+    print(f"[fase2] ✅ {len(shorts_finales)} shorts finales generados", flush=True)
+
     # GUARDAR
     out_json = OUT / f"produccion_{fecha}.json"
     out_json.write_text(json.dumps(res, indent=2, ensure_ascii=False))

@@ -674,3 +674,33 @@ P3: Auto-arranque Termux:Boot
 - scripts/pipeline_encuadre.py (cron 06:00)
 - ~/.shortcuts/*.sh
 - output/nichos/*/canal.json
+
+
+---
+
+## 🎙️ PODCAST — DISTRIBUCIÓN Y LIMPIEZA (2026-11-02)
+
+### ARQUITECTURA DEFINITIVA (no implementada aún, apuntada)
+1. **Pipeline genera MP3** → `web/docs/podcast/YYYY-MM-DD.mp3`
+2. **RSS feed propio** → `web/docs/podcast/feed.xml` (ya existe)
+3. **Spotify for Podcasters** se suscribe al RSS → publica automáticamente
+4. **Apple Podcasts** igual
+5. **YouTube** con API (ya integrada)
+6. **Web** muestra **iframe del reproductor** (Spotify/Apple) → NO MP3 local
+7. **MP3 local** se borra tras confirmar subida (o >30 días como fallback)
+
+### PLAN 3 FASES
+- **Fase 1 (hoy)**: MP3 en GitHub 30 días + `<audio controls>` en web
+- **Fase 2 (esta semana)**: RSS feed bien formado + Spotify for Podcasters
+- **Fase 3 (próxima semana)**: Cloudflare R2 para MP3 (10 GB gratis) → GitHub 0 MP3
+
+### REGLAS NUEVAS
+- **#46**: Podcasts NO van a GitHub permanente. Solo 30 días como fallback. Distribución real = Spotify/Apple/YouTube.
+- **#47**: Web muestra **iframe** de Spotify/Apple, NO MP3 de 11 MB (carga lenta).
+- **#48**: Cuando Spotify esté configurado, `web/docs/podcast/*.mp3` se puede borrar inmediatamente (Spotify lo hospeda).
+
+### PENDIENTE
+- [ ] Configurar Spotify for Podcasters (manual, 10 min)
+- [ ] Migrar RSS para que Spotify lo acepte
+- [ ] Cloudflare R2 para MP3 (opcional, cuando crezca)
+- [ ] Iframe Spotify en web (cuando esté configurado)

@@ -211,58 +211,131 @@ def main():
         musica_short = None
         mood = MOODS_SHORTS.get(tipo, "epico")
         print(f"  [{num}/{len(shorts)}] Música ({mood}) [contexto=short_{num}]...", flush=True)
-        try:
-            sys.path.insert(0, str(ROOT / "scripts"))
-            from gestor_musica import obtener_musica
-            _m = obtener_musica(mood=mood, duracion_objetivo=40, contexto=f"short_{num}")
-            musica_short = _m["archivo"]
-            print(f"     ✅ {musica_short.name} ({_m.get("licencia","?")})", flush=True)
-        except Exception as e:
-            print(f"     ⚠️ gestor_musica short falló: {e}", flush=True)
-            # Fallback Tunetank directo
+        # Música CORTA para short (40-60s) — CLAVE: no usar lofi_base de 15min
+        musica_short = None
+        # 1. Intentar short_musica_peak.mp3 (ya existe, funciona)
+        peak = ROOT / "output" / "musica_temp" / "short_musica_peak.mp3"
+        if peak.exists():
+            musica_short = peak
+            print(f"     🎵 Música: short_musica_peak.mp3", flush=True)
+        else:
+            # 2. gestor_musica
             try:
-                r = descargar_por_mood(mood, 1)
-                if r: musica_short = ROOT / "output" / "musica_temp" / r[0]["archivo"]
-            except: pass
+                sys.path.insert(0, str(ROOT / "scripts"))
+                from gestor_musica import obtener_musica
+                _m = obtener_musica(mood=mood, duracion_objetivo=40, contexto=f"short_{num}")
+                musica_short = _m["archivo"]
+                print(f"     🎵 {musica_short.name}", flush=True)
+            except Exception as e:
+                print(f"     ⚠️ gestor_musica: {e}", flush=True)
+                # 3. Fallback Tunetank
+                try:
+                    r = descargar_por_mood(mood, 1)
+                    if r: musica_short = ROOT / "output" / "musica_temp" / r[0]["archivo"]
+                except: pass
         musica_arg = str(musica_short) if musica_short else ""
 
-        # Imagen vertical con fallback (SIEMPRE debe haber una)
-        img_vertical = ROOT / "web" / "media" / "imagenes" / "short_bg_01.png"
-        
-        if not img_vertical.exists():
-            imgs = list((ROOT / "web" / "media" / "imagenes").glob("escena_*.png"))
-            if imgs:
-                img_vertical = imgs[0]
-            else:
-                # No hay ninguna imagen: GENERAR UNA NUEVA con SDXL
-                print(f"     🖼️ No hay imagen para el short {num}. Generando una nueva con SDXL...", flush=True)
-                try:
-                    sys.path.insert(0, str(ROOT / "scripts"))
-                    from generar_imagen import generar
-                    r = generar(
-                        f"cinematic dark news analysis, vertical composition, {tipo} concept, dramatic lighting, no text",
-                        preset="cinematic", aspect="9:16", canal="encuadre"
-                    )
-                    if 'OK: ' in r:
-                        ruta = r.split('OK: ')[1].split(' ')[0]
-                        if Path(ruta).exists():
-                            import shutil
-                            destino = ROOT / "web" / "media" / "imagenes" / f"short_bg_{num:02d}.png"
-                            shutil.copy2(ruta, destino)
-                            img_vertical = destino
-                            print(f"     ✅ Imagen generada: {destino.name}", flush=True)
-                except Exception as e:
-                    print(f"     ⚠️ SDXL falló: {e}", flush=True)
-                
-                # Si SDXL también falla, generar un fondo negro de emergencia
-                if not img_vertical.exists() or img_vertical == (ROOT / "web" / "media" / "imagenes" / "short_bg_01.png"):
-                    print(f"     ⚠️ Usando fondo de emergencia (negro).", flush=True)
-                    img_vertical = ROOT / "output" / "render_tmp" / f"emergencia_{num}.png"
-                    subprocess.run([
-                        "ffmpeg", "-y", "-f", "lavfi", "-i", "color=c=black:s=1080x1920:d=1",
-                        "-frames:v", "1", str(img_vertical)
-                    ], capture_output=True)
+        # ═══════════════════════════════════════════════════════════════
+        # IMAGEN VERTICAL: PRIORIDAD ESTRICTA (Regla #45)
+        # 1. short_{num}_*{fecha}* (imágenes específicas del short) — OBLIGATORIO
+        # 2. short_bg_{num}.png (fondo genérico por short)
+        # 3. short_bg_01.png (fondo global) — solo si es vertical
+        # 4. Generar con SDXL 9:16 si no hay nada
+        # 5. Fondo negro de emergencia
+        # ═══════════════════════════════════════════════════════════════
+        from PIL import Image as _Img
+        def _es_vertical(_p):
+            try:
+                _im = _Img.open(_p)
+                return _im.size[1] > _im.size[0]
+            except: return False
 
+        img_vertical = None
+        # 1. PRIORIDAD MÁXIMA: imágenes específicas del short
+        imgs_short_especificas = sorted(
+            (ROOT / "web" / "media" / "imagenes").glob(f"short_{num}_*{fecha}*")
+        )
+        if imgs_short_especificas:
+            for candidata in imgs_short_especificas:
+                if _es_vertical(candidata):
+                    img_vertical = candidata
+                    print(f"     🖼️ [P1] Imagen propia del short: {candidata.name}", flush=True)
+                    break
+            if img_vertical is None:
+                # hay imágenes del short pero ninguna vertical → usar la primera y forzar
+                img_vertical = imgs_short_especificas[0]
+                print(f"     ⚠️ [P1] Ninguna vertical, forzando: {img_vertical.name}", flush=True)
+                # Forzar a 9:16 con ffmpeg
+                try:
+                    vertical_temp = ROOT / "output" / "render_tmp" / f"forzada_{num}.png"
+                    vertical_temp.parent.mkdir(parents=True, exist_ok=True)
+                    subprocess.run([
+                        "ffmpeg", "-y", "-loglevel", "quiet", "-i", str(img_vertical),
+                        "-vf", "scale=768:1344:force_original_aspect_ratio=increase,crop=768:1344",
+                        str(vertical_temp)
+                    ], capture_output=True, timeout=30)
+                    if vertical_temp.exists():
+                        img_vertical = vertical_temp
+                        print(f"     ✅ [P1] Forzada a 9:16", flush=True)
+                except Exception as _e:
+                    print(f"     ⚠️ Forzado falló: {_e}", flush=True)
+
+        # 2. FALLBACK: short_bg_{num}.png específico
+        if img_vertical is None:
+            bg_especifico = ROOT / "web" / "media" / "imagenes" / f"short_bg_{num:02d}.png"
+            if bg_especifico.exists() and _es_vertical(bg_especifico):
+                img_vertical = bg_especifico
+                print(f"     🖼️ [P2] Fondo específico short: {bg_especifico.name}", flush=True)
+
+        # 3. FALLBACK: short_bg_01.png global (si es vertical)
+        if img_vertical is None:
+            bg_global = ROOT / "web" / "media" / "imagenes" / "short_bg_01.png"
+            if bg_global.exists() and _es_vertical(bg_global):
+                img_vertical = bg_global
+                print(f"     🖼️ [P3] Fondo global short_bg_01.png", flush=True)
+
+        # 4. FALLBACK: escenas verticales
+        if img_vertical is None:
+            escenas = sorted((ROOT / "web" / "media" / "imagenes").glob("escena_*.png"))
+            for e in escenas:
+                if _es_vertical(e):
+                    img_vertical = e
+                    print(f"     🖼️ [P4] Escena vertical: {e.name}", flush=True)
+                    break
+
+        # 5. ÚLTIMO RECURSO: generar con SDXL 9:16
+        if img_vertical is None:
+            print(f"     🖼️ [P5] Sin imágenes verticales. Generando con SDXL 9:16...", flush=True)
+            try:
+                sys.path.insert(0, str(ROOT / "scripts"))
+                from generar_imagen import generar
+                r = generar(
+                    f"cinematic dark news analysis, vertical composition, {tipo} concept, dramatic lighting, no text",
+                    preset="cinematic", aspect="9:16", canal="encuadre"
+                )
+                if 'OK: ' in r:
+                    ruta = r.split('OK: ')[1].split(' ')[0]
+                    if Path(ruta).exists():
+                        import shutil
+                        destino = ROOT / "web" / "media" / "imagenes" / f"short_bg_{num:02d}.png"
+                        shutil.copy2(ruta, destino)
+                        img_vertical = destino
+                        print(f"     ✅ [P5] Generada: {destino.name}", flush=True)
+            except Exception as e:
+                print(f"     ⚠️ [P5] SDXL falló: {e}", flush=True)
+
+        # 6. EMERGENCIA: fondo negro 1080x1920
+        if img_vertical is None or not Path(img_vertical).exists():
+            print(f"     ⚠️ [P6] Fondo negro de emergencia", flush=True)
+            emergencia = ROOT / "output" / "render_tmp" / f"emergencia_{num}.png"
+            emergencia.parent.mkdir(parents=True, exist_ok=True)
+            subprocess.run([
+                "ffmpeg", "-y", "-f", "lavfi", "-i", "color=c=black:s=1080x1920:d=1",
+                "-frames:v", "1", str(emergencia)
+            ], capture_output=True)
+            img_vertical = emergencia
+
+        print(f"     ✅ [FINAL] Usando: {Path(img_vertical).name}", flush=True)
         salida_short = OUT / f"short_{num}_{fecha}.mp4"
         print(f"  [{num}/{len(shorts)}] Renderizando short...", flush=True)
         for intento in range(2):
@@ -356,7 +429,6 @@ def main():
     
     # CAPA 1/3: Mantenimiento
     _run("monitor_salud.py", None, 300, 1)
-    _run("rollback_auto.py", None, 300, 1)
 
     import datetime as _dt
     if _dt.date.today().weekday() == 6:

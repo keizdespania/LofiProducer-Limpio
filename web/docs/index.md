@@ -13,32 +13,32 @@ hide:
 <h2 class="holo-section-title">Últimos Análisis</h2>
 
 <div class="holo-grid">
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-01-mediano-medio_crudo/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-02-mediano-quirurgico/'">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     
-    <h3>HuffPost Spain: la tecnica del fear appeal</h3>
-    <p>Analisis medio_crudo: HuffPost Spain: la tecnica del fear appeal</p>
-    <div class="holo-meta"><span>📅 2026-11-01</span></div>
+    <h3>El ángulo que nadie cuenta: “Adif dejó ‘en visto’ las recomendaciones de la CI</h3>
+    <p>Analisis quirurgico: El ángulo que nadie cuenta: “Adif dejó ‘en visto’ las recomendaciones de la CI</p>
+    <div class="holo-meta"><span>📅 2026-11-02</span></div>
     
-    <a href="https://www.huffingtonpost.es/sociedad/el-origen-refugio-manuel-carrasco-tsunami-arraso-costa-huelva-1755-dejo-isla-nueva-comenzo-habitada-f202611.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · huffingtonpost.es</a>
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-01-largo/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-02-largo/'">
     <div class="holo-badge badge-new">🔥 Análisis Diario</div>
     
-    <h3>El Encuadre: Santander abona este lunes 1.850 millones de eu</h3>
-    <p>Analisis largo: El Encuadre: Santander abona este lunes 1.850 millones de eu</p>
-    <div class="holo-meta"><span>📅 2026-11-01</span></div>
+    <h3>El Encuadre: PP y Vox suman una amplia mayoría y el PSOE se </h3>
+    <p>Analisis largo: El Encuadre: PP y Vox suman una amplia mayoría y el PSOE se </p>
+    <div class="holo-meta"><span>📅 2026-11-02</span></div>
     
-    <a href="https://theobjective.com/deportes/futbol/laliga/2026-11-01/television-estatal-china-laliga-mbappe/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+    <a href="https://www.elmundo.es/espana/encuestas/2026/11/01/6ae77446e4d4d8f3698b458a.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elmundo.es</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-01-dossier-v2/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-02-dossier-v2/'">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
     
-    <h3>Dossier del día: El Encuadre: Santander abona este lunes 1.850 millones de eu</h3>
-    <p>Dossier ejecutivo: El Encuadre: Santander abona este lunes 1.850 millones de euros en dividendo en </p>
-    <div class="holo-meta"><span>📅 2026-11-01</span></div>
+    <h3>Dossier del día: El Encuadre: PP y Vox suman una amplia mayoría y el PSOE se </h3>
+    <p>Dossier ejecutivo: El Encuadre: PP y Vox suman una amplia mayoría y el PSOE se hunde por debajo de </p>
+    <div class="holo-meta"><span>📅 2026-11-02</span></div>
     
-    <a href="https://theobjective.com/deportes/futbol/laliga/2026-11-01/television-estatal-china-laliga-mbappe/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+    <a href="https://www.elmundo.es/espana/encuestas/2026/11/01/6ae77446e4d4d8f3698b458a.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elmundo.es</a>
   </div>
   <a href="glosario/" class="holo-card">
     <div class="holo-badge badge-guide">📚 Guía Definitiva</div>
