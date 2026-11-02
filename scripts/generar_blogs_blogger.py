@@ -76,9 +76,18 @@ def generar_blogs(fecha=None):
         try: cola_actual = json.loads(COLA_FILE.read_text())
         except: cola_actual = []
 
+    # OPCIÓN A (2026-11-02): solo 2 posts a Blogger (anti-baneo)
+    BLOGGER_ONLY = {"master", "video"}
     for i, post in enumerate(posts_en_cola):
-        # Publicar cada 3 horas (empezando 1 hora después del maestro)
-        hora_pub = (ahora + datetime.timedelta(hours=1 + i*3)).isoformat()
+        if post["slug"] not in BLOGGER_ONLY:
+            print(f"  ⏭️ {post['slug']}: solo web+Telegram (no Blogger)")
+            continue
+        # OPCIÓN A: horarios fijos para los 2 posts que van a Blogger
+        HORARIOS = {"master": 10, "video": 17}  # 10:30 y 17:00
+        hora_base = ahora.replace(hour=HORARIOS.get(post["slug"], 12), minute=30, second=0, microsecond=0)
+        if hora_base < ahora:
+            hora_base = hora_base + datetime.timedelta(days=1)
+        hora_pub = hora_base.isoformat()
         filename = _guardar_post_en_cola(fecha, post["slug"], post["titulo"], post["html"])
         cola_actual.append({
             "tipo": "blogger",
@@ -89,7 +98,9 @@ def generar_blogs(fecha=None):
         })
     
     COLA_FILE.write_text(json.dumps(cola_actual, indent=2))
-    print(f"\n[blogger] ✅ {len(posts_en_cola)} posts en cola (se publicarán cada 3h).")
+    n_blogger = sum(1 for p in posts_en_cola if p["slug"] in BLOGGER_ONLY)
+    n_web = len(posts_en_cola) - n_blogger
+    print(f"\n[blogger] ✅ {len(posts_en_cola)} generados · {n_blogger} a Blogger (10:30+17:00) · {n_web} solo web+Telegram")
 
 if __name__ == "__main__":
     generar_blogs(sys.argv[1] if len(sys.argv) > 1 else None)
