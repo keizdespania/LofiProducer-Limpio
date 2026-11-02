@@ -179,6 +179,19 @@ def main():
     # LIMPIAR música externa (YouTube CC, Tunetank); conservar ACE-Step
     _run("limpiar_musica_render.py", [fecha], 300, 1)
 
+    # Preparar música del día (rotador de pool CC)
+    print("\n" + "="*60 + "\nPREPARANDO MÚSICA DEL DÍA\n" + "="*60, flush=True)
+    musica_dia = None
+    try:
+        from musica_short_del_dia import preparar as preparar_musica
+        musica_dia = preparar_musica()
+        if musica_dia:
+            print(f"✅ Música del día: {Path(musica_dia).name}", flush=True)
+        else:
+            print("⚠️ Sin música del día (shorts se renderizarán sin música)", flush=True)
+    except Exception as _e:
+        print(f"⚠️ Música del día falló: {_e}", flush=True)
+
     # Render Shorts
     print("\n" + "="*60 + "\nRENDERIZANDO SHORTS CON ROT\n" + "="*60, flush=True)
     from render_short_rot import generar_short
@@ -218,13 +231,14 @@ def main():
         musica_short = None
         mood = MOODS_SHORTS.get(tipo, "epico")
         print(f"  [{num}/{len(shorts)}] Música ({mood}) [contexto=short_{num}]...", flush=True)
-        # Música CORTA para short (40-60s) — CLAVE: no usar lofi_base de 15min
+        # Música: usar la del día (del pool CC)
         musica_short = None
-        # 1. Intentar short_musica_peak.mp3 (ya existe, funciona)
-        peak = ROOT / "output" / "musica_temp" / "short_musica_peak.mp3"
-        if peak.exists():
-            musica_short = peak
-            print(f"     🎵 Música: short_musica_peak.mp3", flush=True)
+        if musica_dia and Path(musica_dia).exists():
+            musica_short = Path(musica_dia)
+            print(f"     🎵 Música del día: {musica_short.name}", flush=True)
+        elif (ROOT / "output" / "musica_temp" / "short_musica_peak.mp3").exists():
+            musica_short = ROOT / "output" / "musica_temp" / "short_musica_peak.mp3"
+            print(f"     🎵 Fallback: short_musica_peak.mp3", flush=True)
         else:
             # 2. gestor_musica
             try:
