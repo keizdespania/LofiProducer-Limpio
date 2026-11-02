@@ -48,3 +48,87 @@ data/musica_libre/*/*.mp3
 
 # Call logs
 data/call_logs/
+
+# === LIMPIEZA 2026-11-02 ===
+# Assets pesados que NO deben ir a git (se descargan aparte)
+assets/models/
+output/snapshots/
+data/backups/
+data/call_logs/
+data/storage.sqlite
+data/storage.sqlite-wal
+data/storage.sqlite-shm
+.wheels_hack/
+# Podcasts (se mantienen 30 días en local, no siempre en git)
+web/docs/podcast/*.mp3
+web/site/podcast/*.mp3
+# Vídeos (se suben a YouTube, no a git)
+output/encuadre/*.mp4
+output/videos/*.mp4
+# Imágenes generadas (se regeneran)
+output/imagenes/*.png
+# Música temporal
+output/musica_temp/
+# Cachés
+__pycache__/
+*.pyc
+*.pyo
+# Archivos de sistema
+.DS_Store
+*.swp
+
+# === LIMPIEZA 2026-11-02 ===
+# Assets pesados que NO deben ir a git (se descargan aparte)
+assets/models/
+output/snapshots/
+data/backups/
+data/call_logs/
+data/storage.sqlite
+data/storage.sqlite-wal
+data/storage.sqlite-shm
+.wheels_hack/
+# Podcasts (se mantienen 30 días en local, no siempre en git)
+web/docs/podcast/*.mp3
+web/site/podcast/*.mp3
+# Vídeos (se suben a YouTube, no a git)
+output/encuadre/*.mp4
+output/videos/*.mp4
+# Imágenes generadas (se regeneran)
+output/imagenes/*.png
+# Música temporal
+output/musica_temp/
+# Cachés
+__pycache__/
+*.pyc
+*.pyo
+# Archivos de sistema
+.DS_Store
+*.swp
+
+# === LIMPIEZA 2026-11-02 ===
+# Assets pesados que NO deben ir a git (se descargan aparte)
+assets/models/
+output/snapshots/
+data/backups/
+data/call_logs/
+data/storage.sqlite
+data/storage.sqlite-wal
+data/storage.sqlite-shm
+.wheels_hack/
+# Podcasts (se mantienen 30 días en local, no siempre en git)
+web/docs/podcast/*.mp3
+web/site/podcast/*.mp3
+# Vídeos (se suben a YouTube, no a git)
+output/encuadre/*.mp4
+output/videos/*.mp4
+# Imágenes generadas (se regeneran)
+output/imagenes/*.png
+# Música temporal
+output/musica_temp/
+# Cachés
+__pycache__/
+*.pyc
+*.pyo
+# Archivos de sistema
+.DS_Store
+*.swp
