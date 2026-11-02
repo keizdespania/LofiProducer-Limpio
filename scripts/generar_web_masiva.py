@@ -44,7 +44,7 @@ def generar_web_masiva(fecha=None):
     dossier = datos.get("dossier", {})
     articulo = datos.get("articulo_html", "")
     seo = datos.get("seo", {}).get("youtube", {})
-    links = """<hr><p style="font-size:0.9em;padding:10px;background:#111;border-radius:8px;"><strong>Síguenos:</strong> <a href="https://youtube.com/@somoselencuadre.oficial.oficial.oficial">YouTube</a> | <a href="https://tiktok.com/@somoselencuadre.oficial">TikTok</a> | <a href="https://instagram.com/somoselencuadre">Instagram</a> | <a href="https://x.com/somoselencuadre">X</a></p>"""
+    links = """<hr><p style="font-size:0.9em;padding:10px;background:#111;border-radius:8px;"><strong>Síguenos:</strong> <a href="https://youtube.com/@somoselencuadre.oficial">YouTube</a> | <a href="https://tiktok.com/@somoselencuadre">TikTok</a> | <a href="https://instagram.com/somoselencuadre">Instagram</a> | <a href="https://x.com/somoselencuadre">X</a></p>"""
 
     posts_en_cola = []
     

@@ -18,7 +18,7 @@ def compartir_red(red, video_path, texto):
     if red == "youtube_comunidad":
         print("🚀 Abriendo YouTube Comunidad...")
         try:
-            subprocess.run(["termux-open-url", "https://www.youtube.com/@somoselencuadre.oficial.oficial.oficial/community"], check=False)
+            subprocess.run(["termux-open-url", "https://www.youtube.com/@somoselencuadre.oficial/community"], check=False)
         except Exception as e:
             print(f"❌ Error: {e}")
         return True

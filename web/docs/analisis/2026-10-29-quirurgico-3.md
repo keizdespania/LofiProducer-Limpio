@@ -24,4 +24,4 @@ tags:
         h2{font-size:1.6rem; margin-top:2rem; color:#444;}
         p{margin:1rem 0;}
         blockquote{border-left:4px solid #ccc; padding-left:1rem; color:#555; font-style:italic;}
-        .highlight{background:#fffbcc; padding:.2rem .4rem; border-radius:<hr><p style="font-size:0.9em;padding:10px;background:#111;border-radius:8px;"><strong>Síguenos:</strong> <a href="https://youtube.com/@somoselencuadre.oficial.oficial.oficial">YouTube</a> | <a href="https://tiktok.com/@somoselencuadre.oficial">TikTok</a> | <a href="https://instagram.com/somoselencuadre">Instagram</a> | <a href="https://x.com/somoselencuadre">X</a></p>
+        .highlight{background:#fffbcc; padding:.2rem .4rem; border-radius:<hr><p style="font-size:0.9em;padding:10px;background:#111;border-radius:8px;"><strong>Síguenos:</strong> <a href="https://youtube.com/@somoselencuadre.oficial">YouTube</a> | <a href="https://tiktok.com/@somoselencuadre">TikTok</a> | <a href="https://instagram.com/somoselencuadre">Instagram</a> | <a href="https://x.com/somoselencuadre">X</a></p>

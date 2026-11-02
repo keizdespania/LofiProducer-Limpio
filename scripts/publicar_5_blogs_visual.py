@@ -12,11 +12,11 @@ from subir_imagenes_github import url_imagen, obtener_hero_y_secundarias
 FECHA = sys.argv[1] if len(sys.argv) > 1 else datetime.date.today().isoformat()
 
 REDES = {
-    "YouTube": "https://youtube.com/@somoselencuadre.oficial.oficial.oficial",
-    "TikTok": "https://tiktok.com/@somoselencuadre.oficial",
+    "YouTube": "https://youtube.com/@somoselencuadre.oficial",
+    "TikTok": "https://tiktok.com/@somoselencuadre",
     "Instagram": "https://instagram.com/somoselencuadre",
     "X": "https://x.com/SomosElEncuadre",
-    "Threads": "https://threads.net/@somoselencuadre.oficial",
+    "Threads": "https://threads.net/@somoselencuadre",
     "Web": "https://elencuadre.pages.dev",
 }
 
