@@ -704,3 +704,46 @@ P3: Auto-arranque Termux:Boot
 - [ ] Migrar RSS para que Spotify lo acepte
 - [ ] Cloudflare R2 para MP3 (opcional, cuando crezca)
 - [ ] Iframe Spotify en web (cuando esté configurado)
+
+---
+
+## 🎬 CONTRATO DE SHORTS v2.0 (2026-11-02)
+
+**Ver:** `data/agent/short_contract.json`
+
+### 🚨 CAMBIO CRÍTICO: rot DEPRECADO
+- **rot 0.1.0** se cuelga en Termux con `anullsrc` mal ordenado
+- **Sin torch no puede alinear palabras** (stable-ts + torch = 2 GB, incompatible)
+- **Solución:** ffmpeg directo + SRT propio desde `edge_tts` SentenceBoundary
+
+### Pipeline de shorts (5 pasos)
+1. **Música del día:** `scripts/musica_short_del_dia.py` descarga 1 link CC del pool (rotador diario)
+2. **Imágenes:** 3 verticales 9:16 por short (SDXL Lightning, 3.7s cada una)
+3. **Voz:** `edge_tts` es-ES-AlvaroNeural rate=-5%
+4. **SRT:** `scripts/srt_desde_voz.py` genera timestamps exactos por frase
+5. **Render:** `scripts/render_short_rot.py` v4 → ffmpeg + subtitles quemados
+
+### 5 niveles de fallback (nunca falla)
+1. ffmpeg + SRT + música (14.8s)
+2. ffmpeg + SRT sin música
+3. ffmpeg sin SRT con música
+4. ffmpeg sin SRT sin música
+5. Estático 5s (nunca falla)
+
+### Música CC (Creative Commons)
+- **Pool:** `config/musica_shorts_pool.json` (72 links CC actuales)
+- **Cazador:** `scripts/cazar_links_musica.py` (filtro `license=creativeCommon`)
+- **Rotador:** `scripts/musica_short_del_dia.py` (1 link/día vía counter)
+- **Moods:** tension, epico, relax, electronico, misterio, inspirador
+- **Renovación:** cuando <20 links → relanzar cazador
+
+### Subtítulos SIN torch
+- **Método:** SRT propio desde `edge_tts` SentenceBoundary
+- **Timestamps:** exactos por frase (no estimados)
+- **Estilo:** DejaVu Sans, blanco con borde negro, MarginV=150
+- **Por qué no rot:** requiere stable-ts + torch (2 GB, incompatible Termux)
+
+### Publicación YouTube
+- **Modo:** `private` + `publishAt` (programado 18:00 UTC = 20:00 España)
+- **Auditoría:** pendiente (mientras: aviso Telegram con botones a Studio)
+- **Fix aplicado:** `avisar_videos_privados` en notificador (HTML + botones)
