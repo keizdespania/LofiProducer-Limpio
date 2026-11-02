@@ -397,14 +397,18 @@ def main():
                 if txt.startswith("---"):
                     try:
                         fm_end = txt.find("---", 3)
-                        fm_txt = txt[3:fm_end].strip()
-                        for line in fm_txt.split("\n"):
-                            if line.startswith("title:"):
-                                titulo = line.split(":", 1)[1].strip().strip('"').strip("'")
-                            elif line.startswith("description:"):
-                                desc = line.split(":", 1)[1].strip().strip('"').strip("'")
+                        if fm_end > 0:
+                            fm_txt = txt[3:fm_end].strip()
+                            for line in fm_txt.split("\n"):
+                                if line.startswith("title:"):
+                                    titulo = line.split(":", 1)[1].strip().strip('"').strip("'")
+                                elif line.startswith("description:"):
+                                    desc = line.split(":", 1)[1].strip().strip('"').strip("'")
+                        # Fallback: si título vacío, usar slug legible
+                        if not titulo or len(titulo) < 3:
+                            titulo = slug.replace("-", " ").title()
                     except Exception:
-                        pass
+                        titulo = slug.replace("-", " ").title()
 
                 # Extraer URL fuente del cuerpo
                 import re
@@ -424,12 +428,14 @@ def main():
                 tipo = "dossier" if "dossier" in slug else "analisis"
                 url_analisis = f"https://elencuadre.pages.dev/analisis/{slug}/"
                 try:
-                    _sp.run(
+                    _res = _sp.run(
                         ["python3", "scripts/comentar_y_publicar.py",
                          tipo, titulo, url_analisis, fuente_url],
-                        cwd=str(ROOT), timeout=180, capture_output=True
+                        cwd=str(ROOT), timeout=90, capture_output=True, text=True
                     )
-                    r = {"ok": True}  # Asumir OK si el subprocess no falla
+                    r = {"ok": _res.returncode == 0, "error": _res.stderr[:200] if _res.returncode != 0 else ""}
+                except _sp.TimeoutExpired:
+                    r = {"ok": False, "error": "timeout 90s"}
                 except Exception as _e:
                     r = {"ok": False, "error": str(_e)}
 
@@ -437,7 +443,7 @@ def main():
                     pub_count += 1
                     print(f"   ✅ Publicado: {slug}")
                 else:
-                    print(f"   ❌ Falló: {slug} — {r.get('error')}")
+                    print(f"   ❌ Falló: {slug} — {r.get('error', 'desconocido')[:100]}")
 
         # Resumen del pipeline
         n_short = len(list((ROOT / "output" / "encuadre").glob(f"short_*_{fecha}.mp4")))
