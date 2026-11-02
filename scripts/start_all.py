@@ -96,7 +96,6 @@ def start_web() -> None:
     subprocess.run(["pkill", "-9", "-f", "web_dashboard.py"], capture_output=True)
     time.sleep(3)
     
-    # --- Arrancar el Worker de Tareas en background ---
     
     log(f"🚀 Arrancando Flask en el puerto {WEB_PORT}...")
     log_file = PROJECT_ROOT / "data" / "logs" / "web.log"
