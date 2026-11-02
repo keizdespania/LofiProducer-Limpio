@@ -28,7 +28,6 @@ data/musica_libre/*.mp3
 data/musica_libre/*/*.mp3
 
 # === WEB: build estático (se regenera con mkdocs) ===
-web/site/
 web/media/imagenes/
 web/web/
 
