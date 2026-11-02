@@ -126,6 +126,45 @@ def _fecha_hoy():
     from datetime import date
     return date.today().isoformat()
 
+
+
+def avisar_videos_privados(videos):
+    """Avisa por Telegram de vídeos subidos en privado. HTML robusto."""
+    cid = _env("TELEGRAM_CHAT_ID")
+    if not cid:
+        print("⚠️ Sin TELEGRAM_CHAT_ID")
+        return {"ok": False}
+    if not videos:
+        return {"ok": True}
+
+    def esc(t):
+        return str(t).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+    lineas = ["🎬 <b>Vídeos subidos en PRIVADO</b>\n"]
+    lineas.append("La API de YouTube no está auditada. Publica manualmente:\n")
+    botones = []
+    for v in videos:
+        vid = v.get("video_id")
+        titulo = esc(v.get("titulo", "Sin título")[:50])
+        tipo = esc(v.get("tipo", "video"))
+        lineas.append(f"• <b>{tipo}</b>: {titulo}")
+        if vid:
+            botones.append([{
+                "text": f"📺 Abrir {v.get('tipo', 'video')} en Studio",
+                "url": f"https://studio.youtube.com/video/{vid}/edit"
+            }])
+    lineas.append("\n👉 Toca un botón para publicar en 1 minuto.")
+
+    data = {
+        "chat_id": cid,
+        "text": "\n".join(lineas),
+        "parse_mode": "HTML",
+    }
+    if botones:
+        data["reply_markup"] = json.dumps({"inline_keyboard": botones})
+    return _post("sendMessage", data)
+
+
 def test():
     """Envía un mensaje de test al canal."""
     cid = _canal_id()

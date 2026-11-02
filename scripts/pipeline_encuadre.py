@@ -22,6 +22,8 @@ def _run(script, args=None, timeout=1200, retries=3):
         time.sleep(3)
     return False
 
+_VIDEOS_SUBIDOS = []  # Acumula IDs de vídeos subidos para avisar por Telegram
+
 def _subir_youtube(archivo, titulo, desc, tags=None, publish_at=None, retries=3):
     sys.path.insert(0, str(ROOT / "scripts"))
     from subir_youtube import subir
@@ -29,6 +31,11 @@ def _subir_youtube(archivo, titulo, desc, tags=None, publish_at=None, retries=3)
         try:
             r = subir(archivo, titulo, desc, tags=tags, privacidad="private", publish_at=publish_at, token_file=TOKEN_ENC)
             print(f"✅ YouTube: https://youtu.be/{r['id']}")
+            _VIDEOS_SUBIDOS.append({
+                "titulo": titulo,
+                "video_id": r['id'],
+                "tipo": "video_largo" if "largo" in str(archivo) else "short"
+            })
             return True
         except Exception as e:
             print(f"⚠️ YouTube falló (intento {intento+1}/{retries}): {e}")
@@ -523,6 +530,19 @@ def main():
         r = publicar_pipeline_completado(pub_count, n_short, n_post)
         if r.get("ok"):
             print(f"   ✅ Resumen publicado ({pub_count} análisis, {n_short} shorts)")
+
+        # Avisar de vídeos subidos en privado (API YouTube no auditada)
+        if _VIDEOS_SUBIDOS:
+            try:
+                from notificador_encuadre import avisar_videos_privados
+                r2 = avisar_videos_privados(_VIDEOS_SUBIDOS)
+                if r2.get("ok"):
+                    print(f"   ✅ Aviso YouTube Studio enviado ({len(_VIDEOS_SUBIDOS)} vídeos)")
+                else:
+                    print(f"   ⚠️ Aviso YouTube falló")
+            except Exception as _e:
+                print(f"   ⚠️ Aviso YouTube: {_e}")
+        _VIDEOS_SUBIDOS.clear()
 
     except Exception as _e:
         print(f"   ⚠️ Telegram falló: {_e}")
