@@ -1,134 +1,51 @@
-# Entornos y secretos
+# === SECRETOS ===
 .env
 *.token
 *token.json
 secrets/
 
-# Logs y temporales
+# === LOGS Y TEMPORALES ===
 data/logs/
-$HOME/tmp/
 *.log
 *.part
+$HOME/tmp/
 
-# ASSETS PESADOS (Nunca subir a GitHub)
+# === ASSETS PESADOS (descarga on-demand) ===
 assets/models/
-output/
-web/media/imagenes/
-web/site/
-web/web/
-
-# Python
-__pycache__/
-*.pyc
-
-# Ignorar carpeta de Kaggle
 kaggle_src/
+.wheels_hack/
 
-# Ignorar basura de runtime
+# === DATOS RUNTIME (se regeneran) ===
+output/
+data/backups/
 data/call_logs/
 data/storage.sqlite*
 data/cache/
 data/server/
 data/supervisor/
-output/logs/
-output/musica_temp/
-output/encuadre/
-output/tmp_voz/
 data/agent/cola*.db
-*.log
-*.part
-
-# Backups automáticos
-*.bak*
-*.py.bak*
-
-# Datos runtime
 data/musica_libre/*.mp3
 data/musica_libre/*/*.mp3
 
-# Call logs
-data/call_logs/
+# === WEB: build estático (se regenera con mkdocs) ===
+web/site/
+web/media/imagenes/
+web/web/
 
-# === LIMPIEZA 2026-11-02 ===
-# Assets pesados que NO deben ir a git (se descargan aparte)
-assets/models/
-output/snapshots/
-data/backups/
-data/call_logs/
-data/storage.sqlite
-data/storage.sqlite-wal
-data/storage.sqlite-shm
-.wheels_hack/
-# Podcasts (se mantienen 30 días en local, no siempre en git)
-web/docs/podcast/*.mp3
-web/site/podcast/*.mp3
-# Vídeos (se suben a YouTube, no a git)
-output/encuadre/*.mp4
-output/videos/*.mp4
-# Imágenes generadas (se regeneran)
-output/imagenes/*.png
-# Música temporal
-output/musica_temp/
-# Cachés
+# === PODCASTS: SÍ van a git (para RSS Spotify, 30 días) ===
+# web/docs/podcast/*.mp3  ← NO ignorar
+
+# === PYTHON ===
 __pycache__/
 *.pyc
 *.pyo
-# Archivos de sistema
-.DS_Store
-*.swp
 
-# === LIMPIEZA 2026-11-02 ===
-# Assets pesados que NO deben ir a git (se descargan aparte)
-assets/models/
-output/snapshots/
-data/backups/
-data/call_logs/
-data/storage.sqlite
-data/storage.sqlite-wal
-data/storage.sqlite-shm
-.wheels_hack/
-# Podcasts (se mantienen 30 días en local, no siempre en git)
-web/docs/podcast/*.mp3
-web/site/podcast/*.mp3
-# Vídeos (se suben a YouTube, no a git)
-output/encuadre/*.mp4
-output/videos/*.mp4
-# Imágenes generadas (se regeneran)
-output/imagenes/*.png
-# Música temporal
-output/musica_temp/
-# Cachés
-__pycache__/
-*.pyc
-*.pyo
-# Archivos de sistema
-.DS_Store
-*.swp
+# === BACKUPS DE SISTEMA ===
+*.bak*
+*.py.bak*
+.git.backup.*/
+.git.backup.*
 
-# === LIMPIEZA 2026-11-02 ===
-# Assets pesados que NO deben ir a git (se descargan aparte)
-assets/models/
-output/snapshots/
-data/backups/
-data/call_logs/
-data/storage.sqlite
-data/storage.sqlite-wal
-data/storage.sqlite-shm
-.wheels_hack/
-# Podcasts (se mantienen 30 días en local, no siempre en git)
-web/docs/podcast/*.mp3
-web/site/podcast/*.mp3
-# Vídeos (se suben a YouTube, no a git)
-output/encuadre/*.mp4
-output/videos/*.mp4
-# Imágenes generadas (se regeneran)
-output/imagenes/*.png
-# Música temporal
-output/musica_temp/
-# Cachés
-__pycache__/
-*.pyc
-*.pyo
-# Archivos de sistema
+# === SISTEMA ===
 .DS_Store
 *.swp
