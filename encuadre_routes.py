@@ -201,7 +201,7 @@ HTML_FACTORY = """<!DOCTYPE html>
             </div>
             <div class="glass rounded-2xl p-5 border-t-4 border-t-yellow-500">
                 <h3 class="font-bold text-lg mb-2 text-yellow-400"><i class="fa-solid fa-book mr-2"></i>Amazon KDP</h3>
-                <p class="text-xs text-zinc-400 mb-4">Genera un PDF con el glosario de 71 técnicas y los análisis del mes.</p>
+                <p class="text-xs text-zinc-400 mb-4">Genera un PDF con el glosario de 51 técnicas y los análisis del mes.</p>
                 <button onclick="generarKDP()" class="w-full bg-yellow-600 text-black py-2 rounded font-bold text-sm">Generar PDF KDP</button>
             </div>
         </div>

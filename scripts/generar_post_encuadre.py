@@ -28,10 +28,16 @@ def _citas(tecnicas):
     return citas
 
 def _glosario(tecnicas):
-    from especialistas import pedir_a_especialista
+    """Lee del glosario.md (fuente única). Cero LLM, cero invención de autores."""
     try:
-        return parse_json(pedir_a_especialista("glosario_medios", f"Explica: {', '.join(tecnicas)}. JSON: {{tecnica: {{definicion}}}}. Solo JSON.", contexto=""))
-    except: return {}
+        from glosario_loader import definiciones
+        return definiciones(tecnicas)
+    except Exception as e:
+        print(f"[glosario] fallback LLM por: {e}", flush=True)
+        from especialistas import pedir_a_especialista
+        try:
+            return parse_json(pedir_a_especialista("glosario_medios", f"Explica: {', '.join(tecnicas)}. JSON: {{tecnica: {{definicion}}}}. Solo JSON.", contexto=""))
+        except: return {}
 
 def _retencion(medios):
     from especialistas import pedir_a_especialista
@@ -81,6 +87,30 @@ def _auditar(html, tema):
         except: return html
     return html
 
+
+def _citas_loader(tecnicas):
+    """Construye citas desde glosario.md: autor + año verificados. Cero LLM."""
+    try:
+        from glosario_loader import definiciones
+        d = definiciones(tecnicas)
+        out = {}
+        for nombre, info in d.items():
+            autor = info.get("autor", "")
+            año = ""
+            import re as _re
+            m = _re.search(r'(\d{4})', autor)
+            if m: año = m.group(1)
+            out[nombre[:60]] = {
+                "autor": autor,
+                "libro": "El Arsenal Cognitivo — glosario El Encuadre",
+                "año": año,
+                "cita_breve": info.get("definicion", ""),
+            }
+        return out
+    except Exception as e:
+        print(f"[citas] loader falló: {e}", flush=True)
+        return {}
+
 def generar_post(fecha=None):
     fecha = fecha or datetime.date.today().isoformat()
     j = OUT / f"encuadre_{fecha}.json"
@@ -97,7 +127,10 @@ def generar_post(fecha=None):
     from especialistas import pedir_a_especialista
 
     print("[post] Retención...", flush=True); ret = _retencion(medios)
-    print("[post] Citas...", flush=True); citas = _citas(tecnicas_lista)
+    # _citas() DESACTIVADO 2026-11-03: el LLM inventaba autores/libros/años.
+# Reactivar SOLO cuando haya data/agent/citas_verificadas.json curado a mano.
+# Ver: agent/design/07_monetizacion.md
+    print("[post] Citas (del loader)...", flush=True); citas = _citas_loader(tecnicas_lista)
     print("[post] Glosario...", flush=True); glosario = _glosario(tecnicas_lista)
 
     print("[post] Imágenes...", flush=True)
@@ -121,7 +154,12 @@ def generar_post(fecha=None):
     if glosario:
         hl += '<h2>Glosario</h2>'
         for tec, info in glosario.items():
-            if isinstance(info, dict): hl += f'<h3>{tec}</h3><p>{str(info.get("definicion",""))[:300]}</p>'
+            if isinstance(info, dict):
+                autor = info.get("autor", "")
+                defi = str(info.get("definicion",""))[:300]
+                hl += f'<h3>{tec}</h3><p>{defi}</p>'
+                if autor:
+                    hl += f'<p style="font-size:0.85em;color:#888;margin-top:-8px;">— {autor}</p>'
 
     hl += '<div style="margin:40px 0;padding:20px;background:rgba(230,57,70,0.1);border-radius:12px;text-align:center;"><p style="margin:0 0 15px;font-weight:600;">Compártelo</p><a href="https://twitter.com/intent/tweet" style="display:inline-block;margin:0 5px;padding:10px 20px;background:#000;color:#fff;text-decoration:none;border-radius:8px;">X</a><a href="https://wa.me/" style="display:inline-block;margin:0 5px;padding:10px 20px;background:#25D366;color:#fff;text-decoration:none;border-radius:8px;">WhatsApp</a><a href="https://t.me/share/url" style="display:inline-block;margin:0 5px;padding:10px 20px;background:#0088cc;color:#fff;text-decoration:none;border-radius:8px;">Telegram</a></div>'
     hl += '<div style="margin:40px 0;padding:20px;background:#1a1a24;border-radius:12px;"><h2 style="font-size:1.2em;">También te puede interesar</h2><ul><li><a href="https://somoselencuadre.blogspot.com">Otros análisis</a></li><li><a href="https://elencuadre.pages.dev">Web oficial</a></li></ul></div>'
