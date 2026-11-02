@@ -1,14 +1,23 @@
 {
   "nombre": "Contrato de Shorts Verticales - Somos El Encuadre",
-  "version": "1.0",
+  "version": "2.0",
   "libreria_principal": "rot (v0.1.0)",
   "estado": "Verificado y funcionando",
   "arquitectura": {
-    "formato": "9:16 (short_form)",
-    "fondo": "imagen o video con fit='cover' para llenar pantalla sin bandas negras",
-    "voz": "Edge-TTS (es-ES-AlvaroNeural) o audio pregrabado",
-    "subtitulos": "CaptionTheme con font='monospace', font_size=44, max_words=5, Placement(0.5, 0.85, anchor='center')",
-    "musica": "soundtrack(volume=0.15, ducking=True, fade_out=1.0)"
+    "pipeline": [
+      "1. Música del día: descarga 1 link CC del pool (rotador)",
+      "2. Imágenes: 3 verticales 9:16 por short (SDXL Lightning)",
+      "3. Voz: edge_tts es-ES-AlvaroNeural rate=-5%",
+      "4. SRT: timestamps exactos desde SentenceBoundary de edge_tts",
+      "5. Render: ffmpeg directo con filtro subtitles quemado",
+      "6. Fallbacks: 5 niveles si algo falla"
+    ],
+    "duracion": "15-60s (óptimo 20-40s)",
+    "resolucion": "1080x1920 (9:16)",
+    "formato": "MP4 H.264 + AAC",
+    "fps": 30,
+    "bitrate_video": "10M (minrate 8M, maxrate 12M)",
+    "bitrate_audio": "128k"
   },
   "sintaxis_exacta": [
     "from rot import Project, RenderSettings, CaptionTheme, Placement",
@@ -25,5 +34,79 @@
     "NUNCA olvidar el parámetro fit='cover' o saldrán bandas negras.",
     "La música debe usar siempre ducking=True para que la voz destaque.",
     "Los subtítulos deben usar la fuente 'monospace' para el look hacker/tecnológico."
-  ]
+  ],
+  "actualizado": "2026-11-02",
+  "motor": "FFmpeg directo + SRT desde edge_tts",
+  "modelo_anterior": "rot 0.1.0 (DEPRECADO: cuelga con anullsrc en Termux, requiere torch para alinear)",
+  "razon_cambio": "rot se colgaba en _prepare/render con anullsrc mal ordenado. Sin torch no puede alinear. FFmpeg directo: 14.8s garantizados.",
+  "musica": {
+    "fuente": "YouTube con filtro license=creativeCommon",
+    "pool": "config/musica_shorts_pool.json (72 links actuales)",
+    "rotacion": "1 link/día vía data/agent/musica_counter.txt",
+    "moods": [
+      "tension",
+      "epico",
+      "relax",
+      "electronico",
+      "misterio",
+      "inspirador"
+    ],
+    "duracion_descarga": "60s recortados del link",
+    "cazador": "scripts/cazar_links_musica.py (filtro CC + score 0-100)",
+    "rotador": "scripts/musica_short_del_dia.py",
+    "renovacion": "cuando <20 links en pool, relanzar cazador"
+  },
+  "subtitulos": {
+    "metodo": "SRT propio desde edge_tts SentenceBoundary",
+    "script": "scripts/srt_desde_voz.py",
+    "timestamps": "exactos por frase (no estimados)",
+    "bloques": "8-12 palabras por subtítulo (legible en móvil)",
+    "estilo_ffmpeg": "FontName=DejaVu Sans,FontSize=16,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=3,Outline=2,Shadow=1,Alignment=2,MarginV=150",
+    "por_que_no_rot": "rot requiere stable-ts + torch para alinear (2GB, incompatible Termux). SRT desde edge_tts: 0 dependencias extra."
+  },
+  "fallbacks": [
+    "N1: ffmpeg + SRT + música (el bueno, 14.8s)",
+    "N2: ffmpeg + SRT sin música (si la música falla)",
+    "N3: ffmpeg sin SRT con música (si el SRT falla)",
+    "N4: ffmpeg sin SRT sin música (si todo falla)",
+    "N5: estático 5s (último recurso, nunca falla)"
+  ],
+  "voz": {
+    "motor": "edge_tts",
+    "voz": "es-ES-AlvaroNeural",
+    "rate": "-5%",
+    "guion": "50 palabras máximo (traducido a 15-20s de audio)"
+  },
+  "imagenes": {
+    "fuente": "SDXL Lightning (@cf/bytedance/stable-diffusion-xl-lightning)",
+    "cantidad": "3 por short (short_N_*_YYYY-MM-DD_1.png, _2.png, _3.png)",
+    "resolucion": "768x1344 (9:16 vertical)",
+    "preset": "cinematic",
+    "timeout": "60s por imagen",
+    "tiempo_medio": "3.7s por imagen (Lightning)"
+  },
+  "publicacion": {
+    "youtube": {
+      "privacidad": "private + publishAt (programado)",
+      "horario": "18:00 UTC (20:00 España)",
+      "requiere_auditoria": "Sí, para publicar directo. Mientras: aviso por Telegram con botones a Studio",
+      "aviso_telegram": "brain/notificador_encuadre.py → avisar_videos_privados()"
+    },
+    "blogger": {
+      "frecuencia": "2/día (master + video)",
+      "horarios": "10:30 y 17:00 España"
+    },
+    "telegram": {
+      "canal": "@somoselencuadre",
+      "comentario_dios": "scripts/comentar_y_publicar.py (gancho con Dios)"
+    }
+  },
+  "notas_2026_11_02": {
+    "rot_deprecado": "No resucitar rot. Se cuelga en Termux con anullsrc. Sin torch no alinea.",
+    "worker_deprecado": "task_worker.py eliminado. Pipeline usa cron directo.",
+    "snapshots_eliminados": "rollback_auto.py eliminado. git + retención 3 días cubre.",
+    "sd_lightning": "33x más rápido que SDXL base (120s → 3.7s).",
+    "limpieza_auto": "scripts/limpieza_pipeline.py borra >3 días automáticamente."
+  },
+  "_fusionado_2026_11_02": "Contrato viejo (shorts_contract.json) fusionado con nuevo (short_contract.json). Este es el canónico."
 }

@@ -709,7 +709,7 @@ P3: Auto-arranque Termux:Boot
 
 ## 🎬 CONTRATO DE SHORTS v2.0 (2026-11-02)
 
-**Ver:** `data/agent/short_contract.json`
+**Ver:** `data/agent/shorts_contract.json`
 
 ### 🚨 CAMBIO CRÍTICO: rot DEPRECADO
 - **rot 0.1.0** se cuelga en Termux con `anullsrc` mal ordenado
