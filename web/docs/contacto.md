@@ -40,9 +40,9 @@ hide:
     <h3>YouTube</h3>
     <p style="margin-bottom: 1rem;">Nuestro formato principal. Vídeos largos con el análisis técnico completo y shorts con lo más destacado del día.</p>
     <div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 6px; font-family: monospace; color: var(--holo-cyan); font-size: 0.85em; margin-bottom: 1rem; text-align: center; border: 1px solid rgba(0, 240, 255, 0.2);">
-      @SomosElEncuadre
+      @somoselencuadre.oficial.oficial
     </div>
-    <a href="https://youtube.com/@SomosElEncuadre" target="_blank" rel="noopener" class="md-button md-button--primary" style="width: 100%; text-align: center; display: block;">Abrir Canal</a>
+    <a href="https://youtube.com/@somoselencuadre.oficial.oficial.oficial" target="_blank" rel="noopener" class="md-button md-button--primary" style="width: 100%; text-align: center; display: block;">Abrir Canal</a>
   </div>
 
   <!-- TikTok -->
@@ -51,9 +51,9 @@ hide:
     <h3>TikTok</h3>
     <p style="margin-bottom: 1rem;">El resumen definitivo. En menos de 60 segundos destapamos la técnica que usaron los medios hoy.</p>
     <div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 6px; font-family: monospace; color: var(--holo-cyan); font-size: 0.85em; margin-bottom: 1rem; text-align: center; border: 1px solid rgba(0, 240, 255, 0.2);">
-      @somoselencuadre
+      @somoselencuadre.oficial
     </div>
-    <a href="https://tiktok.com/@somoselencuadre" target="_blank" rel="noopener" class="md-button md-button--primary" style="width: 100%; text-align: center; display: block;">Abrir TikTok</a>
+    <a href="https://tiktok.com/@somoselencuadre.oficial" target="_blank" rel="noopener" class="md-button md-button--primary" style="width: 100%; text-align: center; display: block;">Abrir TikTok</a>
   </div>
 
   <!-- X / Twitter -->
@@ -62,7 +62,7 @@ hide:
     <h3>X / Twitter</h3>
     <p style="margin-bottom: 1rem;">El debate en tiempo real. Hilos, correcciones, y el análisis al minuto de las portadas de los periódicos.</p>
     <div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 6px; font-family: monospace; color: var(--holo-cyan); font-size: 0.85em; margin-bottom: 1rem; text-align: center; border: 1px solid rgba(0, 240, 255, 0.2);">
-      @SomosElEncuadre
+      @somoselencuadre.oficial.oficial
     </div>
     <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" class="md-button md-button--primary" style="width: 100%; text-align: center; display: block;">Abrir X</a>
   </div>

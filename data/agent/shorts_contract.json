@@ -97,7 +97,7 @@
       "horarios": "10:30 y 17:00 España"
     },
     "telegram": {
-      "canal": "@somoselencuadre",
+      "canal": "@somoselencuadre.oficial.oficial",
       "comentario_dios": "scripts/comentar_y_publicar.py (gancho con Dios)"
     }
   },

@@ -22,4 +22,4 @@ tags: "- analisis"
 
  <section id="contexto">
  <h2>El contexto que alimenta la polémica</h2>
- <p>El Gobierno, bajo la excusa de una “ola de criminalidad” que, según sus portavoces<hr><p style="font-size:0.9em;padding:10px;background:#111;border-radius:8px;"><strong>Síguenos:</strong> <a href="https://youtube.com/@SomosElEncuadre">YouTube</a> | <a href="https://tiktok.com/@somoselencuadre">TikTok</a> | <a href="https://instagram.com/somoselencuadre">Instagram</a> | <a href="https://x.com/somoselencuadre">X</a></p>
+ <p>El Gobierno, bajo la excusa de una “ola de criminalidad” que, según sus portavoces<hr><p style="font-size:0.9em;padding:10px;background:#111;border-radius:8px;"><strong>Síguenos:</strong> <a href="https://youtube.com/@somoselencuadre.oficial.oficial.oficial">YouTube</a> | <a href="https://tiktok.com/@somoselencuadre.oficial">TikTok</a> | <a href="https://instagram.com/somoselencuadre">Instagram</a> | <a href="https://x.com/somoselencuadre">X</a></p>

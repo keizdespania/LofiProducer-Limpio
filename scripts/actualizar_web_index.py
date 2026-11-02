@@ -28,7 +28,7 @@ def _extraer_url_fuente(md_path):
         txt = md_path.read_text(encoding="utf-8")
         # Buscar primer href a dominio externo
         matches = re.findall(r'href="(https?://[^"]+)"', txt)
-        excluir = ['youtube.com/@SomosElEncuadre', 'tiktok.com/@somoselencuadre',
+        excluir = ['youtube.com/@somoselencuadre.oficial.oficial.oficial', 'tiktok.com/@somoselencuadre.oficial',
                    'instagram.com/somoselencuadre', 'x.com/somoselencuadre',
                    'files.catbox.moe', 'youtube.com/', 'twitter.com/',
                    'facebook.com/', 'linkedin.com/']

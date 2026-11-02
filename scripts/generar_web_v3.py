@@ -36,7 +36,7 @@ def _imagen():
 def _bloque_redes():
     return """<hr>
 <div style="background:#0a0a0f;border-left:4px solid #e63946;padding:1em;border-radius:6px;margin:2em 0;">
-<strong>Síguenos:</strong> <a href="https://youtube.com/@SomosElEncuadre">YouTube</a> · <a href="https://tiktok.com/@somoselencuadre">TikTok</a> · <a href="https://instagram.com/somoselencuadre">Instagram</a> · <a href="https://x.com/SomosElEncuadre">X</a> · <a href="https://threads.net/@somoselencuadre">Threads</a>
+<strong>Síguenos:</strong> <a href="https://youtube.com/@somoselencuadre.oficial.oficial.oficial">YouTube</a> · <a href="https://tiktok.com/@somoselencuadre.oficial">TikTok</a> · <a href="https://instagram.com/somoselencuadre">Instagram</a> · <a href="https://x.com/SomosElEncuadre">X</a> · <a href="https://threads.net/@somoselencuadre.oficial">Threads</a>
 </div>"""
 
 def _validar(html, min_chars=800, min_h2=2):

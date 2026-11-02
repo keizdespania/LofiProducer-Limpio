@@ -30,7 +30,7 @@ def generar_blogs(fecha=None):
     dossier = datos.get("dossier", {})
     articulo = datos.get("articulo_html", "")
     seo = datos.get("seo", {}).get("youtube", {})
-    links = """<hr><p style="font-size:0.9em;padding:10px;background:#1a1a24;border-radius:8px;"><strong>Síguenos:</strong> <a href="https://elencuadre.pages.dev">Web</a> | <a href="https://youtube.com/@SomosElEncuadre">YouTube</a> | <a href="https://tiktok.com/@somoselencuadre">TikTok</a></p>"""
+    links = """<hr><p style="font-size:0.9em;padding:10px;background:#1a1a24;border-radius:8px;"><strong>Síguenos:</strong> <a href="https://elencuadre.pages.dev">Web</a> | <a href="https://youtube.com/@somoselencuadre.oficial.oficial.oficial">YouTube</a> | <a href="https://tiktok.com/@somoselencuadre.oficial">TikTok</a></p>"""
 
     posts_en_cola = []
 

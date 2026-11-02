@@ -518,7 +518,7 @@ def main():
                 # Extraer URL fuente del cuerpo
                 import re
                 urls = re.findall(r'href="(https?://[^"]+)"', txt)
-                excluir = ['youtube.com/@SomosElEncuadre', 'tiktok.com/@somoselencuadre',
+                excluir = ['youtube.com/@somoselencuadre.oficial.oficial.oficial', 'tiktok.com/@somoselencuadre.oficial',
                            'instagram.com/somoselencuadre', 'x.com/somoselencuadre',
                            'files.catbox.moe']
                 fuente_url = ""
