@@ -34,7 +34,7 @@ def _check_ram():
         libre = mem.get("MemAvailable", 0)
         if libre < 500:
             log(f"⚠️ RAM baja: {libre}MB libres. Matando procesos secundarios...")
-            subprocess.run(["pkill", "-f", "task_worker.py"], check=False)
+            # Worker eliminado, no pkill
             subprocess.run(["pkill", "-f", "ollama"], check=False)
             log("✅ Procesos secundarios detenidos (se relanzarán tras arrancar Flask)")
             return False
