@@ -5,17 +5,44 @@ hide:
 
 <div class="holo-hero">
   <h1>El Archivo del Anti-Medio</h1>
-  <p>Todo nuestro arsenal. 26 análisis publicados. Sin filtros, con enlaces verificables.</p>
+  <p>Todo nuestro arsenal. 29 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (26)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (2)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (4)</button>
-  <button class="holo-filter-btn" data-filter="mediano">Medianos (1)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (29)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (3)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (5)</button>
+  <button class="holo-filter-btn" data-filter="mediano">Medianos (2)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-02-mediano-quirurgico/'" data-category="mediano">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    
+    <h3>El ángulo que nadie cuenta: “Adif dejó ‘en visto’ las recomendaciones de la CI</h3>
+    <p>Analisis quirurgico: El ángulo que nadie cuenta: “Adif dejó ‘en visto’ las recomendaciones de la CI</p>
+    <div class="holo-meta"><span>📅 2026-11-02</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-02-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    
+    <h3>El Encuadre: PP y Vox suman una amplia mayoría y el PSOE se </h3>
+    <p>Analisis largo: El Encuadre: PP y Vox suman una amplia mayoría y el PSOE se </p>
+    <div class="holo-meta"><span>📅 2026-11-02</span></div>
+    
+    <a href="https://www.elmundo.es/espana/encuestas/2026/11/01/6ae77446e4d4d8f3698b458a.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elmundo.es</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-02-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier del día: El Encuadre: PP y Vox suman una amplia mayoría y el PSOE se </h3>
+    <p>Dossier ejecutivo: El Encuadre: PP y Vox suman una amplia mayoría y el PSOE se hunde por debajo de </p>
+    <div class="holo-meta"><span>📅 2026-11-02</span></div>
+    
+    <a href="https://www.elmundo.es/espana/encuestas/2026/11/01/6ae77446e4d4d8f3698b458a.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elmundo.es</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-01-mediano-medio_crudo/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     
