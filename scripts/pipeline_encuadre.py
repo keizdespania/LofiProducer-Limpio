@@ -179,7 +179,19 @@ def main():
     # LIMPIAR música externa (YouTube CC, Tunetank); conservar ACE-Step
     _run("limpiar_musica_render.py", [fecha], 300, 1)
 
-    # Preparar música del día (rotador de pool CC)
+    # Preparar LOFI LARGO del día (pool CC + rotador)
+    print("\n" + "="*60 + "\nPREPARANDO LOFI LARGO DEL DÍA\n" + "="*60, flush=True)
+    try:
+        from lofi_largo_del_dia import preparar as preparar_lofi_largo
+        lofi_largo = preparar_lofi_largo()
+        if lofi_largo:
+            print(f"✅ Lofi largo del día: {Path(lofi_largo).name}", flush=True)
+        else:
+            print("⚠️ Sin lofi largo del pool, usando descargar_lofi.py como fallback", flush=True)
+    except Exception as _e:
+        print(f"⚠️ Lofi largo falló ({_e})", flush=True)
+
+    # Preparar música del día para SHORTS (rotador de pool CC)
     print("\n" + "="*60 + "\nPREPARANDO MÚSICA DEL DÍA\n" + "="*60, flush=True)
     musica_dia = None
     try:

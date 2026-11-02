@@ -104,7 +104,17 @@ def main():
     print(f"[2] Audio | dur_total: {dur_total:.1f}s", flush=True)
     
     if not audio.exists() or _dur(audio) < dur_total - 10:
-        lofi = MUSICA / "lofi_base.mp3"
+        # Lofi del día (del pool CC) con fallback
+        lofi_del_dia = MUSICA / f"lofi_largo_{FECHA}.mp3"
+        lofi_base = MUSICA / "lofi_base.mp3"
+        if lofi_del_dia.exists():
+            lofi = lofi_del_dia
+            print(f"  [audio] Usando lofi del día: {lofi_del_dia.name}", flush=True)
+        elif lofi_base.exists():
+            lofi = lofi_base
+            print(f"  [audio] Fallback a lofi_base.mp3", flush=True)
+        else:
+            lofi = MUSICA / "_silencio.mp3"
         if not lofi.exists():
             lofi = MUSICA / "_silencio.mp3"
             _run([FFMPEG,"-y","-hide_banner","-loglevel","error","-f","lavfi","-i","anullsrc=r=44100:cl=stereo","-t","900","-c:a","libmp3lame",str(lofi)], 60, "silencio")
