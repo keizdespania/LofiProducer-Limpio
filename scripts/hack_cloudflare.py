@@ -64,8 +64,8 @@ def main():
         "urls_y_modelos": extract_strings(tree),
         "env_keys_cloudflare": [k for k in env_keys() if "CLOUD" in k.upper() or "CF_" in k.upper()],
         "api_oficial_sdxl": {
-            "endpoint": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0",
-            "modelo": "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+            "endpoint": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/bytedance/stable-diffusion-xl-lightning",
+            "modelo": "@cf/bytedance/stable-diffusion-xl-lightning",
             "params_aceptados": {
                 "prompt": {"type":"string","obligatorio":True,"max_chars":2048},
                 "negative_prompt": {"type":"string","default":"","nota":"lo que NO quieres ver"},
@@ -87,7 +87,7 @@ def main():
             "Para miniaturas YouTube: 1280x720. Para Shorts: 720x1280",
             "Para portadas lofi: 1024x1024 o 1280x720",
             "seed fijo = reproducible; seed -1 = aleatorio (cada llamada cuesta lo mismo)",
-            "NO inventar nombres de modelo: solo '@cf/stabilityai/stable-diffusion-xl-base-1.0'",
+            "NO inventar nombres de modelo: solo '@cf/bytedance/stable-diffusion-xl-lightning'",
         ],
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)

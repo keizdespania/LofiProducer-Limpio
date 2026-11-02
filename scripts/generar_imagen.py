@@ -68,13 +68,13 @@ def generar(prompt, ancho=1024, alto=1024, preset=None, aspect=None,
     if not account_id or not api_token:
         return "ERROR: Faltan CLOUDFLARE_ACCOUNT_ID o CLOUDFLARE_API_TOKEN en .env"
     
-    modelo = "@cf/stabilityai/stable-diffusion-xl-base-1.0"
+    modelo = "@cf/bytedance/stable-diffusion-xl-lightning"
     url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{modelo}"
     headers = {"Authorization": f"Bearer {api_token}"}
     payload = {
         "prompt": prompt,
         "negative_prompt": negative_prompt or "blurry, low quality, distorted, text, watermark",
-        "num_steps": int(num_steps),
+        "num_steps": min(int(num_steps), 8),
         "guidance": float(guidance),
         "width": int(ancho),
         "height": int(alto),
@@ -86,7 +86,7 @@ def generar(prompt, ancho=1024, alto=1024, preset=None, aspect=None,
     print(f"Prompt: {prompt[:120]}", flush=True)
     
     try:
-        r = requests.post(url, headers=headers, json=payload, timeout=120)
+        r = requests.post(url, headers=headers, json=payload, timeout=60)
         if r.status_code >= 400:
             return f"ERROR HTTP {r.status_code}: {r.text[:300]}"
         

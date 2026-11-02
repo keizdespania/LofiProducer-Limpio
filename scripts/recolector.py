@@ -178,7 +178,7 @@ def recolectar(rapido=False):
     # 2. TV (paralelo, salvo rapido)
     if not rapido:
         print("\n[recolector] TV (paralelo)...", flush=True)
-        with ThreadPoolExecutor(max_workers=6) as ex:
+        with ThreadPoolExecutor(max_workers=2) as ex:
             futs = [ex.submit(_procesar_youtube, m, u) for m,u in MEDIOS_TV.items()]
             for f in as_completed(futs):
                 medio, vids, auds = f.result()
@@ -187,9 +187,10 @@ def recolectar(rapido=False):
                     datos["audios"].extend(auds)
                     print(f"  OK {medio}: {len(vids)} videos, {len(auds)} audios", flush=True)
 
+        import gc; gc.collect()
         # 3. Radio (paralelo)
         print("\n[recolector] Radio (paralelo)...", flush=True)
-        with ThreadPoolExecutor(max_workers=6) as ex:
+        with ThreadPoolExecutor(max_workers=2) as ex:
             futs = [ex.submit(_procesar_youtube, m, u) for m,u in MEDIOS_RADIO.items()]
             for f in as_completed(futs):
                 medio, vids, auds = f.result()
@@ -198,7 +199,8 @@ def recolectar(rapido=False):
                     datos["audios"].extend(auds)
                     print(f"  OK {medio}: {len(vids)} videos, {len(auds)} audios", flush=True)
 
-    # 4. Agencias (paralelo)
+        import gc; gc.collect()
+        # 4. Agencias (paralelo)
     print("\n[recolector] Agencias (paralelo)...", flush=True)
     ags = list(MEDIOS_AGENCIAS.items())
     if rapido: ags = ags[:3]
