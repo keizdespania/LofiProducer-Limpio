@@ -97,13 +97,6 @@ def start_web() -> None:
     time.sleep(3)
     
     # --- Arrancar el Worker de Tareas en background ---
-    log("⚙️ Arrancando Worker de tareas (cola)...")
-    subprocess.Popen(
-        ["python", "scripts/task_worker.py"],
-        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-        cwd=str(PROJECT_ROOT), start_new_session=True
-    )
-    log("✅ Worker de tareas iniciado.")
     
     log(f"🚀 Arrancando Flask en el puerto {WEB_PORT}...")
     log_file = PROJECT_ROOT / "data" / "logs" / "web.log"
