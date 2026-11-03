@@ -34,6 +34,41 @@ PROHIBIDO (fórmulas de IA):
 - "Resulta que..." (repetido, máximo 1 vez por guion)
 - "Mira lo que publicó..." (NUNCA)
 
+REGLAS GRAMATICALES Y DE DATOS (OBLIGATORIO, si fallas aquí se nota):
+- CONCORDANCIA: "Todas las cabeceras" (femenino), "Los titulares" (masculino). NUNCA "Todos los cabeceras".
+- NOMBRES PROPIOS: "Europa Press" (dos palabras, no EuropaPress), "El País", "El Mundo", "The Guardian", "20 Minutos", "Efe" o "EFE".
+- NÚMEROS: usar punto de miles SIEMPRE. "4.000 millones", NUNCA "4. 000 millones" ni "4,000". "1.500", no "1. 500".
+- FECHAS: la primera vez que menciones el día di la fecha real (ej. "3 de noviembre de 2026"), NO dos veces "hoy" seguidas.
+- ARTÍCULOS: revisa género antes de escribir. "el agua" (femenino pero con "el"), "la aula", "el área", "las cabeceras".
+- "LEE ENTRE LÍNEAS" → PROHIBIDO. Infantiliza. Usa "ya me entiendes", "fíjate", "atiende" o simplemente el ejemplo.
+- "CAPRICHOSAMENTE" → PROHIBIDO. Si algo es deliberado, di "deliberadamente", "calculadamente" o "a propósito".
+- "UN MISMO HECHO" → solo si REALMENTE es el mismo hecho. Si son 3 noticias distintas (tragedias ferroviarias + Trump + Urda), di "un mismo día, tres distracciones".
+
+PALABRAS PROHIBIDAS (evitar por gastadas):
+- "caprichosamente", "pegada al asiento", "no te pierdas", "resulta que" (más de 1 vez)
+- "en la era de la atención fragmentada" (cliché)
+- "la maquinaria del ruido" (cliché)
+
+CTA FINAL:
+- PROHIBIDO "dale a like", "suscríbete", "dale a la campanita". Es de youtuber, no de Alsina.
+- Si hay CTA, que sea de complicidad: "compártelo con quien lo necesite", "nos vemos mañana", "ya sabes dónde encontrarme".
+- Si cierras prometiendo "tres preguntas", HAZLAS explícitas justo después. No dejes la promesa colgando.
+
+ACTO 3 — TÉCNICAS:
+- Usa SOLO las técnicas que te doy en el contexto "TECNICAS REALES DEL DÍA" (del dossier de hoy). NO inventes ejemplos genéricos (ni azúcar/depresión, ni tablet/madre, ni IVA/sanidad).
+- Cada técnica del dossier debe aplicarse a UNA noticia REAL del top16.
+- PROHIBIDO "Primero... Segundo... Tercero..." → entrelaza con narrativa ("Y luego está lo de...", "Y lo peor viene cuando...").
+
+ESTRUCTURA POR MEDIO (ACTO 2):
+- Por CADA medio del top16, responde explícitamente a las 3 preguntas:
+  1. ¿Qué dice el titular? (resumen en 1 frase)
+  2. ¿Por qué lo cuenta HOY? (interés editorial del medio, explícito)
+  3. ¿A quién beneficia? (explícito)
+- NO dejes medios sin las 3 respuestas. Si no las sabes, dilo ("no lo sabemos, pero...").
+
+ANÉCDOTA (ACTO 1):
+- La anécdota debe ser DIFERENTE cada día. NO uses siempre "el abuelo/el portero/la salsa". Si te doy una anécdota en el contexto, úsala LITERAL. Si no, invéntala pero cambia el escenario: puede ser una película, un partido de fútbol, un libro, una anécdota histórica, una escena cotidiana (supermercado, metro, peluquería). Varía.
+
 BANCO DE FRASES MORDACES (NUNCA repetir la misma en el mismo guion):
 1. "Esto no es periodismo, es marketing con teclado."
 2. "Qué casualidad que todos..."
@@ -894,7 +929,10 @@ Mínimo 70 palabras. Máximo 100."""
         print(f"   ⚠️ 0 marcadores del banco. NO se martillea (regla 2026-11-03). Log para revisar prompt.", flush=True)
 
     res["escenas"] = escenas
-    res["texto_voz_largo"] = " ".join([e.get("texto", "") for e in escenas])
+    res["texto_voz_largo"] = _sanitizar_monologo(" ".join([e.get("texto", "") for e in escenas]), fecha)
+    # Reaplicar a cada escena para que voz_edge lea limpio
+    for _e in escenas:
+        _e["texto"] = _sanitizar_monologo(_e.get("texto", ""), fecha)
     res["palabras_totales"] = len(res["texto_voz_largo"].split())
 
     # 3. DJ MUSICAL: Omitido (Lofi continuo)
@@ -1209,6 +1247,84 @@ Devuelve SOLO el texto de la capa 4."""
     
     return texto_final
 
+def _sanitizar_monologo(texto, fecha_iso=None):
+    """Sanitiza patrones prohibidos que el LLM se salta. Determinista, no depende del LLM."""
+    import re as _r, datetime as _dt
+    if not texto:
+        return texto
+    t = texto
+
+    # FECHA REAL: si hay doble "hoy", cambiar el segundo por fecha real
+    try:
+        d = _dt.date.fromisoformat(fecha_iso) if fecha_iso else _dt.date.today()
+        MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"]
+        fecha_larga = f"{d.day} de {MESES[d.month-1]} de {d.year}"
+    except Exception:
+        fecha_larga = "hoy"
+    t = t.replace("Somos El Encuadre, hoy.", f"Somos El Encuadre, este {fecha_larga}.")
+
+    # NÚMEROS con espacio: "4. 000" -> "4.000" (miles) y "1. 500" -> "1.500"
+    t = _r.sub(r'(\d)\. (\d{3})\b', r'\1.\2', t)
+
+    # CABECERAS femenino
+    t = _r.sub(r'\bTodos los cabeceras\b', 'Todas las cabeceras', t)
+    t = _r.sub(r'\b[tT]odos los cabecera\b', 'Todas las cabeceras', t)
+
+    # CTA: quitar "dale a like" y "suscríbete"
+    t = _r.sub(r'[Dd]ale a like\.?\s*', '', t)
+    t = _r.sub(r'Suscríbete si quieres más\.?\s*', '', t)
+    t = _r.sub(r'Suscríbete\.?\s*', '', t)
+    t = _r.sub(r'\bdale a la campanita\b\.?', '', t, flags=_r.I)
+
+    # "caprichosamente" -> "deliberadamente"
+    t = _r.sub(r'\bcaprichosamente\b', 'deliberadamente', t, flags=_r.I)
+
+    # "Lee entre líneas" -> "Ya me entiendes"
+    t = _r.sub(r'\b[Ll]ee entre líneas\b\.?', 'Ya me entiendes.', t)
+
+    # "un mismo hecho" -> "un mismo día"
+    t = _r.sub(r'\bun mismo hecho\b', 'un mismo día', t)
+
+    # "hilo de sangre" -> "hilo de intereses"
+    t = _r.sub(r'\bhilo de sangre\b', 'hilo de intereses', t)
+
+    # "EuropaPress" -> "Europa Press"
+    t = _r.sub(r'\bEuropaPress\b', 'Europa Press', t)
+
+    # "Hablando de nuevas reformas" -> "Hablando de nueva gestión"
+    t = _r.sub(r'\bnuevas reformas\b', 'nueva gestión', t)
+
+    # FORZAR fecha en la intro: si aparece "Hasta este hoy" o variantes, sustituir por fecha real
+    # Fecha: sustituir "hoy" tras "Hasta" por fecha real, y quitar duplicado de "Somos El Encuadre, fecha"
+    t = _r.sub(r'Hasta\s+(este\s+)?(hoy|día de hoy|este día)', f'Hasta este {fecha_larga}', t, flags=_r.I)
+    # Quitar duplicado "Somos El Encuadre, (este) fecha_larga" si ya hay fecha antes
+    t = _r.sub(r'Somos El Encuadre,?\s*(este\s+)?' + _r.escape(fecha_larga) + r'\.', 'Somos El Encuadre.', t)
+    meses = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"]
+    tiene_fecha = any(m in t.lower() for m in meses)
+    if not tiene_fecha and "Somos El Encuadre." in t:
+        t = t.replace("Somos El Encuadre.", f"Somos El Encuadre, {fecha_larga}.", 1)
+
+    # FORZAR 3 preguntas antes del CTA si no aparecen
+    preguntas_ok = ("palabra clave" in t.lower() and "emoción" in t.lower() and "versión" in t.lower())
+    if not preguntas_ok:
+        # Insertar bloque antes de "Nos vemos" o "comparte" o "Si esto"
+        bloque_3p = "Y recuerda las tres preguntas de siempre: ¿dice la palabra clave o la esconde? ¿dice el dato o solo la emoción? ¿dice la fuente o solo la versión? "
+        for marca in ["Nos vemos", "Si esto", "Comparte esto", "Comparte"]:
+            if marca in t:
+                t = t.replace(marca, bloque_3p + marca, 1)
+                break
+
+    # Limpieza CTA: "Si te ha servido, Y comparte" -> "Si te ha servido, comparte"
+    t = _r.sub(r'Si te ha servido,\s*Y\s+', 'Si te ha servido, ', t, flags=_r.I)
+    t = _r.sub(r',\s*Y\s+comparte', ', comparte', t, flags=_r.I)
+    t = _r.sub(r',\s*,\s*', ', ', t)
+    # Limpieza de espacios dobles / comas raras
+    t = _r.sub(r'\s+', ' ', t)
+    t = _r.sub(r'\s+\.', '.', t)
+    t = _r.sub(r'\s+,', ',', t)
+    return t.strip()
+
+
 def producir_monologo(fecha=None):
     """Genera produccion_FECHA.json en MODO MONÓLOGO.
     Esquema IDÉNTICO a producir_fase2() pero las 18 escenas vienen de 1 texto."""
@@ -1294,7 +1410,9 @@ def producir_monologo(fecha=None):
     print(f"   Escenas generadas: {len(escenas)}", flush=True)
     
     res["escenas"] = escenas
-    res["texto_voz_largo"] = " ".join([e.get("texto", "") for e in escenas])
+    res["texto_voz_largo"] = _sanitizar_monologo(" ".join([e.get("texto", "") for e in escenas]), fecha)
+    for _e in escenas:
+        _e["texto"] = _sanitizar_monologo(_e.get("texto", ""), fecha)
     res["palabras_totales"] = len(res["texto_voz_largo"].split())
     
     # Viralidad

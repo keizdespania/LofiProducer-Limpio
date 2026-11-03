@@ -211,13 +211,16 @@ def enriquecer(fecha=None):
     # Parsear desglose actual (formato "**Medio**: 'titular' -> **Framing:** X | **Técnica:** Y | **Omite:** Z")
     medios_desglose = {}
     for linea in desglose_actual.split("\n"):
-        m = re.match(r"\*\*([^*]+)\*\*: '([^']*)' -> \*\*Framing:\*\* ([^|]+) \| \*\*Técnica:\*\* ([^|]+) \| \*\*Omite:\*\* (.+)", linea)
+        m = re.match(r"\*\*([^*]+)\*\*: '([^']*)' -> (?:\*\*Framing:\*\* [^|]+ \| )?\*\*Técnica:\*\* ([^|]+) \| (?:\*\*Palabra:\*\* ([^|]*) \| )?\*\*Omite:\*\* (.+)", linea)
         if m:
-            medio, titular, framing, tecnica, omite = m.groups()
+            medio, titular, tecnica, palabra, omite = m.groups()
+            # Framing no existe en formato nuevo; derivarlo de la tecnica
+            framing = (tecnica or "N/A").strip()
             medios_desglose[medio] = {
                 "titular": titular,
-                "framing": framing.strip(),
+                "framing": framing,
                 "tecnica": tecnica.strip(),
+                "palabra": (palabra or "").strip(),
                 "omite": omite.strip(),
             }
     
