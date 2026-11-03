@@ -1,5 +1,6 @@
 """generar_podcast.py - Mezcla voz + musica (WAV intermedio) y publica MP3 en web/docs/podcast/."""
 import sys, pathlib, subprocess, datetime, os
+from pathlib import Path
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
@@ -15,11 +16,37 @@ def _buscar_voz():
     todos = sorted(OUT.glob("voz_largo*.mp3"), key=lambda p: p.stat().st_mtime, reverse=True)
     return todos[0] if todos else None
 
-def _buscar_musica():
-    c = ROOT / "output" / "musica_temp" / "lofi_base.mp3"
-    if c.exists() and c.stat().st_size > 100000:
-        return c
+def _buscar_musica(fecha=None):
+    """Busca lofi_largo_<fecha>.mp3. Si no existe, descarga del pool CC. Nunca falla."""
+    import sys as _s
+    musica_dir = ROOT / "output" / "musica_temp"
+
+    if fecha:
+        c1 = musica_dir / ("lofi_largo_" + fecha + ".mp3")
+        if c1.exists() and c1.stat().st_size > 100000:
+            return c1
+
+    try:
+        _s.path.insert(0, str(ROOT / "scripts"))
+        from lofi_largo_del_dia import preparar as preparar_lofi
+        print("   [podcast] Lofi del dia no encontrada, descargando del pool CC...", flush=True)
+        ruta = preparar_lofi()
+        if ruta:
+            ruta = Path(ruta) if not isinstance(ruta, Path) else ruta
+            if ruta.exists() and ruta.stat().st_size > 100000:
+                print("   [podcast] Descargada: " + ruta.name, flush=True)
+                return ruta
+    except Exception as _e:
+        print("   [podcast] Fallo descarga lofi: " + str(_e), flush=True)
+
+    lofis = sorted(musica_dir.glob("lofi_largo_*.mp3"), key=lambda x: x.stat().st_mtime, reverse=True)
+    for lf in lofis:
+        if lf.stat().st_size > 100000:
+            print("   [podcast] Usando lofi reciente: " + lf.name, flush=True)
+            return lf
+
     return None
+
 
 def _duracion(archivo):
     r = subprocess.run(
@@ -33,29 +60,45 @@ def _duracion(archivo):
         return 0.0
 
 def _mezclar_wav(voz, musica, wav_temp):
-    """Paso 1: mezclar voz + musica en WAV PCM (sin compresion)."""
+    """Paso 1: mezclar voz + musica en WAV PCM. Si musica=None, solo voz."""
     dur = _duracion(voz)
     if dur <= 0:
-        raise Exception(f"No puedo leer duracion de {voz}")
-    print(f"   Duracion voz: {dur:.1f}s ({dur/60:.1f} min)")
-    filtro = (
-        "[0:a]aresample=44100,volume=1.0[voz];"
-        "[1:a]aresample=44100,volume=0.15[musica];"
-        "[voz][musica]amix=inputs=2:duration=first:normalize=0[out]"
-    )
-    cmd = [
-        "ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
-        "-i", str(voz),
-        "-i", str(musica),
-        "-filter_complex", filtro,
-        "-map", "[out]",
-        "-c:a", "pcm_s16le",
-        "-ar", "44100",
-        "-ac", "2",
-        "-t", f"{dur:.2f}",
-        str(wav_temp)
-    ]
+        raise Exception("No puedo leer duracion de " + str(voz))
+    print("   Duracion voz: " + format(dur, ".1f") + "s (" + format(dur/60, ".1f") + " min)")
+
+    tiene_musica = (musica is not None and Path(musica).exists())
+    if not tiene_musica:
+        print("   [mezcla] Sin musica: solo voz", flush=True)
+        filtro = "[0:a]aresample=44100,volume=1.0[out]"
+        cmd = [
+            "ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
+            "-i", str(voz),
+            "-filter_complex", filtro,
+            "-map", "[out]",
+            "-c:a", "pcm_s16le",
+            "-ar", "44100", "-ac", "2",
+            "-t", format(dur, ".2f"),
+            str(wav_temp)
+        ]
+    else:
+        filtro = (
+            "[0:a]aresample=44100,volume=1.0[voz];"
+            "[1:a]aresample=44100,volume=0.15[musica];"
+            "[voz][musica]amix=inputs=2:duration=first:normalize=0[out]"
+        )
+        cmd = [
+            "ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
+            "-i", str(voz),
+            "-i", str(musica),
+            "-filter_complex", filtro,
+            "-map", "[out]",
+            "-c:a", "pcm_s16le",
+            "-ar", "44100", "-ac", "2",
+            "-t", format(dur, ".2f"),
+            str(wav_temp)
+        ]
     subprocess.run(cmd, check=True, timeout=600)
+
 
 def _wav_a_mp3(wav_temp, mp3_final):
     """Paso 2: convertir WAV a MP3 (una sola entrada, timestamps limpios)."""
@@ -113,6 +156,56 @@ def _regenerar_index():
     contenido += "</div>\n"
     (PODCAST / "index.md").write_text(contenido)
 
+def _regenerar_feed():
+    """Regenera feed.xml con TODOS los episodios (URL Cloudflare Pages)."""
+    import datetime as _dt
+    episodios = sorted(PODCAST.glob("*.mp3"), key=lambda p: p.stem, reverse=True)
+    if not episodios:
+        return
+    BASE_URL = "https://elencuadre.pages.dev/podcast"
+    MESES_EN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+    DIAS_EN = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+
+    NL = chr(10)
+    items = []
+    for ep in episodios:
+        fecha_str = ep.stem
+        try:
+            anio, mes, dia = fecha_str.split("-")
+            d = _dt.date(int(anio), int(mes), int(dia))
+            pub_date = DIAS_EN[d.weekday()] + ", " + format(d.day, "02d") + " " + MESES_EN[d.month-1] + " " + str(d.year) + " 07:00:00 +0000"
+        except Exception:
+            pub_date = "Mon, 01 Jan 2026 00:00:00 +0000"
+        dur = _duracion(ep)
+        item = (
+            "  <item>" + NL +
+            "    <title>El Encuadre - " + fecha_str + "</title>" + NL +
+            "    <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>" + NL +
+            "    <enclosure url=\"" + BASE_URL + "/" + ep.name + "\" type=\"audio/mpeg\" length=\"" + str(ep.stat().st_size) + "\"/>" + NL +
+            "    <pubDate>" + pub_date + "</pubDate>" + NL +
+            "    <guid isPermaLink=\"false\">" + fecha_str + "</guid>" + NL +
+            "    <itunes:duration>" + str(int(dur)) + "</itunes:duration>" + NL +
+            "  </item>"
+        )
+        items.append(item)
+
+    cabecera = (
+        chr(60) + "?xml version=\"1.0\" encoding=\"UTF-8\"?" + chr(62) + NL +
+        chr(60) + "rss version=\"2.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\"" + chr(62) + NL +
+        "  " + chr(60) + "channel" + chr(62) + NL +
+        "    " + chr(60) + "title" + chr(62) + "Somos El Encuadre" + chr(60) + "/title" + chr(62) + NL +
+        "    " + chr(60) + "link" + chr(62) + "https://elencuadre.pages.dev" + chr(60) + "/link" + chr(62) + NL +
+        "    " + chr(60) + "description" + chr(62) + "Analisis diario de manipulacion mediatica." + chr(60) + "/description" + chr(62) + NL +
+        "    " + chr(60) + "language" + chr(62) + "es-es" + chr(60) + "/language" + chr(62) + NL +
+        "    " + chr(60) + "itunes:author" + chr(62) + "Somos El Encuadre" + chr(60) + "/itunes:author" + chr(62) + NL +
+        "    " + chr(60) + "itunes:category text=\"News\"" + chr(62) + chr(60) + "/itunes:category" + chr(62) + NL +
+        "    " + chr(60) + "itunes:explicit" + chr(62) + "false" + chr(60) + "/itunes:explicit" + chr(62) + NL
+    )
+    pie = NL + "  " + chr(60) + "/channel" + chr(62) + NL + chr(60) + "/rss" + chr(62) + NL
+    feed = cabecera + NL.join(items) + pie
+    (PODCAST / "feed.xml").write_text(feed, encoding="utf-8")
+
+
 def main(fecha=None):
     fecha = fecha or FECHA
     print(f"Generando podcast para {fecha}...")
@@ -121,12 +214,12 @@ def main(fecha=None):
     if not voz:
         print("ERROR: no hay voz_largo_*.mp3")
         return False
-    musica = _buscar_musica()
+    musica = _buscar_musica(fecha)
     if not musica:
-        print("ERROR: no hay lofi_base.mp3")
-        return False
+        print("AVISO: no hay música lofi disponible. Generando podcast SOLO VOZ.", flush=True)
+    else:
+        print(f"Musica: {musica.name} ({musica.stat().st_size//1024//1024}MB)")
     print(f"Voz:    {voz.name} ({voz.stat().st_size//1024//1024}MB)")
-    print(f"Musica: {musica.name} ({musica.stat().st_size//1024//1024}MB)")
     wav_temp = OUT / f"_temp_podcast_{fecha}.wav"
     mp3_final = PODCAST / f"{fecha}.mp3"
     try:
@@ -154,6 +247,8 @@ def main(fecha=None):
     print(f"OK MP3: {mp3_final.name} ({mp3_final.stat().st_size//1024//1024}MB)")
     _regenerar_index()
     print("OK index.md actualizado")
+    _regenerar_feed()
+    print("OK feed.xml actualizado")
     out_podcast = OUT / "podcast"
     out_podcast.mkdir(exist_ok=True)
     (out_podcast / f"{fecha}.mp3").write_bytes(mp3_final.read_bytes())
