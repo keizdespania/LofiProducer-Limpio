@@ -23,6 +23,11 @@ def _humanizar_texto(texto):
     texto = re.sub(r'[Nn]o hay cita[^.]*\.?\s*', '', texto)
     texto = re.sub(r'[Cc]ita no disponible[^.]*\.?\s*', '', texto)
     
+    # Quitar URLs y dominios (2026-11-03)
+    texto = re.sub(r'https?://\S+', '', texto)
+    texto = re.sub(r'\b\w+\.(com|es|org|net|io)\b', '', texto)
+    texto = re.sub(r'\belencuadre\b', '', texto, flags=re.IGNORECASE)
+
     # Quitar frases de montaje
     patrones = [
         r'El video (abre|empieza|cierra|termina) con[^.]*\.?\s*',

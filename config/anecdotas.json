@@ -85,15 +85,15 @@
       "id": 9,
       "categoria": "familia",
       "texto": "Mi madre Ana preparó una tortilla tan inflada que parecía una nube de algodón. Ana, con tono de sermón, comentó: \"En la cocina, la verdad siempre sube\". Yo replicé: \"Y la mentira siempre se esconde bajo la salsa\". Los canales de información nos hacen respirar aire de humo sin darnos oxígeno. La claridad se ha quedado sin gas.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T16:12:18.059750"
     },
     {
       "id": 10,
       "categoria": "familia",
       "texto": "Durante el asado familiar, el abuelo Jorge sacó una salsa que juraba ser \"original\". Jorge, con voz de vendedor, aseguró: \"Esta receta nunca ha sido copiada\". Yo le respondí: \"Como los titulares que nunca admiten su fuente\". Los medios reciclan fórmulas y nos venden novedad enlatada. La originalidad está enlatada para todos.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T16:21:02.764235"
     },
     {
       "id": 11,
