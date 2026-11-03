@@ -28,9 +28,13 @@ def _procesar_medio(medio, datos, noticia):
             if isinstance(v, dict) and v.get("titulo"): textos.append(v["titulo"])
     
     if not textos: return None
+    # Si la noticia pasada no está en este medio, usar la primera del medio (fix 2026-11-03)
+    noticia_real = noticia
+    if noticia and not any(noticia[:40].lower() in t.lower() for t in textos):
+        noticia_real = textos[0]
     ctx = f"MEDIO: {medio}\nTITULARES:\n" + "\n".join(textos[:3])
-    
-    r = pedir_a_especialista("forense_medios", f"Analiza el sesgo de {medio} sobre: {noticia}. Devuelve SOLO JSON.", contexto=ctx[:800], proveedor="auto")
+
+    r = pedir_a_especialista("forense_medios", f"Analiza el sesgo de {medio} sobre: {noticia_real}. Devuelve SOLO JSON.", contexto=ctx[:800], proveedor="auto")
     an = _parse_json(r)
     if not an: return None
     return an
