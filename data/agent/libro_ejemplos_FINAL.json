@@ -1,0 +1,676 @@
+{
+  "meta": {
+    "descripcion": "Ejemplos verificados politica USA para El Arsenal Cognitivo",
+    "actualizado": "2026-11-03",
+    "total": 74,
+    "fuentes": "f1=12 cortos, f2=49 detallados, merge sin duplicados"
+  },
+  "ejemplos": [
+    {
+      "tecnica": "Ad hominem",
+      "autor": "Walton, 1998",
+      "caso": "Ataques personales en las elecciones de medio mandato (2026)",
+      "ejemplo": "En el debate al Senado por Georgia del 8 de octubre de 2026, el republicano Mike Collins llamo al democrata Jon Ossoff trust-fund kid (nino de fondo fiduciario) y Ossoff llamo a Collins bigot (fanatico). Esa misma noche, Abdul El-Sayed llamo a su oponente Mike Rogers sock puppet (titere) de Trump, y Rogers lo llamo con man (estafador) y glitchy AI chatbot (chatbot de IA con fallos). La politica de EE.UU. vive un auge de insultos personales en lugar de debate de politicas.",
+      "fuente": "USA Today (16 oct 2026)",
+      "defensa": "Cuando el ataque es a la persona y no al argumento, preguntate que se esta evitando discutir.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Anclaje",
+      "autor": "Tversky & Kahneman, 1974",
+      "caso": "Las demandas exageradas de Trump",
+      "ejemplo": "Trump es un practicante dedicado del anclaje extremo. Su demanda de 10.000 millones de dolares contra el IRS, presentada mientras era presidente, es un ejemplo. En una negociacion, el ancla es la primera cifra que se pone sobre la mesa: condiciona todas las cifras posteriores. Si Trump pide 10.000 millones, cualquier acuerdo por 1.000 millones parece una ganga. El ancla no tiene que ser realista; solo tiene que ser lo suficientemente grande para que las alternativas parezcan razonables.",
+      "fuente": "The New Republic (5 ago 2026), Tversky & Kahneman (1974)",
+      "defensa": "La primera cifra que oyes no es la verdadera. Cuestiona el punto de partida y pregunta cual seria el ancla si la negociacion empezara de cero.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Apilamiento de cartas",
+      "autor": "Lee & Lee, 1939",
+      "caso": "El anuncio de Schwarzenegger contra Angelides (2006)",
+      "ejemplo": "En la campana a gobernador de California de 2006, los anuncios de Arnold Schwarzenegger mostraban imagenes de el luciendo sano y fuerte mientras una voz en off decia que no habia subido los impuestos y que se habian creado 500.000 nuevos empleos. Luego venia el contraste: una imagen ridiculamente mala de Phil Angelides y un narrador diciendo que Angelides iba a subir los impuestos. La profesora de comunicacion Nancy Snow lo llamo card stacking: se presentan solo los datos que favorecen a tu candidato y se ocultan los que lo perjudican. La distorsion es obvia, pero los indecisos prestan atencion.",
+      "fuente": "California State University, Fullerton (1 nov 2006)",
+      "defensa": "Preguntate que datos no te estan mostrando. La informacion completa casi nunca es tan limpia.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Cambio gradual",
+      "autor": "Bernays, 1928",
+      "caso": "El cambio incremental en la politica estadounidense",
+      "ejemplo": "Ted Kennedy es recordado como el gran gradualista. Nunca abandono sus ideales ambiciosos (empleo pleno, reindustrializacion, seguro nacional de salud), pero su capacidad para forjar compromisos y defender un cambio gradual e incremental creo su legado: centros de salud comunitarios, el Instituto Nacional del Cancer, la Ley de Estadounidenses con Discapacidades, Meals on Wheels, la renovacion de la Ley de Derechos Electorales y No Child Left Behind. El cambio gradual no es una tecnica de manipulacion per se, pero los demagogos la usan para erosionar derechos poco a poco, sin que la gente note el cambio hasta que es demasiado tarde (la teoria de la rana hervida).",
+      "fuente": "The New York Times (28 ago 2009), The Atlantic (22 ene 2026)",
+      "defensa": "Preguntate si el cambio que estas aceptando hoy es el mismo que habrias aceptado si te lo hubieran propuesto de golpe.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Cebo y cambio",
+      "autor": "Marketing moderno (s. XX)",
+      "caso": "El anuncio de Willie Horton (1988)",
+      "ejemplo": "Durante la campana presidencial de 1988, el PAC National Security produjo un anuncio titulado Weekend Passes que contaba la historia de Willie Horton, un convicto negro que cometio una violacion mientras estaba en libertad condicional bajo un programa de Michael Dukakis. El anuncio no solo contaba la historia, sino que mostraba la foto policial de Horton. Larry McCarthy, miembro de National Security, llamo a la imagen el mayor miedo de toda madre suburbana. El cebo era la seguridad publica; el cambio era jugar la carta racial sin mencionarla explicitamente. El anuncio fue tan efectivo como controvertido.",
+      "fuente": "Wikipedia (Willie Horton)",
+      "defensa": "Preguntate si el tema que te estan vendiendo es el tema real o una cortina de humo.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Cebo y cambio / Bait-and-Switch",
+      "autor": "Marketing moderno (s. XX)",
+      "caso": "Willie Horton (1988)",
+      "ejemplo": "Durante la campaña presidencial de 1988, el PAC 'National Security' produjo un anuncio titulado 'Weekend Passes' que contaba la historia de Willie Horton, un convicto negro que cometió una violación mientras estaba en libertad condicional bajo un programa de Michael Dukakis. El anuncio no solo contaba la historia, sino que mostraba la foto policial de Horton. Larry McCarthy, miembro de National Security, llamó a la imagen 'el mayor miedo de toda madre suburbana'. El 'cebo' era la seguridad pública; el 'cambio' era jugar la carta racial sin mencionarla explícitamente. El anuncio fue tan efectivo como controvertido.",
+      "fuente": "Wikipedia (Willie Horton)",
+      "defensa": "Pregúntate si el tema que te están vendiendo es el tema real o una cortina de humo.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Cherry picking / Seleccion de cerezas",
+      "autor": "Logica informal (s. XX)",
+      "caso": "El caso Nayirah (1990)",
+      "ejemplo": "Antes de la Guerra del Golfo, una adolescente kuwaiti llamada Nayirah testifico ante el Congreso de EE.UU. que habia visto a soldados iraquies sacar a bebes de incubadoras y dejarlos morir en el suelo. La historia fue citada por el presidente George H.W. Bush seis veces en discursos y por siete senadores como razon para votar a favor de la guerra. Despues se supo que era la hija del embajador de Kuwait en EE.UU., y que la historia era casi con certeza falsa. La empresa de relaciones publicas Hill & Knowlton habia organizado todo.",
+      "fuente": "Manual academico Communication Theories (Pearson), citando a MacArthur (1992)",
+      "defensa": "Preguntate si te estan mostrando la imagen completa o solo las piezas que encajan.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Cherry picking / Selección de cerezas",
+      "autor": "Lógica informal (s. XX)",
+      "caso": "El caso Nayirah (1990) - detalle verificado",
+      "ejemplo": "En octubre de 1990, una adolescente kuwaití llamada Nayirah testificó ante el Congreso de EE.UU. que había visto a soldados iraquíes sacar a bebés de incubadoras y dejarlos morir en el suelo. La historia fue citada por el presidente George H.W. Bush y por senadores como razón para votar a favor de la guerra. Después se supo que era la hija del embajador de Kuwait en EE.UU. La empresa Hill & Knowlton había organizado todo, y Lauri Fitz-Pegado (vicepresidenta interina de H&K) fue confirmada como responsable de entrenar a Nayirah en lo que resultó ser un testimonio falso. Human Rights Watch investigó en 1992 y concluyó: 'no hay verdad en la acusación... Las historias fueron fabricadas a partir de gérmenes de verdad por gente fuera del país que debería haber sabido mejor.' El investigador Aziz Abu-Hamad entrevistó a médicos del hospital: 'El ala de maternidad tenía 25 a 30 incubadoras. Ninguna fue tomada por los iraquíes, y ningún bebé fue sacado de ellas.'",
+      "fuente": "Wikipedia (Nayirah testimony), Human Rights Watch (1992)",
+      "defensa": "Pregúntate si te están mostrando la imagen completa o solo las piezas que encajan.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Compromiso y coherencia",
+      "autor": "Cialdini, 1984",
+      "caso": "La coherencia partidista",
+      "ejemplo": "La coherencia partidista hace que los votantes se mantengan fieles a su partido incluso cuando el partido cambia de posicion. Si te has definido publicamente como republicano, te resultara incomodo criticar a un presidente republicano, aunque sus politicas no te gusten. La coherencia no es lealtad racional: es la necesidad psicologica de no contradecirte. Los politicos lo saben y explotan la presion de mantener la coherencia.",
+      "fuente": "Cialdini, Influence (1984), psicologia politica",
+      "defensa": "Preguntate si estas defendiendo una idea porque la crees o porque ya dijiste que la creias.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Contagio",
+      "autor": "Le Bon, 1895",
+      "caso": "La retorica de odio en los rallies de Trump",
+      "ejemplo": "En un mitin en Clemson (Carolina del Sur) en octubre de 2026, mas de media docena de enfrentamientos entre asistentes y manifestantes interrumpieron a Trump. Pero el goteo de arrebatos, seguido de reacciones airadas del presidente y sus seguidores, mostro la profunda division politica del pais. Las emociones se contagian en la multitud: el odio de un lado genera el odio del otro, y la espiral se retroalimenta. El contagio emocional no requiere que todos esten de acuerdo, solo que compartan la misma emocion.",
+      "fuente": "The New York Times (22 oct 2026), Fox News (3 nov 2024)",
+      "defensa": "Cuando sientes una emocion intensa en un grupo, preguntate si la emocion es tuya o la has contagiado del entorno.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Coste hundido",
+      "autor": "Arkes & Blumer, 1985",
+      "caso": "El tren bala de California y Newsom (2025)",
+      "ejemplo": "El gobernador de California, Gavin Newsom, dijo en una ceremonia sobre el tren de alta velocidad: No podemos volver atras. Solo tenemos que aceptar la responsabilidad de donde estamos y eso es exactamente lo que estamos haciendo. El proyecto del tren bala de California acumula mas de 100.000 millones de dolares de deuda. Newsom uso el argumento del coste hundido: ya hemos gastado tanto que no podemos abandonar. En economia, sin embargo, lo relevante no es lo gastado, sino lo que se va a gastar en el futuro.",
+      "fuente": "Mises Institute (8 may 2025)",
+      "defensa": "Preguntate si seguirias invirtiendo en esto si no hubieras invertido nada antes. Si la respuesta es no, estas cayendo en el coste hundido.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Deepfake / Suplantacion con IA",
+      "autor": "Tecnica emergente, 2026",
+      "caso": "Anuncios con IA en las elecciones de medio mandato (2026)",
+      "ejemplo": "El Wesleyan Media Project identifico 220 anuncios politicos que usaron IA de forma total o parcial, con un gasto de mas de 137 millones de dolares (frente a menos de 50.000 dolares en el ciclo de 2024). El 81% fueron patrocinados por candidatos o grupos republicanos. Un ejemplo: el candidato republicano a gobernador de Nueva York, Bruce Blakeman, produjo un video con IA en el que el alcalde Zohran Mamdani y la gobernadora Kathy Hochul aparecian promocionando una pastilla de la ilusion politica. El video no tenia ningun aviso de que era IA. Otro: el candidato republicano al Senado por Texas, Ken Paxton, difundio un anuncio con IA en el que James Talarico leia una Biblia alterada diciendo Dios dijo que haya seis generos.",
+      "fuente": "The New York Times (16 oct 2026), Xinhua (2 nov 2026), RTVE (2 nov 2026)",
+      "defensa": "Si un video te provoca una reaccion emocional inmediata, desconfia. Verifica la fuente original antes de compartir.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Deshumanizacion",
+      "autor": "Le Bon, 1895",
+      "caso": "Trump llama basura a los somalies (2025)",
+      "ejemplo": "En diciembre de 2025, el presidente Trump, en una reunion de gabinete retransmitida, llamo basura a los inmigrantes somalies, diciendo que no contribuyen nada y que no hacen mas que quejarse. El vicepresidente JD Vance golpeo la mesa en apoyo. Un articulo de opinion en Hiiraan Online lo describio como un ejemplo de deshumanizacion: cuando un presidente llama basura a toda una comunidad de ciudadanos, la cuestion ya no es si lo dice en serio, sino si los demas estan dispuestos a vivir con ello. La deshumanizacion es el paso previo a la violencia.",
+      "fuente": "Hiiraan Online (7 dic 2025), The Boston Globe (25 feb 2026)",
+      "defensa": "Cuando un grupo es descrito como basura, plaga o enfermedad, preguntate que se esta preparando para hacer con ellos.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Deshumanización / Etiquetado",
+      "autor": "Le Bon, 1895 / Lee & Lee, 1939",
+      "caso": "Los 'death panels' de Palin (2009)",
+      "ejemplo": "El 7 de agosto de 2009, Sarah Palin escribió en su página de Facebook: 'The America I know and love is not one in which my parents or my baby with Down Syndrome will have to stand in front of Obama's death panel so his bureaucrats can decide, based on a subjective judgment of their level of productivity in society, whether they are worthy of health care. Such a system is downright evil.' El término 'death panel' se refería a una provisión del proyecto de ley de salud (H.R. 3200, sección 1233) que permitía a Medicare pagar sesiones voluntarias de asesoramiento sobre cuidados al final de la vida. La disposición no creaba ningún panel. El término se extendió por radio, blogs, Fox News y políticos republicanos. The New York Times lo describió como 'un eslogan estándar entre muchos conservadores opuestos a la reforma sanitaria de Obama'.",
+      "fuente": "Wikipedia (Death panel)",
+      "defensa": "Cuando una etiqueta suena a amenaza existencial ('panel de la muerte', 'matar a la abuela'), pregúntate qué se está simplificando y qué se está evitando discutir.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Diversion",
+      "autor": "Bernays, 1928",
+      "caso": "Campanas de desinformacion para desviar la atencion",
+      "ejemplo": "Un estudio academico sobre medios manipulados por el estado irani durante la pandemia de COVID-19 encontro que, a medida que aumentaban los casos domesticos, la campana de desinformacion se desplazaba hacia temas de finanzas internacionales e inversion. El objetivo era diversion: desviar la atencion de los problemas internos (la gestion de la pandemia) hacia un enemigo externo o un tema trivial. La diversion no busca que creas algo falso, sino que dejes de mirar lo que importa.",
+      "fuente": "Cambridge Core, Data & Policy (17 feb 2025)",
+      "defensa": "Cuando un tema te distrae de un problema mas grave, preguntate quien se beneficia de que mires hacia otro lado.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Dunning-Kruger",
+      "autor": "Kruger & Dunning, 1999",
+      "caso": "Trump y la satira que creyo real (2025)",
+      "ejemplo": "Donald Trump publico en Truth Social un articulo de un sitio web satirico llamado The Dunning-Kruger Times. El articulo decia que Barack Obama estaba recibiendo 2,6 millones de dolares al ano en regalias por el Obamacare. El sitio tiene un descargo de responsabilidad visible: Todo en este sitio web es ficcion. No es una mentira y no es noticia falsa porque no es real. Si crees que es real, deberias hacerte revisar la cabeza. Trump se lo creyo y lo compartio. El presentador de CNN Jake Tapper lo resumio: La gente estupida no sabe lo estupida que es, porque es tan estupida. El efecto Dunning-Kruger describe precisamente esto: cuanto menos sabes de un tema, mas crees saber.",
+      "fuente": "The Daily Beast (10 nov 2025)",
+      "defensa": "Cuanto mas seguro te sientes de algo, mas deberias dudar. La incompetencia no se reconoce a si misma.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Efecto de verdad ilusoria",
+      "autor": "Hasher, Goldstein & Toppino, 1977",
+      "caso": "Goebbels y la Gran Mentira",
+      "ejemplo": "Joseph Goebbels, ministro de Propaganda del Tercer Reich, tenia un principio: Una mentira repetida cien veces se convierte en una verdad. Repetia los mismos argumentos hasta que calaran, incluso en los mas incredulos. La repeticion hace que el cerebro confunda familiaridad con verdad.",
+      "fuente": "Biografia Doctor Goebbels (Roca Editorial, 2014), citas de Goebbels",
+      "defensa": "Que algo te suene no significa que sea verdad. La repeticion no es evidencia.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Efecto halo",
+      "autor": "Thorndike, 1920",
+      "caso": "La percepcion de Obama y Bush",
+      "ejemplo": "El efecto halo en politica hace que las opiniones generales sobre un politico se derramen en las opiniones sobre sus cualidades especificas. Los Republicanos que odiaban a Obama lo veian a la vez como debil y como un tirano (cuando es dificil ser ambas cosas). Los Democratas que odiaban a Bush lo veian a la vez como debil y como abusivo. El halo hace que si te cae mal un politico, cualquier caracteristica que se te presente (aunque sea contradictoria) te parezca negativa. La percepcion general contamina los juicios especificos.",
+      "fuente": "YouGov (2014), Nate Silver (FiveThirtyEight)",
+      "defensa": "Cuando una persona te parece buena o mala en todo, preguntate si estas evaluando sus cualidades o solo tu impresion general sobre ella.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Efecto prestigio",
+      "autor": "Le Bon, 1895",
+      "caso": "El prestigio militar en la politica exterior de EE.UU.",
+      "ejemplo": "Los lideres politicos tienen incentivos estrategicos para aprovechar el prestigio militar porque hacerlo genera apoyo y desvia la culpa de las decisiones sobre el uso de la fuerza. Un analisis de discursos presidenciales muestra que los lideres mencionan a las elites militares mas cuando hablan de temas negativos en politica exterior y menos cuando hablan de temas positivos. El prestigio de los militares se transfiere al presidente que los invoca. Si el general dice que hay que atacar, el publico lo acepta mas facilmente que si lo dice un politico.",
+      "fuente": "The Journal of Politics (oct 2022), Princeton University (2021)",
+      "defensa": "Cuando una figura de prestigio apoya una idea, preguntate si su prestigio es relevante para el tema o si solo esta prestando su aura.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Escasez",
+      "autor": "Cialdini, 1984",
+      "caso": "Urgencia en la politica",
+      "ejemplo": "La escasez en politica funciona como en el marketing: si te dicen que algo es limitado o que el tiempo se acaba, actuas mas rapido y piensas menos. Un ejemplo es la retorica del ahora o nunca en las campanas electorales: Esta es la eleccion mas importante de nuestra vida, o Se nos acaba el tiempo. La escasez no requiere que el recurso sea realmente escaso; solo que tu lo percibas como escaso.",
+      "fuente": "Cialdini, Influence (1984)",
+      "defensa": "Cuando sientes urgencia, preguntate si la urgencia es real o te la estan creando para que no pienses.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Fabricación de consentimiento / Omisión",
+      "autor": "Herman & Chomsky, 1988",
+      "caso": "White House Iraq Group (2002-2003)",
+      "ejemplo": "El White House Iraq Group (WHIG) se creó en agosto de 2002 para coordinar la comunicación de la administración Bush sobre Irak. En una reunión del 5 de septiembre de 2002, el redactor de discursos de Bush, Michael Gerson, propuso la metáfora 'smoking gun/mushroom cloud' para vender al público los supuestos peligros nucleares de Sadam Hussein. Según el periodista Michael Isikoff, la frase se filtró al New York Times y la administración la usó al máximo. El jefe de gabinete Andrew Card dijo en una entrevista: 'From a marketing point of view, you don't introduce new products in August.' La estrategia incluía 'cuestionar los motivos de los demócratas que apoyaron la guerra pero ahora critican al presidente'.",
+      "fuente": "Wikipedia (White House Iraq Group), Isikoff & Corn, 'Hubris' (2006)",
+      "defensa": "Pregúntate quién está pagando por el 'consenso' que ves. La espontaneidad tiene factura.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Falacia del jugador",
+      "autor": "Tversky & Kahneman, 1971",
+      "caso": "Jueces de asilo en EE.UU.",
+      "ejemplo": "Un estudio de 150.357 casos de asilo en EE.UU. (1985-2013) encontro que los jueces eran hasta 3,3 puntos porcentuales menos propensos a conceder asilo si el caso anterior habia sido aprobado. La probabilidad de conceder asilo caia aun mas despues de dos aprobaciones seguidas. Los jueces, como los jugadores, creen que si algo no ha pasado en un tiempo, es mas probable que pase. Pero cada caso es independiente.",
+      "fuente": "Chicago Booth Review (CBR Briefing #46)",
+      "defensa": "Los eventos independientes no tienen memoria. Que algo no haya pasado no aumenta la probabilidad de que pase.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Falso dilema",
+      "autor": "Bernays, 1928",
+      "caso": "El anuncio Daisy (1964)",
+      "ejemplo": "El anuncio no decia: mi politica es mejor. Decia: Este es el reto: hacer un mundo en el que todos los hijos de Dios puedan vivir, o entrar en la oscuridad. Debemos amarnos, o debemos morir. Solo hay dos opciones: Johnson (la vida) o Goldwater (la muerte nuclear). No hay matices.",
+      "fuente": "The New York Times (1986), Clarin (2023)",
+      "defensa": "Si solo te presentan dos opciones, casi siempre hay una tercera que no te estan contando.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Generalidades brillantes / Glittering Generalities",
+      "autor": "Lee & Lee, 1939",
+      "caso": "El New Deal de Roosevelt (1933)",
+      "ejemplo": "Franklin D. Roosevelt llamo a su programa economico New Deal (Nuevo Trato). El nombre sonaba a que se estaba corrigiendo un reparto injusto. Quien iba a oponerse a un nuevo trato? La etiqueta vendia la politica antes de que nadie discutiera su contenido.",
+      "fuente": "Manual academico Communication Theories (Pearson)",
+      "defensa": "Si una promesa suena grandiosa pero no dice nada concreto, preguntate que te estan vendiendo realmente.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Heuristico de disponibilidad",
+      "autor": "Tversky & Kahneman, 1973",
+      "caso": "La retorica de Trump sobre inmigracion",
+      "ejemplo": "Un estudio academico examino el papel de la heuristica de disponibilidad y la aversion a la perdida en la formacion de las preferencias de los votantes y el apoyo publico a la retorica y las politicas de inmigracion de Trump. La heuristica de disponibilidad hace que la gente evalue la probabilidad de un evento en funcion de la facilidad con que puede recordarlo. Si los medios repiten historias de inmigrantes cometiendo crimenes, la gente sobreestima la probabilidad de que los inmigrantes cometan crimenes. Trump exploto esta heuristica al convertir casos aislados en una narrativa de peligro generalizado.",
+      "fuente": "Scilit, Framing Fear: Loss Aversion and Availability in Trump's Immigration Rhetoric (2025)",
+      "defensa": "Preguntate si estas evaluando una probabilidad real o solo lo que recuerdas porque te lo han repetido mucho.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Hombre de paja / Straw Man",
+      "autor": "Walton, 1996",
+      "caso": "El macartismo (1950-1954)",
+      "ejemplo": "Joseph McCarthy acuso a funcionarios del gobierno de ser comunistas sin pruebas. Su tecnica era fabricar una version exagerada del enemigo interno. El momento cumbre fue cuando el abogado Joseph Welch le espeto: Have you no sense of decency, sir, at long last? La Comision Tydings acabo acusando a McCarthy de engano y fraude, pero el dano ya estaba hecho.",
+      "fuente": "Archivo.org, documento sobre el macartismo (Christel Lamboley)",
+      "defensa": "Antes de aceptar una critica a una idea, verifica si esa idea es realmente lo que defiende quien la sostiene.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Hombre de paja / Straw Man",
+      "autor": "Walton, 1996",
+      "caso": "El macartismo (1950-1954) - detalle verificado",
+      "ejemplo": "El 9 de junio de 1954, día 30 de las audiencias Army-McCarthy, Joseph Welch se enfrentó a McCarthy. McCarthy había acusado a un joven abogado del bufete de Welch, Fred Fisher, de pertenecer a la National Lawyers Guild (que Brownell había llamado 'la boca legal del Partido Comunista'). Welch respondió: 'Until this moment, Senator, I think I have never really gauged your cruelty or your recklessness... Have you no sense of decency, sir, at long last? Have you left no sense of decency?' La sala rompió en aplausos. La actuación televisada de Welch cambió la opinión pública contra McCarthy en una noche. En julio, un senador republicano presentó una moción para censurarlo, que se aprobó ese año.",
+      "fuente": "Wikipedia (Joseph N. Welch)",
+      "defensa": "Antes de aceptar una crítica a una idea, verifica si esa idea es realmente lo que defiende quien la sostiene.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Miedo / Fear Appeal",
+      "autor": "Le Bon, 1895",
+      "caso": "Anuncio Daisy (1964)",
+      "ejemplo": "La campana de Lyndon B. Johnson emitio el 7 de septiembre de 1964 un anuncio de un minuto. Una nina deshojaba una margarita contando del uno al diez. Al llegar al nueve, una voz masculina empezaba una cuenta atras nuclear. Pantalla en negro. Explosion. La voz de Johnson: Debemos amarnos, o debemos morir. Solo se emitio una vez, pero 50 millones de personas lo vieron. Goldwater no aparece mencionado, pero el miedo a que llevara al pais a una guerra nuclear hizo el resto.",
+      "fuente": "The New York Times (1986, 2011), Clarin (2023)",
+      "defensa": "Cuando un mensaje te hace sentir miedo intenso, preguntate quien gana si actua rapido sin pensar.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Miedo / Fear Appeal",
+      "autor": "Le Bon, 1895",
+      "caso": "Anuncio 'Daisy' (1964) - detalle verificado",
+      "ejemplo": "El anuncio 'Daisy' (o 'Peace, Little Girl') se emitió una sola vez, el 7 de septiembre de 1964, durante la película 'David and Bathsheba' en NBC. La niña, Monique Corzilius (luego Luiz), contaba pétalos de margarita del 1 al 9 (se equivocaba a propósito). Al llegar al 9, una voz masculina hacía una cuenta atrás de misil del 10 al 0. Pantalla en negro. Explosión nuclear. La voz de Johnson: 'These are the stakes! We must either love each other, or we must die.' El anuncio no mencionaba a Goldwater, pero el miedo a que llevara al país a una guerra nuclear hizo el resto. La Casa Blanca recibió tantas llamadas que Johnson quiso emitirlo de nuevo; su asesor le convenció de que no.",
+      "fuente": "Wikipedia (Daisy advertisement), The New York Times (1964)",
+      "defensa": "Cuando un mensaje te hace sentir miedo intenso, pregúntate quién gana si actúas rápido sin pensar.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Modelo de propaganda de 5 filtros",
+      "autor": "Herman & Chomsky, 1988",
+      "caso": "Cobertura mediatica de guerras",
+      "ejemplo": "Herman y Chomsky propusieron que las noticias pasan por cinco filtros: (1) propiedad de los medios (grandes corporaciones), (2) publicidad (los ingresos dependen de anunciantes), (3) fuentes oficiales (dependencia de gobiernos y elites), (4) flak (presion de grupos de poder contra periodistas criticos) y (5) anticomunismo/ideologia dominante. El resultado: las victimas de enemigos reciben mucha cobertura (victimas dignas), mientras que las victimas de aliados reciben poca o ninguna (victimas indignas). Ejemplo: compararon la cobertura del genocidio de Pol Pot en Camboya (enemigo) con la silenciosa complicidad con el genocidio de Indonesia (aliado de EE.UU.).",
+      "fuente": "Edward S. Herman & Noam Chomsky, Manufacturing Consent (1988), p. 2",
+      "defensa": "Preguntate quien es dueno del medio, quien paga la publicidad y a quien cita como fuente. Esos tres filtros explican la mayor parte de lo que lees.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Name Calling / Etiquetado",
+      "autor": "Lee & Lee, 1939",
+      "caso": "El macartismo (1950s)",
+      "ejemplo": "Etiquetar a alguien de comunista o subversivo bastaba para destruir su carrera. El senador McCarthy apodo al secretario de Estado Dean Acheson the Red Dean (el decano rojo) y lo acuso de tener las manos manchadas de sangre de los soldados muertos en Corea. La etiqueta mataba el debate antes de que empezara.",
+      "fuente": "Archivo.org, documento sobre el macartismo",
+      "defensa": "Una etiqueta no es un argumento. Preguntate que se esta evitando discutir al poner esa etiqueta.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Omision / Fabricacion de consentimiento",
+      "autor": "Herman & Chomsky, 1988",
+      "caso": "La guerra de Irak (2003)",
+      "ejemplo": "La administracion Bush repitio hasta la saciedad vinculos falsos entre Sadam Hussein y Al-Qaeda, y la existencia de armas de destruccion masiva. Colin Powell lo defendio ante la ONU en febrero de 2003. Un estudio del Centro para la Integridad Publica cuantifico que Bush y su equipo hicieron 935 declaraciones falsas en los dos anos posteriores al 11-S. Las armas no existian. Irak las habia destruido en 1991.",
+      "fuente": "BBC Mundo (2003), Swissinfo/EFE (2023)",
+      "defensa": "Preguntate que informacion relevante falta en la noticia que estas leyendo.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Pendiente resbaladiza",
+      "autor": "Walton, 1992",
+      "caso": "El discurso de Reagan sobre la medicina socializada (1961)",
+      "ejemplo": "Ronald Reagan, en 1961, dio un famoso discurso radiofonico oponiendose a la medicina socializada (lo que luego seria Medicare). Su argumento era una pendiente resbaladiza clasica: si el gobierno puede decirte que tienes que tener seguro medico, manana puede decirte que tienes que comprar broccoli. El argumento del broccoli fue central en la oposicion a la Affordable Care Act (Obamacare) en 2012. La logica: si A es posible, entonces Z es inevitable.",
+      "fuente": "The Atlantic (2009), Wikipedia (Slippery slope)",
+      "defensa": "Cuando te dicen que un paso lleva inevitablemente al desastre, preguntate si hay evidencia de esa cadena causal o si es solo miedo proyectado.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Polarizacion",
+      "autor": "Le Bon, 1895",
+      "caso": "La retorica de Trump sobre los inmigrantes (2024)",
+      "ejemplo": "Durante la campana de 2024, Trump describio a los inmigrantes hispanos como violadores, criminales sedientos de sangre, animales, asesinos a sangre fria, la peor gente y la gente mas violenta de la tierra. Politico informo que era una escalada de retorica xenofoba y racista que resonaba con ideologias autoritarias y nazis. A pesar de ello, Trump gano el 46% del voto hispano, 18 puntos mas que en 2016. La polarizacion no siempre resta: a veces moviliza a los que quieren marcar la linea entre nosotros y ellos.",
+      "fuente": "The New York Times (8 abr 2025), Politico (12 oct 2024)",
+      "defensa": "Cuando un politico divide el mundo en nosotros y ellos, preguntate a quien esta excluyendo y por que.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Pregunta cargada",
+      "autor": "Walton, 1989",
+      "caso": "Las 27 preguntas cargadas de Trump (2018)",
+      "ejemplo": "Donald Trump y el Comite Nacional Republicano enviaron una encuesta llamada Media Accountability Survey con 27 preguntas. La pregunta 1 era: Cree que los medios intentan deliberadamente dividir a los republicanos para ayudar a elegir democratas? La pregunta 2 era: Cuando dejo de golpear a su esposa? La segunda es un ejemplo clasico de pregunta cargada. La encuesta no buscaba medir opinion, sino sembrarla. La pregunta 23: Cree que los medios han sido demasiado rapidos en difundir historias falsas sobre nuestro movimiento?",
+      "fuente": "The Jackson Sun (22 jul 2018)",
+      "defensa": "Si una pregunta ya asume la respuesta, no es una pregunta: es una afirmacion disfrazada.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Primado / Priming",
+      "autor": "Meyer & Schvaneveldt, 1971",
+      "caso": "Anuncio racial contra Cheri Beasley (2022)",
+      "ejemplo": "En la campana al Senado de EE.UU. de 2022, un anuncio contra la candidata democrata Cheri Beasley la describia como peligrosamente liberal e intercalaba imagenes de Beasley con multiples fotos de fichas policiales de hombres negros. El primado racial funciona asi: las imagenes de fichas policiales activan estereotipos negativos sobre las personas negras, y esa activacion influye en como se evalua a Beasley. No hace falta que el anuncio diga nada explicito sobre raza; el estimulo previo (las imagenes) hace el trabajo.",
+      "fuente": "CourtListener, WILLIAMS v. HALL (M.D.N.C., 2025), testimonio de la Dra. Stephens-Dougan",
+      "defensa": "Cuando un anuncio te muestra imagenes que no vienen a cuento, preguntate que asociacion estan intentando activar en tu cabeza.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Prueba social",
+      "autor": "Cialdini, 1984",
+      "caso": "Las encuestas y los mas vendidos",
+      "ejemplo": "La prueba social en politica funciona cuando te dicen que todo el mundo apoya a un candidato o una idea. Si las encuestas dicen que un candidato va ganando, mas gente se suma a el (el efecto bandwagon). Si un libro esta en la lista de mas vendidos, mas gente lo compra. La prueba social no te dice que pensar; te dice que los demas ya lo estan haciendo, y tu no quieres quedarte fuera.",
+      "fuente": "Cialdini, Influence (1984)",
+      "defensa": "Que muchos lo hagan no lo hace correcto. Preguntate si la mayoria es real o fabricada.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Psicologia de masas",
+      "autor": "Le Bon, 1895",
+      "caso": "El rally de Madison Square Garden (2024)",
+      "ejemplo": "Un analisis psicologico de los rallies de MAGA en el Madison Square Garden en 2024 los comparo con los mitines de Nuremberg. La masa actua como un solo ser: pierde la capacidad de razonamiento individual y gana impulsividad, sugestionabilidad y necesidad de un lider. En el rally, la multitud reia, gritaba y respondia como un organismo unico. La psicologia de masas no es una tecnica que alguien invente, es un fenomeno que los demagogos explotan.",
+      "fuente": "Library of Professional Psychology (3 sep 2026)",
+      "defensa": "Cuando estes en una multitud y sientas que pierdes tu juicio individual, alejate y piensa por ti mismo.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Reactancia",
+      "autor": "Brehm, 1966",
+      "caso": "Entrenamiento de diversidad obligatorio",
+      "ejemplo": "Cuando las politicas se perciben como obligatorias, pueden generar el efecto contrario. En una serie de experimentos con mas de 3.300 adultos estadounidenses, se comprobo que cuando el entrenamiento de diversidad se presentaba como obligatorio (frente a opcional), la gente reportaba mas emociones negativas (el no me digas que hacer). Esta reactancia se vinculaba a una mayor creencia de que la discriminacion ya no es un problema grave. Es decir: la obligacion de asistir a un entrenamiento sobre discriminacion hacia que la gente dudara mas de que la discriminacion exista.",
+      "fuente": "Society for Personality and Social Psychology (11 feb 2026)",
+      "defensa": "Cuando te obligan a aceptar una idea, preguntate si tu rechazo viene del argumento o de la coaccion.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Reciprocidad",
+      "autor": "Cialdini, 1984",
+      "caso": "Favores politicos",
+      "ejemplo": "La reciprocidad en politica es el intercambio de favores: si un politico te ayuda con un problema local, tu te sientes obligado a votar por el. Un ejemplo clasico es el clientelismo: el politico reparte favores (empleos, ayudas, gestos) y los votantes devuelven el favor con el voto. La reciprocidad no necesita que el favor sea grande; solo que tu sientas que le debes algo.",
+      "fuente": "Cialdini, Influence (1984)",
+      "defensa": "Cuando sientes que le debes algo a un politico, preguntate si el favor fue un regalo o una inversion.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Repeticion",
+      "autor": "Le Bon, 1895",
+      "caso": "Trump repite a Biden casi 900 veces en 9 meses",
+      "ejemplo": "Una revision de Reuters de finales de septiembre de 2026 encontro que Trump habia nombrado a su predecesor casi 900 veces en nueve meses, unas tres veces al dia, en casi 200 eventos y entrevistas y 190 publicaciones en Truth Social. La repeticion no busca convencer: busca familiarizar. El efecto de verdad ilusoria hace que lo familiar se sienta verdadero. Si oyes el nombre de Biden tres veces al dia asociado a algo negativo, tu cerebro empieza a aceptar la asociacion sin examinarla.",
+      "fuente": "The Conversation (2 nov 2026), Mother Jones",
+      "defensa": "Cuando un nombre o una idea se repite hasta la saciedad, preguntate si la repeticion es informacion o lavado de cerebro.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Sesgo de autoridad",
+      "autor": "Milgram, 1963",
+      "caso": "La administracion Bush y los expertos (2003)",
+      "ejemplo": "Para vender la guerra de Irak, se presentaban pruebas de servicios de inteligencia y se citaba a fuentes informadas. La autoridad de la inteligencia (y del secretario de Estado Colin Powell ante la ONU) se uso para silenciar el escepticismo. Powell admitio despues que fue un momento doloroso y una mancha en su historial.",
+      "fuente": "Swissinfo/EFE (2023)",
+      "defensa": "La bata no es un argumento. Preguntate si esa persona tiene autoridad real en el tema o solo la apariencia.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Sesgo de confirmacion",
+      "autor": "Wason, 1960",
+      "caso": "Polarizacion partidista en EE.UU.",
+      "ejemplo": "La polarizacion politica en EE.UU. esta impulsada en parte por el sesgo de confirmacion: la gente busca y acepta informacion que confirma sus creencias previas, e ignora o rechaza la que las contradice. Un estudio de la Universidad de California en Berkeley encontro que los ciudadanos procesan la nueva informacion politica a traves de un filtro de confirmacion, y que este filtro no esta determinado solo por el partido o la ideologia, sino por las creencias sobre la calidad y eficiencia del gobierno. Si crees que el gobierno es incompetente, cualquier noticia que lo confirme te parecera mas creible.",
+      "fuente": "Goldman School of Public Policy, UC Berkeley (16 may 2026)",
+      "defensa": "Busca activamente la informacion que te contradice. Si no la encuentras, preguntate por que.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Sesgo de endogrupo",
+      "autor": "Tajfel & Turner, 1979",
+      "caso": "La retorica del nosotros contra ellos de Trump",
+      "ejemplo": "Durante la campana de 2024, Trump describio a los inmigrantes hispanos como violadores, criminales sedientos de sangre y animales. Segun el profesor de psicologia politica Efren Perez (UCLA), los latinos tienen multiples identidades (religion, clase, raza, etnia, nacion). Cuando Trump martillea con Estados Unidos y Hacer America Grande Otra Vez, la identidad estadounidense se vuelve mas importante para los latinos que se priorizan como estadounidenses. Para probar su valia como estadounidenses, algunos latinos se motivan a marcar la linea entre nosotros (estadounidenses) y ellos (inmigrantes indocumentados). El sesgo de endogrupo hace que favorezcas a los tuyos y rechaces a los otros, incluso cuando tu lugar en el grupo esta en duda.",
+      "fuente": "The New York Times (8 abr 2025), Politico (12 oct 2024)",
+      "defensa": "Cuando sientas la necesidad de demostrar que perteneces a un grupo, preguntate a quien estas sacrificando para probarlo.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Sesgo de negatividad",
+      "autor": "Rozin & Royzman, 2001",
+      "caso": "Los anuncios de ataque en las elecciones de EE.UU.",
+      "ejemplo": "En la ultima semana de las primarias de Florida de 2012, mas del 90% de los anuncios emitidos fueron anuncios de ataque. En 2008, un estudio de Weinberger y Westen midio las respuestas conscientes e inconscientes de los votantes a dos anuncios: uno anti-Obama de Hillary Clinton (el telefono sonando a las 3 de la manana) y uno anti-McCain (McCain es lo mismo que Bush). Los anuncios negativos funcionan porque el cerebro presta mas atencion a las amenazas que a las promesas. La negatividad se recuerda mejor y moviliza mas.",
+      "fuente": "Association for Psychological Science (29 feb 2012), Los Angeles Times",
+      "defensa": "Cuando un anuncio te asusta o te enfada, preguntate si te estan informando o solo activando el miedo.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Sesgo de recencia",
+      "autor": "Ebbinghaus, 1885",
+      "caso": "Las sorpresas de octubre en las elecciones",
+      "ejemplo": "El sesgo de recencia hace que los votantes den mas peso a lo ultimo que han oido. Las sorpresas de octubre (revelaciones de ultima hora antes de una eleccion) pueden pesar desproporcionadamente en la mente de los votantes porque son lo mas reciente. Un ejemplo clasico es la revelacion del caso de Willie Horton en 1988, que aunque no fue en octubre, domino el debate final. Otro: en 2016, la carta de James Comey sobre los emails de Hillary Clinton, a 11 dias de la eleccion, pudo haber inclinado la balanza. Lo ultimo que oyes se queda.",
+      "fuente": "Choiceology (Katy Milkman), The New York Times (2024)",
+      "defensa": "Preguntate si lo que estas evaluando es lo mas importante o solo lo mas reciente.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Simpatia",
+      "autor": "Cialdini, 1984",
+      "caso": "El carisma politico",
+      "ejemplo": "La simpatia es uno de los principios de persuasion de Cialdini: le decimos que si a la gente que nos cae bien. En politica, el carisma es la version intensificada de la simpatia. Un politico carismatico no necesita argumentos: su presencia, su sonrisa, su forma de hablar hacen que la gente quiera creerle. Obama era un maestro de la simpatia: su carisma hacia que la gente se identificara con el y aceptara sus propuestas sin examinarlas demasiado.",
+      "fuente": "Cialdini, Influence (1984), psicologia politica",
+      "defensa": "Cuando alguien te cae muy bien, preguntate si estas evaluando sus ideas o su sonrisa.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Sugerencia",
+      "autor": "Le Bon, 1895",
+      "caso": "El anuncio Love Me de Trump con dinero publico (2026)",
+      "ejemplo": "Con el indice de aprobacion de Trump cerca de minimos historicos, su administracion emitio anuncios pidiendo a los estadounidenses que lo amen. Un anuncio mostraba imagenes de Trump con la cancion Love Me. El descargo legal decia: Pagado por el gobierno de EE.UU., lo que podria violar la ley federal. La sugerencia funciona sin argumentos: no te dicen por que amarlo, solo te sugieren que lo hagas, con imagenes, musica y repeticion. La propaganda de sugerencia no convence, insinua.",
+      "fuente": "The New York Times (24 sep 2026)",
+      "defensa": "Cuando un mensaje te dice que hacer sin darte razones, preguntate por que no te las estan dando.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Testimonio",
+      "autor": "Lee & Lee, 1939",
+      "caso": "Anuncios testimoniales en campanas de EE.UU.",
+      "ejemplo": "En la campana de Ed Bernstein para el Senado de EE.UU. en 2000, un anuncio de television destaco el caracter de Bernstein a traves de un testimonio de Sandy Heverly, una activista contra la conduccion en estado de ebriedad. Heverly recordaba el trabajo de Bernstein en el tema y decia: Cuatrocientas personas que eran asesinos potenciales fueron sacadas de las carreteras porque a Ed Bernstein le importo marcar la diferencia. El testimonio no es un argumento: es una transferencia de credibilidad. Si alguien que ha sufrido una tragedia lo apoya, el candidato debe ser bueno.",
+      "fuente": "FEC (Federal Election Commission), MUR 4999",
+      "defensa": "Un testimonio no es una prueba. Preguntate si la persona que lo da tiene algo que ganar o si su experiencia es relevante para el tema.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Transfer",
+      "autor": "Lee & Lee, 1939",
+      "caso": "El Comite Creel (1917-1918)",
+      "ejemplo": "Estados Unidos entro en la Primera Guerra Mundial en abril de 1917. La opinion publica era partidaria de quedarse al margen. El gobierno de Wilson creo el Comite Creel (CPI) para cambiar eso. Los carteles del Comite siguieron dos principios: simplificacion y deformacion. Presentaban a Alemania como un enemigo despiadado con valores perversos frente a un heroe noble (EE.UU.) obligado a pararle los pies. Usaban el estereotipo y las emociones, las herramientas basicas de Bernays, para convencer a la gente de que habia que participar.",
+      "fuente": "Articulo academico Propaganda norteamericana en la Primera Guerra Mundial (2012)",
+      "defensa": "Preguntate si estas evaluando el mensaje o a quien lo firma.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Transferencia",
+      "autor": "Lee & Lee, 1939",
+      "caso": "Trump en el Lincoln Memorial (2020)",
+      "ejemplo": "Donald Trump participo en un town hall virtual de Fox News el domingo 3 de mayo de 2020, escenificado a los pies del Lincoln Memorial. La tecnica de transferencia visual consiste en yuxtaponer la imagen de un lider con un simbolo positivo (Lincoln, el memorial, la historia) para que las cualidades del simbolo se transfieran al lider. Lincoln es el presidente que abolio la esclavitud; Trump se sento a sus pies. La transferencia no dice nada: solo muestra. Y lo que muestra hace el trabajo.",
+      "fuente": "Policy Magazine (4 may 2020)",
+      "defensa": "Preguntate si estas evaluando el mensaje o el simbolo al que esta asociado.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Unidad",
+      "autor": "Cialdini, 2021",
+      "caso": "La identidad compartida en los rallies",
+      "ejemplo": "La unidad es el septimo principio de Cialdini (anadido en 2021): sentir que alguien forma parte de los tuyos. En politica, la unidad se construye con simbolos, himnos, banderas y esloganes que hacen que la gente sienta que pertenece a un grupo. En los rallies de Trump, la unidad se construye con gorras rojas, canticos y la sensacion de que los que estan fuera son enemigos. La unidad no es solo identidad: es la sensacion de que el lider es uno de nosotros, no un politico lejano.",
+      "fuente": "Cialdini, Influence (2021)",
+      "defensa": "Cuando sientes que un politico es uno de los tuyos, preguntate si comparte tu vida o solo la imita.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Ventana de Overton",
+      "autor": "Overton (1998) / Beck (2010)",
+      "caso": "La confirmacion de Todd Blanche como fiscal general (2026)",
+      "ejemplo": "La confirmacion de Todd Blanche como fiscal general de EE.UU. revela hasta donde Trump ha desplazado la ventana de Overton (el espectro de lo que se considera aceptable) en el Departamento de Justicia. Blanche fue confirmado a pesar de que dos senadores (Tillis y Cornyn) tuvieron que exigirle un documento por escrito de que no reviviria un fondo de 1.800 millones de dolares para apoyar a personas que supuestamente fueron perseguidas por el gobierno federal. Lo que en 1973 habria sido un escandalo (la Masacre del Sabado Noche), en 2026 se considera normal. Steve Bannon lo resumio: la ventana de Overton se mueve tan rapido que la mejor forma de entender la estrategia de Trump es: A la mierda la ventana de Overton.",
+      "fuente": "Foreign Policy (10 ago 2026), The Atlantic (22 ene 2026)",
+      "defensa": "Preguntate si lo que ayer era impensable hoy se presenta como sentido comun, y quien se beneficia de ese desplazamiento.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Encuadre",
+      "autor": "Goffman, 1974",
+      "caso": "Trump pinta a los demócratas como villanos (2026)",
+      "ejemplo": "En su discurso del Estado de la Unión de febrero de 2026, Trump presentó a los demócratas como 'poco patriotas' y 'locos', seleccionando un aspecto de la realidad (el desacuerdo político) y presentándolo como una amenaza existencial. El encuadre no dice 'tenemos diferencias políticas'; dice 'ellos son el enemigo'. Al hacer prominente ese marco, condiciona cómo el público interpreta cualquier noticia posterior sobre la oposición.",
+      "fuente": "The New York Times (25 feb 2026)",
+      "defensa": "Pregúntate qué parte de la realidad se está iluminando y qué parte queda en la sombra.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Establecimiento de agenda",
+      "autor": "McCombs & Shaw, 1972",
+      "caso": "Los medios imponen el tema de la 'resistencia heroica' en Minneapolis (2026)",
+      "ejemplo": "RealClearPolitics documentó en enero de 2026 que los medios dominantes seguían imponiendo la agenda política: la historia principal era 'la resistencia heroica en Minneapolis a los intentos federales de hacer cumplir las leyes de inmigración'. Al elegir ese marco como tema central, los medios no decían qué pensar, pero sí sobre qué pensar. Otros temas (economía, empleo) quedaban desplazados de la conversación pública.",
+      "fuente": "RealClearPolitics (30 ene 2026)",
+      "defensa": "Pregúntate quién decide de qué se habla y de qué no se habla.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Apelación al miedo",
+      "autor": "Le Bon, 1895",
+      "caso": "Los republicanos y el 'espectro del socialismo' (2026)",
+      "ejemplo": "The New York Times documentó en septiembre de 2026 que, con las encuestas en contra, Trump y sus aliados recurrieron al miedo: pintaron a los demócratas como 'peligrosamente poco americanos' y agitaron el 'espectro del socialismo'. En la recta final de la campaña, Trump usó el miedo para movilizar a los votantes republicanos y desviar la atención de los problemas económicos. El miedo no requiere argumentos: solo requiere un enemigo.",
+      "fuente": "The New York Times (10 sep 2026), BBC (2 nov 2026)",
+      "defensa": "Cuando un mensaje te hace sentir miedo intenso, pregúntate quién gana si actúas rápido sin pensar.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Apelación a la emoción",
+      "autor": "Bernays, 1928",
+      "caso": "Anuncios que apelan a la emoción, no al pensamiento crítico (2026)",
+      "ejemplo": "WyoFile documentó en mayo de 2026 que, con la temporada de campaña, llegan los anuncios políticos y los mailers diseñados para apelar a la emoción, no a las habilidades de pensamiento crítico. La técnica no busca que analices la propuesta, sino que sientas algo (nostalgia, ira, orgullo) y votes en consecuencia. La emoción bypassa el pre-frontal cortex.",
+      "fuente": "WyoFile (27 may 2026)",
+      "defensa": "Cuando un anuncio te hace sentir algo muy intenso, pregúntate si te están informando o manipulando.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Generalidades brillantes",
+      "autor": "Lee & Lee, 1939",
+      "caso": "Las generalidades brillantes de Romney (2007)",
+      "ejemplo": "FactCheck.org analizó en 2007 un anuncio de Mitt Romney lleno de palabras como 'familias', 'valores', 'patriótico', 'fuerza' e 'innovación'. Eran ejemplos de lo que los expertos en propaganda llaman 'glittering generalities': apelan a la emoción mientras permiten al hablante no comprometerse con nada concreto. Son palabras que suenan bien pero no dicen nada verificable.",
+      "fuente": "FactCheck.org (12 oct 2007)",
+      "defensa": "Si una promesa suena grandiosa pero no dice nada concreto, pregúntate qué te están vendiendo realmente.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Gente del pueblo",
+      "autor": "Lee & Lee, 1939",
+      "caso": "Graham Platner, el candidato que 'es working class' (2026)",
+      "ejemplo": "The New York Times documentó en mayo de 2026 que Graham Platner, candidato demócrata al Senado por Maine, dice entender la situación de la clase trabajadora porque él es de clase trabajadora. Trabaja como ostrero, habla de vivir con 60.000 dólares al año en una casa modesta en el pueblo donde creció. La técnica de 'plain folks' busca que el votante piense: 'es uno de los nuestros'. No importa si es verdad o no; importa si lo parece.",
+      "fuente": "The New York Times (29 may 2026)",
+      "defensa": "La cercanía fingida es una técnica. Pregúntate si esa persona comparte realmente tu vida o solo la imita para la foto.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Efecto arrastre",
+      "autor": "Lee & Lee, 1939",
+      "caso": "El efecto bandwagon de Reagan en 1980",
+      "ejemplo": "Un estudio académico sobre las elecciones de 1980 encontró que la posición relativamente favorable de Ronald Reagan en las encuestas preelectorales ayudó a generar un efecto bandwagon (efecto arrastre). El efecto fue más pronunciado entre los votantes con opiniones políticas previas más débiles, los más susceptibles a la sugestión mediática. Si las encuestas dicen que alguien va ganando, más gente se suma a él.",
+      "fuente": "NII-REO Electronic Journal Archive (estudio sobre 1980)",
+      "defensa": "Que una mayoría aparente haga algo no lo convierte en correcto. Pregúntate si esa mayoría es real o fabricada.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Testimonio",
+      "autor": "Lee & Lee, 1939",
+      "caso": "El anuncio de Andy Barr con Teresa, veterana de marina (2026)",
+      "ejemplo": "La campaña de Andy Barr para el Senado lanzó en octubre de 2026 un anuncio protagonizado por Teresa, una veterana de marina, que decía: 'Recuerdo estar sin hogar, avergonzada de mí misma, y recuerdo haber contactado a Andy Barr. Estaban trabajando en mi caso. Andy Barr me salvó la vida'. El testimonio no es un argumento: es una transferencia de credibilidad. Si alguien que ha sufrido lo apoya, el candidato debe ser bueno.",
+      "fuente": "barrforsenate.com (15 oct 2026)",
+      "defensa": "Un testimonio no es una prueba. Pregúntate si la persona que lo da tiene algo que ganar o si su experiencia es relevante.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Tú también",
+      "autor": "Walton, 1998",
+      "caso": "El 'whataboutism' en la política estadounidense",
+      "ejemplo": "The Baltimore Sun documentó en 2024 que los demócratas respondían a cada crítica de Biden cambiando el tema a Trump: una falacia conocida como 'tu quoque' (tú también), una forma de desvío. El ejemplo clásico: 'Dices que Trump miente, pero ¿y cuando Obama dijo que bajo el Affordable Care Act la gente podría mantener sus planes de salud?'. La técnica no responde a la crítica; desvía la atención hacia la hipocresía del acusador.",
+      "fuente": "The Baltimore Sun (9 mar 2024), Robesonian (17 dic 2018)",
+      "defensa": "Cuando te responden con 'y tú más', pregúntate si están respondiendo a tu argumento o evitándolo.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Afirmación",
+      "autor": "Le Bon, 1895",
+      "caso": "Trump afirma sin pruebas que 'Estados Unidos es respetado como nunca' (2025)",
+      "ejemplo": "Trump afirmó en la ONU en 2025 que 'Estados Unidos es respetado como nunca antes' y que 'la migración ilegal es cero'. La precisión era irrelevante. También afirmó que 'salvamos millones de vidas terminando guerras en Oriente Medio' y que 'terminó siete guerras' que seguían en curso. La técnica de la afirmación consiste en declarar algo como un hecho sin aportar pruebas, confiando en que la repetición y la autoridad del cargo hagan el resto.",
+      "fuente": "Ahram Online (2 oct 2025)",
+      "defensa": "Cuando alguien afirma algo grandioso sin aportar pruebas, pregúntate por qué no las aporta.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Cuestionamiento",
+      "autor": "Bernays, 1928",
+      "caso": "RT y la campaña 'Question More' (década de 2010)",
+      "ejemplo": "Russia Today (RT) lanzó una campaña publicitaria llamada 'Question More', diseñada para atraer espectadores desestabilizando el consenso científico y político. La técnica del cuestionamiento no busca afirmar una mentira, sino sembrar la duda: '¿y si lo que te han contado no es toda la verdad?'. Al hacerlo, erosiona la confianza en las instituciones y en los hechos verificados, dejando al espectador en un estado de sospecha permanente que lo hace más susceptible a la desinformación.",
+      "fuente": "IOS Press, contenido académico sobre RT",
+      "defensa": "Cuando alguien te dice 'solo pregunta', pregúntate si está buscando la verdad o sembrando la duda.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Diversión",
+      "autor": "Bernays, 1928",
+      "caso": "La Casa Blanca usa memes para desviar la atención de la guerra de Irán (2026)",
+      "ejemplo": "PBS NewsHour documentó en marzo de 2026 que la administración Trump usó clips de videojuegos, personajes de dibujos animados y escenas de películas para promocionar la guerra de Irán. Los críticos dijeron que la estrategia difuminaba la línea entre propaganda y entretenimiento, y corría el riesgo de reducir una guerra real a un espectáculo. La diversión no busca que creas algo falso, sino que dejes de mirar lo que importa: las consecuencias reales del conflicto.",
+      "fuente": "PBS NewsHour (19 mar 2026), The Atlantic (26 oct 2026)",
+      "defensa": "Cuando un tema te distrae de un problema más grave, pregúntate quién se beneficia de que mires hacia otro lado.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Heurístico de disponibilidad",
+      "autor": "Tversky & Kahneman, 1973",
+      "caso": "La retórica de Trump sobre inmigración y el miedo al crimen (2025)",
+      "ejemplo": "Un estudio académico de 2025 examinó el papel de la heurística de disponibilidad y la aversión a la pérdida en la formación de las preferencias de los votantes y el apoyo público a la retórica y las políticas de inmigración de Trump. La heurística de disponibilidad hace que la gente evalúe la probabilidad de un evento en función de la facilidad con que puede recordarlo. Si los medios repiten historias de inmigrantes cometiendo crímenes, la gente sobreestima la probabilidad de que los inmigrantes cometan crímenes. Trump explotó esta heurística al convertir casos aislados en una narrativa de peligro generalizado.",
+      "fuente": "Scilit, 'Framing Fear: Loss Aversion and Availability in Trump's Immigration Rhetoric' (2025)",
+      "defensa": "Pregúntate si estás evaluando una probabilidad real o solo lo que recuerdas porque te lo han repetido mucho.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Ilusión de control",
+      "autor": "Langer, 1975",
+      "caso": "El voto como 'botón placebo'",
+      "ejemplo": "Un artículo de The Daily Economy (2022) citó a Laura Williams: 'Votar, como la mayoría del discurso político, es un botón placebo. Pulsa si quieres, si te gusta cómo se siente, pero no esperes que cree un cambio genuino en el mundo o resuelva problemas complejos'. La ilusión de control hace que los ciudadanos sobreestimen el impacto de su voto en elecciones ajustadas y voten como consecuencia de esa percepción. El voto importa, pero la ilusión de control hace que se le atribuya un poder que no tiene.",
+      "fuente": "The Daily Economy (9 jun 2022), Political Psychology (2010)",
+      "defensa": "Pregúntate si controlas algo o solo tienes la sensación de controlarlo.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Falacia de la planificación",
+      "autor": "Kahneman & Tversky, 1979",
+      "caso": "La fragata clase Constellation de la Armada de EE.UU. (2026)",
+      "ejemplo": "Un estudio de 2026 del Naval Postgraduate School investigó los informes de la GAO y del Congressional Research Service para determinar el uso del modelo de triple restricción y los sesgos cognitivos en el programa de fragatas clase Constellation. El análisis encontró evidencia de seis sesgos cognitivos, incluidos el anclaje, la disponibilidad, la falacia de la planificación, la singularidad, el exceso de confianza y el optimismo. La falacia de la planificación hace que los responsables de proyectos crean que todo saldrá más rápido y más barato de lo que realmente sale.",
+      "fuente": "Naval Postgraduate School (26 mar 2026)",
+      "defensa": "Cuando te digan que un proyecto saldrá en plazo y presupuesto, pregúntate cuántos proyectos similares lo cumplieron.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Ingeniería del consentimiento",
+      "autor": "Bernays, 1947",
+      "caso": "Bernays y la campaña para que las mujeres fumen en público (1928)",
+      "ejemplo": "En 1928, George Washington Hill, presidente de American Tobacco Company, contrató a Edward Bernays para dirigir una campaña para atraer a más mujeres a fumar en público. Bernays aplicó su teoría de la 'ingeniería del consentimiento': no se trataba de convencer a las mujeres de que fumar era bueno, sino de diseñar el entorno (símbolos, mensajes, asociaciones) para que aceptaran una decisión ya tomada. La campaña es un ejemplo práctico de cómo se moldea la opinión pública para apoyar los intereses de un cliente.",
+      "fuente": "Wikipedia (The Engineering of Consent)",
+      "defensa": "Pregúntate quién está diseñando el entorno para que aceptes algo como si fuera tu propia decisión.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Polarización",
+      "autor": "Le Bon, 1895",
+      "caso": "La polarización política en EE.UU. (2026)",
+      "ejemplo": "Brookings documentó en 2026 que la característica definitoria de la política estadounidense del siglo XXI ha sido la polarización. La división más importante dentro de los partidos Demócrata y Republicano no es entre moderados e ideólogos, sino entre visiones de suma positiva y suma cero del proceso democrático. The New York Times informó en septiembre de 2026 que los partidos se han vuelto más polarizados y rígidos en sus posturas: los demócratas antiaborto y los republicanos pro-elección en el Congreso antes eran docenas, ahora ya no existen.",
+      "fuente": "Brookings (6 mar 2026), The New York Times (17 sep 2026)",
+      "defensa": "Cuando un político divide el mundo en 'nosotros' y 'ellos', pregúntate a quién está excluyendo y por qué.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Psicología de masas",
+      "autor": "Le Bon, 1895",
+      "caso": "Los rallies de Trump y la 'furia comunal' (2016)",
+      "ejemplo": "The Guardian describió en 2016 un rally de Trump como 'furia comunal, en la que hombres, mujeres y niños que esperan obedientemente en la fila se transforman en una turba enfurecida cuando se reúnen en masa'. La psicología de masas describe cómo el individuo, al formar parte de una multitud, pierde parte de su capacidad de razonamiento y gana impulsividad, sugestionabilidad y necesidad de un líder. El rally no es solo un acto político: es un ritual de masa donde la emoción colectiva sustituye al juicio individual.",
+      "fuente": "The Guardian (12 mar 2016), CBC (15 mar 2016)",
+      "defensa": "Cuando estés en una multitud y sientas que pierdes tu juicio individual, aléjate y piensa por ti mismo.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Repetición",
+      "autor": "Le Bon, 1895",
+      "caso": "Trump repite a Biden casi 900 veces en 9 meses (2026)",
+      "ejemplo": "Una revisión de Reuters de finales de septiembre de 2026 encontró que Trump había nombrado a su predecesor casi 900 veces en nueve meses, unas tres veces al día, en casi 200 eventos y entrevistas y 190 publicaciones en Truth Social. La repetición no busca convencer: busca familiarizar. El efecto de verdad ilusoria hace que lo familiar se sienta verdadero. Si oyes el nombre de Biden tres veces al día asociado a algo negativo, tu cerebro empieza a aceptar la asociación sin examinarla.",
+      "fuente": "The Conversation (2 nov 2026), Mother Jones",
+      "defensa": "Cuando un nombre o una idea se repite hasta la saciedad, pregúntate si la repetición es información o lavado de cerebro.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Sesgo de confirmación",
+      "autor": "Wason, 1960",
+      "caso": "Los votantes creen las noticias que confirman sus sesgos (2024)",
+      "ejemplo": "Un estudio de MIT Sloan de 2024 encontró que los votantes de todas las líneas partidistas son más propensos a creer las historias de noticias que confirman sus sesgos preexistentes durante un ciclo electoral que fuera de él. Cuando una persona se enfrentaba a una historia verdadera y una falsa fuera de la temporada electoral, era un 4% más propensa a llamar verdadera una historia si reflejaba favorablemente a su partido. El sesgo de confirmación no es que no veas la verdad; es que la verdad que ves depende de lo que ya crees.",
+      "fuente": "MIT Sloan (19 sep 2024), Wiley Online Library (7 oct 2024)",
+      "defensa": "Busca activamente la información que te contradice. Si no la encuentras, pregúntate por qué.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Simpatía",
+      "autor": "Cialdini, 1984",
+      "caso": "El principio de simpatía en las elecciones de 2016",
+      "ejemplo": "Un estudio académico examinó el principio de simpatía de Cialdini y las elecciones presidenciales de 2016, analizando el impacto de los endorsements de celebridades en Donald Trump y Hillary Clinton. El principio de simpatía dice que le decimos que sí a la gente que nos cae bien. En política, el carisma es la versión intensificada de la simpatía: un político carismático no necesita argumentos, su presencia y su forma de hablar hacen que la gente quiera creerle.",
+      "fuente": "CORE (estudio sobre Cialdini y las elecciones de 2016)",
+      "defensa": "Cuando alguien te cae muy bien, pregúntate si estás evaluando sus ideas o su sonrisa.",
+      "peligro": 3
+    }
+  ]
+}

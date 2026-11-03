@@ -61,6 +61,11 @@ def _generar_escena(num, instruccion, contexto_noticia=""):
         if d and isinstance(d, dict) and "texto" in d and len(d["texto"].split()) > 20:
             # Limpiar "El El", "La La", etc.
             d["texto"] = re.sub(r'\b(El|La|Los|Las)\s+\1\b', r'\1', d["texto"], flags=re.IGNORECASE)
+            # FORZAR id, concepto_visual, mood_musical, tipo_visual (2026-11-03)
+            d["id"] = num
+            d.setdefault("concepto_visual", "newspaper abstract, cinematic")
+            d.setdefault("mood_musical", "tension")
+            d.setdefault("tipo_visual", "imagen")
             return d
         print(f"      Reintento {intento+1}/3 escena {num}...", flush=True)
         time.sleep(2)

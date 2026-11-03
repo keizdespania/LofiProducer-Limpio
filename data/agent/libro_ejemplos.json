@@ -1,0 +1,222 @@
+{
+  "_meta": {
+    "descripcion": "Ejemplos reales para el libro. Solo verificados. Los vacios se rellenan con busqueda dirigida.",
+    "fuente_principal": "Politica USA 1917-2026",
+    "actualizado": "2026-11-03",
+    "total_verificados": 18,
+    "total_pendientes": 47
+  },
+  "ejemplos": [
+    {
+      "tecnica": "Miedo / Fear Appeal",
+      "autor": "Le Bon, 1895",
+      "caso": "Anuncio Daisy (1964)",
+      "ejemplo": "La campana de Lyndon B. Johnson emitio el 7 de septiembre de 1964 un anuncio de un minuto. Una nina deshojaba una margarita contando del uno al diez. Al llegar al nueve, una voz masculina empezaba una cuenta atras nuclear. Pantalla en negro. Explosion. La voz de Johnson: Debemos amarnos, o debemos morir. Solo se emitio una vez, pero 50 millones de personas lo vieron. Goldwater no aparece mencionado, pero el miedo a que llevara al pais a una guerra nuclear hizo el resto.",
+      "fuente": "The New York Times (1986, 2011), Clarin (2023)",
+      "defensa": "Cuando un mensaje te hace sentir miedo intenso, preguntate quien gana si actua rapido sin pensar.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Hombre de paja / Straw Man",
+      "autor": "Walton, 1996",
+      "caso": "El macartismo (1950-1954)",
+      "ejemplo": "Joseph McCarthy acuso a funcionarios del gobierno de ser comunistas sin pruebas. Su tecnica era fabricar una version exagerada del enemigo interno. El momento cumbre fue cuando el abogado Joseph Welch le espeto: Have you no sense of decency, sir, at long last? La Comision Tydings acabo acusando a McCarthy de engano y fraude, pero el dano ya estaba hecho.",
+      "fuente": "Archivo.org, documento sobre el macartismo (Christel Lamboley)",
+      "defensa": "Antes de aceptar una critica a una idea, verifica si esa idea es realmente lo que defiende quien la sostiene.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Omision / Fabricacion de consentimiento",
+      "autor": "Herman & Chomsky, 1988",
+      "caso": "La guerra de Irak (2003)",
+      "ejemplo": "La administracion Bush repitio hasta la saciedad vinculos falsos entre Sadam Hussein y Al-Qaeda, y la existencia de armas de destruccion masiva. Colin Powell lo defendio ante la ONU en febrero de 2003. Un estudio del Centro para la Integridad Publica cuantifico que Bush y su equipo hicieron 935 declaraciones falsas en los dos anos posteriores al 11-S. Las armas no existian. Irak las habia destruido en 1991.",
+      "fuente": "BBC Mundo (2003), Swissinfo/EFE (2023)",
+      "defensa": "Preguntate que informacion relevante falta en la noticia que estas leyendo.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Name Calling / Etiquetado",
+      "autor": "Lee & Lee, 1939",
+      "caso": "El macartismo (1950s)",
+      "ejemplo": "Etiquetar a alguien de comunista o subversivo bastaba para destruir su carrera. El senador McCarthy apodo al secretario de Estado Dean Acheson the Red Dean (el decano rojo) y lo acuso de tener las manos manchadas de sangre de los soldados muertos en Corea. La etiqueta mataba el debate antes de que empezara.",
+      "fuente": "Archivo.org, documento sobre el macartismo",
+      "defensa": "Una etiqueta no es un argumento. Preguntate que se esta evitando discutir al poner esa etiqueta.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Transfer",
+      "autor": "Lee & Lee, 1939",
+      "caso": "El Comite Creel (1917-1918)",
+      "ejemplo": "Estados Unidos entro en la Primera Guerra Mundial en abril de 1917. La opinion publica era partidaria de quedarse al margen. El gobierno de Wilson creo el Comite Creel (CPI) para cambiar eso. Los carteles del Comite siguieron dos principios: simplificacion y deformacion. Presentaban a Alemania como un enemigo despiadado con valores perversos frente a un heroe noble (EE.UU.) obligado a pararle los pies. Usaban el estereotipo y las emociones, las herramientas basicas de Bernays, para convencer a la gente de que habia que participar.",
+      "fuente": "Articulo academico Propaganda norteamericana en la Primera Guerra Mundial (2012)",
+      "defensa": "Preguntate si estas evaluando el mensaje o a quien lo firma.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Band Wagon / Efecto arrastre",
+      "autor": "Lee & Lee, 1939",
+      "caso": "El Comite Creel (1917-1918)",
+      "ejemplo": "En la misma campana, el Comite Creel vendia la guerra como algo que todos los patriotas apoyaban. Quien no se alistaba era un antipatriota. La presion social hacia el resto.",
+      "fuente": "Articulo academico sobre propaganda USA en la WWI",
+      "defensa": "Que una mayoria aparente haga algo no lo convierte en correcto. Preguntate si esa mayoria es real o fabricada.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Plain Folks / Gente del pueblo",
+      "autor": "Lee & Lee, 1939",
+      "caso": "El Comite Creel (1917-1918)",
+      "ejemplo": "El Comite Creel no solo usaba carteles. Tambien organizo a oradores de los Cuatro Minutos, ciudadanos voluntarios que daban charlas breves en cines, iglesias y clubes, presentandose como uno de los tuyos para vender la guerra. La tecnica buscaba que el publico pensara: si el lo dice, y es como yo, sera verdad.",
+      "fuente": "Articulo academico sobre propaganda USA en la WWI",
+      "defensa": "La cercania fingida es una tecnica. Preguntate si esa persona comparte realmente tu vida o solo la imita para la foto.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Falso dilema",
+      "autor": "Bernays, 1928",
+      "caso": "El anuncio Daisy (1964)",
+      "ejemplo": "El anuncio no decia: mi politica es mejor. Decia: Este es el reto: hacer un mundo en el que todos los hijos de Dios puedan vivir, o entrar en la oscuridad. Debemos amarnos, o debemos morir. Solo hay dos opciones: Johnson (la vida) o Goldwater (la muerte nuclear). No hay matices.",
+      "fuente": "The New York Times (1986), Clarin (2023)",
+      "defensa": "Si solo te presentan dos opciones, casi siempre hay una tercera que no te estan contando.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Generalidades brillantes / Glittering Generalities",
+      "autor": "Lee & Lee, 1939",
+      "caso": "El New Deal de Roosevelt (1933)",
+      "ejemplo": "Franklin D. Roosevelt llamo a su programa economico New Deal (Nuevo Trato). El nombre sonaba a que se estaba corrigiendo un reparto injusto. Quien iba a oponerse a un nuevo trato? La etiqueta vendia la politica antes de que nadie discutiera su contenido.",
+      "fuente": "Manual academico Communication Theories (Pearson)",
+      "defensa": "Si una promesa suena grandiosa pero no dice nada concreto, preguntate que te estan vendiendo realmente.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Cherry picking / Seleccion de cerezas",
+      "autor": "Logica informal (s. XX)",
+      "caso": "El caso Nayirah (1990)",
+      "ejemplo": "Antes de la Guerra del Golfo, una adolescente kuwaiti llamada Nayirah testifico ante el Congreso de EE.UU. que habia visto a soldados iraquies sacar a bebes de incubadoras y dejarlos morir en el suelo. La historia fue citada por el presidente George H.W. Bush seis veces en discursos y por siete senadores como razon para votar a favor de la guerra. Despues se supo que era la hija del embajador de Kuwait en EE.UU., y que la historia era casi con certeza falsa. La empresa de relaciones publicas Hill & Knowlton habia organizado todo.",
+      "fuente": "Manual academico Communication Theories (Pearson), citando a MacArthur (1992)",
+      "defensa": "Preguntate si te estan mostrando la imagen completa o solo las piezas que encajan.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Efecto de verdad ilusoria",
+      "autor": "Hasher, Goldstein & Toppino, 1977",
+      "caso": "Goebbels y la Gran Mentira",
+      "ejemplo": "Joseph Goebbels, ministro de Propaganda del Tercer Reich, tenia un principio: Una mentira repetida cien veces se convierte en una verdad. Repetia los mismos argumentos hasta que calaran, incluso en los mas incredulos. La repeticion hace que el cerebro confunda familiaridad con verdad.",
+      "fuente": "Biografia Doctor Goebbels (Roca Editorial, 2014), citas de Goebbels",
+      "defensa": "Que algo te suene no significa que sea verdad. La repeticion no es evidencia.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Sesgo de autoridad",
+      "autor": "Milgram, 1963",
+      "caso": "La administracion Bush y los expertos (2003)",
+      "ejemplo": "Para vender la guerra de Irak, se presentaban pruebas de servicios de inteligencia y se citaba a fuentes informadas. La autoridad de la inteligencia (y del secretario de Estado Colin Powell ante la ONU) se uso para silenciar el escepticismo. Powell admitio despues que fue un momento doloroso y una mancha en su historial.",
+      "fuente": "Swissinfo/EFE (2023)",
+      "defensa": "La bata no es un argumento. Preguntate si esa persona tiene autoridad real en el tema o solo la apariencia.",
+      "peligro": 3
+    },
+    {
+      "tecnica": "Miedo / Fear Appeal",
+      "autor": "Le Bon, 1895",
+      "caso": "Anuncio 'Daisy' (1964) - detalle verificado",
+      "ejemplo": "El anuncio 'Daisy' (o 'Peace, Little Girl') se emitió una sola vez, el 7 de septiembre de 1964, durante la película 'David and Bathsheba' en NBC. La niña, Monique Corzilius (luego Luiz), contaba pétalos de margarita del 1 al 9 (se equivocaba a propósito). Al llegar al 9, una voz masculina hacía una cuenta atrás de misil del 10 al 0. Pantalla en negro. Explosión nuclear. La voz de Johnson: 'These are the stakes! We must either love each other, or we must die.' El anuncio no mencionaba a Goldwater, pero el miedo a que llevara al país a una guerra nuclear hizo el resto. La Casa Blanca recibió tantas llamadas que Johnson quiso emitirlo de nuevo; su asesor le convenció de que no.",
+      "fuente": "Wikipedia (Daisy advertisement), The New York Times (1964)",
+      "defensa": "Cuando un mensaje te hace sentir miedo intenso, pregúntate quién gana si actúas rápido sin pensar.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Hombre de paja / Straw Man",
+      "autor": "Walton, 1996",
+      "caso": "El macartismo (1950-1954) - detalle verificado",
+      "ejemplo": "El 9 de junio de 1954, día 30 de las audiencias Army-McCarthy, Joseph Welch se enfrentó a McCarthy. McCarthy había acusado a un joven abogado del bufete de Welch, Fred Fisher, de pertenecer a la National Lawyers Guild (que Brownell había llamado 'la boca legal del Partido Comunista'). Welch respondió: 'Until this moment, Senator, I think I have never really gauged your cruelty or your recklessness... Have you no sense of decency, sir, at long last? Have you left no sense of decency?' La sala rompió en aplausos. La actuación televisada de Welch cambió la opinión pública contra McCarthy en una noche. En julio, un senador republicano presentó una moción para censurarlo, que se aprobó ese año.",
+      "fuente": "Wikipedia (Joseph N. Welch)",
+      "defensa": "Antes de aceptar una crítica a una idea, verifica si esa idea es realmente lo que defiende quien la sostiene.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Cherry picking / Selección de cerezas",
+      "autor": "Lógica informal (s. XX)",
+      "caso": "El caso Nayirah (1990) - detalle verificado",
+      "ejemplo": "En octubre de 1990, una adolescente kuwaití llamada Nayirah testificó ante el Congreso de EE.UU. que había visto a soldados iraquíes sacar a bebés de incubadoras y dejarlos morir en el suelo. La historia fue citada por el presidente George H.W. Bush y por senadores como razón para votar a favor de la guerra. Después se supo que era la hija del embajador de Kuwait en EE.UU. La empresa Hill & Knowlton había organizado todo, y Lauri Fitz-Pegado (vicepresidenta interina de H&K) fue confirmada como responsable de entrenar a Nayirah en lo que resultó ser un testimonio falso. Human Rights Watch investigó en 1992 y concluyó: 'no hay verdad en la acusación... Las historias fueron fabricadas a partir de gérmenes de verdad por gente fuera del país que debería haber sabido mejor.' El investigador Aziz Abu-Hamad entrevistó a médicos del hospital: 'El ala de maternidad tenía 25 a 30 incubadoras. Ninguna fue tomada por los iraquíes, y ningún bebé fue sacado de ellas.'",
+      "fuente": "Wikipedia (Nayirah testimony), Human Rights Watch (1992)",
+      "defensa": "Pregúntate si te están mostrando la imagen completa o solo las piezas que encajan.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Cebo y cambio / Bait-and-Switch",
+      "autor": "Marketing moderno (s. XX)",
+      "caso": "Willie Horton (1988)",
+      "ejemplo": "Durante la campaña presidencial de 1988, el PAC 'National Security' produjo un anuncio titulado 'Weekend Passes' que contaba la historia de Willie Horton, un convicto negro que cometió una violación mientras estaba en libertad condicional bajo un programa de Michael Dukakis. El anuncio no solo contaba la historia, sino que mostraba la foto policial de Horton. Larry McCarthy, miembro de National Security, llamó a la imagen 'el mayor miedo de toda madre suburbana'. El 'cebo' era la seguridad pública; el 'cambio' era jugar la carta racial sin mencionarla explícitamente. El anuncio fue tan efectivo como controvertido.",
+      "fuente": "Wikipedia (Willie Horton)",
+      "defensa": "Pregúntate si el tema que te están vendiendo es el tema real o una cortina de humo.",
+      "peligro": 4
+    },
+    {
+      "tecnica": "Deshumanización / Etiquetado",
+      "autor": "Le Bon, 1895 / Lee & Lee, 1939",
+      "caso": "Los 'death panels' de Palin (2009)",
+      "ejemplo": "El 7 de agosto de 2009, Sarah Palin escribió en su página de Facebook: 'The America I know and love is not one in which my parents or my baby with Down Syndrome will have to stand in front of Obama's death panel so his bureaucrats can decide, based on a subjective judgment of their level of productivity in society, whether they are worthy of health care. Such a system is downright evil.' El término 'death panel' se refería a una provisión del proyecto de ley de salud (H.R. 3200, sección 1233) que permitía a Medicare pagar sesiones voluntarias de asesoramiento sobre cuidados al final de la vida. La disposición no creaba ningún panel. El término se extendió por radio, blogs, Fox News y políticos republicanos. The New York Times lo describió como 'un eslogan estándar entre muchos conservadores opuestos a la reforma sanitaria de Obama'.",
+      "fuente": "Wikipedia (Death panel)",
+      "defensa": "Cuando una etiqueta suena a amenaza existencial ('panel de la muerte', 'matar a la abuela'), pregúntate qué se está simplificando y qué se está evitando discutir.",
+      "peligro": 5
+    },
+    {
+      "tecnica": "Fabricación de consentimiento / Omisión",
+      "autor": "Herman & Chomsky, 1988",
+      "caso": "White House Iraq Group (2002-2003)",
+      "ejemplo": "El White House Iraq Group (WHIG) se creó en agosto de 2002 para coordinar la comunicación de la administración Bush sobre Irak. En una reunión del 5 de septiembre de 2002, el redactor de discursos de Bush, Michael Gerson, propuso la metáfora 'smoking gun/mushroom cloud' para vender al público los supuestos peligros nucleares de Sadam Hussein. Según el periodista Michael Isikoff, la frase se filtró al New York Times y la administración la usó al máximo. El jefe de gabinete Andrew Card dijo en una entrevista: 'From a marketing point of view, you don't introduce new products in August.' La estrategia incluía 'cuestionar los motivos de los demócratas que apoyaron la guerra pero ahora critican al presidente'.",
+      "fuente": "Wikipedia (White House Iraq Group), Isikoff & Corn, 'Hubris' (2006)",
+      "defensa": "Pregúntate quién está pagando por el 'consenso' que ves. La espontaneidad tiene factura.",
+      "peligro": 5
+    }
+  ],
+  "pendientes": [
+    "Reactancia",
+    "Coste hundido",
+    "Ilusion de control",
+    "Falacia del jugador",
+    "Ad hominem",
+    "Tu quoque",
+    "Pregunta cargada",
+    "Pendiente resbaladiza",
+    "Deshumanizacion",
+    "Polarizacion",
+    "Ventana de Overton",
+    "Ingenieria del consentimiento",
+    "Modelo de 5 filtros",
+    "Deepfake",
+    "Anclaje",
+    "Sesgo de confirmacion",
+    "Dunning-Kruger",
+    "Efecto halo",
+    "Primado",
+    "Disponibilidad",
+    "Recencia",
+    "Negatividad",
+    "Endogrupo",
+    "Efecto prestigio",
+    "Sugerencia",
+    "Contagio",
+    "Psicologia de masas",
+    "Afirmacion",
+    "Repeticion",
+    "Cuestionamiento",
+    "Diversion",
+    "Cambio gradual",
+    "Cebo y cambio",
+    "Apilamiento de cartas",
+    "Etiquetado (IPA)",
+    "Gente del pueblo (IPA)",
+    "Testimonio",
+    "Transferencia",
+    "Miedo (IPA)",
+    "Bandwagon (IPA)",
+    "Escasez",
+    "Reciprocidad",
+    "Compromiso y coherencia",
+    "Prueba social",
+    "Simpatia",
+    "Unidad",
+    "Reactancia"
+  ]
+}
