@@ -18,6 +18,11 @@ def _humanizar_texto(texto):
     texto = re.sub(r'\{.*?\}', '', texto)
     texto = re.sub(r'[*_#`>]', '', texto)
     
+    # Quitar frases robóticas (2026-11-03)
+    texto = re.sub(r'[Ss]in cita disponible[^.]*\.?\s*', '', texto)
+    texto = re.sub(r'[Nn]o hay cita[^.]*\.?\s*', '', texto)
+    texto = re.sub(r'[Cc]ita no disponible[^.]*\.?\s*', '', texto)
+    
     # Quitar frases de montaje
     patrones = [
         r'El video (abre|empieza|cierra|termina) con[^.]*\.?\s*',

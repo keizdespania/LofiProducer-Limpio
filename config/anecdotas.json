@@ -1,0 +1,729 @@
+{
+  "version": 2,
+  "generadas": "2026-11-03T15:24:24.845803",
+  "total": 100,
+  "categorias": [
+    "bar",
+    "familia",
+    "vecinos",
+    "trabajo",
+    "transporte",
+    "supermercado",
+    "medico",
+    "colegio",
+    "redes",
+    "telefono",
+    "cine_clasico",
+    "historia",
+    "cultura_pop",
+    "deporte",
+    "musica",
+    "literatura",
+    "ciencia",
+    "gastronomia",
+    "viajes",
+    "series"
+  ],
+  "anecdotas": [
+    {
+      "id": 1,
+      "categoria": "bar",
+      "texto": "En el bar de la esquina, Paco me dice: \"Una caña, por favor\". El camarero, con sonrisa de vendedor, responde: \"Ya no me creo ni el menú, todo es marketing\". En ese momento vi cómo el local reescribe la oferta como los medios reescriben la noticia. Los menús son propaganda, igual que la tele.",
+      "usada": true,
+      "fecha_usada": "2026-11-03T15:26:56.290178"
+    },
+    {
+      "id": 2,
+      "categoria": "bar",
+      "texto": "En la cafetería, la vecina me pregunta si el café es de comercio justo. El camarero, sin dudar, responde: \"Claro, lo venden con la etiqueta de la verdad\". Entonces pensé en cómo un simple sello sustituye el debate público. La etiqueta es la nueva noticia de siempre.",
+      "usada": true,
+      "fecha_usada": "2026-11-03T15:26:56.385598"
+    },
+    {
+      "id": 3,
+      "categoria": "bar",
+      "texto": "Mi cuñado Manolo entra al bar y pide el \"cóctel de la semana\". El camarero, con tono de anuncio, dice: \"Hoy es revolución, con un toque de hipocresía\". Me di cuenta de que la revolución se sirve en vasos de plástico. La revolución se vende en vaso desechable.",
+      "usada": true,
+      "fecha_usada": "2026-11-03T15:26:56.487224"
+    },
+    {
+      "id": 4,
+      "categoria": "bar",
+      "texto": "El becario del bar me pregunta si la Wi‑Fi es gratuita. El camarero, con sonrisa de campaña, contesta: \"Gratis, pero te rastrea como a un sospechoso\". En ese instante comprendí que la conexión invisible es la versión de siempre del encubrimiento. La conexión es el nuevo filtro de la verdad.",
+      "usada": true,
+      "fecha_usada": "2026-11-03T15:40:42.506297"
+    },
+    {
+      "id": 5,
+      "categoria": "bar",
+      "texto": "En la terraza, la camarera Ana me sugiere el \"café del día\", diciendo: \"Hoy es revolución de sabores, sin agenda\". Yo le replico: \"¿Y la agenda? ¿Se sirve con leche?\". Al final, la agenda estaba en la taza, como la versión editada de la realidad. La agenda se sirve con espuma.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 6,
+      "categoria": "familia",
+      "texto": "En la sobremesa de mi hermano Luis, el arroz quedó tan seco que parecía arena del desierto. Luis, con su voz de documentalista, murmuró: \"Este plato es la prueba de que la tradición nunca cambia\". Yo respondí: \"Solo cambia la forma en que nos venden la nostalgia\". Así como los medios nos venden recuerdos empaquetados, nos alimentan de ilusión. La propaganda sabe a arroz quemado.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 7,
+      "categoria": "familia",
+      "texto": "Mi cuñado Manolo llegó a la cena con una ensalada que parecía una obra de arte abstracto. Manolo, con solemnidad, dijo: \"Esta lechuga es la revolución de los vegetales\". Yo le contesté: \"Y tú la revolución de los que se creen influencers de cocina\". Los medios convierten cualquier plato en tendencia para vendernos estilo. La manipulación se sirve en plato frío.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 8,
+      "categoria": "familia",
+      "texto": "En la casa de la tía Carmen, el pastel de manzana llegó con una etiqueta que decía \"receta secreta del abuelo\". Tía Carmen, orgullosa, exclamó: \"Esto es lo que la tradición guarda bajo llave\". Yo le dije: \"O lo que la industria guarda bajo marketing\". La prensa nos hace creer que lo oculto es siempre auténtico. La historia se vende en tarros.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 9,
+      "categoria": "familia",
+      "texto": "Mi madre Ana preparó una tortilla tan inflada que parecía una nube de algodón. Ana, con tono de sermón, comentó: \"En la cocina, la verdad siempre sube\". Yo replicé: \"Y la mentira siempre se esconde bajo la salsa\". Los canales de información nos hacen respirar aire de humo sin darnos oxígeno. La claridad se ha quedado sin gas.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 10,
+      "categoria": "familia",
+      "texto": "Durante el asado familiar, el abuelo Jorge sacó una salsa que juraba ser \"original\". Jorge, con voz de vendedor, aseguró: \"Esta receta nunca ha sido copiada\". Yo le respondí: \"Como los titulares que nunca admiten su fuente\". Los medios reciclan fórmulas y nos venden novedad enlatada. La originalidad está enlatada para todos.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 11,
+      "categoria": "vecinos",
+      "texto": "El portero, Don Luis, me avisó: 'Hoy van a pintar el portal y la propaganda del ayuntamiento'. Yo le respondí: '¿Y la pintura? ¿Será de la misma marca que venden en la tele?'. Al fin, el portal quedó más brillante que la agenda de los políticos. La propaganda también se pinta de colores. Pintan paredes, no la verdad.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 12,
+      "categoria": "vecinos",
+      "texto": "En la reunión del edificio, la vecina del 3º, Carmen, dijo: 'Necesitamos más vigilancia, el ruido del ascensor es una conspiración'. Yo le contesté: '¿Y el silencio de la junta es la solución?'. Todos asintieron como si el silencio fuera un plan de marketing. La comunidad se vendió la idea de que el silencio es seguridad. Silencio, la mejor campaña de miedo.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 13,
+      "categoria": "vecinos",
+      "texto": "El portero, Marta, me entregó el paquete con la frase: 'Este es el nuevo manual de convivencia, lo firman todos'. Yo le dije: '¿Incluye cláusulas de autocensura?'. Ella respondió, sonriendo: 'Solo si lo aprueba la junta, que siempre está al tanto de todo'. El manual quedó en la mesa, pero la gente ya lo había leído en el boletín de la web. Manual o guion, igual de impuesto.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 14,
+      "categoria": "vecinos",
+      "texto": "La vecina del 3º, Pilar, me preguntó: '¿Has visto el nuevo cartel que prohíbe el ruido después de las 22?'. Yo respondí: 'Sí, y también el anuncio de que el silencio es gratis, pero lo venden en la terraza'. Ella comentó: 'Al fin, la comunidad nos regala la paz, si la aceptamos sin preguntas'. La paz se vende en paquetes de silencio. Paz enlatada, sin garantía de uso.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 15,
+      "categoria": "vecinos",
+      "texto": "Durante la asamblea, el presidente, Jorge, anunció: 'Vamos a instalar cámaras en el patio, la seguridad es prioridad'. Yo le dije: '¿Y la privacidad? ¿Se la venden a la misma empresa que vende los filtros de Instagram?'. Él sonrió: 'Solo grabaremos lo que la junta quiera ver'. Así, la vigilancia se volvió espectáculo de reality TV. Cámaras, el nuevo reality del vecindario.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 16,
+      "categoria": "trabajo",
+      "texto": "Mi jefe, don Eugenio, me dijo: 'Tú eres un activo estratégico'. Yo le respondí: 'Eugenio, los activos se deprecian, yo solo cojo café'. Me miró con esa cara de quien ha leído un manual de liderazgo en un taxi. La realidad es que solo soy un recurso renovable hasta que llegue el próximo becario.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 17,
+      "categoria": "trabajo",
+      "texto": "El becario, Sergio, me corrigió el tono en un email: 'Haga usted, no haga'. Le dije: 'Sergio, tú ni siquiera sabes usar la impresora'. Me contestó: 'La IA lo hace mejor que usted, jefe'. Ahí entendí: no estoy en la empresa, estoy en una beta de videojuego que nadie quiere terminar.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 18,
+      "categoria": "trabajo",
+      "texto": "La vecina, Carmen, me cuenta que su hijo 'optimiza recursos' en una startup. Yo le digo: 'Carmen, si no come, no optimiza, huye'. Ella responde: 'Es que su marca personal sufre'. Pues eso: nos venden la precariedad como un viaje de autoconocimiento. El único que gana es el que factura por tu ansiedad.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 19,
+      "categoria": "trabajo",
+      "texto": "Mi compañero de café, Luis, me dice: 'El algoritmo me conoce mejor que mi mujer'. Yo le contesto: 'Luis, tu mujer te conoce mejor que tu madre'. Él suspira: 'Es que el feed me da la validación que el hogar me niega'. La manipulación ya no necesita noticias: solo necesita que confíes más en una pantalla que en tu espejo.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 20,
+      "categoria": "trabajo",
+      "texto": "El director de RRHH, Mario, me felicitó por 'romper barreras'. Yo le dije: 'Mario, he roto la barrera de las 40 horas'. Me sonrió: 'Eso es resiliencia adaptativa, Paco'. Ellos no te explotan, te dan una 'experiencia de vida'. Y tú agradeces el café gratis como si fuera un sueldo digno.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 21,
+      "categoria": "transporte",
+      "texto": "En el metro, mi cuñado Manolo me dice: \"¿Sabes que el anuncio dice que el tren nunca se retrasa?\" Yo le contesto: \"Claro, como cuando el Gobierno asegura que la inflación está bajo control\". Al subir, el tren se detiene 12 minutos y los altavoces repiten la misma frase. La manipulación es la misma, solo cambia la pantalla. El ruido del metro es propaganda en bucle.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 22,
+      "categoria": "transporte",
+      "texto": "En el autobús, la vecina me susurra: \"Ese cartel dice que el precio del billete bajará mañana\". Yo le replico: \"Como cuando los políticos prometen empleo y lo hacen desaparecer\". El conductor, sin perder la sonrisa, anuncia que el próximo kilómetro será \"gratuito\" y, al pasar, el motor se apaga. La ilusión se vende en tiempo real. El autobús lleva más mentiras que pasajeros.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 23,
+      "categoria": "transporte",
+      "texto": "En el AVE, Paco me comenta: \"Dicen que el tren es puntual, como la información oficial\". Yo le respondo: \"Entonces, ¿por qué el anuncio del menú a bordo sigue en 1998?\" Cuando el tren llega con diez minutos de antelación, el megáfono celebra la eficiencia mientras la pantalla sigue mostrando retrasos. La narrativa se reescribe al instante. El AVE viaja en la línea de la propaganda.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 24,
+      "categoria": "transporte",
+      "texto": "En un taxi, el becario me dice: \"Mira, el taxímetro muestra que el viaje cuesta menos que la suscripción a la prensa\". Yo le replico: \"Como cuando el discurso oficial promete menos impuestos y termina en recortes\". El conductor, con humor de supervivencia, suelta que la tarifa incluye \"información premium\" y al bajar, la calle está llena de carteles de campaña. La venta de ideas se cobra por kilómetro. El taxímetro mide mentiras por minuto.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 25,
+      "categoria": "transporte",
+      "texto": "En el aeropuerto, la recepcionista me asegura: \"El control de seguridad es rápido, como la verdad en los noticieros\". Yo le respondo: \"Entonces, ¿por qué el anuncio de la puerta dice 'embarque inmediato' y seguimos en fila?\" Cuando finalmente subimos, el altavoz anuncia que el vuelo se retrasa por \"condiciones climáticas\", aunque el cielo está despejado. La narrativa vuela sin turbulencias. El aeropuerto vende horarios como certezas.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 26,
+      "categoria": "supermercado",
+      "texto": "En la caja de Mercadona, Paco la cajera me preguntó: \"¿Cuántos kilos de patatas?\" Yo le dije: \"Sólo la que necesites para la dieta de los políticos.\" El peso de la verdad se mide en kilos.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 27,
+      "categoria": "supermercado",
+      "texto": "La vecina en la cola del súper me susurró: \"¿Ves esa etiqueta? 'Oferta del día'?\" Yo respondí: \"Sí, y la oferta es que me paguen por esperar.\" La paciencia se vende al precio del silencio.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 28,
+      "categoria": "supermercado",
+      "texto": "Mi cuñado Manolo, en la caja, me dijo: \"¿Cuánto te cobran por el ticket?\" Yo le contesté: \"Por la ilusión de que lo necesites.\" El ticket es la entrada a la falsa urgencia.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 29,
+      "categoria": "supermercado",
+      "texto": "El becario en la fila preguntó: \"¿Por qué la caja está tan lenta?\" Yo le expliqué: \"Porque cada escáner es un discurso de paz.\" La velocidad es la mentira que se vende.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 30,
+      "categoria": "supermercado",
+      "texto": "La madre de la familia, en la cola, me preguntó: \"¿Crees que el precio es justo?\" Yo le respondí: \"Si el precio es la historia que venden.\" La justicia se compra con la factura del ego.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 31,
+      "categoria": "medico",
+      "texto": "En la sala de espera de la clínica, la vecina Marta me susurró: '¿No crees que la lista de espera es una lista de espera real?'. Yo le respondí: 'Pues sí, y el anuncio de la tele me hizo pensar que la lista era un programa'. La espera es el mejor programa de ficción.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 32,
+      "categoria": "medico",
+      "texto": "El becario Luis me miró y dijo: '¿Te has dado cuenta de que el reloj se mueve más rápido cuando el anuncio llega?'. 'Sí, y el anuncio me dice que la espera es un minuto de eternidad'. La espera es el mejor programa de ficción.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 33,
+      "categoria": "medico",
+      "texto": "Mi cuñado Manolo me dijo: 'El doctor me dijo que el estrés era mi nuevo tratamiento'. 'Y el doctor añadió: 'Solo si lo miras como una noticia de última hora''. La medicina es la última noticia que no quieres leer.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 34,
+      "categoria": "medico",
+      "texto": "La enfermera Ana me explicó: 'El médico me explicó que la medicina es un algoritmo de confianza'. 'Yo le dije: '¡Entonces me confío en el algoritmo del algoritmo!''. La confianza se vende con algoritmo, no con receta.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 35,
+      "categoria": "medico",
+      "texto": "El farmacéutico José me miró y dijo: 'El cartel de la farmacia dice 'Todo lo que necesitas, sin receta''. 'Yo le dije: '¡Entonces la receta es la mejor publicidad!''. La venta sin receta es la mejor propaganda médica.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 36,
+      "categoria": "colegio",
+      "texto": "En la reunión de padres, Paco me susurró: '¿No es que la asignación de tareas sea por la mitad?'. Yo le contesté: 'Sí, pero el profesor la duplicó cuando nos pidió más trabajo'. Al final, la mitad de la clase se quedó sin trabajo.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 37,
+      "categoria": "colegio",
+      "texto": "El profesor Gómez, con su bata de laboratorio, me dijo: '¿Has visto la nueva regla de la calificación?'. Yo le respondí: 'Sí, la he leído en el boletín'. Cuando me preguntó si la entendía, me dijo: 'Claro, es tan simple como el algoritmo de la red'. La pizarra nunca olvida el error.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 38,
+      "categoria": "colegio",
+      "texto": "Manuel, el jefe de la AMPA, me susurró: 'El presupuesto se duplicará'. Yo le contesté: '¿En serio?' Y el director añadió: 'Es una optimización'. El dinero crece como las expectativas.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 39,
+      "categoria": "colegio",
+      "texto": "La vecina Doña Carmen, siempre con la mochila, me dijo: '¿Te acuerdas de la excursión a la montaña?'. Yo le contesté: 'Sí, y el guía nos dijo que era un 'tour de aventura''. Y cuando pregunté por la ruta, me dijo: 'Sigue el sendero'. La aventura fue el GPS sin GPS.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 40,
+      "categoria": "colegio",
+      "texto": "Mi cuñado Manolo, con su camiseta de fútbol, me preguntó: '¿Crees que la escuela va a reducir la jornada?'. Yo le respondí: 'Sí, y el director dijo que era 'optimización educativa''. Y el director añadió: 'Reduciremos el tiempo para mejorar la calidad'. La optimización reduce el tiempo y la atención.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 41,
+      "categoria": "redes",
+      "texto": "En el grupo de WhatsApp familiar, mi cuñado Manolo compartió un artículo sobre la dieta milagrosa. \"Mamá, esto lo dice la ciencia\", escribió, mientras la tía Carmen respondía con emojis de fuego. Yo les dije: \"Si la ciencia fuera tan fácil, ya tendría la receta del éxito\". Y la manipulación se disfraza de consejo familiar. Familia: el primer canal de propaganda doméstica.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 42,
+      "categoria": "redes",
+      "texto": "En Twitter, la vecina Pilar twitteó: \"Acabo de descubrir la verdad sobre el nuevo móvil, es una conspiración\". Yo le respondí: \"¿Y la verdad, la vendieron en la tienda de la esquina?\". La respuesta de Pilar fue un retuit con un meme de gato que decía \"Despierta\". La burbuja se infló como si fuera noticia de última hora. Twitter: la academia de desinformación instantánea.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 43,
+      "categoria": "redes",
+      "texto": "Mi hermana Ana subió una foto en Instagram con el filtro \"Épico\" y la leyenda: \"Viviendo la vida que me prometieron\". Yo comenté: \"¿Y el guion? ¿Lo firmó el productor?\". Ella respondió con un emoji de sol y un corazón, como si la edición fuera la realidad. La estética se vuelve argumento cuando el algoritmo la aplaude. Instagram vende sueños con filtro de manipulación.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 44,
+      "categoria": "redes",
+      "texto": "El abuelo José, siempre escéptico, mandó un audio al grupo familiar diciendo: \"Los políticos ahora venden promesas en paquetes familiares\". Yo le contesté: \"¿Y la garantía? ¿Incluye asistencia 24/7?\". La tía Loli respondió con un GIF de un perrito que aplaude, como si fuera la solución. El mensaje circuló más que la receta del flan. WhatsApp, la cadena de suministro de discursos.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 45,
+      "categoria": "redes",
+      "texto": "El becario de la oficina, Pablo, lanzó una encuesta en Twitter: \"¿Cuál es la verdad más cómoda?\". En Instagram, la misma pregunta apareció con una encuesta de stickers y cientos de likes. Yo le dije: \"Están midiendo la comodidad con el número de reacciones, no con la razón\". El algoritmo les regaló una tendencia que no existía. Redes: el termómetro de la comodidad ilusoria.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 46,
+      "categoria": "telefono",
+      "texto": "La vecina Carmen recibió una llamada del banco diciendo que su cuenta estaba 'en riesgo'. Carmen respondió: '¿Y el riesgo de que me vendan la cuenta?' El operador, sin prisa, contestó: 'Solo si no firma el formulario'. Los bancos: vendiendo miedo como producto premium.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 47,
+      "categoria": "telefono",
+      "texto": "Paco aceptó una encuesta telefónica que prometía 'mejorar la ciudad'. El encuestador preguntó: '¿Apoya usted el nuevo plan?' Paco replicó: 'Solo si el plan incluye menos llamadas'. Las encuestas: el megáfono de la complacencia oficial.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 48,
+      "categoria": "telefono",
+      "texto": "El becario Luis abrió un spam que anunciaba 'ganarás 10.000 euros sin moverte'. El mensaje decía: 'Solo envía tus datos y listo', Luis respondió: '¿Y el banco que me los pide?' El spam, como un político, promete sin pruebas. Spam: la propaganda que paga con tu tiempo.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 49,
+      "categoria": "telefono",
+      "texto": "Mi cuñado Manolo recibió una llamada del banco que, según el agente, 'su tarjeta estaba a punto de explotar'. Manolo, sin perder la calma, contestó: '¿Y el seguro contra explosiones?' El agente, con voz de infomercial, respondió: 'Solo si firma la cláusula de la bomba'. Bancos: alquilando pánico como servicio premium.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 50,
+      "categoria": "telefono",
+      "texto": "La tía Marta contestó una encuesta que afirmaba conocer 'las verdaderas intenciones del gobierno'. El entrevistador insistió: '¿Confía en la información?' Marta replicó: 'Solo si la información paga la factura'. Encuestas: el espejo roto de la supuesta objetividad.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 51,
+      "categoria": "cine_clasico",
+      "texto": "Mi cuñado Manolo vio 'El Padrino' y dijo: 'Aquí no hay corrupción, hay gestión'. Yo le respondí: 'Manolo, eso es lo que dicen todos los que acaban en la cuneta con un billete de cien euros'. Ahora cree que la ética es opcional si el logo es grande. La prensa también gestiona la realidad así: cambia el nombre y sigues siendo el mismo estafador.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 52,
+      "categoria": "cine_clasico",
+      "texto": "La vecina, doña Carmen, me confesó que 'Psicosis' le curó la ansiedad. 'Al menos en la película la ducha dura tres minutos', me dijo. Yo le expliqué que en su vida real el inodoro está atascado y nadie viene a arreglarlo. La manipulación mediática es igual: te venden el suspense de un asesino en serie para que no notes el humo de tu propia casa ardiendo.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 53,
+      "categoria": "cine_clasico",
+      "texto": "El becario, Pedro, me pidió que le explicara 'Matrix' sin que me durmiera. '¿Y la pastilla roja?', preguntó. Le dije: 'Tómate la azul, Pedro, que la roja te despiden por pedir horas extra'. Se fue con cara de tonto, pero más listo que antes. Los medios nos dan la azul: una realidad cómoda donde todos son culpables menos el que vende el veneno.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 54,
+      "categoria": "cine_clasico",
+      "texto": "Paco, del bar, juraba que 'Casablanca' era una película de rompecabezas mal resueltos. 'Rick no era un héroe, era un contador con trauma', sentenció. Yo le corregí: 'No, Paco, era un manipulador que justificaba su cinismo con música de jazz'. Así funciona la información: te cuentan la versión del villano con banda sonora emotiva y tú aplaudes al traidor.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 55,
+      "categoria": "cine_clasico",
+      "texto": "Mi tía, la Fofí, vio 'El Club de la Lucha' y decidió organizarse en el portal. '¿Y el golpe al estómago?', preguntó, pálida. Le dije: 'Fofí, aquí el estómago lo tiene el que paga la comunidad'. Se asustó y volvió a su sofá. El sistema te vende la rebeldía embotellada para que tu rabia no se convierta en huelga general.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 56,
+      "categoria": "historia",
+      "texto": "Mi cuñado Manolo, fascista de tomo y lomo, me cuenta que Franco prohibía todo. Yo le digo: 'Hermano, solo prohibía la verdad, el resto lo vendía caro'. Él se queda mirando la tele en blanco. La memoria histórica es un espejo roto donde uno se mira feo.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 57,
+      "categoria": "historia",
+      "texto": "La vecina Amparo jura que Roma cayó por la decadencia moral. Le explico que cayó por las deudas de sus generales en Siria. Ella replica: 'Hoy también hay generales con deudas, pero ellos no queman nada'. El imperio no muere, se muda de casa y cambia el logo.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 58,
+      "categoria": "historia",
+      "texto": "El becario de la redacción me pregunta si Napoleón fue un genio o un tirano. Le digo que fue un tío que se creía Dios y terminó en una isla. Él toma nota: '¿Y los de ahora?'. Tienen isla, pero el Wi-Fi es gratis. La historia no se repite, se recicla con peor papel.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 59,
+      "categoria": "historia",
+      "texto": "Mi tío, ex militante del PCE, dice que la URSS fue un error. Yo le señalo que el error fue creer que el comunismo iba a venir en un camión. Él suelta un suspiro: 'Y ahora viene en una app de delivery'. El sistema no cambia, solo migra al móvil.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 60,
+      "categoria": "historia",
+      "texto": "En el ascensor, la señora del 4º pregunta por qué Colón llegó tarde. Le digo que porque le mintieron sobre la distancia. Ella responde: 'A mí también me mienten sobre la inflación, pero yo no pido disculpas'. La geografía es política; el bolsillo, resistencia.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 61,
+      "categoria": "cultura_pop",
+      "texto": "En la terraza de mi vecino Paco, me dijo: \"¿Has visto que Messi va a jugar en la luna?\" Yo respondí: \"Paco, eso lo inventó el marketing para vender camisetas\". La prensa convierte cualquier rumor en espectáculo y nos hace creer que el fútbol es ciencia ficción. Y la gente compra entradas al vacío.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 62,
+      "categoria": "cultura_pop",
+      "texto": "Mi cuñada Manolo me encontró mirando el programa y dijo: \"Belén está más triste que la economía\". Yo le contesté: \"Eso lo editan para que el público llore y siga sintonizando\". Los editores pintan emociones como si fueran mercancía. Y el público paga con su tiempo.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 63,
+      "categoria": "cultura_pop",
+      "texto": "El becario de la oficina, Luis, me susurró: \"Rajoy dice que la inflación es un mito\". Yo le dije: \"Luis, la manipulación es la nueva política de discurso\". Cada discurso oficial se vuelve un guion de ficción que el público absorbe sin filtro. Y el telón nunca baja.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 64,
+      "categoria": "cultura_pop",
+      "texto": "La vecina Carmen, fan de reality, me comentó: \"En Gran Hermano ya no hay drama, solo publicidad\". Le respondí: \"Carmen, el formato es una jaula de consumo de emociones\". Los canales convierten la convivencia en un experimento de persuasión masiva. Y el ratón siempre paga la renta.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 65,
+      "categoria": "cultura_pop",
+      "texto": "En la parada del bus, la anciana Rosa me gritó: \"Messi se retira, ¿quién nos salvará del aburrimiento?\". Le contesté: \"Rosa, el feed de Instagram ya lo anunciaba antes de que naciera el niño\". Los algoritmos convierten cualquier rumor en profecía colectiva. Y el espejo siempre refleja publicidad.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 66,
+      "categoria": "musica",
+      "texto": "En la terraza, la vecina Carmen me mostró el último titular sobre Serrat. \"Carmen, ¿has escuchado que Serrat ahora vende su canción como NFT?\" \"Sí, y los periódicos lo pintan como la revolución del folk.\" El folk se vuelve cripto, y el público, tonto.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 67,
+      "categoria": "musica",
+      "texto": "En la cena, mi cuñado Manolo me contó la última moda mediática sobre Julio Iglesias. \"Manolo, ¿crees que Julio ahora hace streaming de sus suspiros?\" \"Claro, y la tele lo anuncia como la nueva meditación para el alma.\" Suspiros en streaming, meditación de consumo masivo.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 68,
+      "categoria": "musica",
+      "texto": "En la oficina, el becario Luis me mostró la noticia del día sobre Rosalía. \"Luis, ¿has visto que Rosalía lanzó una app de autocorrección de acento?\" \"Sí, y la prensa la llama revolución cultural.\" Revolución cultural, algoritmo que corrige tu identidad.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 69,
+      "categoria": "musica",
+      "texto": "En el parque, la tía Marta me comentó la última ola de hype mediático sobre Bob Dylan. \"Tía Marta, ¿dicen que Dylan ahora escribe letras con IA?\" \"Sí, y los medios la venden como poesía del futuro.\" Poesía del futuro, pero el alma sigue en pausa.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 70,
+      "categoria": "musica",
+      "texto": "En el sofá, el vecino Alberto me habló del nuevo programa que junta a Serrat y Dylan. \"Alberto, ¿has visto que el programa mezcla a Serrat y Dylan en un debate sobre autenticidad?\" \"Claro, y la cadena asegura que la audiencia aprenderá a ser genuina.\" La autenticidad se vende, y la audiencia la compra.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 71,
+      "categoria": "literatura",
+      "texto": "Mi cuñado Manolo, que solo ha leído la contraportada de *1984*, me dijo: 'Paco, aquí el Gran Hermano es el algoritmo'. Yo, con la calma de quien sabe que su libertad depende de una suscripción: 'Manolo, el Gran Hermano no te vigila, te vende'. La vigilancia es gratis; la libertad, no.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 72,
+      "categoria": "literatura",
+      "texto": "La vecina Doña Carmen leyó *Un mundo feliz* y llamó a mi puerta: 'Paco, me dan pastillas para no pensar, ¿es lícito?'. Le respondí: 'Carmen, si te dan la felicidad por defecto, no necesitas quejarte'. El control no duele; lo que duele es ser libre y aburrido.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 73,
+      "categoria": "literatura",
+      "texto": "El becario de la redacción, tras leer a Kafka, me preguntó: '¿Por qué el Estado me persigue si solo pedí un ascenso?'. Le dije: 'Porque en la burocracia, la culpa no se demuestra, se asume'. Lo único que no perdona el sistema es que entiendas el juego.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 74,
+      "categoria": "literatura",
+      "texto": "En una cena, mi primo Quijote intentó convencerme de que los drones son molinos de viento modernos. 'No, primo, los molinos te golpean; los drones te filtran'. 'Pero si no se ven, ¿cómo son enemigos?'. El mejor enemigo es el que no existe en tu conciencia.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 75,
+      "categoria": "literatura",
+      "texto": "Mi amiga Laura, fan de *Fahrenheit 451*, quemó su libro de autoayuda en la barbacoa. 'Es que me decía que era suficiente tal cual era'. Le contesté: 'Laura, los bomberos no apagan incendios, apagan verdades incómodas'. Quemamos lo que nos recuerda que somos imperfectos.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 76,
+      "categoria": "ciencia",
+      "texto": "En la cocina, mi cuñado Manolo me dice: \"Einstein inventó la teoría de la relatividad porque no encontraba la llave del coche\". Yo le respondo: \"Claro, la física es cuestión de perder el móvil\". Al final, reflexionamos sobre cómo los titulares nos hacen viajar a la velocidad de la luz sin movernos. La manipulación es la nueva teoría de la relatividad.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 77,
+      "categoria": "ciencia",
+      "texto": "La vecina Carmen, con su perro, me comentó: \"Newton descubrió la gravedad cuando se le cayó la tarta\". Yo le dije: \"Y ahora la tarta cae en los titulares\". Nos reímos pensando que la fuerza que atrae los clicks es la misma que mantiene los planetas en órbita, una gravedad de titulares. Los medios son el manzano de la caída.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 78,
+      "categoria": "ciencia",
+      "texto": "El becario Luis, mientras revisaba datos, me soltó: \"Darwin se dio cuenta de la evolución porque su cactus no dejaba de crecer\". Yo le contesté: \"Hoy la evolución la lleva la audiencia que se adapta al algoritmo\". Al final, comprendimos que la selección natural ahora se llama selección de clics en la pantalla. La adaptación es la nueva especie de la manipulación.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 79,
+      "categoria": "ciencia",
+      "texto": "Paco, al observar el cielo con su telescopio barato, murmuró: \"Galileo dijo que la Tierra gira, pero yo sigo sin encontrar la señal del Wi‑Fi\". Yo le dije: \"Tal vez la señal está girando también\". Reflexionamos sobre cómo los canales nos hacen creer que el universo está en alta definición, aunque sea en 480p. La verdad se vende en paquetes de alta definición.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 80,
+      "categoria": "ciencia",
+      "texto": "La tía Rosa, con su móvil, me comentó: \"Hawking hablaba de agujeros negros, pero yo solo veo el agujero negro de mi bandeja de entrada\". Yo le respondí: \"Al menos los agujeros negros no responden a los push\". Nos dimos cuenta de que la información que desaparece es la que los medios deciden no mostrar. El silencio es el agujero negro de la manipulación.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 81,
+      "categoria": "gastronomia",
+      "texto": "Paco: 'Esta tortilla es tan auténtica que podría ser un documental'. Yo: '¿Y la veracidad del documental?' La tortilla no miente, pero el documental sí.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 82,
+      "categoria": "gastronomia",
+      "texto": "La vecina: 'El gazpacho de hoy está tan fresco que parece un tweet sin filtro'. Yo: 'Entonces, ¿es también viral?' El gazpacho viraliza, la verdad se evapora.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 83,
+      "categoria": "gastronomia",
+      "texto": "Mi cuñado Manolo: 'Esta paella es tan rica que la gente la comparte como noticias falsas'. Yo: 'Entonces, ¿es la verdad o el rumor?' Paella sabrosa, rumores picantes.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 84,
+      "categoria": "gastronomia",
+      "texto": "El becario: 'Este jamón está tan curado que parece un dossier de prensa'. Yo: '¿Entonces, es un informe o un manjar?' Jamón curado, informes curados.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 85,
+      "categoria": "gastronomia",
+      "texto": "Abuela: 'Este vino es tan añejo que la prensa lo anuncia como un hallazgo arqueológico'. Yo: 'Entonces, ¿es una reliquia o una botella?' Vino añejo, noticias envejecidas.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 86,
+      "categoria": "viajes",
+      "texto": "En Barajas, la recepcionista me susurró: \"Hoy el vuelo sale a la hora que anuncian, no a la que prometen\". Yo le respondí: \"¿Y el anuncio de la puerta?\" ella, con sonrisa, replicó: \"Eso es propaganda de la puntualidad\". El aeropuerto vende certezas, no asientos.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 87,
+      "categoria": "viajes",
+      "texto": "En el hotel de la Gran Vía, Paco me dijo al registrar: \"Nuestro Wi‑Fi es tan rápido que te hará olvidar la realidad\". Yo le contesté: \"¿Y la factura?\" él, encogiéndose de hombros, respondió: \"Eso es contenido premium de la ilusión\". El lobby vende confort, no claridad.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 88,
+      "categoria": "viajes",
+      "texto": "En el AVE a Barcelona, mi cuñado Manolo me susurró: \"Este tren llega antes de que el anuncio lo cambie\". Yo le dije: \"¿Y el horario que ves en la pantalla?\" él, guiñando, respondió: \"Es la versión oficial del tiempo\". El vagón distribuye certezas, no destinos.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 89,
+      "categoria": "viajes",
+      "texto": "En el restaurante de tapas, la vecina me comentó: \"El chef escribe la carta como si fuera un comunicado de prensa\". Yo le respondí: \"¿Y el menú real?\" ella, con ironía, replicó: \"Eso es la sección de opinión\". La mesa sirve discursos, no sabores.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 90,
+      "categoria": "viajes",
+      "texto": "En la playa de la Barceloneta, el becario me dijo: \"Las sombrillas están alineadas para que veas el horizonte perfecto\". Yo le pregunté: \"¿Y la marea que anuncian?\" él, sonriendo, contestó: \"Es la narrativa del mar\". La arena vende panoramas, no verdades.",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 91,
+      "categoria": "deporte",
+      "texto": "Árbitro Carlos: \"¡Fuera, fuera!\" grita mientras el jugador del Madrid se cae. El VAR, Ana, revisa y dice \"Lo siento, fue falta de... Wi‑Fi\". Carlos se queda mirando la pantalla como si fuera su móvil sin señal. Punchline: \"Al menos el árbitro no necesita señal para equivocarse\".",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 92,
+      "categoria": "deporte",
+      "texto": "Entrenador de la selección, Luis: \"¿Qué pasa con el penal?\" pregunta al VAR. El VAR responde \"Lo reviso, pero mi madre dijo que el balón estaba en la nevera\". Luis se queda sin palabras y el jugador del Barça se ríe. Punchline: \"El VAR también tiene problemas de refrigeración\".",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 93,
+      "categoria": "deporte",
+      "texto": "Portero del Barcelona, Marc: \"¡Ese penal lo atajo!\" grita. El VAR muestra una repetición en cámara lenta y dice \"En realidad, el balón nunca salió del suelo\". Marc mira al árbitro como si fuera su cuñado. Punchline: \"El penal era de la tele, no del campo\".",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 94,
+      "categoria": "deporte",
+      "texto": "Comentarista de TV, Elena: \"El VAR ha salvado la vida del Madrid\". El árbitro, Jorge, responde \"Yo solo sigo la regla de 'no tocar nada'\". Elena se queda pensando si el VAR es Dios o simple técnico. Punchline: \"Al final, el VAR es el nuevo santo patrón de los árbitros\".",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 95,
+      "categoria": "deporte",
+      "texto": "Jugador del Madrid, Sergio: \"¡Ese gol es legal!\" dice. El VAR interrumpe con \"Revisando...\" y muestra una foto de un perro con una pelota. Sergio se queda perplejo y el árbitro le da un pase al Barcelona. Punchline: \"Hasta el perro entiende mejor el fuera de juego\".",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 96,
+      "categoria": "series",
+      "texto": "Antonio: \"¿Sabes por qué siempre me toca el último plato?\" responde su madre mientras levanta la cuchara, \"porque el primero se lo lleva el gato\". Él suspira y comenta: \"Al menos el gato no paga la factura\".",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 97,
+      "categoria": "series",
+      "texto": "Tyrion: \"¿Qué haces con ese dragón de peluche?\" dice Jon, incrédulo. Tyrion responde: \"Lo entreno para que escuche mis quejas\". Jon se ríe: \"Así al menos no te quemas\".",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 98,
+      "categoria": "series",
+      "texto": "Jack: \"¿Quién dejó la brújula en la playa?\" pregunta Kate mientras mira el mar. Jack contesta: \"Yo, para que el viento tenga sentido\". Kate replica: \"Entonces el avión también debería tener GPS\".",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 99,
+      "categoria": "series",
+      "texto": "Julián: \"¿Otra vez en la época de los romanos?\" exclama Amelia, mirando el casco. Julián responde: \"Sí, pero esta vez el Wi‑Fi funciona\". Amelia suelta: \"Menos mal, que sin él no habría memes\".",
+      "usada": false,
+      "fecha_usada": null
+    },
+    {
+      "id": 100,
+      "categoria": "series",
+      "texto": "Tokyo: \"¿Por qué siempre llevas la máscara puesta?\" le pregunta Denver. Tokyo contesta: \"Porque el maquillaje de la vida real me cuesta más\". Denver concluye: \"Entonces la fuga será más cara\"",
+      "usada": false,
+      "fecha_usada": null
+    }
+  ]
+}
