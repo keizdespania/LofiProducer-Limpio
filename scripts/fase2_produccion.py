@@ -870,89 +870,232 @@ def _cargar_contexto_verificado(titular, medio, tema):
     """Busca contexto en fuentes oficiales (EFE/Reuters/BOE/Wikipedia)."""
     try:
         from contexto_verificado import buscar_contexto
-        return buscar_contexto(titular, medio, tema)
+        # Primer intento: tema completo
+        resultado = buscar_contexto(titular, medio, tema)
+        if resultado and len(resultado) > 100:
+            return resultado
+        
+        # Segundo intento: tema simplificado (2 palabras clave)
+        import re as _re_ctx
+        palabras = [w for w in tema.split() if len(w) > 4][:2]
+        if palabras:
+            tema_simple = " ".join(palabras)
+            print(f"      🔄 Reintento DDG con tema simplificado: '{tema_simple}'", flush=True)
+            resultado = buscar_contexto(titular, medio, tema_simple)
+            if resultado and len(resultado) > 100:
+                return resultado
+        
+        return ""
     except Exception as e:
         print(f"   ⚠️ Contexto fallback: {e}", flush=True)
         return ""
 
+def _pasar_abogado_del_diablo(texto_capa, medios_validos):
+    """Valida que la capa no invente datos que no estén en los medios.
+    Si detecta alucinaciones, reintenta o elimina la frase problemática."""
+    from especialistas import pedir_a_especialista
+    import re as _re
+    
+    # Extraer datos verificables del contexto (medios + titulares)
+    datos_reales = ""
+    for m in medios_validos:
+        datos_reales += f"MEDIO: {m['medio']}\n"
+        datos_reales += f"TITULAR: {m['titular']}\n"
+        if m.get('cita'): datos_reales += f"CITA: {m['cita'][:300]}\n"
+        if m.get('extracto'): datos_reales += f"EXTRACTO: {m['extracto'][:300]}\n"
+        if m.get('omite'): datos_reales += f"OMITE: {m['omite']}\n"
+        datos_reales += "\n"
+    
+    # Pedir al abogado que detecte alucinaciones
+    prompt_abogado = f"""Eres un ABOGADO DEL DIABLO + VERIFICADOR DE HECHOS.
+
+TAREA: Analiza este texto de monólogo periodístico y detecta ALUCINACIONES.
+
+TEXTO A VERIFICAR:
+{texto_capa}
+
+DATOS REALES (lo único que puede aparecer):
+{datos_reales[:2000]}
+
+INSTRUCCIONES:
+1. Lee el texto a verificar
+2. Detecta CUALQUIER dato, cifra, nombre o afirmación que NO esté en los datos reales
+3. Devuelve SOLO un JSON con este formato:
+   {{"alucinaciones": ["frase 1", "frase 2"], "ok": true|false}}
+
+Si no hay alucinaciones → {{"alucinaciones": [], "ok": true}}
+Si hay alucinaciones → lista las frases inventadas
+
+PROHIBIDO: explicar, markdown, texto fuera del JSON."""
+    
+    try:
+        resultado = pedir_a_especialista("abogado_del_diablo", prompt_abogado, contexto="", proveedor="auto")
+        # Limpiar markdown
+        resultado = _re.sub(r'^```json\s*', '', resultado.strip())
+        resultado = _re.sub(r'```\s*$', '', resultado)
+        data = json.loads(resultado)
+        
+        if data.get("ok"):
+            return texto_capa, []
+        
+        # Hay alucinaciones → devolver lista para que el caller decida
+        return texto_capa, data.get("alucinaciones", [])
+    except Exception as e:
+        print(f"      ⚠️ Abogado falló: {e}, pasando texto sin verificar", flush=True)
+        return texto_capa, []
+
+def _limpiar_alucinaciones(texto_capa, alucinaciones):
+    """Elimina frases alucinadas del texto."""
+    import re as _re
+    texto_limpio = texto_capa
+    for frase in alucinaciones:
+        if len(frase) > 10:
+            # Reemplazar la frase por "[dato verificado]"
+            texto_limpio = texto_limpio.replace(frase, "")
+    # Limpiar dobles espacios
+    texto_limpio = _re.sub(r'\s+', ' ', texto_limpio)
+    texto_limpio = _re.sub(r'\s*\.\s*\.', '.', texto_limpio)
+    return texto_limpio.strip()
+
+
 def _generar_monologo_llm(anecdota, medios_validos, contexto_global, fecha_str, tecnicas_unicas):
-    """Genera el monólogo completo (~1700 palabras) con LLM."""
-    # Preparar contexto de los 3 medios principales
+    """Genera el monólogo en 4 llamadas separadas (1 por capa) para asegurar longitud."""
+    from especialistas import pedir_a_especialista
+    import re as _re
+    
+    def _limpiar(t):
+        t = _re.sub(r'\[.*?\]', '', t)
+        t = _re.sub(r'\(.*?\)', '', t)
+        t = _re.sub(r'[*_#`>]', '', t)
+        t = _re.sub(r'\n{3,}', '\n\n', t)
+        return t.strip()
+    
+    def _llm(prompt, min_palabras=200):
+        for intento in range(2):
+            try:
+                txt = pedir_a_especialista("guionista_retencion_v2", prompt, contexto="", proveedor="auto")
+                txt = _limpiar(txt) if txt else ""
+                if len(txt.split()) >= min_palabras:
+                    return txt
+                print(f"      ⚠️ Intento {intento+1}: {len(txt.split())} palabras < {min_palabras}, reintentando...", flush=True)
+            except Exception as e:
+                print(f"      ⚠️ LLM intento {intento+1}: {e}", flush=True)
+        return txt if 'txt' in locals() else ""
+    
+    # ─── CAPA 1: ANÉCDOTA (300-400 palabras) ───
+    print(f"   [1/4] Anécdota ({anecdota['categoria']})...", flush=True)
+    capa1_prompt = f"""Eres Carlos Alsina + Buenafuente + Wyoming juntos. Escribe la CAPA 1 de un monólogo (300-400 palabras).
+
+TAREA: Empieza contando esta anécdota LITERAL:
+"{anecdota['texto']}"
+
+Después:
+1. Explica qué te sugiere la anécdota (2-3 frases)
+2. Conecta con lo que publicaron hoy los medios: "Y esto me recuerda a lo que publicaron hoy..."
+3. Cierra con puente: "Y te voy a enseñar por qué esto importa. Quédate."
+
+TONO: frases cortas (máx 15 palabras), conectores ("Mira", "Oye", "Fíjate"), pausas naturales (\n\n), ironía fina.
+
+PROHIBIDO: "Mira lo que publicó", "Resultado que...", fórmulas de IA, markdown, acotaciones.
+
+Devuelve SOLO el texto de la capa 1, sin preámbulo."""
+    capa1 = _llm(capa1_prompt, min_palabras=250)
+    print(f"      ✅ {len(capa1.split())} palabras", flush=True)
+    
+    # ─── CAPA 2: INFORMAR (500-600 palabras) ───
+    print(f"   [2/4] Informar (3 medios)...", flush=True)
     medios_txt = ""
     for i, m in enumerate(medios_validos[:3], 1):
         medios_txt += f"\n--- MEDIO {i}: {m['medio']} ---\n"
         medios_txt += f"Titular: «{m['titular']}»\n"
         if m.get('cita'): medios_txt += f"Cita: {m['cita'][:300]}\n"
-        if m.get('tecnica'): medios_txt += f"Técnica (NO nombrar): {m['tecnica']}\n"
+        if m.get('tecnica'): medios_txt += f"Técnica: {m['tecnica']}\n"
         if m.get('omite'): medios_txt += f"Qué omite: {m['omite'][:200]}\n"
     
-    tecnicas_txt = ", ".join(tecnicas_unicas[:4]) if tecnicas_unicas else "manipulación"
-    
-    prompt = f"""Eres Carlos Alsina + Buenafuente + Wyoming juntos. Monólogo de 11 min para 'El Encuadre'.
-Fecha: {fecha_str}
+    capa2_prompt = f"""Eres Carlos Alsina. Escribe la CAPA 2 del monólogo (500-600 palabras): INFORMAR.
 
-TAREA: Escribe un monólogo CONCATENADO de ~1700 palabras. 4 capas en este orden exacto:
-
-═══ CAPA 1: ANÉCDOTA (300-400 palabras) ═══
-Empieza contando esta anécdota REAL del día:
-"{anecdota['texto']}"
-
-Después, conecta la anécdota con lo que publicaron hoy los medios:
-"Y esto me recuerda a lo que publicaron hoy..."
-
-═══ CAPA 2: INFORMAR (500-600 palabras) ═══
-Analiza las 3 noticias de hoy (usa datos reales):
+Analiza estas 3 noticias REALES de hoy:
 {medios_txt}
 
 Contexto verificado de fuentes oficiales (EFE/BOE/Wikipedia):
-{contexto_global[:1500] if contexto_global else "(sin contexto)"}
+{contexto_global[:1500] if contexto_global else "(sin contexto, usa solo los medios)"}
 
-Di: qué dice cada medio, qué dicen las fuentes oficiales, dónde está el gap. 
-NO inventes. Usa SOLO los datos reales.
+INSTRUCCIONES:
+1. Empieza con: "Vamos a ver qué dicen los medios hoy."
+2. Analiza cada medio (NO digas "el medio titula X", INTEGRA: "Fíjate en [medio], que publicó..."): titular, cita, qué omite
+3. Compara: "Tres medios, tres versiones, un mismo hecho. ¿Cuál es la verdad?"
+4. Usa el contexto oficial: "EFE dice X, BOE dice Y"
+5. Pregunta al oyente: "¿Por qué este medio cuenta esto HOY?"
 
-═══ CAPA 3: ENTRENAR (500 palabras) ═══
-Enseña 3 TÉCNICAS de manipulación de estas noticias ({tecnicas_txt}).
-NO nombres las técnicas con su nombre técnico. Describe su EFECTO:
-- "Apilan expertos para que parezca consenso"
-- "Repiten el miedo hasta que te lo creas"
-- "Le ponen la etiqueta y se queda pegada"
+TONO: frases cortas, pausas naturales, ironía fina.
+PROHIBIDO: nombar técnicas, "Mira lo que publicó", "Resulta que...", fórmulas IA.
 
-═══ CAPA 4: CONCIENCIAR (300-400 palabras) ═══
-Cierra con:
-1. Reflexión empática: "No es tu culpa. El sistema está diseñado así."
-2. 3 preguntas para detectar manipulación mañana
-3. Vuelve a la anécdota inicial (cierra el círculo)
-4. CTA natural: "Si te ha servido, comparte. Si no, no."
-
-TONO:
-- Frases CORTAS (máx 15 palabras por frase)
-- Conectores coloquiales: "Mira", "Oye", "Fíjate", "Vamos a ver"
-- Ironía fina, NO insulto
-- Pausas naturales (párrafos separados por \n\n)
-- Punchlines cortas: "Titular. Mentira. Otra vez." / "Puro marketing."
-
-PROHIBIDO:
-- "Mira lo que publicó"
-- "Y a mí esto me parece"
-- "Nos hace sentir que"
-- "Resulta que..." (máx 1 vez)
-- "¿A quién beneficia esto?" (repetido)
-- Nombres técnicos de técnicas (Card Stacking, Fear Appeal...)
-- Markdown, HTML, acotaciones [PAUSA]
-
-Devuelve SOLO el texto del monólogo. Sin introducción, sin preámbulo, sin marcar las capas."""
+Devuelve SOLO el texto de la capa 2."""
+    capa2 = _llm(capa2_prompt, min_palabras=400)
+    print(f"      ✅ {len(capa2.split())} palabras, pasando abogado del diablo...", flush=True)
+    capa2, alucinaciones2 = _pasar_abogado_del_diablo(capa2, medios_validos)
+    if alucinaciones2:
+        print(f"      🚨 {len(alucinaciones2)} alucinaciones detectadas, limpiando...", flush=True)
+        for a in alucinaciones2[:3]:
+            print(f"         - {a[:80]}", flush=True)
+        capa2 = _limpiar_alucinaciones(capa2, alucinaciones2)
+    print(f"      ✅ Capa 2 limpia: {len(capa2.split())} palabras", flush=True)
     
-    from especialistas import pedir_a_especialista
-    texto = pedir_a_especialista("guionista_retencion_v2", prompt, contexto="", proveedor="auto")
-    if not texto or len(texto.split()) < 800:
-        raise RuntimeError(f"Monólogo muy corto: {len(texto.split() if texto else 0)} palabras")
-    # Limpiar
-    import re as _re
-    texto = _re.sub(r'\[.*?\]', '', texto)
-    texto = _re.sub(r'\(.*?\)', '', texto)
-    texto = _re.sub(r'[*_#`>]', '', texto)
-    texto = _re.sub(r'\n{3,}', '\n\n', texto)
-    return texto.strip()
+    # ─── CAPA 3: ENTRENAR (500 palabras) ───
+    print(f"   [3/4] Entrenar (técnicas)...", flush=True)
+    tecnicas_txt = ", ".join(tecnicas_unicas[:4]) if tecnicas_unicas else "manipulación"
+    
+    capa3_prompt = f"""Eres Carlos Alsina + Wyoming. Escribe la CAPA 3 del monólogo (400-500 palabras): ENTRENAR.
+
+TAREA: Enseña 3 TÉCNICAS de manipulación que has detectado en las noticias anteriores.
+Técnicas detectadas (NO las nombres con nombre técnico, describe su EFECTO): {tecnicas_txt}
+
+EJEMPLOS de cómo describirlas:
+- Card Stacking → "Apilan expertos, citas, datos. Y cuando has visto 10, tu cerebro dice: 'hay consenso'. Aunque los 10 sean del mismo grupo. Eso no es consenso, es eco."
+- Fear Appeal → "Te meten el miedo en vena. Y con miedo, votas, compras, callas. El miedo vende."
+- Name Calling → "Le ponen la etiqueta. Y la etiqueta se queda pegada. Como el precio en una camiseta."
+
+INSTRUCCIONES:
+1. Empieza con: "Ahora la pregunta del millón: ¿por qué nos lo creemos?"
+2. Explica 3 técnicas (una por párrafo), cada una con un ejemplo cotidiano
+3. Cierra con: 3 preguntas que el oyente debe hacerse mañana
+   - ¿Dice la palabra clave o la esconde?
+   - ¿Dice el dato o solo la emoción?
+   - ¿Dice la fuente o solo la versión?
+
+TONO: didáctico pero mordaz, frases cortas, pausas naturales.
+PROHIBIDO: nombres técnicos (Card Stacking, Fear Appeal...), markdown, acotaciones.
+
+Devuelve SOLO el texto de la capa 3."""
+    capa3 = _llm(capa3_prompt, min_palabras=300)
+    print(f"      ✅ {len(capa3.split())} palabras", flush=True)
+    
+    # ─── CAPA 4: CONCIENCIAR (300-400 palabras) ───
+    print(f"   [4/4] Concienciar (cierre)...", flush=True)
+    capa4_prompt = f"""Eres Carlos Alsina + Buenafuente. Escribe la CAPA 4 del monólogo (300-400 palabras): CIERRE.
+
+INSTRUCCIONES:
+1. Vuelve a la anécdota inicial: "Como [personaje de la anécdota], que no lee el BOE..." (recuerda la anécdota: {anecdota['texto'][:100]}...)
+2. Reflexión empática: "No es tu culpa. El sistema está diseñado así. Pero tú puedes cambiarlo."
+3. Repite las 3 preguntas: "Mañana, cuando veas un titular, pregúntate: ¿dice la palabra clave o la esconde? ¿Dice el dato o solo la emoción? ¿Dice la fuente o solo la versión?"
+4. CTA natural: "Si te ha servido, comparte. Si no, no. Pero no te lo creas todo."
+5. Cierre punch: "Mañana volverán a intentarlo. La diferencia es que ahora ya lo ves."
+
+TONO: épico, cercano, con ganas. Frases cortas, pausas naturales.
+PROHIBIDO: "Dale a like, suscríbete o comparte" (genérico), fórmulas IA.
+
+Devuelve SOLO el texto de la capa 4."""
+    capa4 = _llm(capa4_prompt, min_palabras=200)
+    print(f"      ✅ {len(capa4.split())} palabras", flush=True)
+    
+    # Combinar
+    texto_final = f"{capa1}\n\n{capa2}\n\n{capa3}\n\n{capa4}"
+    print(f"\n   📝 Monólogo total: {len(texto_final.split())} palabras", flush=True)
+    
+    if len(texto_final.split()) < 1200:
+        raise RuntimeError(f"Monólogo muy corto: {len(texto_final.split())} palabras")
+    
+    return texto_final
 
 def producir_monologo(fecha=None):
     """Genera produccion_FECHA.json en MODO MONÓLOGO.
@@ -1011,10 +1154,21 @@ def producir_monologo(fecha=None):
     
     contexto_global = ""
     for m in medios_validos[:3]:
-        tema = m["titular"][:80]
-        ctx_m = _cargar_contexto_verificado(m["titular"], m["medio"], tema)
+        # Extraer tema SIMPLIFICADO (2-3 palabras clave)
+        titular = m["titular"]
+        # Quitar comillas, CDATA, HTML
+        import re as _re_ctx
+        titular_limpio = _re_ctx.sub(r'<[^>]+>|CDATA\[|\]\]', '', titular).strip()
+        titular_limpio = _re_ctx.sub(r'[«»""]', '', titular_limpio)
+        # Coger primeras 4-5 palabras significativas
+        palabras = [w for w in titular_limpio.split()[:8] if len(w) > 3]
+        tema = " ".join(palabras[:4]) or titular_limpio[:60]
+        print(f"   🔍 Tema: '{tema}'", flush=True)
+        ctx_m = _cargar_contexto_verificado(titular_limpio[:100], m["medio"], tema)
         if ctx_m:
             contexto_global += f"\n=== {m['medio']} ===\n{ctx_m}\n"
+        else:
+            print(f"      ⚠️ Sin contexto para {m['medio']}", flush=True)
     
     # Generar monólogo
     print("[monologo] 4/5 Generando monólogo LLM...", flush=True)
@@ -1099,3 +1253,16 @@ if __name__ == "__main__":
     else:
         print("[fase2] MODO FASE2 clásico", flush=True)
         producir_fase2(fecha_arg)
+
+def _a_especialista(rol, tarea, contexto=""):
+    """Alias de pedir_a_especialista."""
+    from especialistas import pedir_a_especialista
+    return pedir_a_especialista(rol, tarea, contexto=contexto)
+
+def _monologo(*args, **kwargs):
+    """Alias placeholder (no debería usarse)."""
+    return ""
+
+def _text(*args, **kwargs):
+    """Alias placeholder (no debería usarse)."""
+    return ""

@@ -35,76 +35,152 @@ def _concepto_visual_para(tipo, texto):
     }
     return fallbacks.get(tipo, fallbacks["default"])
 
-def splitter(texto, num_escenas=18):
-    """Divide texto en N escenas por párrafos. Garantiza N exactas.
-    
-    Returns: lista de dicts {id, texto, concepto_visual, mood_musical, tipo_visual}
+def _intro_fija(fecha_str="hoy"):
+    """Escena 1: hook + somos el encuadre + fecha."""
+    return (
+        f"Somos El Encuadre. "
+        f"Hoy es {fecha_str}. "
+        f"Y vamos a abrir la cloaca mediática. "
+        f"Atención, porque esto tiene miga. "
+        f"Te voy a enseñar las técnicas que han usado hoy. "
+        f"Quédate, porque lo que viene te va a explicar "
+        f"por qué todos los medios repiten lo mismo."
+    )
+
+
+def _outro_fijo():
+    """Escena 18: CTA realista (like + sub + compartir + Telegram)."""
+    return (
+        "Si te ha servido, dale a like. "
+        "Suscríbete si quieres más. "
+        "Y comparte esto con ese amigo que todavía se cree la tele. "
+        "Nos vemos en Telegram. "
+        "Y en la web, elencuadre.com. "
+        "Mañana volverán a intentarlo. "
+        "La única diferencia es que ahora ya lo ves. "
+        "Esto es El Encuadre."
+    )
+
+
+def splitter(texto, num_escenas=18, fecha_str="hoy"):
+    """Divide texto en N escenas por FRASES (no por párrafos).
+    Garantiza N exactas. Nunca corta a mitad de frase.
     """
     if not texto or not texto.strip():
         return []
     
-    # 1. Split por dobles saltos (párrafos) o por frases si no hay párrafos
-    parrafos = [p.strip() for p in re.split(r'\n\s*\n', texto) if p.strip()]
-    if len(parrafos) < 3:
-        # Fallback: split por frases
-        parrafos = re.split(r'(?<=[.!?])\s+', texto.strip())
+    # 0. Limpiar texto (colapsar saltos, quitar acotaciones TTS)
+    texto = re.sub(r'\n+', ' ', texto)
+    texto = re.sub(r'\s+', ' ', texto).strip()
     
-    # 2. Calcular palabras objetivo por escena
-    total_palabras = sum(len(p.split()) for p in parrafos)
-    objetivo = max(60, total_palabras // num_escenas)  # mínimo 60 palabras por escena
+    # 1. Limpiar: colapsar saltos dentro de frases, dejar 1 espacio
+    texto = re.sub(r'\n+', ' ', texto)
+    texto = re.sub(r'\s+', ' ', texto).strip()
     
-    # 3. Agrupar párrafos hasta objetivo
+    # 2. Split por frases (. ? !) preservando el signo
+    frases = re.findall(r'[^.!?]+[.!?]+', texto)
+    # Si el último trozo no tiene signo, añadirlo
+    resto = texto[sum(len(f) for f in frases):].strip()
+    if resto:
+        frases.append(resto + ".")
+    
+    if not frases:
+        return []
+    
+    # 3. Calcular palabras objetivo por escena
+    total_palabras = sum(len(f.split()) for f in frases)
+    objetivo = max(60, total_palabras // num_escenas)
+    
+    # 4. Agrupar frases hasta objetivo (SIN cortar frases)
     escenas_texto = []
     buffer = []
     buffer_palabras = 0
     
-    for p in parrafos:
-        palabras_p = len(p.split())
-        if buffer_palabras + palabras_p <= objetivo * 1.3 or not buffer:
-            buffer.append(p)
-            buffer_palabras += palabras_p
+    for f in frases:
+        palabras_f = len(f.split())
+        if buffer_palabras + palabras_f <= objetivo * 1.3 or not buffer:
+            buffer.append(f)
+            buffer_palabras += palabras_f
         else:
             escenas_texto.append(" ".join(buffer))
-            buffer = [p]
-            buffer_palabras = palabras_p
+            buffer = [f]
+            buffer_palabras = palabras_f
     
     if buffer:
         escenas_texto.append(" ".join(buffer))
     
-    # 4. Ajustar a N exactas
+    # 5. Ajustar a N exactas SIN cortar frases
     if len(escenas_texto) > num_escenas:
-        # Fusionar sobrantes al final
-        sobrantes = escenas_texto[num_escenas-1:]
-        escenas_texto = escenas_texto[:num_escenas-1] + [" ".join(sobrantes)]
+        # Fusionar escenas sobrantes por pares (empezando por las más cortas)
+        while len(escenas_texto) > num_escenas:
+            # Encontrar la pareja adyacente más corta
+            mejor_idx = 0
+            mejor_len = float('inf')
+            for i in range(len(escenas_texto) - 1):
+                combined = len(escenas_texto[i].split()) + len(escenas_texto[i+1].split())
+                if combined < mejor_len:
+                    mejor_len = combined
+                    mejor_idx = i
+            escenas_texto[mejor_idx] = escenas_texto[mejor_idx] + " " + escenas_texto[mejor_idx + 1]
+            del escenas_texto[mejor_idx + 1]
     elif len(escenas_texto) < num_escenas:
-        # Subdividir los más largos
+        # Añadir más escenas dividiendo la más larga por frases
         while len(escenas_texto) < num_escenas:
-            # Encontrar el más largo
-            idx_mas_largo = max(range(len(escenas_texto)), key=lambda i: len(escenas_texto[i].split()))
-            p = escenas_texto[idx_mas_largo]
-            palabras = p.split()
-            mitad = len(palabras) // 2
-            if mitad < 30:
-                # No se puede subdividir más, duplicar con variación
-                escenas_texto.insert(idx_mas_largo, p)
+            # Coger la más larga
+            idx_mas_larga = max(range(len(escenas_texto)), key=lambda i: len(escenas_texto[i].split()))
+            p_larga = escenas_texto[idx_mas_larga]
+            frases_p = re.findall(r'[^.!?]+[.!?]+', p_larga)
+            if len(frases_p) < 2:
+                # No se puede dividir: duplicar (raro pero evita bucle infinito)
                 break
-            primera = " ".join(palabras[:mitad])
-            segunda = " ".join(palabras[mitad:])
-            escenas_texto = escenas_texto[:idx_mas_largo] + [primera, segunda] + escenas_texto[idx_mas_largo+1:]
+            mitad = len(frases_p) // 2
+            primera = " ".join(frases_p[:mitad])
+            segunda = " ".join(frases_p[mitad:])
+            escenas_texto = escenas_texto[:idx_mas_larga] + [primera, segunda] + escenas_texto[idx_mas_larga+1:]
     
-    # 5. Construir escenas con metadata
+    # 6. Construir escenas con metadata (INTRO + desarrollo + OUTRO fijos)
     escenas = []
-    for i, txt in enumerate(escenas_texto[:num_escenas]):
-        tipo = _detectar_tipo(txt, i, num_escenas)
+    
+    # Escena 1: INTRO FIJA (hook + somos el encuadre + fecha)
+    intro_txt = _intro_fija(fecha_str)
+    escenas.append({
+        "id": 1,
+        "texto": intro_txt,
+        "concepto_visual": "dramatic newsroom at night, single spotlight, cinematic",
+        "mood_musical": "tension",
+        "tipo_visual": "hook",
+    })
+    
+    # Escenas 2 a N-1: desarrollo (del texto del monólogo)
+    # Recortar el texto del monólogo: quitar primer y último párrafo si son intro/outro
+    desarrollo = escenas_texto[:num_escenas-2]  # dejamos hueco para intro y outro
+    while len(desarrollo) < num_escenas - 2:
+        # Por si el monólogo es corto, añadir placeholder
+        desarrollo.append("")
+    
+    for i, txt in enumerate(desarrollo):
+        escena_num = i + 2
+        tipo = _detectar_tipo(txt, escena_num, num_escenas)
         escenas.append({
-            "id": i + 1,
+            "id": escena_num,
             "texto": txt,
             "concepto_visual": _concepto_visual_para(tipo, txt),
             "mood_musical": "tension" if tipo in ("hook", "dato", "explicacion") else "relax" if tipo == "cierre" else "misterio",
             "tipo_visual": tipo,
         })
     
+    # Escena N: OUTRO FIJO (CTA + apoyo)
+    outro_txt = _outro_fijo()
+    escenas.append({
+        "id": num_escenas,
+        "texto": outro_txt,
+        "concepto_visual": "lone figure walking away, sunset, cinematic",
+        "mood_musical": "relax",
+        "tipo_visual": "cierre",
+    })
+    
     return escenas
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

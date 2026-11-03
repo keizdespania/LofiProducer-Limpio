@@ -57,29 +57,29 @@
       "id": 5,
       "categoria": "bar",
       "texto": "En la terraza, la camarera Ana me sugiere el \"café del día\", diciendo: \"Hoy es revolución de sabores, sin agenda\". Yo le replico: \"¿Y la agenda? ¿Se sirve con leche?\". Al final, la agenda estaba en la taza, como la versión editada de la realidad. La agenda se sirve con espuma.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T15:44:12.437683"
     },
     {
       "id": 6,
       "categoria": "familia",
       "texto": "En la sobremesa de mi hermano Luis, el arroz quedó tan seco que parecía arena del desierto. Luis, con su voz de documentalista, murmuró: \"Este plato es la prueba de que la tradición nunca cambia\". Yo respondí: \"Solo cambia la forma en que nos venden la nostalgia\". Así como los medios nos venden recuerdos empaquetados, nos alimentan de ilusión. La propaganda sabe a arroz quemado.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T15:45:08.750145"
     },
     {
       "id": 7,
       "categoria": "familia",
       "texto": "Mi cuñado Manolo llegó a la cena con una ensalada que parecía una obra de arte abstracto. Manolo, con solemnidad, dijo: \"Esta lechuga es la revolución de los vegetales\". Yo le contesté: \"Y tú la revolución de los que se creen influencers de cocina\". Los medios convierten cualquier plato en tendencia para vendernos estilo. La manipulación se sirve en plato frío.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T15:56:47.021755"
     },
     {
       "id": 8,
       "categoria": "familia",
       "texto": "En la casa de la tía Carmen, el pastel de manzana llegó con una etiqueta que decía \"receta secreta del abuelo\". Tía Carmen, orgullosa, exclamó: \"Esto es lo que la tradición guarda bajo llave\". Yo le dije: \"O lo que la industria guarda bajo marketing\". La prensa nos hace creer que lo oculto es siempre auténtico. La historia se vende en tarros.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T16:01:34.573506"
     },
     {
       "id": 9,

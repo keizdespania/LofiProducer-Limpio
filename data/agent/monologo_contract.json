@@ -1,0 +1,62 @@
+{
+  "version": "1.0",
+  "actualizado": "2026-11-03",
+  "nombre": "Monólogo El Encuadre (modo paralelo)",
+  "modo": "monologo",
+  "activable": "pipeline_encuadre.py --modo monologo",
+  "rollback": "quitar --modo monologo → vuelve a producir_fase2()",
+
+  "objetivo": "Generar 1 monólogo de 1700 palabras con 4 capas, 3 noticias analizadas, 6 agentes especializados, humanizado para Álvaro (edge_tts), dividido en 18 escenas para render normal.",
+
+  "agentes_integrados": [
+    {"nombre": "forense_medios", "rol": "Extrae palabra_cuchillo + tecnica_psicologica + omision por medio"},
+    {"nombre": "detector_sesgos_cognitivos", "rol": "Identifica 3 sesgos por medio (ancla, autoridad, miedo...)"},
+    {"nombre": "bibliotecario_v2", "rol": "Cita académica de respaldo (Kahneman, Chomsky, Cialdini)"},
+    {"nombre": "verificador_citas", "rol": "Valida las 3 citas del monólogo (cero alucinaciones)"},
+    {"nombre": "analista_emocional", "rol": "Emoción dominante del día (miedo, rabia, indiferencia)"},
+    {"nombre": "humanizador", "rol": "Reescribe el monólogo completo para Álvaro (TTS-friendly)"}
+  ],
+
+  "estructura": {
+    "apertura": {"palabras": "300-400", "contenido": "Anécdota rotativa + puente al tema", "agentes": ["analista_emocional"]},
+    "informar": {"palabras": "500-600", "contenido": "3 noticias + fuentes oficiales DDG + 3 citas verificadas", "agentes": ["verificador_citas", "bibliotecario_v2"]},
+    "entrenar": {"palabras": "500-600", "contenido": "3 técnicas detectadas (1 por noticia) + regla del día", "agentes": ["forense_medios", "detector_sesgos_cognitivos", "bibliotecario_v2"]},
+    "concienciar": {"palabras": "300-400", "contenido": "Reflexión empática + CTA natural", "agentes": []},
+    "humanizacion": {"palabras": "todo", "contenido": "Reescritura completa", "agentes": ["humanizador"]}
+  },
+
+  "anti_repeticion": {
+    "anecdotas": "100 iniciales, 20 categorías × 5, rotación, regeneración al agotar",
+    "sombrero_dia": "detective | profesor | amigo (rotando)",
+    "regla_entrenamiento": "1 de 4 (preguntas | señales | palabras | comparaciones)",
+    "categorias": ["bar","familia","vecinos","trabajo","transporte","supermercado","medico","colegio","redes","telefono","cine_clasico","historia","cultura_pop","deporte","musica","literatura","ciencia","gastronomia","viajes","series"]
+  },
+
+  "splitter": {
+    "escenas": 18,
+    "corte": "por párrafos, agrupa ~90 palabras",
+    "intro": "escena 1, tipo_visual=hook",
+    "outro": "escena 18, tipo_visual=cierre",
+    "garantia": "exactamente 18 escenas, ni más ni menos"
+  },
+
+  "reglas_de_oro": [
+    "Cada agente va con try/except + fallback. Si uno falla, el monólogo sigue.",
+    "Timeout 60s por agente. Si tarda más, se cancela.",
+    "El humanizador SIEMPRE al final. Reescribe TODO el monólogo.",
+    "El splitter garantiza 18 escenas exactas. El render no se toca.",
+    "El esquema JSON de produccion_FECHA.json es idéntico al actual.",
+    "Rollback: quitar --modo monologo en pipeline_encuadre.py",
+    "Si un medio no tiene titular válido, se salta (no rompe la cadena).",
+    "Si las fuentes oficiales DDG fallan, se usan solo los medios locales.",
+    "Si el humanizador falla, se usa el monólogo sin humanizar (fallback).",
+    "El monólogo NO nombra las técnicas por su nombre (Card Stacking, etc.). Describe el efecto."
+  ],
+
+  "tts": {
+    "motor": "edge_tts",
+    "voz": "es-ES-AlvaroNeural",
+    "rate": "-5%",
+    "formato": "una idea por línea, salto = pausa 0.5s, doble salto = 1s"
+  }
+}
