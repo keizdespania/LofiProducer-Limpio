@@ -30,10 +30,17 @@ def _refresh(tok, token_path):
 def token(token_path=None):
     if token_path is None:
         token_path = TOKEN
+    else:
+        token_path = pathlib.Path(token_path)  # FIX: str → Path
     tok = json.loads(token_path.read_text())
-    if time.time() > tok.get("expires_at", 0) - 60:
+    # REFRESH SIEMPRE antes de subir (petición 2026-11-03)
+    try:
         return _refresh(tok, token_path)
-    return tok["access_token"]
+    except Exception as e:
+        print(f"   ⚠️ Refresh falló ({e}), usando token actual")
+        if time.time() > tok.get("expires_at", 0) - 60:
+            raise RuntimeError("Token expirado y refresh falló. Ejecuta scripts/reautorizar_youtube.py")
+        return tok["access_token"]
 
 def subir(video, titulo, descripcion="", tags=None, privacidad=None, publish_at=None, token_file=None):
     """Sube vídeo a YouTube vía API v3 (resumable upload)."""

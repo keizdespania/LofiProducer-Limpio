@@ -26,7 +26,15 @@ _VIDEOS_SUBIDOS = []  # Acumula IDs de vídeos subidos para avisar por Telegram
 
 def _subir_youtube(archivo, titulo, desc, tags=None, publish_at=None, retries=3):
     sys.path.insert(0, str(ROOT / "scripts"))
-    from subir_youtube import subir
+    from subir_youtube import subir, token
+    # REFRESH OBLIGATORIO antes de subir (2026-11-03: token revocado por Google)
+    try:
+        token("data/youtube_encuadre_token.json")
+        print(f"   ✅ Token refrescado antes de subir", flush=True)
+    except Exception as _e:
+        print(f"   ❌ Token refresh falló: {_e}. Ejecuta scripts/reautorizar_youtube.py", flush=True)
+        print(f"   ⚠️ Saltando subida a YouTube (token inválido)", flush=True)
+        return False
     for intento in range(retries):
         try:
             r = subir(archivo, titulo, desc, tags=tags, privacidad="private", publish_at=publish_at, token_file=TOKEN_ENC)
@@ -156,7 +164,7 @@ def main():
         ("director_arte.py", None, 1800, True),
         ("generar_imagenes_web.py", [fecha], 600, False),
         ("generar_imagenes_shorts.py", [fecha], 600, False),
-        ("descargar_lofi.py", None, 600, True),
+        # descargar_lofi.py ELIMINADO — solo como fallback en try/except (abajo)
         ("voz_edge.py", None, 600, False),
         ("segmentar_imagenes.py", [fecha], 1800, False),
         ("render_robusto.py", [fecha], 1800, False)
