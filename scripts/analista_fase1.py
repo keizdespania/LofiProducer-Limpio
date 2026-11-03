@@ -66,7 +66,6 @@ def analizar_fase1(fecha=None):
     print("[fase1] Llamando al Editor Jefe...", flush=True)
     top16 = []
     vistos = set()
-    intentos = 0
     
     # Recopilar todas las noticias
     pool_noticias = []
@@ -78,77 +77,12 @@ def analizar_fase1(fecha=None):
                     pool_noticias.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio, "extracto": extracto})
                     vistos.add(n["titular"])
 
-    BASURA_FINAL = [
-        # Gastronomia/virales
-        "jamón", "jamon", "taco", "salad", "ensalada", "restaurante", "gastronomía", "cocina", "chef",
-        "menaje", "cerámica", "cacharro", "tupper",
-        # Deportes
-        "márquez", "marquez", "alcaraz", "nadal", "motogp", "moto gp", "laliga", "la liga",
-        "mundial", "champions", "copa del rey", "europa league", "fichaje", "entrenador",
-        "delantero", "portero", "imbatibilidad", "imbatible", "partido de fútbol",
-        "jugador", "atleti", "betis", "valencia cf", "sevilla fc", "balón", "balon",
-        "futbol", "fútbol", "real madrid", "barça", "mbappé", "pucela", "racing", "athletic",
-        # Farandula
-        "javis", "carrasco", "sálvame", "supervivientes", "gran hermano", "operación triunfo",
-        "masterchef", "bake off", "guiño", "disfraz", "halloween", "influencer", "instagram",
-        "tiktok", "famoso", "celebridad", "reconciliación", "ruptura", "embarazo",
-        "boda", "divorcio", "prensa rosa", "corazón", "corazon", "actor", "actriz",
-        "cine", "cineasta", "película", "pelicula", "concierto", "música", "musica",
-        # Sucesos sin gestion
-        "argelino", "argelinos", "marroquí", "marroquíes", "migrante", "inmigrante",
-        "asalto", "asaltan", "robo", "robar", "atraco", "apuñal", "apuñalan", "agredido",
-        # Misc
-        "intocable", "dgt", "tráfico", "trafico", "tiempo", "lluvia", "temperatura", "blocus",
-        "apagón", "apagon", "sin suministro", "sin luz", "vidas truncadas", "tragedia ferroviaria"
-    ]
-
-    while len(top16) < 16 and intentos < 3:
-        intentos += 1
-        print(f"[fase1] Editor Jefe (Intento {intentos}). Pool: {len(pool_noticias)} noticias.", flush=True)
-        
-        # MANDAMOS AL EDITOR JEFE EL POOL COMPLETO (o lo que quede por aprobar)
-        pool_pendiente = [n for n in pool_noticias if n["titular"] not in [x["titular"] for x in top16]]
-        ctx_ed = "\n".join([f"[{n['medio']}] {n['titular']} (URL: {n['url']})" for n in pool_pendiente])
-        
-        prompt_ed = """Eres el Editor Jefe de 'El Encuadre'. Selecciona las 16 noticias más importantes. 
-        DEVUELVE SOLO JSON: {"aprobadas": [{"titular": "", "medio": "", "url": ""}]}"""
-        
-        res_ed = _parse_json(pedir_a_especialista("editor_jefe", prompt_ed, contexto=ctx_ed[:8000], proveedor="auto"))
-        aprobadas = res_ed.get("aprobadas", [])
-        
-        # Si el LLM falla o devuelve vacío, aprobamos por Python
-        if not aprobadas:
-            print("[fase1] ⚠️ Editor Jefe falló. Aprobando por Python...", flush=True)
-            aprobadas = [n for n in pool_pendiente if not any(b in n["titular"].lower() for b in BASURA_FINAL)]
-        
-        for a in aprobadas:
-            if len(top16) >= 16: break
-            # Si el LLM marcó es_valida=false, saltar
-            if a.get("es_valida") is False:
-                continue
-            if a.get("titular") and a["titular"] not in [x["titular"] for x in top16]:
-                # Comprobación final de basura en Python (solo titular)
-                if not any(b in a["titular"].lower() for b in BASURA_FINAL):
-                    top16.append(a)
-                
-        if len(top16) < 16:
-            print(f"[fase1] ⚠️ Faltan {16 - len(top16)} noticias. Buscando más...", flush=True)
-            try:
-                subprocess.run(["python3", "scripts/recolector_oro.py", fecha], check=True, capture_output=True, timeout=120)
-                oro = json.loads((OUT / f"recoleccion_oro_{fecha}.json").read_text())
-                nuevas = 0
-                for medio, ns in oro.items():
-                    for n in ns:
-                        if n["titular"] not in vistos:
-                            pool_noticias.append({"titular": n["titular"], "url": n.get("url",""), "medio": medio})
-                            vistos.add(n["titular"])
-                            nuevas += 1
-                if nuevas == 0:
-                    print("[fase1] No hay noticias nuevas. Cortando búsqueda.", flush=True)
-                    break
-            except Exception as e:
-                print(f"[fase1] Fallo investigación: {e}", flush=True)
-
+    # Editor Jefe V2 (4 capas: pre-filtro + scoring + LLM rubrica + validacion/fallback)
+    print(f"[fase1] Editor Jefe v2. Pool: {len(pool_noticias)} noticias.", flush=True)
+    from editor_jefe_v2 import _editor_jefe_v2
+    def _pedir_llm(rol, prompt, contexto="", proveedor="auto"):
+        return pedir_a_especialista(rol, prompt, contexto=contexto, proveedor=proveedor)
+    top16 = _editor_jefe_v2(pool_noticias, _pedir_llm, verbose=True)
     print(f"[fase1] Top16 final: {len(top16)} noticias.", flush=True)
 
     # 3. ANÁLISIS DE MEDIOS
