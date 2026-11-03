@@ -56,7 +56,7 @@ def _outro_fijo():
         "Suscríbete si quieres más. "
         "Y comparte esto con ese amigo que todavía se cree la tele. "
         "Nos vemos en Telegram. "
-        "Y en la web, elencuadre.com. "
+        "Nos vemos en la web. "
         "Mañana volverán a intentarlo. "
         "La única diferencia es que ahora ya lo ves. "
         "Esto es El Encuadre."

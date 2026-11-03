@@ -304,22 +304,28 @@ class GuionEstado:
 
     def resumen_para_prompt(self):
         """Resumen del estado para pasar al LLM (con 100 frases y 50 punchlines)."""
+        import random as _rnd
         frases_disp = self.frases_disponibles()
         punch_disp = self.punchlines_disponibles()
         qv_disp = self.que_vende_disponibles()
+        # Muestreo aleatorio para forzar variedad real (fix 2026-11-03)
+        _fr = _rnd.sample(frases_disp, min(10, len(frases_disp))) if frases_disp else []
+        _pu = _rnd.sample(punch_disp, min(10, len(punch_disp))) if punch_disp else []
+        _qv = _rnd.sample(qv_disp, min(8, len(qv_disp))) if qv_disp else []
         return f"""
 ESTADO ACTUAL DEL GUION (NO REPETIR):
 - Frases ya usadas: {len(self.frases_usadas)} de 100
 - "Qué vende" ya usado: {list(self.que_vende_usado) or "ninguno"}
 - Punchlines ya usadas: {len(self.punchlines_usadas)} de 50
 
-FRASES DISPONIBLES (elige 1 NUEVA de estas 10): {frases_disp[:10]}
+FRASES DISPONIBLES (OBLIGATORIO usar 1 EXACTA de estas 10): {_fr}
 
-PUNCHLINES DISPONIBLES (elige 1 NUEVA de estas 10): {punch_disp[:10]}
+PUNCHLINES DISPONIBLES (OBLIGATORIO usar 1 EXACTA de estas 10): {_pu}
 
-"QUÉ VENDE" DISPONIBLE (elige 1 NUEVO): {qv_disp[:8]}
+"QUÉ VENDE" DISPONIBLE (OBLIGATORIO usar 1 EXACTO de estos 8): {_qv}
 
-REGLA CRÍTICA: USA 1 FRASE + 1 PUNCHLINE + 1 QUÉ VENDE que NO estén ya usados.
+REGLA CRÍTICA: USA 1 FRASE + 1 PUNCHLINE + 1 QUÉ VENDE LITERALES de las listas de arriba.
+Cópialas TAL CUAL, sin parafrasear. Si no las usas, la escena se rechaza.
 """
 
 
@@ -878,21 +884,14 @@ Mínimo 70 palabras. Máximo 100."""
     
     escenas.append(_generar_escena(18, outro_inst)); num += 1
 
-    # Validar que se usan frases del banco
+    # Validar que se usan frases del banco (BANCO_FRASES + PUNCHLINES)
     texto_total = " ".join([e.get("texto","") for e in escenas])
     frases_usadas = [f for f in BANCO_FRASES if f in texto_total]
-    if len(frases_usadas) == 0:
-        print(f"   ⚠️ 0 frases del banco usadas. Añadiendo frases manualmente...", flush=True)
-        # Añadir frases en escenas alternas
-        import random
-        random.shuffle(BANCO_FRASES)
-        idx = 0
-        for i, e in enumerate(escenas):
-            if i % 3 == 0 and idx < len(BANCO_FRASES):
-                e["texto"] = e.get("texto","") + " " + BANCO_FRASES[idx]
-                idx += 1
-    else:
-        print(f"   ✅ Frases del banco usadas: {len(frases_usadas)}", flush=True)
+    punches_usadas = [p for p in PUNCHLINES if p in texto_total]
+    total_marcadores = len(frases_usadas) + len(punches_usadas)
+    print(f"   ✅ Banco: {len(frases_usadas)}/{len(BANCO_FRASES)} frases + {len(punches_usadas)}/{len(PUNCHLINES)} punchlines = {total_marcadores} totales", flush=True)
+    if total_marcadores == 0:
+        print(f"   ⚠️ 0 marcadores del banco. NO se martillea (regla 2026-11-03). Log para revisar prompt.", flush=True)
 
     res["escenas"] = escenas
     res["texto_voz_largo"] = " ".join([e.get("texto", "") for e in escenas])
