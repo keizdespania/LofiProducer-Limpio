@@ -747,3 +747,73 @@ P3: Auto-arranque Termux:Boot
 - **Modo:** `private` + `publishAt` (programado 18:00 UTC = 20:00 España)
 - **Auditoría:** pendiente (mientras: aviso Telegram con botones a Studio)
 - **Fix aplicado:** `avisar_videos_privados` en notificador (HTML + botones)
+
+---
+
+## 🚨 LECCIONES 2026-11-03 (TOKEN + TÍTULOS + SHORTS)
+
+### 1. YOUTUBE: REFRESH SIEMPRE ANTES DE SUBIR
+
+**El problema:** Google revoca refresh_tokens de apps en "testing" a los 7 días de inactividad.
+Si el pipeline no sube durante 7 días → token muerto → `invalid_grant`.
+
+**La solución:**
+- `subir_youtube.token()` **siempre refresca** (no solo si expiró) — parcheado 2026-11-03
+- `pipeline_encuadre._subir_youtube()` **llama a token()** antes de subir — parcheado
+- Si refresh falla → error claro: "Ejecuta scripts/reautorizar_youtube.py"
+- Si el token está revocado → `scripts/reautorizar_youtube.py` (OAuth manual, 2 min)
+
+**El token va a:**
+- `data/youtube_encuadre_token.json` (JSON con 6 campos)
+- `.env` → `YOUTUBE_ENCUADRE_TOKEN_FILE=data/youtube_encuadre_token.json` (solo la ruta)
+- **NUNCA** el token en `.env` (es un JSON, no una key simple)
+- **NUNCA** commitear el token a git
+
+### 2. TÍTULOS SEO ÚNICOS POR VÍDEO
+
+**El problema:** antes todos los vídeos se llamaban "Los 8 mecanismos mediáticos del X de Y".
+Aburrido, mal SEO, poca retención.
+
+**La solución:**
+- `scripts/generar_titulo_seo.py` → títulos únicos por tipo
+- **Vídeo largo:** hook + tema del día + keyword + El Encuadre
+  - Ejemplo: "HuffPost: el teatro de Delgado — lo que NO te cuentan los medios"
+- **Shorts:** título fijo por tipo (dato/contradicción/predicción/tutorial/cita)
+  - Dato: "📊 El dato que los medios ocultan hoy #ElEncuadre"
+  - Contradicción: "🤔 Te dijeron esto, pero... #ElEncuadre"
+  - Predicción: "🔮 Lo que viene después de esta noticia #ElEncuadre"
+  - Tutorial: "🎯 Cómo detectar manipulación en 30s #ElEncuadre"
+- **Descripción:** capítulos (00:00, 00:34...) + links cruzados + hashtags
+- **Tags:** 13 keywords top de YouTube (manipulación mediática, sesgo, framing...)
+
+### 3. SHORTS: HORARIOS ESCALONADOS
+
+- Short 1 (dato): 18:30 UTC
+- Short 2 (contradicción): 19:00 UTC
+- Short 3 (predicción): 19:30 UTC
+- Short 4 (tutorial): 20:00 UTC
+- Vídeo largo: 20:00 UTC
+
+**Escalonados para no saturar YouTube con 5 subidas en 1 minuto.**
+
+### 4. CANAL YOUTUBE CORREGIDO
+
+- **YouTube:** `@somoselencuadre.oficial` (NO `@somoselencuadre`)
+- **Telegram:** `@somoselencuadre` (SIN `.oficial`)
+- **Chat ID Telegram:** `-1003932701023`
+- **Canal YouTube ID:** `UCfxqjbXiWEiQsku2O4Y25cw`
+
+### 5. CONTRATOS ACTUALIZADOS
+
+- `data/agent/youtube_contract.json` v2.0 → refresh, títulos, tags, errores
+- `data/agent/shorts_contract.json` → títulos SEO por tipo, horarios
+- `data/agent/video_contract.json` → títulos SEO, tema del día
+- `data/agent/image_contract.json` → SDXL Lightning (3.7s/imagen)
+
+### 6. VÍDEOS SUBIDOS 2026-11-03
+
+- Vídeo largo: https://youtu.be/mlik6-9Ip10 (20:00)
+- Short 1 (dato): https://youtu.be/cqjGp1XzYqo (18:30)
+- Short 2 (contradicción): https://youtu.be/1cjWN4auMWg (19:00)
+- Short 3 (predicción): https://youtu.be/l7JJjYV16DQ (19:30)
+- Short 4 (tutorial): https://youtu.be/-SNoQJeIPfg (20:00)

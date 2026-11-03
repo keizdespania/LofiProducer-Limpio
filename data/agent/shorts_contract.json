@@ -108,5 +108,26 @@
     "sd_lightning": "33x más rápido que SDXL base (120s → 3.7s).",
     "limpieza_auto": "scripts/limpieza_pipeline.py borra >3 días automáticamente."
   },
-  "_fusionado_2026_11_02": "Contrato viejo (shorts_contract.json) fusionado con nuevo (short_contract.json). Este es el canónico."
+  "_fusionado_2026_11_02": "Contrato viejo (shorts_contract.json) fusionado con nuevo (short_contract.json). Este es el canónico.",
+  "titulos_seo": {
+    "generador": "scripts/generar_titulo_seo.py",
+    "formato": "Hook por tipo + #ElEncuadre",
+    "max_chars": 100,
+    "titulos_fijos": {
+      "dato": "📊 El dato que los medios ocultan hoy #ElEncuadre",
+      "contradiccion": "🤔 Te dijeron esto, pero... #ElEncuadre",
+      "prediccion": "🔮 Lo que viene después de esta noticia #ElEncuadre",
+      "tutorial": "🎯 Cómo detectar manipulación en 30s #ElEncuadre",
+      "cita": "💣 La frase que lo cambia todo #ElEncuadre",
+      "default": "👀 Lo que no quieren que veas #ElEncuadre"
+    },
+    "regla": "NUNCA usar el mismo título para todos los shorts. Cada tipo tiene su hook único."
+  },
+  "horarios_publicacion": {
+    "short_1": "18:30 UTC",
+    "short_2": "19:00 UTC",
+    "short_3": "19:30 UTC",
+    "short_4": "20:00 UTC",
+    "nota": "Escalonados para no saturar. Vídeo largo también a las 20:00."
+  }
 }

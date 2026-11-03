@@ -3,7 +3,6 @@
   "actualizado": "2026-11-02",
   "motor": "FFmpeg directo (render_robusto.py v4)",
   "nombre": "Vídeo largo 16:9 (~11 min) con lofi CC de fondo",
-
   "arquitectura": {
     "pipeline": [
       "1. Recolector: 20 medios + TV + radio (recolector.py)",
@@ -23,7 +22,6 @@
     "bitrate_video": "10M",
     "bitrate_audio": "192k"
   },
-
   "imagenes": {
     "fuente": "SDXL Lightning (@cf/bytedance/stable-diffusion-xl-lightning)",
     "cantidad": "72 escenas (segmentar_imagenes.py v2)",
@@ -41,19 +39,24 @@
     },
     "nota": "Las imágenes 9:16 son SOLO para shorts (short_bg_XX.png). NUNCA usar 9:16 en vídeo largo."
   },
-
   "musica": {
     "fuente": "YouTube con filtro license=creativeCommon",
     "pool": "config/lofi_largo_pool.json (16 links actuales)",
     "rotacion": "1 link/día vía data/agent/lofi_largo_counter.txt",
-    "moods": ["lofi", "chillhop", "jazzhop", "study", "sleep", "ambient"],
+    "moods": [
+      "lofi",
+      "chillhop",
+      "jazzhop",
+      "study",
+      "sleep",
+      "ambient"
+    ],
     "duracion_descarga": "15-60 min (cubre vídeo de 11 min con margen)",
     "cazador": "scripts/cazar_links_musica.py --tipo largo",
     "rotador": "scripts/lofi_largo_del_dia.py",
     "renovacion": "domingos 04:00 vía cron (verificar + reponer)",
     "fallback": "descargar_lofi.py (búsqueda en YouTube sin filtro CC, riesgo copyright)"
   },
-
   "voz": {
     "motor": "edge_tts",
     "voz": "es-ES-AlvaroNeural",
@@ -61,7 +64,6 @@
     "guion": "18 escenas × 50-80 palabras = ~11 min de audio (~660s)",
     "nota": "NUNCA acotaciones ([Fade out], (silencio), *énfasis*) en el guion. voz_edge.py las limpia pero mejor no incluirlas."
   },
-
   "render": {
     "script": "scripts/render_robusto.py v4",
     "efecto": "Ken Burns (zoompan) por escena",
@@ -76,7 +78,6 @@
     ],
     "work_dir": "output/encuadre/render_work/ (se borra al final del pipeline)"
   },
-
   "publicacion": {
     "youtube": {
       "canal": "@somoselencuadre.oficial",
@@ -96,7 +97,6 @@
       "comentario_dios": "scripts/comentar_y_publicar.py (gancho con Dios)"
     }
   },
-
   "reglas_de_oro": [
     "Vídeo largo SIEMPRE 16:9 (1920x1080). Las 9:16 son para shorts, NUNCA para el largo.",
     "Imágenes del largo: 1344x768 (horizontal). Si generas 768x1344, está mal.",
@@ -110,7 +110,6 @@
     "Si el vídeo largo falla, el pipeline sigue con shorts + web + Telegram. Nunca se detiene el pipeline entero.",
     "El render_work/ se borra al final (limpia_musica_render.py + limpieza_pipeline.py)."
   ],
-
   "diferencias_clave_shorts_vs_largo": {
     "shorts": {
       "aspect": "9:16 vertical",
@@ -131,12 +130,19 @@
       "script": "render_robusto.py (Ken Burns + voz + lofi)"
     }
   },
-
   "notas_2026_11_02": {
     "correccion_importante": "El contrato v2.0 decía que las imágenes eran 9:16 verticales. ERROR. Son 16:9 horizontales (1344x768). Solo los shorts son 9:16.",
     "cambio_principal": "Lofi largo CC del pool (rotador diario). Antes usaba descargar_lofi.py sin filtro CC (riesgo copyright).",
     "sd_lightning": "33x más rápido que SDXL base (120s → 3.7s). 72 imágenes = 4.5 min (antes 2.4h).",
     "auditoria_youtube": "Pendiente. Mientras: aviso Telegram con botones a Studio.",
     "canal_youtube": "@somoselencuadre.oficial (canal oficial, separado de @somoselencuadre que es el de Telegram)"
+  },
+  "titulos_seo": {
+    "generador": "scripts/generar_titulo_seo.py",
+    "fuente": "output/encuadre/seo_FECHA.json → largo.descripcion (temas del día)",
+    "formato": "Hook + tema + keyword + El Encuadre",
+    "ejemplo_2026_11_03": "HuffPost: el teatro de Delgado — lo que NO te cuentan los medios",
+    "max_chars": 100,
+    "regla": "NUNCA 'Los 8 mecanismos mediáticos del X de Y'. SIEMPRE usar el tema real del día."
   }
 }

@@ -1,211 +1,112 @@
 {
-  "motor": "YouTube Data API v3",
-  "version": "v3",
-  "endpoint_upload": "POST https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status",
-  "cuota_diaria": 10000,
-  "cuota_reset": "Medianoche PT",
-  "costos": {
-    "videos.insert": 1600,
-    "thumbnails.set": 50,
-    "playlistItems.insert": 50,
-    "videos.update": 50,
-    "videos.list": 1,
-    "captions.insert": 400,
-    "search.list": 100
-  },
-  "uploads_max_dia": 6,
-  "proyectos_para_100_canales": 17,
-  "scopes": [
-    "https://www.googleapis.com/auth/youtube.upload",
-    "https://www.googleapis.com/auth/youtube.readonly",
-    "https://www.googleapis.com/auth/youtube.force-ssl"
-  ],
-  "presets": {
-    "draft_privado": {
-      "desc": "Borrador privado",
-      "params": {
-        "privacyStatus": "private",
-        "notifySubscribers": false,
-        "categoryId": "22"
-      }
-    },
-    "publicar_ahora": {
-      "desc": "Publicar (requiere auditoría)",
-      "params": {
-        "privacyStatus": "public",
-        "notifySubscribers": true,
-        "categoryId": "22"
-      }
-    },
-    "programar": {
-      "desc": "Programar con publishAt",
-      "params": {
-        "privacyStatus": "private",
-        "publishAt": "ISO8601",
-        "categoryId": "22"
-      }
-    },
-    "shorts_vertical": {
-      "desc": "Shorts <60s 9:16",
-      "params": {
-        "privacyStatus": "public",
-        "categoryId": "24",
-        "duracion_max": 60
-      }
-    },
-    "lofi_music": {
-      "desc": "Música lofi",
-      "params": {
-        "privacyStatus": "public",
-        "categoryId": "10"
-      }
-    },
-    "podcast": {
-      "desc": "Podcast",
-      "params": {
-        "privacyStatus": "public",
-        "categoryId": "22",
-        "defaultLanguage": "es"
-      }
-    }
-  },
-  "validador": {
-    "reglas": [
-      {
-        "campo": "title",
-        "min": 1,
-        "max": 100
-      },
-      {
-        "campo": "description",
-        "min": 0,
-        "max": 5000
-      },
-      {
-        "campo": "tags_total_chars",
-        "min": 0,
-        "max": 500
-      },
-      {
-        "campo": "categoryId",
-        "valores": [
-          "10",
-          "17",
-          "20",
-          "22",
-          "23",
-          "24",
-          "25",
-          "26",
-          "27",
-          "28"
-        ],
-        "default": "22"
-      },
-      {
-        "campo": "privacyStatus",
-        "valores": [
-          "private",
-          "unlisted",
-          "public"
-        ],
-        "default": "private"
-      },
-      {
-        "campo": "defaultLanguage",
-        "valores": [
-          "es",
-          "en",
-          "pt",
-          "fr",
-          "de",
-          "it"
-        ],
-        "default": "es"
-      }
+  "version": "2.0",
+  "actualizado": "2026-11-03",
+  "nombre": "Contrato YouTube API v3 (upload + programación + refresh)",
+
+  "credenciales": {
+    "token_file": "data/youtube_encuadre_token.json",
+    "env_var_ruta": "YOUTUBE_ENCUADRE_TOKEN_FILE",
+    "canal_oficial": "@somoselencuadre.oficial",
+    "canal_id": "UCfxqjbXiWEiQsku2O4Y25cw",
+    "cuenta_google": "somoselencuadre@gmail.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/youtube.upload",
+      "https://www.googleapis.com/auth/youtube.readonly",
+      "https://www.googleapis.com/auth/blogger"
     ]
   },
-  "errores": [
-    {
-      "code": 403,
-      "reason": "quotaExceeded",
-      "fix": "Esperar 24h o rotar proyecto Google Cloud"
-    },
-    {
-      "code": 400,
-      "reason": "uploadLimitExceeded",
-      "fix": "Máx 6/día. Rotar proyecto"
-    },
-    {
-      "code": 400,
-      "reason": "invalidTitle",
-      "fix": "1-100 chars, sin < >"
-    },
-    {
-      "code": 400,
-      "reason": "invalidTags",
-      "fix": "Suma <= 500 chars"
-    },
-    {
-      "code": 403,
-      "reason": "forbidden",
-      "fix": "Sin auditoría Google, todo privado"
-    }
+
+  "reglas_criticas": [
+    "REFRESH TOKEN SIEMPRE ANTES DE SUBIR. No esperar a que expire (Google revoca tokens de apps en testing a los 7 días de inactividad).",
+    "Si refresh falla con 'invalid_grant' → token REVOCADO. Ejecutar scripts/reautorizar_youtube.py (OAuth manual 2 min).",
+    "El script subir_youtube.py ya hace refresh SIEMPRE en token() (parcheado 2026-11-03).",
+    "El pipeline llama a token() antes de CUALQUIER subida (parcheado 2026-11-03).",
+    "NUNCA hardcodear access_token. NUNCA commitear el token a git.",
+    "El token va a data/youtube_encuadre_token.json (NO en .env, es JSON con 6 campos)."
   ],
-  "reglas_anti_alucinacion": [
-    "Costo 1600 units/upload. 10000/día = 6 uploads max",
-    "privacyStatus='private' por defecto hasta auditar Google",
-    "Sin auditoría Google: todos los uploads salen privados",
-    "selfDeclaredMadeForKids=false SIEMPRE",
-    "notifySubscribers=false en masivo, true en estrenos",
-    "100 canales = 17 proyectos Google Cloud",
-    "Thumbnail 50 units extra (pero obligatorio para CTR)",
-    "Shorts: <60s, 9:16, NO como vídeo largo",
-    "categoryId coherente (lofi=10, news=25, edu=27)",
-    "defaultLanguage SIEMPRE (SEO internacional)"
-  ],
-  "ejemplos": [
-    {
-      "input": "sube en privado",
-      "preset": "draft_privado"
-    },
-    {
-      "input": "sube short",
-      "preset": "shorts_vertical"
-    },
-    {
-      "input": "programa lofi mañana",
-      "preset": "programar"
-    }
-  ],
-  "stats": {
-    "presets": 6,
-    "reglas": 10,
-    "errores": 5
+
+  "subida": {
+    "script": "scripts/subir_youtube.py",
+    "funcion": "subir(video, titulo, desc, tags, privacidad, publish_at, token_file)",
+    "modo": "private + publishAt (programación)",
+    "horarios_shorts": ["18:30", "19:00", "19:30", "20:00"],
+    "horario_video_largo": "20:00",
+    "max_uploads_dia": 6,
+    "max_tamano_mb": 128000,
+    "formatos": [".mp4", ".mov", ".avi", ".webm"],
+    "codec_video": "h264 (libx264)",
+    "codec_audio": "aac 128k"
   },
-  "script_local": {
-    "path": "/data/data/com.termux/files/home/LofiProducer/scripts/subir_youtube.py",
-    "funciones": {
-      "_refresh": {
-        "args": [
-          "tok"
-        ],
-        "kwonly": []
-      },
-      "token": {
-        "args": [],
-        "kwonly": []
-      },
-      "subir": {
-        "args": [
-          "video",
-          "titulo",
-          "descripcion",
-          "tags",
-          "privacidad"
-        ],
-        "kwonly": []
+
+  "titulos_seo": {
+    "script_generador": "scripts/generar_titulo_seo.py",
+    "video_largo": {
+      "fuente": "output/encuadre/seo_FECHA.json → largo.descripcion (temas del día)",
+      "formato": "Hook + tema + keyword + El Encuadre",
+      "ejemplo": "HuffPost: el teatro de Delgado — lo que NO te cuentan los medios",
+      "max_chars": 100
+    },
+    "shorts": {
+      "formato": "Hook por tipo + #ElEncuadre",
+      "max_chars": 100,
+      "titulos_fijos_por_tipo": {
+        "dato": "📊 El dato que los medios ocultan hoy #ElEncuadre",
+        "contradiccion": "🤔 Te dijeron esto, pero... #ElEncuadre",
+        "prediccion": "🔮 Lo que viene después de esta noticia #ElEncuadre",
+        "tutorial": "🎯 Cómo detectar manipulación en 30s #ElEncuadre",
+        "cita": "💣 La frase que lo cambia todo #ElEncuadre",
+        "default": "👀 Lo que no quieren que veas #ElEncuadre"
       }
     }
+  },
+
+  "descripcion": {
+    "fuente": "output/encuadre/seo_FECHA.json",
+    "video_largo": "Descripción con capítulos (00:00, 00:34, ...) + links cruzados + hashtags",
+    "shorts": "Descripción corta + links cruzados + #Shorts #ElEncuadre",
+    "links_cruzados_obligatorios": [
+      "https://elencuadre.pages.dev",
+      "https://youtube.com/@somoselencuadre.oficial",
+      "https://tiktok.com/@somoselencuadre",
+      "https://instagram.com/somoselencuadre",
+      "https://x.com/SomosElEncuadre",
+      "https://threads.net/@somoselencuadre"
+    ]
+  },
+
+  "tags": [
+    "manipulación mediática", "sesgo informativo", "análisis de medios",
+    "fake news", "desinformación", "prensa española", "framing",
+    "El Encuadre", "análisis político", "periodismo crítico",
+    "sesgos cognitivos", "propaganda", "2026"
+  ],
+
+  "auditoria_pendiente": {
+    "estado": "pendiente",
+    "motivo": "API no auditada → vídeos salen privados, no se pueden hacer públicos manualmente",
+    "consecuencia": "Todos los vídeos suben como 'private' con publishAt. Se publican solos a su hora.",
+    "solucion_futura": "Rellenar formulario auditoría Google Cloud (support.google.com/youtube/contact/yt_api_form)",
+    "aviso_telegram": "brain/notificador_encuadre.py → avisar_videos_privados() con botones a Studio"
+  },
+
+  "registro_subidas": {
+    "fichero": "output/encuadre/shorts_subidos_FECHA.json",
+    "contenido": "Lista de {num, tipo, id, url, publish_at}",
+    "uso": "Auditar qué se subió y cuándo"
+  },
+
+  "errores_conocidos": {
+    "invalid_grant": "Token revocado → reautorizar (scripts/reautorizar_youtube.py)",
+    "HTTP 400 Bad Request": "Metadata inválida o token caducado → verificar título/desc/tags",
+    "quotaExceeded": "10.000 unidades/día agotadas → esperar 24h o rotar cuenta",
+    "uploadLimitExceeded": "6 subidas/día por proyecto → esperar 24h o rotar cuenta"
+  },
+
+  "notas_2026_11_03": {
+    "token_revocado": "El refresh_token estaba revocado (invalid_grant). Google revoca tokens de apps en testing a los 7 días de inactividad.",
+    "reautorizacion": "Ejecutado scripts/reautorizar_youtube.py → nuevo refresh_token guardado.",
+    "refresh_siempre": "Parcheado subir_youtube.py: refresh SIEMPRE antes de subir (no solo si expiró).",
+    "pipeline_parche": "pipeline_encuadre._subir_youtube() llama token() antes de subir.",
+    "subidos_hoy": "5 vídeos: largo (mlik6-9Ip10) + 4 shorts (cqjGp1XzYqo, 1cjWN4auMWg, l7JJjYV16DQ, -SNoQJeIPfg)"
   }
 }
