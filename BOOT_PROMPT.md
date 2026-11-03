@@ -817,3 +817,39 @@ Aburrido, mal SEO, poca retención.
 - Short 2 (contradicción): https://youtu.be/1cjWN4auMWg (19:00)
 - Short 3 (predicción): https://youtu.be/l7JJjYV16DQ (19:30)
 - Short 4 (tutorial): https://youtu.be/-SNoQJeIPfg (20:00)
+
+---
+
+## 🎭 SESIÓN EN CURSO — MONÓLOGO ALSINA (2026-11-03)
+
+### OBJETIVO
+Rediseñar guion del vídeo largo + podcast en monólogo profesional tipo Alsina/Buenafuente.
+
+### HECHO
+- `_extraer_tema()`, `_validar_alucinaciones()`, `_buscar_contexto_ddg()` en scripts/fase2_produccion.py
+- `GuionEstado` (anti-repetición de frases/qué vende/punchlines)
+- Bancos: BANCO_FRASES (100), QUE_VENDE (15), PUNCHLINES (50), LEY_ESTILO
+- Filtros URL en scripts/voz_edge.py
+- 4 actos reescritos (hook + patrón + técnica + cierre)
+
+### FALLOS PENDIENTES
+1. Texto huérfano ("pero. .") por validación que borra nombres
+2. DDG vacío ("Sin noticias de agencias")
+3. Outro con URL ("elencuadre.com")
+4. Frases banco: 0/10 usadas
+
+### SIGUIENTE PASO
+Test aislado DDG:
+  cd ~/LofiProducer
+  python3 -c "import sys;sys.path.insert(0,'scripts');from fase2_produccion import _buscar_contexto_ddg;print(_buscar_contexto_ddg('titular','The Objective','entidad')[:500])"
+
+Si vacío → arreglar query DDG primero.
+Si con datos → arreglar validación alucinaciones.
+
+### REGLA NUEVA #21
+NUNCA regex sobre `def` para insertar funciones. Usar `re.search(r'\nif __name__')` e insertar antes.
+
+### NO ROMPER
+- `producir_fase2()` (18 escenas clásicas, pipeline 06:00)
+- Cron 06:00
+- render_short_rot.py
