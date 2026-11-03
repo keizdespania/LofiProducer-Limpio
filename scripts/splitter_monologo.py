@@ -36,15 +36,16 @@ def _concepto_visual_para(tipo, texto):
     return fallbacks.get(tipo, fallbacks["default"])
 
 def _intro_fija(fecha_str="hoy"):
-    """Escena 1: hook + somos el encuadre + fecha."""
+    """Escena 1: gancho fuerte + somos el encuadre + fecha."""
     return (
-        f"Somos El Encuadre. "
-        f"Hoy es {fecha_str}. "
-        f"Y vamos a abrir la cloaca mediática. "
-        f"Atención, porque esto tiene miga. "
+        f"Mira, te lo voy a decir claro desde el principio. "
+        f"Los medios no informan. Venden. "
+        f"Y tú, y yo, y todos, nos lo tragamos. "
+        f"Hasta hoy. "
+        f"Somos El Encuadre, {fecha_str}. "
+        f"Y vamos a abrir la cloaca. "
         f"Te voy a enseñar las técnicas que han usado hoy. "
-        f"Quédate, porque lo que viene te va a explicar "
-        f"por qué todos los medios repiten lo mismo."
+        f"Quédate, porque esto te va a cambiar la forma de leer el periódico."
     )
 
 
