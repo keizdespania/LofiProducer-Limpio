@@ -853,3 +853,70 @@ NUNCA regex sobre `def` para insertar funciones. Usar `re.search(r'\nif __name__
 - `producir_fase2()` (18 escenas clásicas, pipeline 06:00)
 - Cron 06:00
 - render_short_rot.py
+
+---
+
+## 🧪 MODO TEST DEL PIPELINE (2026-11-03)
+
+### QUÉ ES
+Ejecutar pipeline SIN subir (YouTube/Blogger/Telegram) y BORRAR todo al terminar.
+
+### PASO 1 — Lanzar sin publicar
+```bash
+cd ~/LofiProducer
+DRY_RUN=1 python3 scripts/pipeline_encuadre.py
+```
+
+⚠️ El flag DRY_RUN NO existe aún. Añadir en pipeline_encuadre.py:
+```python
+import os
+DRY_RUN = os.environ.get('DRY_RUN') == '1'
+# if not DRY_RUN: _subir_youtube(...)
+```
+
+### PASO 2 — Verificar generados
+```bash
+FECHA=$(date +%Y-%m-%d)
+ls -lh output/encuadre/*${FECHA}* 2>/dev/null
+ls -lh web/media/imagenes/*${FECHA}* 2>/dev/null
+```
+
+### PASO 3 — Borrar si OK
+```bash
+FECHA=$(date +%Y-%m-%d)
+rm -f output/encuadre/*_${FECHA}.*
+rm -f output/imagenes/encuadre-imagen-*
+rm -f web/media/imagenes/*_${FECHA}_*
+rm -f output/musica_temp/short_dia_${FECHA}.mp3 output/musica_temp/lofi_largo_${FECHA}.mp3
+rm -f web/docs/analisis/${FECHA}-*.md web/docs/podcast/${FECHA}.mp3
+rm -f data/agent/pipeline_done_${FECHA}.txt
+```
+
+### PASO 3-bis — Si FALLA, guardar
+```bash
+cp -r output/encuadre data/backups/test_fallido_$(date +%Y%m%d_%H%M)/
+cp data/logs/pipeline.log data/backups/test_fallido_$(date +%Y%m%d_%H%M)/
+grep -iE 'error|timeout|killed|traceback' data/logs/pipeline.log | tail -20
+```
+
+### COMPROBAR 11 FASES
+Recolector 20 medios · Análisis 15 agentes · Guion 18 escenas · Imágenes 72 SDXL · Voz 18 audios · Música pool CC · Render largo >10min · Shorts 4mp4+4srt · Podcast mp3 · NO subida YouTube/Telegram/Blogger · Sin mensajes nuevos en canal
+
+### TIEMPO
+Normal: 25-35 min. Si >45 min:
+```bash
+pkill -9 -f pipeline_encuadre
+pkill -9 -f yt-dlp
+pkill -9 -f ffmpeg
+```
+
+### NO LANZAR
+- En horario cron (05:55-07:00) → duplica
+- Si hay otro pipeline: pgrep -af pipeline_encuadre
+
+### COMANDO RÁPIDO
+```bash
+cd ~/LofiProducer
+pgrep -af pipeline_encuadre && echo 'STOP: ya corre' && exit 1
+DRY_RUN=1 python3 scripts/pipeline_encuadre.py 2>&1 | tee data/logs/test_$(date +%H%M).log
+```
