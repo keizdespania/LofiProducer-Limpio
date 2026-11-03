@@ -5,17 +5,44 @@ hide:
 
 <div class="holo-hero">
   <h1>El Archivo del Anti-Medio</h1>
-  <p>Todo nuestro arsenal. 29 análisis publicados. Sin filtros, con enlaces verificables.</p>
+  <p>Todo nuestro arsenal. 32 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (29)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (3)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (5)</button>
-  <button class="holo-filter-btn" data-filter="mediano">Medianos (2)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (32)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (4)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (6)</button>
+  <button class="holo-filter-btn" data-filter="mediano">Medianos (3)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-03-mediano-tutorial/'" data-category="mediano">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    
+    <h3>Cómo detectar la técnica: Card Stacking</h3>
+    <p>Analisis tutorial: Cómo detectar la técnica: Card Stacking</p>
+    <div class="holo-meta"><span>📅 2026-11-03</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-03-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    
+    <h3>El Encuadre: Feijóo: 'España está en situación de emergencia</h3>
+    <p>Analisis largo: El Encuadre: Feijóo: 'España está en situación de emergencia</p>
+    <div class="holo-meta"><span>📅 2026-11-03</span></div>
+    
+    <a href="https://theobjective.com/espana/2026-11-03/mujer-lopez-obrador-preferente-nacionalidad/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-03-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier del día: El Encuadre: Feijóo: 'España está en situación de emergencia</h3>
+    <p>Dossier ejecutivo: El Encuadre: Feijóo: 'España está en situación de emergencia y necesita gente qu</p>
+    <div class="holo-meta"><span>📅 2026-11-03</span></div>
+    
+    <a href="https://theobjective.com/espana/2026-11-03/mujer-lopez-obrador-preferente-nacionalidad/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-02-mediano-quirurgico/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     
