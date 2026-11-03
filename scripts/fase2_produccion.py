@@ -426,6 +426,56 @@ def _clasificar_noticia(n):
         return "ECONOMIA"
     return "SOCIEDAD"
 
+def _sanear_huerfanos(texto):
+    """Limpia patrones rotos típicos del LLM: 'pero. .', 'porque .', ', sin mencionar que. .'"""
+    if not texto:
+        return texto
+    t = texto
+    # 1) "pero. ." / "pero ." / "pero,"  -> quitar conector huérfano
+    t = re.sub(r'\(?\bpero\b\)?\s*[\.\,\;]\s*[\.\s]*', ' ', t, flags=re.IGNORECASE)
+    # 2) "porque ." / "porque y " / "porque,"  -> quitar
+    t = re.sub(r'\bporque\b\s+(y\s+)?[\.\,\;]?\s*', ' ', t, flags=re.IGNORECASE)
+    # 3) ", sin mencionar que. ." / ", pero ." -> quitar
+    t = re.sub(r'\,\s*sin mencionar que[^.]{0,4}\.\s*\.?', '', t, flags=re.IGNORECASE)
+    t = re.sub(r'\,\s*pero\s*\.[^.]{0,4}\.?', '', t, flags=re.IGNORECASE)
+    # 4) ", pero ." / ", pero . ,"  -> quitar
+    t = re.sub(r'\,\s*pero\s*[\.,]\s*', ' ', t, flags=re.IGNORECASE)
+    # 5) Restos: " .", " ,", ". .", ", ,"  -> normalizar (reforzado 2026-11-03)
+    t = re.sub(r'\s+\.\s*', '. ', t)
+    t = re.sub(r'\s+\,\s*', ', ', t)
+    t = re.sub(r'\.\s+\.', '.', t)
+    # comas dobles / triples -> una sola
+    t = re.sub(r'\,{2,}', ',', t)
+    # coma antes de signo de apertura -> quitar
+    t = re.sub(r'\,\s*([\¿\¡\?\.])', r' \1', t)
+    # coma huérfana al final de frase -> punto
+    t = re.sub(r'\,\s*$', '.', t)
+    # 6) Espacios múltiples
+    t = re.sub(r'[ \t]{2,}', ' ', t)
+    # 7) Espacio antes de puntuación
+    t = re.sub(r'\s+([\.\,\;\:\!\?])', r'\1', t)
+    # 8) Garantizar espacio antes de ¿ ¡ si vienen tras palabra
+    t = re.sub(r'([^\s\¿\¡\n])([\¿\¡])', r'\1 \2', t)
+    # 9) Coma al final antes de mayúscula con ¿ ¡ -> limpiar
+    t = re.sub(r'\,\s+\¿', ' ¿', t)
+    t = re.sub(r'\,\s+\¡', ' ¡', t)
+    return t.strip()
+
+
+def _tiene_huerfano(texto):
+    """True si el texto tiene patrones rotos ('pero. .', 'porque .', '. .', ' , .')."""
+    if not texto:
+        return False
+    patrones = [
+        r'\.\s*\.',       # ". ."
+        r'\bpero\s*[\.\,]',  # "pero." o "pero,"
+        r'\bporque\s*[\.\,]', # "porque."
+        r'\,\s*\.',      # ", ."
+        r'\s\.\s',       # " . "
+    ]
+    return any(re.search(p, texto) for p in patrones)
+
+
 def _generar_escena(num, instruccion, contexto_noticia=""):
     prompt = (
         f"Genera la escena {num} del guion. {instruccion} "
@@ -443,6 +493,14 @@ def _generar_escena(num, instruccion, contexto_noticia=""):
         if d and isinstance(d, dict) and "texto" in d and len(d["texto"].split()) > 20:
             # Limpiar "El El", "La La", etc.
             d["texto"] = re.sub(r'\b(El|La|Los|Las)\s+\1\b', r'\1', d["texto"], flags=re.IGNORECASE)
+            # Sanear huérfanos tipo "pero. .", "porque ." (2026-11-03)
+            _antes = d["texto"]
+            d["texto"] = _sanear_huerfanos(d["texto"])
+            if d["texto"] != _antes:
+                print(f"      🧹 Huérfanos saneados en escena {num}", flush=True)
+            if _tiene_huerfano(d["texto"]):
+                print(f"      ⚠️ Escena {num} sigue con huérfanos tras sanear, reintento", flush=True)
+                continue
             # FORZAR id, concepto_visual, mood_musical, tipo_visual (2026-11-03)
             d["id"] = num
             d.setdefault("concepto_visual", "newspaper abstract, cinematic")
@@ -560,25 +618,41 @@ def producir_fase2(fecha=None):
     print(f"   [ACTO 1] HOOK (escenas 1-2)", flush=True)
     _tema_principal = medios_validos[0]["titular"][:80] if medios_validos else "la manipulación mediática"
 
-    # Escena 1: Gancho + presentación
-    print(f"   [Escena {num}/18] Hook inicial...", flush=True)
-    hook_inst = f"""{LEY_ESTILO}
+    # Escena 1: INTRO DINÁMICA (LLM decide la apertura cada día)
+    print(f"   [Escena {num}/18] Intro dinámica...", flush=True)
+    
+    # Rotar estilo de apertura cada día
+    import hashlib
+    estilos_intro = [
+        "Pregunta incómoda al oyente",
+        "Dato bomba de 5 palabras",
+        "Escena absurda cotidiana",
+        "Confesión personal del presentador",
+        "Paradoja periodística",
+        "Anécdota breve + giro",
+    ]
+    dia_hash = int(hashlib.md5(fecha_str.encode()).hexdigest(), 16)
+    estilo_hoy = estilos_intro[dia_hash % len(estilos_intro)]
+    
+    intro_inst = f"""{LEY_ESTILO}
 
-ACTO 1 — HOOK INICIAL (escena 1 de 18):
+ACTO 1 — INTRO (escena 1 de 18, ~100 palabras):
 
-INSTRUCCIONES:
-1. Abre con una FRASE BOMBA de 5-7 palabras. Contraintuitiva, incómoda, o absurda.
-   Ejemplos:
-   - "Hoy los medios han amanecido con una misión."
-   - "España está en emergencia. O eso dicen."
-   - "Atención al titular del día, porque tiene miga."
-2. Di LITERALMENTE: 'Somos El Encuadre, y hoy, {fecha_str}, vamos a abrir la cloaca mediática.'
-3. Di EXACTAMENTE: 'Hoy vamos a analizar cómo los medios manipulan la actualidad, empezando por: {_tema_principal}'
-4. Añade promesa + pregunta: 'Te voy a enseñar las {len(tecnicas_unicas)} técnicas que han usado hoy. ¿Preparado?'
-5. Cliffhanger mordaz: 'Quédate, porque lo que viene te va a explicar por qué todos los medios repiten lo mismo.'
+ESTILO DE APERTURA PARA HOY: {estilo_hoy}
 
-Mínimo 80 palabras. Máximo 110."""
-    escenas.append(_generar_escena(num, hook_inst)); num += 1
+INSTRUCCIONES CRÍTICAS:
+1. NO empieces siempre igual. NO uses "Buenas noches, Arquitecto" ni "Hoy vamos a hablar de..."
+2. Aplica el estilo "{estilo_hoy}" como gancho de apertura.
+3. Di LITERALMENTE: "Somos El Encuadre, hoy {fecha_str}."
+4. Menciona el tema: "Hoy analizamos cómo los medios manipulan la actualidad."
+5. Promesa concreta: "Te voy a enseñar 3 técnicas que han usado hoy."
+6. Cliffhanger: "Si te quedas, no volverás a leer un titular igual."
+7. PROHIBIDO mencionar URLs, webs o links en la intro.
+
+Tono: Alsina (amigo listo, ironía fina, frases cortas).
+Mínimo 90 palabras. Máximo 120."""
+    
+    escenas.append(_generar_escena(num, intro_inst)); num += 1
 
     # Escena 2: El "pero antes"
     print(f"   [Escena {num}/18] Hook transición...", flush=True)
@@ -679,7 +753,13 @@ PROHIBIDO:
 - Describir la técnica con su nombre (Card Stacking, Framing, etc.)
 
 Mínimo 80 palabras. Máximo 100. Sin markdown."""
-        _esc = _generar_escena(num, patron_inst, ctx)
+        # Generar con validación de alucinaciones
+        for _intento in range(3):
+            _esc = _generar_escena(num, patron_inst, ctx)
+            _aluc = _validar_alucinaciones(_esc.get("texto", ""), top16)
+            if len(_aluc) <= 5:
+                break
+            print(f"      ⚠️ {len(_aluc)} alucinaciones ({_aluc[:3]}), regenerando {_intento+1}/3", flush=True)
         estado.registrar_usos(_esc.get("texto", ""))
         estado.add_medio(medio)
         escenas.append(_esc); num += 1
@@ -764,22 +844,55 @@ Añade una nota de esperanza: 'No se trata de no creer nada. Se trata de saber c
 Mínimo 80 palabras. Máximo 100. Tono: cercano, casi íntimo."""
         escenas.append(_generar_escena(num, reflexion_inst)); num += 1
 
-    # Escena 18: Cierre + CTA
-    print(f"   [Escena 18/18] Cierre épico + CTA...", flush=True)
-    cierre_inst = f"""{LEY_ESTILO}
+    # Escena 18: OUTRO DINÁMICO (LLM decide el cierre cada día)
+    print(f"   [Escena 18/18] Outro dinámico...", flush=True)
+    
+    estilos_outro = [
+        "Reflexión filosófica corta",
+        "Pregunta abierta al oyente",
+        "Vuelta a la anécdota del principio",
+        "Dato que resume el día",
+        "Frase seca de las que se recuerdan",
+        "Llamada a la acción directa",
+    ]
+    estilo_outro = estilos_outro[dia_hash % len(estilos_outro)]
+    
+    outro_inst = f"""{LEY_ESTILO}
 
-ACTO 4 — CIERRE ÉPICO (escena 18 de 18, ÚLTIMA):
+ACTO 4 — OUTRO (escena 18 de 18, ~90 palabras):
 
-INSTRUCCIONES:
-1. Vuelve al gancho inicial (cierra el círculo): "Hoy los medios han amanecido con una misión. Y mañana volverán a intentarlo."
-2. Da la tesis final mordaz: "La diferencia es que ahora ya sabes el truco. Y el truco es que no hay truco: es marketing con teclado."
-3. CTA sin genérico de IA: "Dale a like si te ha servido. Suscríbete si quieres más. Y comparte esto con ese amigo que todavía se cree la tele."
-4. Cierre con "punch" filosófico: "Mañana volverán a intentarlo. La única diferencia es que ahora ya lo ves."
+ESTILO DE CIERRE PARA HOY: {estilo_outro}
 
-PROHIBIDO: "Dale a like, suscríbete, o comparte" (genérico). Usa el mío de arriba.
+INSTRUCCIONES CRÍTICAS:
+1. NO uses siempre el mismo cierre. NO repitas "dale a like, suscríbete".
+2. Aplica el estilo "{estilo_outro}" para cerrar el monólogo.
+3. CTA natural y breve (1-2 frases máximo). Ejemplos:
+   - "Si te ha servido, comparte. Si no, no."
+   - "Nos vemos mañana. O no. Tú decides."
+   - "Suscríbete si quieres saber lo que viene. O no. Da igual. Yo lo cuento igual."
+4. PROHIBIDO mencionar URLs, webs, links, "elencuadre.pages.dev" o cualquier dominio.
+5. PROHIBIDO "dale a like, suscríbete y comparte" (el genérico de IA).
 
-Mínimo 80 palabras. Máximo 100. Tono: épico, cercano, con ganas."""
-    escenas.append(_generar_escena(18, cierre_inst)); num += 1
+Tono: Alsina íntimo (baja la voz, confía en el oyente).
+Mínimo 70 palabras. Máximo 100."""
+    
+    escenas.append(_generar_escena(18, outro_inst)); num += 1
+
+    # Validar que se usan frases del banco
+    texto_total = " ".join([e.get("texto","") for e in escenas])
+    frases_usadas = [f for f in BANCO_FRASES if f in texto_total]
+    if len(frases_usadas) == 0:
+        print(f"   ⚠️ 0 frases del banco usadas. Añadiendo frases manualmente...", flush=True)
+        # Añadir frases en escenas alternas
+        import random
+        random.shuffle(BANCO_FRASES)
+        idx = 0
+        for i, e in enumerate(escenas):
+            if i % 3 == 0 and idx < len(BANCO_FRASES):
+                e["texto"] = e.get("texto","") + " " + BANCO_FRASES[idx]
+                idx += 1
+    else:
+        print(f"   ✅ Frases del banco usadas: {len(frases_usadas)}", flush=True)
 
     res["escenas"] = escenas
     res["texto_voz_largo"] = " ".join([e.get("texto", "") for e in escenas])
@@ -1234,6 +1347,133 @@ def producir_monologo(fecha=None):
     print(f"\n[monologo] ✅ Guardado en {out_json}", flush=True)
     print(f"   Escenas: {len(escenas)} | Palabras: {res['palabras_totales']} | Shorts: {len(shorts_finales)}", flush=True)
     return res
+
+
+
+
+# ═══════════════════════════════════════════════════════════════
+# FIXES 2026-11-03: tema + alucinaciones
+# ═══════════════════════════════════════════════════════════════
+def _extraer_tema(titular):
+    """Extrae el tema/entidad clave de un titular. Robusto."""
+    if not titular: return ""
+    m = re.search(r'[«"]([^»"]{15,80})[»"]', titular)
+    if m: return m.group(1).strip()[:60]
+    ARTICULOS = {'El','La','Los','Las','Un','Una','Y','O','En','De','Del','Al','Por','Para','Con','Sin','Que'}
+    for w in titular.split():
+        w_clean = re.sub(r'[^A-Za-zÁÉÍÓÚÑáéíóúñ]', '', w)
+        if len(w_clean) > 3 and w_clean[0].isupper() and w_clean not in ARTICULOS:
+            return w_clean
+    palabras = [w for w in titular.split() if len(w) > 3][:5]
+    return " ".join(palabras)
+
+
+def _validar_alucinaciones(texto, top16):
+    """Devuelve lista de nombres propios que NO están en el top16."""
+    nombres = re.findall(r'\b[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{2,}\b', texto)
+    texto_top = ' '.join([t.get('titular','') + ' ' + t.get('extracto','') for t in top16])
+    WHITELIST = {'España','Madrid','Barcelona','Gobierno','Congreso','Senado','BOE',
+                 'Europa','Español','Española','Nacional','General','Real','Policía',
+                 'Agencia','EFE','Reuters','AP','Wikipedia','Teléfono','WhatsApp',
+                 'Telegram','Twitter','Facebook','Instagram','TikTok','YouTube',
+                 'Somos','Encuadre','Club','Lunes','Martes','Miércoles','Jueves',
+                 'Viernes','Sábado','Domingo','Enero','Febrero','Marzo','Abril',
+                 'Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre',
+                 'Diciembre','Señor','Señora','Don','Doña'}
+    alucinaciones = []
+    for n in set(nombres):
+        if n not in texto_top and n not in WHITELIST:
+            alucinaciones.append(n)
+    return alucinaciones
+
+
+def _buscar_contexto_ddg(titular, medio, entidad_clave=""):
+    """Contexto real: DDG (UA honesto) -> fallback Google News RSS. Sin API key."""
+    import urllib.request, urllib.parse, re as _re, html as _html
+    NL = chr(10)
+
+    UA = "LofiProducer/1.0 (Termux; +https://github.com/keizdespania/LofiProducer)"
+    HEADERS = {
+        "User-Agent": UA,
+        "Accept-Language": "es-ES,es;q=0.9",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    }
+
+    def _ddg(q, max_r=3):
+        try:
+            url = "https://html.duckduckgo.com/html/?q=" + urllib.parse.quote_plus(q)
+            req = urllib.request.Request(url, headers=HEADERS)
+            with urllib.request.urlopen(req, timeout=6) as r:
+                if r.status != 200:
+                    print("[ddg] HTTP " + str(r.status) + " -> fallback", flush=True)
+                    return ""
+                txt = r.read().decode("utf-8", errors="ignore")
+            if "result__a" not in txt:
+                print("[ddg] sin result__a -> fallback", flush=True)
+                return ""
+            bloques = _re.findall(
+                r'<a[^>]*class="result__a"[^>]*href="([^"]+)"[^>]*>(.*?)</a>.*?<a[^>]*class="result__snippet"[^>]*>(.*?)</a>',
+                txt, _re.DOTALL
+            )
+            out = []
+            for url_res, tit, snip in bloques[:max_r]:
+                tit = _re.sub(r"<[^>]+>", "", _html.unescape(tit)).strip()[:120]
+                snip = _re.sub(r"<[^>]+>", "", _html.unescape(snip)).strip()[:250]
+                out.append("  - " + tit + NL + "    " + snip)
+            return NL.join(out)
+        except Exception as e:
+            print("[ddg] " + type(e).__name__ + ": " + str(e) + " -> fallback", flush=True)
+            return ""
+
+    def _gnews(q, max_r=3):
+        try:
+            url = "https://news.google.com/rss/search?q=" + urllib.parse.quote_plus(q) + "&hl=es&gl=ES&ceid=ES:es"
+            req = urllib.request.Request(url, headers=HEADERS)
+            with urllib.request.urlopen(req, timeout=8) as r:
+                txt = r.read().decode("utf-8", errors="ignore")
+            items = _re.findall(r"<item>(.*?)</item>", txt, _re.DOTALL)
+            out = []
+            for it in items[:max_r]:
+                t = _re.search(r"<title>(.*?)</title>", it, _re.DOTALL)
+                d = _re.search(r"<pubDate>(.*?)</pubDate>", it, _re.DOTALL)
+                if not t:
+                    continue
+                tit = _html.unescape(_re.sub(r"<[^>]+>", "", t.group(1))).strip()[:140]
+                fecha = ""
+                if d:
+                    fecha = _re.sub(r"<[^>]+>", "", d.group(1)).strip()[:30]
+                linea = "  - " + tit
+                if fecha:
+                    linea += "  [" + fecha + "]"
+                out.append(linea)
+            return NL.join(out)
+        except Exception as e:
+            print("[gnews] " + type(e).__name__ + ": " + str(e), flush=True)
+            return ""
+
+    tema = entidad_clave or _extraer_tema(titular) or " ".join(titular.split()[:5])
+    medio_limpio = medio.strip()
+
+    q1 = chr(34) + titular[:80] + chr(34)
+    r1 = _ddg(q1, max_r=3)
+    if not r1:
+        r1 = _gnews(tema + " " + medio_limpio, max_r=3)
+        if r1:
+            r1 = "[GNEWS]" + NL + r1
+
+    q2 = chr(34) + tema + chr(34) + " agencia EFE Reuters Europa Press"
+    r2 = _ddg(q2, max_r=3)
+    if not r2:
+        r2 = _gnews(tema + " EFE OR Reuters OR Europa Press", max_r=3)
+        if r2:
+            r2 = "[GNEWS]" + NL + r2
+
+    partes = []
+    if r1:
+        partes.append("COBERTURA EN OTROS MEDIOS:" + NL + r1)
+    if r2:
+        partes.append("FUENTES OFICIALES / AGENCIAS:" + NL + r2)
+    return (NL + NL).join(partes)
 
 
 
