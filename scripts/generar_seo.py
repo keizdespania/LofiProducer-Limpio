@@ -1,3 +1,4 @@
+from datetime import date
 import json, pathlib, sys, datetime, re
 
 ROOT = pathlib.Path.home() / "LofiProducer"
@@ -52,6 +53,11 @@ def _match_timeline(timeline, texto_escena, min_chars=10):
     return None
 
 def generar():
+    # FIX 2026-11-04: definir fecha y fecha_bonita para el bloque experto
+    fecha = FECHA
+    _MESES_ES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"]
+    _d = date.fromisoformat(FECHA)
+    fecha_bonita = f"{_d.day} de {_MESES_ES[_d.month-1]} de {_d.year}"
     dossier_path = OUT / f"dossier_{FECHA}.json"
     prod_path = OUT / f"produccion_{FECHA}.json"
     tl_path = OUT / f"timeline_{FECHA}.json"
