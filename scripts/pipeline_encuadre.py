@@ -7,6 +7,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
 TOKEN_ENC = ROOT / "data" / "youtube_encuadre_token.json"
 
+# PAUSA BLOGGER por baneo (reactivar 2026-11-11)
+BLOGGER_PAUSADO = True
+BLOGGER_DESBLOQUEO = "2026-11-11"
+
 def _run(script, args=None, timeout=1200, retries=3):
     cmd = ["python3", f"scripts/{script}"] + (args or [])
     for intento in range(retries):
@@ -313,7 +317,10 @@ def main():
     _publicar_web(fecha)
     # ===== FIN NUEVO FLUJO WEB =====
     
-    _run("generar_blogs_blogger.py", [fecha], 600, 1)
+    if BLOGGER_PAUSADO:
+        print(f"   [blogger] PAUSADO hasta {BLOGGER_DESBLOQUEO} (baneo API)", flush=True)
+    else:
+        _run("generar_blogs_blogger.py", [fecha], 600, 1)
     _run("generar_redes.py", [fecha], 300, 1)
 
     # YouTube (escalonado, sin fechas pasadas)
