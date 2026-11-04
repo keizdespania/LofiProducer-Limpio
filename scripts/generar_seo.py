@@ -66,14 +66,27 @@ def generar():
     escenas = prod.get("escenas", [])
     if not hooks: print("❌ No hay hooks"); return False
 
-    num_bloques = (len(escenas) - 2) // 2
-
-    # Título largo con mes natural
-    anio, mes, dia = FECHA.split("-")
-    fecha_bonita = f"{int(dia)} de {MESES.get(mes, mes)}"
-    titulo_largo = f"Los {num_bloques} mecanismos mediáticos del {fecha_bonita}"
-    if len(titulo_largo) > 60:
-        titulo_largo = f"Los {num_bloques} mecanismos mediáticos de hoy"
+    # Lógica experta 2026-11-04: Leer del monólogo, no del pipeline viejo
+    import json
+    from pathlib import Path
+    prod_path = OUT / f"produccion_{fecha}.json"
+    if prod_path.exists():
+        prod = json.loads(prod_path.read_text())
+        texto = prod.get("texto_voz_largo", "")
+        
+        # Buscar el primer titular real mencionado en el monólogo (El Mundo, OkDiario, etc.)
+        match = re.search(r'Fíjate en ([^,.]+),? que publicó «([^»]+)»', texto)
+        if match:
+            medio = match.group(1).strip()
+            titular = match.group(2).strip()
+            # Título magnético: "El Mundo oculta esto sobre [titular]"
+            titulo_largo = f"Lo que {medio} no te cuenta: {titular[:45]}..."
+        else:
+            # Si no hay titular, usar la fecha
+            titulo_largo = f"El Encuadre | Análisis mediático del {fecha_bonita}"
+    else:
+        # Fallback de seguridad (no debería pasar)
+        titulo_largo = f"El Encuadre | Análisis mediático del {fecha_bonita}"
 
     # Capítulos con matching robusto
     labels_bloques = ["🟠 HuffPost: el teatro de Delgado",
@@ -98,7 +111,7 @@ def generar():
 
     # Descripción
     noticias = list(top3.values()) if isinstance(top3, dict) else list(top3)
-    desc = f"🚨 Analizamos {num_bloques} mecanismos mediáticos del día: cómo se construye el relato, qué se omite y por qué el orden importa.\n\n"
+    desc = f"🚨 El análisis de hoy: cómo los medios construyen el relato. Un monólogo de El Encuadre.\n\n"
     desc += "━━━━━━━━━━━━━━━━━━━━\n📌 BLOQUES DEL VÍDEO\n━━━━━━━━━━━━━━━━━━━━\n"
     for _, label in capitulos[1:-1]:
         desc += f"{label}\n"
@@ -114,7 +127,7 @@ def generar():
 
 #AnálisisMediático #Framing #ElEncuadre
 """
-    tags_largo = f"análisis mediático, framing, sesgo informativo, {num_bloques} mecanismos, manipulación mediática, El Encuadre"
+    tags_largo = f"análisis mediático, framing, manipulación, El Encuadre, {fecha}"
 
     # Shorts con hooks completos
     shorts = []

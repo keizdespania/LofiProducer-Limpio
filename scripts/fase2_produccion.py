@@ -765,9 +765,11 @@ Mínimo 70 palabras. Máximo 90."""
 
     # ═══ ACTO 2: PATRÓN (escenas 3-8, 6 medios) ═══
     print(f"   [ACTO 2] PATRÓN (escenas 3-8, {len(medios_validos)} medios)", flush=True)
+    medio_anterior = ""
     for medio_data in medios_validos:
         if num > 8: break
         medio = medio_data["medio"]
+        # medio_anterior ya viene del cierre de la iteración anterior
         titular = medio_data["titular"]
         tecnica = medio_data.get("tecnica", "Framing editorial")
         omite = medio_data.get("omite", "")
@@ -849,6 +851,7 @@ Mínimo 80 palabras. Máximo 100. Sin markdown."""
         estado.registrar_usos(_esc.get("texto", ""))
         estado.add_medio(medio)
         escenas.append(_esc); num += 1
+        medio_anterior = medio  # para la siguiente iteración
 
     # ═══ ACTO 3: TÉCNICA (escenas 9-14, 3 técnicas × 2 escenas) ═══
     print(f"   [ACTO 3] TÉCNICA (escenas 9-14)", flush=True)
@@ -1594,28 +1597,34 @@ def producir_monologo(fecha=None):
     res["viralidad"] = viral
     
     # Shorts finales (igual que producir_fase2)
-    print("[monologo] Generando shorts finales...", flush=True)
+    print("[monologo] Generando shorts finales (del MONÓLOGO, no del dossier)...", flush=True)
     tipos_short = ["dato", "contradiccion", "prediccion", "tutorial"]
-    hooks_base = [
-        str(res.get("dossier", {}).get("titular_brutal", "") or ""),
-        str(res.get("dossier", {}).get("resumen_ejecutivo", "") or ""),
-        str(res.get("dossier", {}).get("citas_bomba", "") or ""),
-        str(res.get("dossier", {}).get("conclusion", "") or ""),
-    ]
+    # Extraer 4 bloques narrativos del MONÓLOGO (fix 2026-11-04: antes leía del dossier)
+    _L = len(texto_monologo)
+    _cuartos = [_L//4, _L//2, 3*_L//4, _L]
+    _starts = [0, _cuartos[0], _cuartos[1], _cuartos[2]]
+    hooks_base = [texto_monologo[_starts[i]:_cuartos[i]] for i in range(4)]
+    # Medios reales del monólogo (los 3 del top16)
+    _medios_txt = ", ".join(m.get("medio","") for m in medios_validos[:3] if m.get("medio")) or "los medios del día"
+    print(f"   [shorts] Medios a mencionar: {_medios_txt}", flush=True)
     shorts_finales = []
     for i, tipo in enumerate(tipos_short, 1):
         try:
             hook_ctx = str(hooks_base[i-1] if i-1 < len(hooks_base) and hooks_base[i-1] else "")
             prompt_s = (
                 f"Eres guionista de shorts de 'El Encuadre'. Desmonta manipulación mediática. "
-                f"Tipo: {tipo}. Contexto: '{hook_ctx[:200]}'. "
-                "50-60 palabras para short de 40s. Empieza con pregunta. "
-                "Menciona medio y técnica. TERMINA con 'Somos El Encuadre, analistas de la manipulación. Suscríbete para más'. "
-                "Sin markdown."
+                f"Tipo: {tipo}. "
+                f"CONTEXTO DEL MONÓLOGO COMPLETO: '{texto_monologo[:1200]}'. "
+                f"BLOQUE ESPECÍFICO (de este monólogo): '{hook_ctx[:500]}'. "
+                f"REGLA CRÍTICA: usa SOLO los medios mencionados en el contexto ({_medios_txt}). "
+                f"PROHIBIDO: inventar medios (NYT, CNN, Twitter, The New York Times), estados (Texas, Carolinas), técnicas por su nombre (framing, clickbait, sesgo de selección). "
+                f"50-60 palabras para short de 40s. Empieza con pregunta. "
+                f"Termina con 'Somos El Encuadre, analistas de la manipulación. Suscríbete para más'. "
+                f"Sin markdown."
             )
-            guion = pedir_a_especialista("guionista_retencion_v2", prompt_s, contexto=hook_ctx[:500], proveedor="auto")
+            guion = pedir_a_especialista("guionista_retencion_v2", prompt_s, contexto=(hook_ctx + " " + texto_monologo[:800])[:1500], proveedor="auto")
             if not guion or len(guion.split()) < 20:
-                guion = f"¿Sabías cómo {tipo} los medios manipulan? {hook_ctx[:100]}... Somos El Encuadre, suscríbete."
+                guion = f"¿Sabías que {tipo} los medios ocultan lo importante? Hoy analizamos {_medios_txt}. Somos El Encuadre, suscríbete."
             import re as _re2
             guion = _re2.sub(r'\[[^\]]*\]', '', guion)
             guion = _re2.sub(r'\s+', ' ', guion).strip()

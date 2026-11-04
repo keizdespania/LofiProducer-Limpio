@@ -72,6 +72,38 @@ def subir(video, titulo, descripcion="", tags=None, privacidad=None, publish_at=
     r = json.loads(urllib.request.urlopen(req2, timeout=600).read())
     return r
 
+def actualizar_video(video_id, publish_at=None, titulo=None, descripcion=None, tags=None, token_file=None):
+    """Actualiza publishAt / metadata de un vídeo existente (debe estar en privado)."""
+    access = token(token_file) if token_file else token()
+    # Construir body solo con los campos a actualizar
+    body = {"id": video_id}
+    part = []
+    if publish_at:
+        body["status"] = {"privacyStatus": "private", "publishAt": publish_at}
+        part.append("status")
+    if titulo or descripcion or tags:
+        body["snippet"] = {"categoryId": "25"}  # 25 = News & Politics (ideal para El Encuadre)
+        if titulo: body["snippet"]["title"] = titulo
+        if descripcion: body["snippet"]["description"] = descripcion
+        if tags: body["snippet"]["tags"] = tags
+        part.append("snippet")
+    if not part:
+        print(f"   ⚠️ Nada que actualizar en {video_id}")
+        return None
+    part_str = ",".join(part)
+    req = urllib.request.Request(
+        f"https://www.googleapis.com/youtube/v3/videos?part={part_str}",
+        data=json.dumps(body).encode(),
+        headers={"Authorization": f"Bearer {access}", "Content-Type": "application/json; charset=UTF-8"},
+        method="PUT")
+    try:
+        r = json.loads(urllib.request.urlopen(req, timeout=60).read())
+        return r
+    except urllib.error.HTTPError as e:
+        print(f"   ❌ HTTP {e.code}: {e.read()[:200]}")
+        return None
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Uso: python scripts/subir_youtube.py VIDEO.mp4 'Título' ['desc'] [privacidad: public|unlisted|private]")

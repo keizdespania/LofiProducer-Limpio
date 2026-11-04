@@ -31,6 +31,7 @@ if not CLIENT_ID or not CLIENT_SECRET:
 
 # Scopes que necesitamos
 SCOPES = [
+    "https://www.googleapis.com/auth/youtube",          # COMPLETO: subir + editar + manage
     "https://www.googleapis.com/auth/youtube.upload",
     "https://www.googleapis.com/auth/youtube.readonly",
     "https://www.googleapis.com/auth/blogger",

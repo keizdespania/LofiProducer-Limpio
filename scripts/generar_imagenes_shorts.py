@@ -48,25 +48,34 @@ def _extraer_keywords(hook_obj, num_short):
     
     # Extraer entidades clave (mapa manual de conceptos frecuentes)
     conceptos = {
-        "santander": "banking",
-        "dividendo": "banking dividends",
-        "banco": "banking",
-        "puente": "political crisis",
+        # Monólogo (2026-11-04)
+        "puente": "political crisis resignation",
         "dimisión": "resignation demand",
         "dimision": "resignation demand",
         "ministro": "minister under pressure",
+        "senado": "senate elections",
+        "senador": "senator political",
+        "trump": "donald trump politics",
+        "demócrata": "democrat party",
+        "democrata": "democrat party",
+        "republicano": "republican party",
+        "guerra": "war conflict",
+        "paz": "peace diplomacy",
+        "urda": "train accident",
+        "atocha": "train station",
+        "115": "115 deaths",
+        "medio": "media analysis",
+        "manipulación": "media manipulation",
+        "manipulacion": "media manipulation",
+        # Legado
+        "santander": "banking",
+        "dividendo": "banking dividends",
         "feijóo": "political debate",
         "feijoo": "political debate",
         "cataluña": "regional politics",
-        "catalunya": "regional politics",
-        "illa": "political response",
         "vox": "political party",
         "abascal": "political leader",
-        "alternativa": "political alternative",
         "crisis": "crisis",
-        "74": "74 percent",
-        "1.850": "1850 million",
-        "1850": "1850 million",
     }
     
     detectadas = []
@@ -79,6 +88,18 @@ def _extraer_keywords(hook_obj, num_short):
     return KEYWORDS_SEGURAS.get(num_short, "media analysis")
 
 def _cargar_hooks(fecha):
+    # Prioridad 1: shorts del monólogo (fix 2026-11-04)
+    prod_path = OUT / f"produccion_{fecha}.json"
+    if prod_path.exists():
+        try:
+            pd = json.loads(prod_path.read_text())
+            shorts_monologo = pd.get("shorts_finales", [])
+            if shorts_monologo:
+                print(f"   [hooks] Usando {len(shorts_monologo)} shorts del MONÓLOGO (no dossier)", flush=True)
+                return shorts_monologo[:4]
+        except Exception:
+            pass
+    # Fallback: dossier (comportamiento anterior)
     dossier_path = OUT / f"dossier_{fecha}.json"
     if not dossier_path.exists(): return []
     d = json.loads(dossier_path.read_text())

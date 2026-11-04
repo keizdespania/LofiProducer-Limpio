@@ -127,8 +127,84 @@ def generar_short(img, texto, voz_path, musica_path, salida):
         print(f"    ⚠️ [N5] {str(e)[:80]}", flush=True)
     raise RuntimeError("Todos los niveles fallaron")
 
+def _anadir_logo_intro_outro(short_path, logo_path, dur_intro=1.5, dur_outro=1.5):
+    """Añade intro (logo 1.5s) y outro (logo 1.5s) al short. Devuelve nuevo path."""
+    if not logo_path or not Path(logo_path).exists():
+        return short_path
+    short_path = Path(short_path)
+    if not short_path.exists():
+        return short_path
+    try:
+        # Duración total del short
+        r = subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+             "-of", "default=noprint_wrappers=1:nokey=1", str(short_path)],
+            capture_output=True, text=True, timeout=10
+        )
+        dur_short = float(r.stdout.strip() or 0)
+        if dur_short <= 0:
+            return short_path
+    except Exception:
+        return short_path
+    try:
+        logo_path = Path(logo_path)
+        salida_con_logo = short_path.with_name(short_path.stem + "_with_logo" + short_path.suffix)
+        # Construir: [logo 1.5s] + [short] + [logo 1.5s]
+        # 1) clip logo con fade-in/out + música
+        logo_clip = short_path.with_name(short_path.stem + "_logo.mp4")
+        # Escalar logo a 1080x1920 con fondo negro, fade-in/out 0.5s
+        cmd_logo = [
+            "ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
+            "-loop", "1", "-t", str(dur_intro), "-i", str(logo_path),
+            "-f", "lavfi", "-t", str(dur_intro), "-i", "anullsrc=channel_layout=stereo:sample_rate=44100",
+            "-filter_complex",
+            "[0:v]scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:black,fade=t=in:st=0:d=0.3,fade=t=out:st=" + str(dur_intro-0.3) + ":d=0.3,setsar=1,fps=30[v];"
+            "[1:a]anull[a]",
+            "-map", "[v]", "-map", "[a]",
+            "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p",
+            "-c:a", "aac", "-b:a", "128k", "-t", str(dur_intro),
+            str(logo_clip)
+        ]
+        r = subprocess.run(cmd_logo, capture_output=True, text=True, timeout=60)
+        if r.returncode != 0:
+            print(f"    ⚠️ [logo] fallo generando clip logo: {r.stderr[:100]}", flush=True)
+            return short_path
+        # 2) concat: logo + short + logo (el short ya tiene su audio + música)
+        #    Usamos concat demuxer (más rápido que filter_complex para 3 clips)
+        concat_list = short_path.with_name(short_path.stem + "_concat.txt")
+        concat_list.write_text(
+            f"file '{logo_clip.resolve()}'\n"
+            f"file '{short_path.resolve()}'\n"
+            f"file '{logo_clip.resolve()}'\n"
+        )
+        cmd_concat = [
+            "ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
+            "-f", "concat", "-safe", "0", "-i", str(concat_list),
+            "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p",
+            "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart",
+            str(salida_con_logo)
+        ]
+        r = subprocess.run(cmd_concat, capture_output=True, text=True, timeout=120)
+        # Limpiar temporales
+        try: logo_clip.unlink()
+        except: pass
+        try: concat_list.unlink()
+        except: pass
+        if r.returncode == 0 and salida_con_logo.exists():
+            print(f"    ✅ [logo] intro+outro OK -> {salida_con_logo.name}", flush=True)
+            # Reemplazar el short original
+            salida_con_logo.replace(short_path)
+            return short_path
+        else:
+            print(f"    ⚠️ [logo] concat falló: {r.stderr[:100]}", flush=True)
+            return short_path
+    except Exception as e:
+        print(f"    ⚠️ [logo] excepción: {e}", flush=True)
+        return short_path
+
+
 def generar_short_multi(imagenes, texto, voz_path, musica_path, salida, logo_path=None):
-    """Multi-imagen: concat simple + SRT + música. Fallback a single."""
+    """Multi-imagen: concat simple + SRT + música + logo intro/outro. Fallback a single."""
     imagenes = [p for p in imagenes if p and Path(p).exists()]
     if not imagenes:
         raise ValueError("Sin imágenes")
@@ -178,7 +254,14 @@ def generar_short_multi(imagenes, texto, voz_path, musica_path, salida, logo_pat
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
         if r.returncode == 0 and Path(salida).exists():
             print(f"    ✅ [MULTI] concat+SRT+música OK", flush=True)
+            # Añadir logo intro/outro
+            if logo_path:
+                _anadir_logo_intro_outro(salida, logo_path)
             return salida
     except Exception as e:
         print(f"    ⚠️ [MULTI] falló: {str(e)[:80]}", flush=True)
-    return generar_short(imagenes[0], texto, voz_path, musica_path, salida)
+    # Fallback: single image
+    resultado = generar_short(imagenes[0], texto, voz_path, musica_path, salida)
+    if logo_path and Path(salida).exists():
+        _anadir_logo_intro_outro(salida, logo_path)
+    return resultado
