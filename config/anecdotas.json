@@ -99,106 +99,106 @@
       "id": 11,
       "categoria": "vecinos",
       "texto": "El portero, Don Luis, me avisó: 'Hoy van a pintar el portal y la propaganda del ayuntamiento'. Yo le respondí: '¿Y la pintura? ¿Será de la misma marca que venden en la tele?'. Al fin, el portal quedó más brillante que la agenda de los políticos. La propaganda también se pinta de colores. Pintan paredes, no la verdad.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T19:04:51.984661"
     },
     {
       "id": 12,
       "categoria": "vecinos",
       "texto": "En la reunión del edificio, la vecina del 3º, Carmen, dijo: 'Necesitamos más vigilancia, el ruido del ascensor es una conspiración'. Yo le contesté: '¿Y el silencio de la junta es la solución?'. Todos asintieron como si el silencio fuera un plan de marketing. La comunidad se vendió la idea de que el silencio es seguridad. Silencio, la mejor campaña de miedo.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T19:44:34.062683"
     },
     {
       "id": 13,
       "categoria": "vecinos",
       "texto": "El portero, Marta, me entregó el paquete con la frase: 'Este es el nuevo manual de convivencia, lo firman todos'. Yo le dije: '¿Incluye cláusulas de autocensura?'. Ella respondió, sonriendo: 'Solo si lo aprueba la junta, que siempre está al tanto de todo'. El manual quedó en la mesa, pero la gente ya lo había leído en el boletín de la web. Manual o guion, igual de impuesto.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T19:46:45.128963"
     },
     {
       "id": 14,
       "categoria": "vecinos",
       "texto": "La vecina del 3º, Pilar, me preguntó: '¿Has visto el nuevo cartel que prohíbe el ruido después de las 22?'. Yo respondí: 'Sí, y también el anuncio de que el silencio es gratis, pero lo venden en la terraza'. Ella comentó: 'Al fin, la comunidad nos regala la paz, si la aceptamos sin preguntas'. La paz se vende en paquetes de silencio. Paz enlatada, sin garantía de uso.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T19:49:53.032623"
     },
     {
       "id": 15,
       "categoria": "vecinos",
       "texto": "Durante la asamblea, el presidente, Jorge, anunció: 'Vamos a instalar cámaras en el patio, la seguridad es prioridad'. Yo le dije: '¿Y la privacidad? ¿Se la venden a la misma empresa que vende los filtros de Instagram?'. Él sonrió: 'Solo grabaremos lo que la junta quiera ver'. Así, la vigilancia se volvió espectáculo de reality TV. Cámaras, el nuevo reality del vecindario.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T19:51:21.927493"
     },
     {
       "id": 16,
       "categoria": "trabajo",
       "texto": "Mi jefe, don Eugenio, me dijo: 'Tú eres un activo estratégico'. Yo le respondí: 'Eugenio, los activos se deprecian, yo solo cojo café'. Me miró con esa cara de quien ha leído un manual de liderazgo en un taxi. La realidad es que solo soy un recurso renovable hasta que llegue el próximo becario.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T19:55:34.444041"
     },
     {
       "id": 17,
       "categoria": "trabajo",
       "texto": "El becario, Sergio, me corrigió el tono en un email: 'Haga usted, no haga'. Le dije: 'Sergio, tú ni siquiera sabes usar la impresora'. Me contestó: 'La IA lo hace mejor que usted, jefe'. Ahí entendí: no estoy en la empresa, estoy en una beta de videojuego que nadie quiere terminar.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-03T19:57:48.488141"
     },
     {
       "id": 18,
       "categoria": "trabajo",
       "texto": "La vecina, Carmen, me cuenta que su hijo 'optimiza recursos' en una startup. Yo le digo: 'Carmen, si no come, no optimiza, huye'. Ella responde: 'Es que su marca personal sufre'. Pues eso: nos venden la precariedad como un viaje de autoconocimiento. El único que gana es el que factura por tu ansiedad.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-04T00:11:53.671354"
     },
     {
       "id": 19,
       "categoria": "trabajo",
       "texto": "Mi compañero de café, Luis, me dice: 'El algoritmo me conoce mejor que mi mujer'. Yo le contesto: 'Luis, tu mujer te conoce mejor que tu madre'. Él suspira: 'Es que el feed me da la validación que el hogar me niega'. La manipulación ya no necesita noticias: solo necesita que confíes más en una pantalla que en tu espejo.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-04T00:13:45.068287"
     },
     {
       "id": 20,
       "categoria": "trabajo",
       "texto": "El director de RRHH, Mario, me felicitó por 'romper barreras'. Yo le dije: 'Mario, he roto la barrera de las 40 horas'. Me sonrió: 'Eso es resiliencia adaptativa, Paco'. Ellos no te explotan, te dan una 'experiencia de vida'. Y tú agradeces el café gratis como si fuera un sueldo digno.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-04T00:16:10.173003"
     },
     {
       "id": 21,
       "categoria": "transporte",
       "texto": "En el metro, mi cuñado Manolo me dice: \"¿Sabes que el anuncio dice que el tren nunca se retrasa?\" Yo le contesto: \"Claro, como cuando el Gobierno asegura que la inflación está bajo control\". Al subir, el tren se detiene 12 minutos y los altavoces repiten la misma frase. La manipulación es la misma, solo cambia la pantalla. El ruido del metro es propaganda en bucle.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-04T00:23:01.089246"
     },
     {
       "id": 22,
       "categoria": "transporte",
       "texto": "En el autobús, la vecina me susurra: \"Ese cartel dice que el precio del billete bajará mañana\". Yo le replico: \"Como cuando los políticos prometen empleo y lo hacen desaparecer\". El conductor, sin perder la sonrisa, anuncia que el próximo kilómetro será \"gratuito\" y, al pasar, el motor se apaga. La ilusión se vende en tiempo real. El autobús lleva más mentiras que pasajeros.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-04T00:29:18.240516"
     },
     {
       "id": 23,
       "categoria": "transporte",
       "texto": "En el AVE, Paco me comenta: \"Dicen que el tren es puntual, como la información oficial\". Yo le respondo: \"Entonces, ¿por qué el anuncio del menú a bordo sigue en 1998?\" Cuando el tren llega con diez minutos de antelación, el megáfono celebra la eficiencia mientras la pantalla sigue mostrando retrasos. La narrativa se reescribe al instante. El AVE viaja en la línea de la propaganda.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-04T00:35:14.576358"
     },
     {
       "id": 24,
       "categoria": "transporte",
       "texto": "En un taxi, el becario me dice: \"Mira, el taxímetro muestra que el viaje cuesta menos que la suscripción a la prensa\". Yo le replico: \"Como cuando el discurso oficial promete menos impuestos y termina en recortes\". El conductor, con humor de supervivencia, suelta que la tarifa incluye \"información premium\" y al bajar, la calle está llena de carteles de campaña. La venta de ideas se cobra por kilómetro. El taxímetro mide mentiras por minuto.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-04T00:39:05.119189"
     },
     {
       "id": 25,
       "categoria": "transporte",
       "texto": "En el aeropuerto, la recepcionista me asegura: \"El control de seguridad es rápido, como la verdad en los noticieros\". Yo le respondo: \"Entonces, ¿por qué el anuncio de la puerta dice 'embarque inmediato' y seguimos en fila?\" Cuando finalmente subimos, el altavoz anuncia que el vuelo se retrasa por \"condiciones climáticas\", aunque el cielo está despejado. La narrativa vuela sin turbulencias. El aeropuerto vende horarios como certezas.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-04T02:06:04.828334"
     },
     {
       "id": 26,

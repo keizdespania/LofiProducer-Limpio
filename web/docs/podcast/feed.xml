@@ -9,28 +9,12 @@
     <itunes:category text="News"></itunes:category>
     <itunes:explicit>false</itunes:explicit>
   <item>
-    <title>El Encuadre - 2026-11-07</title>
-    <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>
-    <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-07.mp3" type="audio/mpeg" length="10161589"/>
-    <pubDate>Sat, 07 Nov 2026 07:00:00 +0000</pubDate>
-    <guid isPermaLink="false">2026-11-07</guid>
-    <itunes:duration>635</itunes:duration>
-  </item>
-  <item>
-    <title>El Encuadre - 2026-11-04</title>
-    <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>
-    <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-04.mp3" type="audio/mpeg" length="10158664"/>
-    <pubDate>Wed, 04 Nov 2026 07:00:00 +0000</pubDate>
-    <guid isPermaLink="false">2026-11-04</guid>
-    <itunes:duration>634</itunes:duration>
-  </item>
-  <item>
     <title>El Encuadre - 2026-11-03</title>
     <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>
-    <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-03.mp3" type="audio/mpeg" length="10161589"/>
+    <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-03.mp3" type="audio/mpeg" length="10528975"/>
     <pubDate>Tue, 03 Nov 2026 07:00:00 +0000</pubDate>
     <guid isPermaLink="false">2026-11-03</guid>
-    <itunes:duration>635</itunes:duration>
+    <itunes:duration>657</itunes:duration>
   </item>
   <item>
     <title>El Encuadre - 2026-11-01</title>
