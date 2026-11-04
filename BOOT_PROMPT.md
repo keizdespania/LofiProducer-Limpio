@@ -920,3 +920,59 @@ cd ~/LofiProducer
 pgrep -af pipeline_encuadre && echo 'STOP: ya corre' && exit 1
 DRY_RUN=1 python3 scripts/pipeline_encuadre.py 2>&1 | tee data/logs/test_$(date +%H%M).log
 ```
+
+---
+
+## 🆕 SESIÓN 2026-11-04 (PIPELINE ROBUSTO + GUION LIMPIO + PODCAST RESILIENTE)
+
+### ✅ LO HECHO
+7 commits nuevos (b5dc710 → 5cfde17):
+
+1. **Editor Jefe v2** (`b5dc710`): 4 capas (pre-filtro + scoring + LLM rúbrica + dedup Jaccard + cap entidad). Cierra el "editor juguete".
+2. **Forense 19/19** (`ac2c6a8`): few-shot JSON en `especialistas.py` + `_pick()` robusto con tildes/plurales + limpieza de listas Python.
+3. **19 reglas Alsina** (`bfdad6c`): LEY_ESTILO ampliada + sanitizador determinista + 5 hacks antialucinación.
+4. **Podcast resiliente** (`5822f0c`): `_buscar_musica` con fallback pool CC → reciente → solo voz. `_regenerar_feed` con URLs Cloudflare Pages.
+5. **5 fixes auditoría** (`477b3fa`): anécdota con noticias reales, geografía (Urda≠Atocha), doble cierre, exmandatario→Trump, "si no, no".
+6. **MP3 a git** (`5cfde17`): 3 MP3 commiteados como fallback temporal hasta Cloudflare R2.
+
+### 📊 ESTADO
+- Guion: **1534 palabras · 18 escenas · 9/9 checks sanitizador**
+- Medios: **19/19 con técnica** (antes 3/19)
+- Técnicas dossier: **8 limpias** (antes 0-3)
+- Podcast: **11 MB · 11 min · feed con 3 episodios**
+- Editor Jefe: **4 capas + cap entidad + dedup Jaccard**
+
+### 🚨 REGLAS NUEVAS #49-#54
+- **#49**: LLM "alucina conexiones" cuando se le pide "por qué este medio cuenta esto HOY". Sanitizador + hacks 3 y 4 mitigan.
+- **#50**: El LLM inventa noticias del día en anécdotas si no le pasas las reales. SIEMPRE pasar `medios_validos` a la anécdota.
+- **#51**: MP3 de podcast van a git **temporalmente** (<25 MB, límite Cloudflare Pages) hasta R2. Borrar del repo cuando R2 esté listo.
+- **#52**: `_cargar_extractos(fecha)` lee `recoleccion_<fecha>_scrapeada.json` y se inyecta en ACTO 2 y ACTO 3.
+- **#53**: `_sanitizar_monologo` en `producir_fase2` **y** `producir_monologo`, no solo uno.
+- **#54**: Cloudflare Pages despliega al push a `main`. No hay "push forzado" — purga de caché dashboard o `curl -I` para verificar.
+
+### 🔴 PENDIENTE
+1. **Borrar `web/docs/podcast/2026-11-07.mp3`** (test del "sin lofi", fecha futura).
+2. **Spotify for Podcasters** (10 min manual) + Apple → mismo feed.
+3. **Cloudflare R2** (10 GB gratis) para MP3 definitivos → quitar de git.
+4. **Verificar** cron 06:00 con los fixes (mañana 07:00).
+5. **Cloudflare Pages** deploy OK: `curl -I https://elencuadre.pages.dev/podcast/2026-11-03.mp3`.
+6. **Pulir ACTO 3**: técnicas reales del dossier, no inventadas genéricas (aún quedan "azúcar/tablet" residuales en algún caso).
+
+### 📁 FICHEROS TOCADOS HOY
+- `scripts/fase2_produccion.py` — 5 fixes + sanitizador ampliado + LEY_ESTILO + hacks
+- `scripts/editor_jefe_v2.py` — **NUEVO** (437L, 4 capas)
+- `scripts/analista_fase1.py` — usa editor_jefe_v2 + noticia por medio
+- `scripts/sintetizador.py` — `_pick()` robusto + limpieza
+- `scripts/enriquecer_dossier.py` — regex flexible
+- `scripts/generar_podcast.py` — reescrito resiliente + `_regenerar_feed`
+- `scripts/contexto_verificado.py` — v3 sin DDG (Wikipedia + RSS)
+- `brain/especialistas.py` — forense few-shot
+- `web/docs/podcast/feed.xml` — 3 episodios, URLs Cloudflare Pages
+
+### 🎯 PRÓXIMA SESIÓN — ORDEN DE ATAQUE
+1. `git status` — ver si hay pendiente del 07
+2. `curl -I https://elencuadre.pages.dev/podcast/2026-11-03.mp3` — verificar deploy
+3. Verificar cron 06:00 de hoy (logs en `data/logs/pipeline.log`)
+4. Configurar Spotify for Podcasters (manual, 10 min)
+5. Configurar Cloudflare R2 (manual, 10 min)
+6. Borrar MP3 viejos del repo cuando R2 esté OK
