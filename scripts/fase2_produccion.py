@@ -42,7 +42,8 @@ REGLAS GRAMATICALES Y DE DATOS (OBLIGATORIO, si fallas aquí se nota):
 - ARTÍCULOS: revisa género antes de escribir. "el agua" (femenino pero con "el"), "la aula", "el área", "las cabeceras".
 - "LEE ENTRE LÍNEAS" → PROHIBIDO. Infantiliza. Usa "ya me entiendes", "fíjate", "atiende" o simplemente el ejemplo.
 - "CAPRICHOSAMENTE" → PROHIBIDO. Si algo es deliberado, di "deliberadamente", "calculadamente" o "a propósito".
-- "UN MISMO HECHO" → solo si REALMENTE es el mismo hecho. Si son 3 noticias distintas (tragedias ferroviarias + Trump + Urda), di "un mismo día, tres distracciones".
+- "UN MISMO HECHO" → solo si REALMENTE es el mismo hecho.
+- FUENTES OFICIALES: el BOE es SOLO para noticias españolas. Para noticias internacionales (Trump, Israel, Ucrania, Rusia, China, Irán, EEUU, OTAN, ONU, Gaza, cualquier país extranjero), PROHIBIDO mencionar el BOE. Usa EFE/Reuters/AP/Wikipedia. NUNCA digas "el BOE no recoge" una noticia internacional: es de cajón y queda ridículo. Si son 3 noticias distintas (tragedias ferroviarias + Trump + Urda), di "un mismo día, tres distracciones".
 
 PALABRAS PROHIBIDAS (evitar por gastadas):
 - "caprichosamente", "pegada al asiento", "no te pierdas", "resulta que" (más de 1 vez)
@@ -68,6 +69,50 @@ ESTRUCTURA POR MEDIO (ACTO 2):
 
 ANÉCDOTA (ACTO 1):
 - La anécdota debe ser DIFERENTE cada día. NO uses siempre "el abuelo/el portero/la salsa". Si te doy una anécdota en el contexto, úsala LITERAL. Si no, invéntala pero cambia el escenario: puede ser una película, un partido de fútbol, un libro, una anécdota histórica, una escena cotidiana (supermercado, metro, peluquería). Varía.
+
+═══════════════════════════════════════════════════════════════════
+CONEXIONES PROHIBIDAS (si fallas aquí, el guion parece de IA tonta):
+- Si las noticias son de temas distintos (nacional vs internacional, tren vs Trump, BOE vs Israel), NO inventes conexiones.
+- PROHIBIDO: "este medio omite la conexión entre X e Y" si X e Y no tienen relación real.
+- PROHIBIDO: "sugiere un trasfondo de...", "mezcla la crisis interna con...", "omite la conexión con...".
+- Si no sabes por qué el medio publica algo, di: "no lo sabemos, pero está ahí" o "simplemente es la noticia del día" o "es la noticia internacional de hoy".
+- NUNCA atribuyas intención editorial a la mera coexistencia de noticias en portada.
+
+CITAS — REGLA DE ORO:
+- Si pones comillas («...» o "..." o '...'), el texto DEBE estar LITERAL en el extracto real del artículo.
+- Si no estás 100% seguro de que está literal, PARAFRASEA sin comillas.
+- PROHIBIDO inventar citas. "Trump dijo 'ellos ya no lo necesitan'" solo si esa frase EXACTA aparece en el extracto.
+- Si dudas: "Trump anunció que ya no les hacía falta" (sin comillas).
+
+GRAMÁTICA — REVISIÓN OBLIGATORIA:
+- Revisa cada verbo. "dicte" NO existe como 3ª persona. Usa "dice" o "dijo".
+- "él dice", "él dijo", "según X, Y afirma" — concordancias correctas.
+- Repasa artículos: "el acta" (femenino con "el"), "las cabeceras", "los titulares".
+- Si dudas entre dos formas, usa la más simple.
+
+═══════════════════════════════════════════════════════════════════
+HACKS ANTIALUCINACIÓN (lee esto, es importante para no quedar como un becario):
+
+HACK 1 — ANCLAJE AL EXTRACTO:
+Si en el contexto hay "EXTRACTO REAL DEL ARTICULO", empieza cada párrafo sobre ese medio con un dato LITERAL del extracto. Luego desarrolla. Pero el dato de apertura es del extracto, no inventado.
+
+HACK 2 — CHECKLIST INTERNA antes de cada párrafo:
+Antes de escribir una frase con "no se menciona X" o "se omite X":
+  a) ¿X está en el extracto? SÍ → adelante. NO → cambia a "no se menciona el detalle" o salta el punto.
+  b) ¿La cita con comillas está literal en el extracto? SÍ → adelante. NO → parafrasea.
+  c) ¿La conexión que voy a hacer tiene base real? SÍ → adelante. NO → "no lo sabemos".
+
+HACK 3 — CIERRE POR MEDIO (evita invenciones):
+Cada medio termina con UNA de estas 3 fórmulas (elige la que encaje):
+  - "[Medio] lo cuenta porque [razón clara del extracto o del medio]."
+  - "[Medio] lo cuenta simplemente porque es la noticia del día. No hay más."
+  - "No sabemos por qué [medio] lo cuenta hoy. Y eso, a veces, es la noticia."
+
+HACK 4 — PROHIBIDO EL "SUGIERE":
+La palabra "sugiere" (y "sugeriría") está PROHIBIDA cuando hablas de intenciones de medios. Di "el medio dice" o "el medio omite". No "sugiere que...". Si algo "sugiere", es porque el lector lo infiere; tú no sugieres nada.
+
+HACK 5 — SI NO HAY CONEXIÓN, DILO:
+Si las 3 noticias no tienen relación temática, ABRE el ACTO 2 así: "Hoy los medios hablan de tres cosas distintas. Tres. Y las tres importan. Pero solo una te la van a contar entera." Eso convierte la falta de conexión en el gancho.
 
 BANCO DE FRASES MORDACES (NUNCA repetir la misma en el mismo guion):
 1. "Esto no es periodismo, es marketing con teclado."
@@ -1108,7 +1153,7 @@ def _limpiar_alucinaciones(texto_capa, alucinaciones):
     return texto_limpio.strip()
 
 
-def _generar_monologo_llm(anecdota, medios_validos, contexto_global, fecha_str, tecnicas_unicas):
+def _generar_monologo_llm(anecdota, medios_validos, contexto_global, fecha_str, tecnicas_unicas, extractos_map=None):
     """Genera el monólogo en 4 llamadas separadas (1 por capa) para asegurar longitud."""
     from especialistas import pedir_a_especialista
     import re as _re
@@ -1134,14 +1179,22 @@ def _generar_monologo_llm(anecdota, medios_validos, contexto_global, fecha_str, 
     
     # ─── CAPA 1: ANÉCDOTA (300-400 palabras) ───
     print(f"   [1/4] Anécdota ({anecdota['categoria']})...", flush=True)
+    # Pasar las 3 noticias reales para que NO invente noticias del día (fix A 2026-11-04)
+    _noticias_para_anecdota = ""
+    for _m in medios_validos[:3]:
+        _noticias_para_anecdota += "  - " + _m['medio'] + ": " + _m['titular'][:120] + chr(10)
+    
     capa1_prompt = f"""Eres Carlos Alsina + Buenafuente + Wyoming juntos. Escribe la CAPA 1 de un monólogo (300-400 palabras).
+
+NOTICIAS REALES DEL DÍA (las que se analizarán después):
+{_noticias_para_anecdota}
 
 TAREA: Empieza contando esta anécdota LITERAL:
 "{anecdota['texto']}"
 
 Después:
 1. Explica qué te sugiere la anécdota (2-3 frases)
-2. Conecta con lo que publicaron hoy los medios: "Y esto me recuerda a lo que publicaron hoy..."
+2. Conecta con el TEMA GENERAL (manipulación, apariencias, medios que venden). PROHIBIDO inventar noticias: NO menciones "reforma fiscal", "reality de presupuestos", "austeridad es una ganga" ni similares. La anécdota conecta con el TEMA, NO con noticias concretas del día.
 3. Cierra con puente: "Y te voy a enseñar por qué esto importa. Quédate."
 
 TONO: frases cortas (máx 15 palabras), conectores ("Mira", "Oye", "Fíjate"), pausas naturales (\n\n), ironía fina.
@@ -1161,20 +1214,29 @@ Devuelve SOLO el texto de la capa 1, sin preámbulo."""
         if m.get('cita'): medios_txt += f"Cita: {m['cita'][:300]}\n"
         if m.get('tecnica'): medios_txt += f"Técnica: {m['tecnica']}\n"
         if m.get('omite'): medios_txt += f"Qué omite: {m['omite'][:200]}\n"
+        # EXTRACTO REAL del articulo (fix 2026-11-04)
+        _extracto = (extractos_map or {}).get(m.get('titular', ''), '')
+        if _extracto:
+            medios_txt += f"EXTRACTO REAL DEL ARTICULO (usa DATOS de aqui, no inventes):\n{_extracto[:800]}\n"
     
     capa2_prompt = f"""Eres Carlos Alsina. Escribe la CAPA 2 del monólogo (500-600 palabras): INFORMAR.
 
 Analiza estas 3 noticias REALES de hoy:
 {medios_txt}
 
-Contexto verificado de fuentes oficiales (EFE/BOE/Wikipedia):
-{contexto_global[:1500] if contexto_global else "(sin contexto, usa solo los medios)"}
+Contexto verificado por noticia (usa SOLO el contexto de cada noticia, NO mezcles):
+{contexto_global[:2500] if contexto_global else "(sin contexto, usa solo los medios)"}
 
 INSTRUCCIONES:
 1. Empieza con: "Vamos a ver qué dicen los medios hoy."
 2. Analiza cada medio (NO digas "el medio titula X", INTEGRA: "Fíjate en [medio], que publicó..."): titular, cita, qué omite
 3. Compara: "Tres medios, tres versiones, un mismo hecho. ¿Cuál es la verdad?"
-4. Usa el contexto oficial: "EFE dice X, BOE dice Y"
+4. Usa el contexto oficial disponible (Wikipedia, EFE, agencias). Si la noticia es INTERNACIONAL (Trump, Israel, Ucrania, Rusia, China, Irán, EEUU, ONU, OTAN, Gaza), PROHIBIDO mencionar el BOE: el BOE es solo para noticias ESPAÑOLAS. Para internacional, usa EFE/Reuters/AP/Wikipedia.
+5. OBLIGATORIO: cuando digas "no se menciona que X" o "se omite X", X debe ser un DATO REAL del EXTRACTO REAL del articulo. NUNCA dejes "no se menciona que," a medias. Si no tienes el dato, di "no se menciona el detalle" o salta al siguiente punto.
+6. PROHIBIDO: escribir "No se menciona que,.", "Tampoco se explica que.", "ni que." o similares. Si no tienes el dato, no prometas explicarlo.
+7. GEOGRAFÍA: Urda es Toledo, Atocha es Madrid. NO los mezcles.
+8. CONTEXTO INVENTADO PROHIBIDO: si es Puente/Atocha, NO menciones Gaza ni reformas fiscales.
+9. TRUMP ES PRESIDENTE (2026), no exmandatario.
 5. Pregunta al oyente: "¿Por qué este medio cuenta esto HOY?"
 
 TONO: frases cortas, pausas naturales, ironía fina.
@@ -1194,8 +1256,18 @@ Devuelve SOLO el texto de la capa 2."""
     # ─── CAPA 3: ENTRENAR (500 palabras) ───
     print(f"   [3/4] Entrenar (técnicas)...", flush=True)
     tecnicas_txt = ", ".join(tecnicas_unicas[:4]) if tecnicas_unicas else "manipulación"
+    # Inyectar extractos reales para ejemplos de técnicas (fix 2026-11-04)
+    _extractos_txt = ""
+    for _m in medios_validos[:3]:
+        _ex = (extractos_map or {}).get(_m.get('titular',''), '')
+        if _ex:
+            _extractos_txt += f"\n--- {_m['medio']} ---\n{_ex[:600]}\n"
+    if _extractos_txt:
+        _extractos_txt = "EXTRACTOS REALES DE LOS ARTICULOS (usa estos DATOS en tus ejemplos, NO inventes):" + _extractos_txt
     
     capa3_prompt = f"""Eres Carlos Alsina + Wyoming. Escribe la CAPA 3 del monólogo (400-500 palabras): ENTRENAR.
+
+{_extractos_txt}
 
 TAREA: Enseña 3 TÉCNICAS de manipulación que has detectado en las noticias anteriores.
 Técnicas detectadas (NO las nombres con nombre técnico, describe su EFECTO): {tecnicas_txt}
@@ -1318,11 +1390,107 @@ def _sanitizar_monologo(texto, fecha_iso=None):
     t = _r.sub(r'Si te ha servido,\s*Y\s+', 'Si te ha servido, ', t, flags=_r.I)
     t = _r.sub(r',\s*Y\s+comparte', ', comparte', t, flags=_r.I)
     t = _r.sub(r',\s*,\s*', ', ', t)
-    # Limpieza de espacios dobles / comas raras
+    # HUÉRFANOS DE CONTENIDO (fix 2026-11-04): el LLM promete "no se menciona que X" y no rellena X
+    # Caso 1: "No se menciona que,." / "No se menciona que." / "No se menciona que, ni que."
+    t = _r.sub(r'[Nn]o se menciona que\s*[,.]', 'No se menciona el detalle.', t)
+    t = _r.sub(r'[Nn]o se menciona que[^.]*?ni que\s*[,.]', 'No se mencionan los detalles.', t)
+    # Caso 2: "Tampoco se explica que." / "Tampoco se explica que,"
+    t = _r.sub(r'[Tt]ampoco se explica que\s*[,.]', 'Tampoco se explica el detalle.', t)
+    # Caso 3: "... ni que." (huérfano al final)
+    t = _r.sub(r',?\s*ni que\s*[,.]', '.', t)
+    # Caso 4: "Además, no menciona que X ni que." -> "Además, no menciona el detalle."
+    t = _r.sub(r'[Aa]demás, no menciona que[^.]*?(ni que\s*[,.]|\.)', 'Además, no menciona el detalle.', t)
+    # Caso 5: "la verdad es que, pero..." / "la verdad es que, ni que..."
+    t = _r.sub(r'la verdad es que\s*,\s*(pero|ni que|y que)', 'la verdad es que el detalle se omite, y', t, flags=_r.I)
+    # Caso 6: cualquier "que," o "que." huérfano precedido de "no se menciona/tampoco/omite"
+    t = _r.sub(r'\bque\s*,\s*\.', '.', t)
+    t = _r.sub(r'\bque\s*\.\s*\.', '.', t)
+
+    # LIMPIEZA AGRESIVA POST-LLM (fix 2026-11-04): el LLM no obedece todo
+    # 1. "sugiere" / "sugieren" -> "indica" / "indican"
+    t = _r.sub(r'\bsugiere\b', 'indica', t, flags=_r.I)
+    t = _r.sub(r'\bsugieren\b', 'indican', t, flags=_r.I)
+    t = _r.sub(r'\bsugeriría\b', 'indicaría', t, flags=_r.I)
+    t = _r.sub(r'\bsugerirían\b', 'indicarían', t, flags=_r.I)
+
+    # 2. "Además,." / "Además, ," -> "Además." / eliminar
+    t = _r.sub(r'\bAdemás\s*[,.]\s*[,.]', 'Además.', t, flags=_r.I)
+    t = _r.sub(r'\bAdemás\s*[,.]\s*\.', 'Además.', t, flags=_r.I)
+    t = _r.sub(r'\bAdemás,\s*\.', 'Además.', t, flags=_r.I)
+
+    # 3. Números con espacio: "4 000" -> "4.000"
+    t = _r.sub(r'\b(\d{1,3}) (\d{3})\b', r'\1.\2', t)
+
+    # 4. Huérfanos "que,." / "que ." / "ni que."
+    t = _r.sub(r'\bque\s*[,.]\s*[,.]', 'el detalle.', t, flags=_r.I)
+    t = _r.sub(r'\bque\s*[,.]\s*\.', 'el detalle.', t, flags=_r.I)
+    t = _r.sub(r',?\s*ni que\s*[,.]', '.', t)
+
+    # HUÉRFANOS CON VERBO + QUE (fix 2026-11-04): "asegura que." / "dice que." / "sino que."
+    # Verbos que suelen quedar colgados con "que,." o "que ."
+    VERBOS_QUE = r"(dice|dijo|asegura|aseguró|afirma|afirmó|sostiene|sostuvo|explica|explicó|reconoce|reconoció|admite|admitió|niega|negó|señala|señaló|indica|indicó|mantiene|mantuvo|defiende|defendió|insiste|insistió)"
+    # "asegura que." o "asegura que,." -> "asegura el dato." (o eliminar el "que")
+    t = _r.sub(VERBOS_QUE + r'\s+que\s*[,.]\s*[,.]?', r'\1 algo. ', t, flags=_r.I)
+    t = _r.sub(VERBOS_QUE + r'\s+que\s*\.', r'\1 algo. ', t, flags=_r.I)
+    # "sino que." -> "sino que el detalle." (o eliminar)
+    t = _r.sub(r'\bsino que\s*[,.]\s*[,.]?', 'sino que el detalle. ', t, flags=_r.I)
+    # "pero que." -> "pero el detalle."
+    t = _r.sub(r'\bpero que\s*[,.]\s*[,.]?', 'pero el detalle.', t, flags=_r.I)
+    # "y que." aislado -> "y el detalle."
+    t = _r.sub(r'\by que\s*[,.]\s*[,.]?', 'y el detalle.', t, flags=_r.I)
+
+    # 5. Doble punto o doble coma
+    t = _r.sub(r'\.\s*\.(?!\.)', '.', t)
+    t = _r.sub(r',\s*,', ',', t)
+
+    # 6. Espacio antes de punto/coma
+    t = _r.sub(r'\s+([.,;:!?])', r'\1', t)
+
+    # C: doble cierre
+    _m='Esto es El Encuadre.'
+    if t.count(_m)>1: t=t[:t.find(_m)+len(_m)].strip()
+    _m2='Mañana volverán a intentarlo'
+    if t.count(_m2)>1:
+        _p=t.find(_m2); _s=t.find(_m2,_p+1); t=t[:_s].rstrip()+' Esto es El Encuadre.'
+    # D
+    t=_r.sub(r'exmandatario','Trump',t,flags=_r.I)
+    t=_r.sub(r'ex presidente','Trump',t,flags=_r.I)
+    # E
+    t=_r.sub(r'\.\s*Si no, no\.\s*','. ',t)
+    t=_r.sub(r'Si no, no\.?\s*','',t)
+    # Limpieza
     t = _r.sub(r'\s+', ' ', t)
     t = _r.sub(r'\s+\.', '.', t)
     t = _r.sub(r'\s+,', ',', t)
+    # Comas dobles que hayan podido quedar
+    t = _r.sub(r',\s*,', ',', t)
     return t.strip()
+
+
+def _cargar_extractos(fecha):
+    """Carga extractos de articulos del scrapeada.json para inyectar en el ACTO 2."""
+    try:
+        scr = OUT / f"recoleccion_{fecha}_scrapeada.json"
+        if not scr.exists():
+            scr = OUT / f"scrapeado_{fecha}.json"
+        if not scr.exists():
+            return {}
+        d = json.loads(scr.read_text())
+        # Formato 1: {"pool": [{titular, extracto}, ...]}
+        pool = d.get("pool", [])
+        if pool:
+            return {n.get("titular",""): n.get("extracto","") or n.get("texto","") for n in pool if n.get("titular")}
+        # Formato 2: {medio: [{titular, extracto}, ...]}
+        out = {}
+        for medio, lst in d.items():
+            if isinstance(lst, list):
+                for n in lst:
+                    if isinstance(n, dict) and n.get("titular"):
+                        out[n["titular"]] = n.get("extracto","") or n.get("texto","")
+        return out
+    except Exception as _e:
+        print(f"   [extractos] Fallo carga: {_e}", flush=True)
+        return {}
 
 
 def producir_monologo(fecha=None):
@@ -1330,6 +1498,9 @@ def producir_monologo(fecha=None):
     Esquema IDÉNTICO a producir_fase2() pero las 18 escenas vienen de 1 texto."""
     import datetime, json as _json
     fecha = fecha or datetime.date.today().isoformat()
+    # Cargar extractos reales de articulos (fix 2026-11-04: LLM decia "no se menciona que X" sin X)
+    _extractos_map = _cargar_extractos(fecha)
+    print(f"   [extractos] {len(_extractos_map)} articulos con extracto para inyectar", flush=True)
     dossier_file = OUT / f"dossier_{fecha}.json"
     if not dossier_file.exists():
         print(f"❌ No existe {dossier_file}")
@@ -1400,7 +1571,7 @@ def producir_monologo(fecha=None):
     
     # Generar monólogo
     print("[monologo] 4/5 Generando monólogo LLM...", flush=True)
-    texto_monologo = _generar_monologo_llm(anecdota, medios_validos, contexto_global, fecha_str, tecnicas)
+    texto_monologo = _generar_monologo_llm(anecdota, medios_validos, contexto_global, fecha_str, tecnicas, extractos_map=_extractos_map)
     print(f"   Monólogo: {len(texto_monologo.split())} palabras", flush=True)
     
     # Splitter 1 → 18
