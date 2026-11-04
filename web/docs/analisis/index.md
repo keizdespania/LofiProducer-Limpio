@@ -5,17 +5,44 @@ hide:
 
 <div class="holo-hero">
   <h1>El Archivo del Anti-Medio</h1>
-  <p>Todo nuestro arsenal. 32 análisis publicados. Sin filtros, con enlaces verificables.</p>
+  <p>Todo nuestro arsenal. 36 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (32)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (4)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (6)</button>
-  <button class="holo-filter-btn" data-filter="mediano">Medianos (3)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (36)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (5)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (8)</button>
+  <button class="holo-filter-btn" data-filter="mediano">Medianos (4)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-04-mediano-radar/'" data-category="mediano">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    
+    <h3>Radar de medios: El Encuadre: Los demócratas sacuden el mapa electo</h3>
+    <p>Analisis radar: Radar de medios: El Encuadre: Los demócratas sacuden el mapa electo</p>
+    <div class="holo-meta"><span>📅 2026-11-04</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-04-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    
+    <h3>El Encuadre: Los demócratas sacuden el mapa electoral con vi</h3>
+    <p>Analisis largo: El Encuadre: Los demócratas sacuden el mapa electoral con vi</p>
+    <div class="holo-meta"><span>📅 2026-11-04</span></div>
+    
+    <a href="https://theobjective.com/podcasts/así-empece/podcast-así-empece-juan-carlos-tous/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-04-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier del día: El Encuadre: Los demócratas sacuden el mapa electoral con vi</h3>
+    <p>Dossier ejecutivo: El Encuadre: Los demócratas sacuden el mapa electoral con victorias en Texas y l</p>
+    <div class="holo-meta"><span>📅 2026-11-04</span></div>
+    
+    <a href="https://theobjective.com/podcasts/así-empece/podcast-así-empece-juan-carlos-tous/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-03-mediano-tutorial/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     
@@ -144,6 +171,15 @@ hide:
     <p>Análisis satélite: La Voz del Pueblo</p>
     <div class="holo-meta"><span>📅 2026-10-31</span></div>
     
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-10-31-mediano-dossier/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier completo del dia</h3>
+    <p>Analisis dossier: Dossier completo del dia</p>
+    <div class="holo-meta"><span>📅 2026-10-31</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-10-31-master/'" data-category="otros">
     <div class="holo-badge badge-guide">📄 Artículo</div>
