@@ -48,3 +48,6 @@ __pycache__/
 # === SISTEMA ===
 .DS_Store
 *.swp
+
+# 2026-11-04: cache TTS (no aporta, se regenera)
+data/cache_voz/
