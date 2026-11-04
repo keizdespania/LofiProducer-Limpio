@@ -162,10 +162,16 @@ def generar_redes(fecha=None):
     # El dossier resumido dentro de produccion (para contexto de noticias)
     dossier = datos.get("dossier", {})
 
-    # Los hooks viven en dossier_{fecha}.json, no en produccion
-    hooks_list = dossier_completo.get("guiones", {}).get("hooks_totales", [])
+    # FIX 2026-11-04: si hay shorts_finales del monologo, usarlos
+    shorts_monologo = datos.get("shorts_finales", [])
+    if shorts_monologo:
+        hooks_list = shorts_monologo
+        print(f"   [redes] Usando {len(hooks_list)} shorts del MONOLOGO", flush=True)
+    else:
+        hooks_list = dossier_completo.get("guiones", {}).get("hooks_totales", [])
+        print(f"   [redes] Fallback a {len(hooks_list)} hooks del dossier", flush=True)
     if not hooks_list:
-        print("❌ No hay hooks en dossier"); return False
+        print("X No hay hooks en dossier"); return False
 
     top3 = dossier.get("top3", {})
     noticias = " | ".join([str(v)[:80] for v in list(top3.values())[:3]]) if isinstance(top3, dict) else str(top3)[:250]
