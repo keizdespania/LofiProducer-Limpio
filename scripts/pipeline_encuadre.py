@@ -160,14 +160,15 @@ def main():
         ("sintetizador.py", None, 600, False),
         ("enriquecer_dossier.py", [fecha], 300, False),
         ("scrapear_medios_completo.py", [fecha], 300, False),
-        ("fase2_produccion.py", None, 1200, False),
+        ("fase2_produccion.py", ["--modo", "monologo", fecha], 1800, False),  # monologo (2026-11-04)
         ("director_arte.py", None, 1800, True),
         ("generar_imagenes_web.py", [fecha], 600, False),
         ("generar_imagenes_shorts.py", [fecha], 600, False),
         # descargar_lofi.py ELIMINADO — solo como fallback en try/except (abajo)
         ("voz_edge.py", None, 600, False),
         ("segmentar_imagenes.py", [fecha], 1800, False),
-        ("render_robusto.py", [fecha], 1800, False)
+        ("render_robusto.py", [fecha], 1800, False),
+        ("generar_podcast.py", [fecha], 600, True),  # podcast (2026-11-04)
     ]
 
     for script, args, t, opcional in pasos:
