@@ -417,6 +417,20 @@ def main():
     except Exception as _e:
         print(f"   ⚠️ No se pudo crear marcador: {_e}")
 
+    # Guardar URLs YouTube para el resumen (2026-11-04)
+    try:
+        _yt_data = {
+            "fecha": fecha,
+            "largo": _VIDEOS_SUBIDOS[0] if len(_VIDEOS_SUBIDOS) > 0 else "",
+            "shorts": _VIDEOS_SUBIDOS[1:5] if len(_VIDEOS_SUBIDOS) > 1 else [],
+        }
+        _yt_file = ROOT / "data" / "agent" / f"youtube_urls_{fecha}.json"
+        _yt_file.parent.mkdir(parents=True, exist_ok=True)
+        _yt_file.write_text(json.dumps(_yt_data, indent=2, ensure_ascii=False))
+        print(f"   ✅ URLs YouTube guardadas: {_yt_file.name}", flush=True)
+    except Exception as _e:
+        print(f"   ⚠️ No pude guardar youtube_urls: {_e}", flush=True)
+
     # 📱 NOTIFICAR A TELEGRAM (canal público + admin)
     try:
         import sys as _sys
@@ -486,12 +500,21 @@ def main():
                 else:
                     print(f"   ❌ Falló: {slug} — {r.get('error', 'desconocido')[:100]}")
 
-        # Resumen del pipeline
-        n_short = len(list((ROOT / "output" / "encuadre").glob(f"short_*_{fecha}.mp4")))
+        # Resumen del pipeline (2026-11-04: usa notificar_resumen_dia con datos ricos)
+        n_short = len([s for s in (ROOT / "output" / "encuadre").glob(f"short_*_{fecha}.mp4") if "_with_logo" not in s.name])
         n_post = pub_count
-        r = publicar_pipeline_completado(pub_count, n_short, n_post)
-        if r.get("ok"):
-            print(f"   ✅ Resumen publicado ({pub_count} análisis, {n_short} shorts)")
+        try:
+            import subprocess as _sp
+            _sp.run(
+                [sys.executable, str(ROOT / "scripts" / "notificar_resumen_dia.py"), fecha],
+                cwd=str(ROOT), timeout=120, check=False
+            )
+            print(f"   ✅ Resumen rico enviado (via notificar_resumen_dia.py)", flush=True)
+        except Exception as _e:
+            print(f"   ⚠️ Fallback a resumen simple: {_e}", flush=True)
+            r = publicar_pipeline_completado(pub_count, n_short, n_post)
+            if r.get("ok"):
+                print(f"   ✅ Resumen simple enviado ({pub_count} análisis, {n_short} shorts)")
 
         # Avisar de vídeos subidos en privado (API YouTube no auditada)
         if _VIDEOS_SUBIDOS:

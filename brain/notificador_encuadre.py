@@ -106,17 +106,77 @@ def publicar_podcast(titulo, url):
         "reply_markup": json.dumps({"inline_keyboard": [[{"text": "🎧 Escuchar", "url": url}]]})
     })
 
-def publicar_pipeline_completado(n_analisis, n_shorts, n_posts):
-    """Mensaje resumen tras pipeline completo."""
+def publicar_pipeline_completado(n_analisis, n_shorts, n_posts, metrics=None):
+    """Mensaje resumen tras pipeline completo.
+    Si metrics=None -> mensaje simple (compatible con versiones antiguas).
+    Si metrics=dict -> mensaje enriquecido con métricas y links.
+    """
     cid = _canal_id()
-    texto = (
-        f"✅ *Pipeline del día completado*\n\n"
-        f"📰 {n_analisis} análisis publicados\n"
-        f"🎬 {n_shorts} shorts generados\n"
-        f"📝 {n_posts} posts web\n\n"
-        f"🔗 [Ver todo en elencuadre.com](https://elencuadre.pages.dev/analisis/)\n\n"
-        f"#ElEncuadre #ProduccionDiaria"
-    )
+    if not cid:
+        return {"ok": False, "error": "Sin TELEGRAM_CHANNEL_ID"}
+
+    if not metrics:
+        # Mensaje clásico (backward compatible)
+        texto = (
+            f"✅ *Pipeline del día completado*\n\n"
+            f"📰 {n_analisis} análisis publicados\n"
+            f"🎬 {n_shorts} shorts generados\n"
+            f"📝 {n_posts} posts web\n\n"
+            f"🔗 [Ver todo en elencuadre.com](https://elencuadre.pages.dev/analisis/)\n\n"
+            f"#ElEncuadre #ProduccionDiaria"
+        )
+        return _post("sendMessage", {
+            "chat_id": cid, "text": texto, "parse_mode": "Markdown",
+            "disable_web_page_preview": True
+        })
+
+    # ─── Mensaje enriquecido ───
+    fecha = metrics.get("fecha", _fecha_hoy())
+    titulo = metrics.get("titulo_video") or "Análisis del día"
+    palabras = metrics.get("palabras", 0)
+    dur_video = metrics.get("duracion_video_min", 0)
+    n_shorts_mp4 = metrics.get("n_shorts_mp4", n_shorts)
+    podcast_mb = metrics.get("podcast_mb", 0)
+    podcast_min = metrics.get("podcast_min", 0)
+    seo_caps = metrics.get("n_capitulos", 0)
+    redes_bloques = metrics.get("n_redes_bloques", 0)
+    yt_largo = metrics.get("yt_largo_url", "")
+    yt_shorts = metrics.get("yt_shorts_urls", [])
+    web_url = f"https://elencuadre.pages.dev/analisis/{fecha}-largo/"
+    warnings = metrics.get("warnings", [])
+
+    lineas = [f"✅ *Pipeline {fecha} completado*\n"]
+    lineas.append(f"🎬 *{titulo}*\n")
+    lineas.append(f"📊 *Vídeo*: {palabras} palabras · {dur_video:.1f} min")
+    lineas.append(f"🎞️ *Shorts*: {n_shorts_mp4} generados")
+    if podcast_min > 0:
+        lineas.append(f"🎙️ *Podcast*: {podcast_min:.1f} min ({podcast_mb} MB)")
+    lineas.append(f"📰 *Posts web*: {n_posts}")
+    if seo_caps > 0:
+        lineas.append(f"📑 *Capítulos SEO*: {seo_caps}")
+    if redes_bloques > 0:
+        lineas.append(f"📱 *Redes*: {redes_bloques} bloques")
+    lineas.append("")
+
+    if yt_largo or yt_shorts:
+        lineas.append("🎥 *YouTube*:")
+        if yt_largo:
+            lineas.append(f"  · [Vídeo largo]({yt_largo})")
+        for i, u in enumerate(yt_shorts[:4], 1):
+            if u:
+                lineas.append(f"  · [Short {i}]({u})")
+        lineas.append("")
+
+    lineas.append(f"🌐 [Ver en la web]({web_url})")
+
+    if warnings:
+        lineas.append(f"\n⚠️ *Warnings*: {len(warnings)}")
+        for w in warnings[:3]:
+            lineas.append(f"  · {w[:80]}")
+
+    lineas.append("\n#ElEncuadre #ProduccionDiaria")
+    texto = "\n".join(lineas)
+
     return _post("sendMessage", {
         "chat_id": cid, "text": texto, "parse_mode": "Markdown",
         "disable_web_page_preview": True
