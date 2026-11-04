@@ -1,3 +1,4 @@
+"""generar_seo.py - Genera SEO del vídeo y shorts desde el MONÓLOGO + top16 real."""
 from datetime import date
 import json, pathlib, sys, datetime, re
 
@@ -5,166 +6,186 @@ ROOT = pathlib.Path.home() / "LofiProducer"
 OUT = ROOT / "output" / "encuadre"
 FECHA = sys.argv[1] if len(sys.argv) > 1 else datetime.date.today().isoformat()
 
-EMOJIS = {"controversia": "🔴", "urgencia": "🟠", "justicia": "🟡", "curiosidad": "🟢"}
+MESES_ES = ["enero","febrero","marzo","abril","mayo","junio",
+            "julio","agosto","septiembre","octubre","noviembre","diciembre"]
 
-MESES = {"01":"enero","02":"febrero","03":"marzo","04":"abril","05":"mayo","06":"junio",
-         "07":"julio","08":"agosto","09":"septiembre","10":"octubre","11":"noviembre","12":"diciembre"}
+EMOJIS_TIPO = {"dato": "🟠", "contradiccion": "🎬", "prediccion": "🔮", "tutorial": "🎯"}
+EMOJI_POOL = ["🟠", "🟡", "🔴", "🟤"]
 
-def _limpiar(t, max_chars=55):
-    if not t: return ""
-    if ":" in t[:40]:
-        t = t.split(":", 1)[1].strip()
-    if len(t) > max_chars:
-        t = t[:max_chars].rsplit(" ", 1)[0] + "..."
-    return t
-
-def _hook_a_titulo(hook, max_chars=55):
-    """Coge el hook completo y lo limpia para título de short."""
-    if not hook: return "la noticia del día"
-    # Quitar punto final
-    h = hook.strip().rstrip(".")
-    # Si cabe, usar tal cual
-    if len(h) <= max_chars:
-        return h
-    # Si no, cortar por palabras sin partir
-    return h[:max_chars].rsplit(" ", 1)[0] + "..."
 
 def _fmt_ts(seg):
     m = int(seg // 60); s = int(seg % 60)
     return f"{m:02d}:{s:02d}"
 
-def _match_timeline(timeline, texto_escena, min_chars=10):
-    """Busca el seg del timeline cuyo texto comparta >=min_chars chars con la escena."""
-    if not texto_escena: return None
-    # Probar varias longitudes de prefijo
-    for n in [40, 30, 25, 20, 15, min_chars]:
+
+def _fecha_bonita(iso):
+    d = date.fromisoformat(iso)
+    return f"{d.day} de {MESES_ES[d.month-1]} de {d.year}"
+
+
+def _match_timeline(timeline, texto_escena):
+    """Busca el seg del timeline que contenga el prefijo del texto de la escena."""
+    if not texto_escena or not timeline:
+        return None
+    for n in (60, 50, 40, 30, 20, 15):
         prefijo = texto_escena[:n]
-        if len(prefijo) < min_chars: continue
+        if len(prefijo) < 15:
+            continue
         for seg in timeline:
             if prefijo in seg.get("texto", ""):
                 return seg["inicio"]
-    # Fallback: buscar por palabras clave (las 3 más largas de la escena)
-    palabras = [p for p in re.findall(r"\w{5,}", texto_escena)][:3]
+    # Fallback: 4 palabras largas
+    palabras = [p for p in re.findall(r"\w{5,}", texto_escena)][:4]
     if palabras:
         for seg in timeline:
             txt = seg.get("texto", "")
-            if any(p in txt for p in palabras):
+            if sum(1 for p in palabras if p in txt) >= 2:
                 return seg["inicio"]
     return None
 
-def generar():
-    # FIX 2026-11-04: definir fecha y fecha_bonita para el bloque experto
-    fecha = FECHA
-    _MESES_ES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"]
-    _d = date.fromisoformat(FECHA)
-    fecha_bonita = f"{_d.day} de {_MESES_ES[_d.month-1]} de {_d.year}"
-    dossier_path = OUT / f"dossier_{FECHA}.json"
-    prod_path = OUT / f"produccion_{FECHA}.json"
-    tl_path = OUT / f"timeline_{FECHA}.json"
-    if not dossier_path.exists() or not prod_path.exists():
-        print("❌ Faltan dossier o produccion"); return False
 
-    d = json.loads(dossier_path.read_text())
-    prod = json.loads(prod_path.read_text())
-    timeline = json.loads(tl_path.read_text()) if tl_path.exists() else []
-    top3 = d.get("top3", {})
-    hooks = d.get("guiones", {}).get("hooks_totales", [])[:4]
+def _escena_con_medio(escenas, medio_n):
+    """Devuelve la primera escena que menciona 'Fíjate en [Medio]' o 'Mira a [Medio]'."""
+    for esc in escenas:
+        txt = esc.get("texto", "")
+        if f"Fíjate en {medio_n}" in txt or f"Mira a {medio_n}" in txt:
+            return txt
+    # Fallback: escena que contiene el nombre del medio
+    for esc in escenas:
+        txt = esc.get("texto", "")
+        if medio_n in txt:
+            return txt
+    return None
+
+
+def _capitulos(prod, top16, timeline):
+    """Genera capítulos con los 3-4 primeros medios del top16 (los que el monólogo usa)."""
     escenas = prod.get("escenas", [])
-    if not hooks: print("❌ No hay hooks"); return False
-
-    # TÍTULO 2026-11-04: del primer medio del monólogo (sin regex frágiles)
-    _medios_prod = prod.get("medios", [])
-    _titulo_real = ""
-    if _medios_prod and len(_medios_prod) > 0:
-        _m0 = _medios_prod[0] if isinstance(_medios_prod[0], dict) else {}
-        _medio_n = _m0.get("medio", "")
-        _tit_real = _m0.get("titular", "")[:60]
-        if _medio_n and _tit_real:
-            _titulo_real = f"{_medio_n}: {_tit_real}"
-    # Fallback: buscar "Fíjate en [Medio]" en el texto
-    if not _titulo_real:
-        _m = re.search(r'Fíjate en ([A-Z][^.,]{3,30})', texto)
-        if _m:
-            _titulo_real = f"{_m.group(1).strip()}: lo que no te cuentan"
-    titulo_largo = _titulo_real or f"El Encuadre | Análisis mediático del {fecha_bonita}"
-    else:
-        # Fallback de seguridad (no debería pasar)
-        titulo_largo = f"El Encuadre | Análisis mediático del {fecha_bonita}"
-
-    # Capítulos con matching robusto
-    # 2026-11-04: capítulos desde prod.medios (sin regex frágiles)
-    labels_bloques = []
-    _emoji_pool = ["🟠", "🟡", "🔴", "🟤", "🟢", "🔵", "🟣", "⚫"]
-    _medios_caps = prod.get("medios", [])
-    for _i, _m in enumerate(_medios_caps[:4]):
-        if isinstance(_m, dict):
-            _medio_n = _m.get("medio", "")
-            _tit_real = _m.get("titular", "")[:40]
-            if _medio_n:
-                labels_bloques.append(f"{_emoji_pool[_i % 8]} {_medio_n}: {_tit_real}...")
-    if not labels_bloques:
-        labels_bloques = ["🎬 Intro: el mecanismo del día", "🎯 Conclusión: qué mirar mañana"]
     capitulos = [(0.0, "🎬 Intro: el mecanismo del día")]
-    if timeline:
-        for i, label in enumerate(labels_bloques):
-            num_escena = (i + 1) * 2  # 2, 4, 6, 8, 10, 12, 14, 16
-            if num_escena > len(escenas): break
-            texto = escenas[num_escena - 1].get("texto", "")
-            inicio = _match_timeline(timeline, texto)
-            if inicio is not None:
-                capitulos.append((inicio, label))
-        capitulos.append((timeline[-1]["fin"] - 30, "🎯 Conclusión: qué mirar mañana"))
-    capitulos = sorted(set(capitulos), key=lambda x: x[0])
+    usados = 0
 
-    # Descripción
-    noticias = list(top3.values()) if isinstance(top3, dict) else list(top3)
-    desc = f"🚨 El análisis de hoy: cómo los medios construyen el relato. Un monólogo de El Encuadre.\n\n"
+    for m in top16[:4]:
+        medio_n = m.get("medio", "").strip()
+        titular = m.get("titular", "").strip()[:45]
+        if not medio_n:
+            continue
+        texto_escena = _escena_con_medio(escenas, medio_n)
+        if not texto_escena:
+            continue
+        inicio = _match_timeline(timeline, texto_escena)
+        if inicio is None:
+            continue
+        emoji = EMOJI_POOL[usados % 4]
+        label = f"{emoji} {medio_n}: {titular}"
+        capitulos.append((inicio, label))
+        usados += 1
+
+    if timeline:
+        final_ts = max(0, timeline[-1].get("fin", 0) - 20)
+        capitulos.append((final_ts, "🎯 Conclusión: qué mirar mañana"))
+    return sorted(set(capitulos), key=lambda x: x[0])
+
+
+def _titulo(top16, texto):
+    """Título del primer medio del top16 que aparezca en el monólogo."""
+    for m in top16[:3]:
+        medio_n = m.get("medio", "").strip()
+        titular = m.get("titular", "").strip()[:55]
+        if medio_n and titular and (f"Fíjate en {medio_n}" in texto or f"Mira a {medio_n}" in texto):
+            return f"{medio_n}: {titular}"
+    if top16:
+        m = top16[0]
+        return f"{m.get('medio', 'Medios')}: {m.get('titular', 'análisis del día')[:55]}"
+    return "El Encuadre | Análisis mediático del día"
+
+
+def _shorts(prod):
+    shorts_finales = prod.get("shorts_finales", [])
+    shorts = []
+    for i, s in enumerate(shorts_finales[:4]):
+        tipo = (s.get("tipo") or "dato").lower()
+        guion = s.get("guion") or s.get("hook") or "Análisis del día"
+        emoji = EMOJIS_TIPO.get(tipo, "🎬")
+        titulo_txt = guion.strip().rstrip(".")[:55]
+        if len(guion) > 55:
+            titulo_txt = titulo_txt.rsplit(" ", 1)[0] + "..."
+        shorts.append({
+            "num": i + 1,
+            "tipo": tipo,
+            "titulo": f"{emoji} {titulo_txt}",
+            "descripcion": f"{guion}\n\n🔔 Suscríbete.\n\n#Shorts #AnálisisMediático #ElEncuadre",
+            "hashtags": "#Shorts #AnálisisMediático #ElEncuadre",
+        })
+    return shorts
+
+
+def _descripcion(titulo, capitulos):
+    bloques = [label for _, label in capitulos[1:-1]]
+    desc = "🚨 El análisis de hoy: cómo los medios construyen el relato. Un monólogo de El Encuadre.\n\n"
     desc += "━━━━━━━━━━━━━━━━━━━━\n📌 BLOQUES DEL VÍDEO\n━━━━━━━━━━━━━━━━━━━━\n"
-    for _, label in capitulos[1:-1]:
+    for label in bloques:
         desc += f"{label}\n"
     desc += "\n━━━━━━━━━━━━━━━━━━━━\n⏱️ CAPÍTULOS\n━━━━━━━━━━━━━━━━━━━━\n"
     for ts, label in capitulos:
         desc += f"{_fmt_ts(ts)} {label}\n"
-    desc += """
-━━━━━━━━━━━━━━━━━━━━
-🔔 SUSCRÍBETE para aprender a leer entre líneas.
-━━━━━━━━━━━━━━━━━━━━
+    desc += "\n━━━━━━━━━━━━━━━━━━━━\n🔔 SUSCRÍBETE para aprender a leer entre líneas.\n━━━━━━━━━━━━━━━━━━━━\n\n"
+    desc += "📌 Somos El Encuadre. Análisis técnico del relato mediático.\n\n"
+    desc += "#AnálisisMediático #Framing #ElEncuadre"
+    return desc
 
-📌 Somos El Encuadre. Análisis técnico del relato mediático.
 
-#AnálisisMediático #Framing #ElEncuadre
-"""
-    tags_largo = f"análisis mediático, framing, manipulación, El Encuadre, {fecha}"
+def generar():
+    prod_path = OUT / f"produccion_{FECHA}.json"
+    analisis_path = OUT / f"analisis_fase1_{FECHA}.json"
+    tl_path = OUT / f"timeline_{FECHA}.json"
 
-    # Shorts con hooks completos
-    shorts = []
-    for i, h in enumerate(hooks):
-        tipo = h.get("tipo", "dato").lower()
-        hook_txt = h.get("hook", "")
-        emoji = EMOJIS.get(tipo, "🎬")
-        shorts.append({
-            "num": i + 1, "tipo": tipo,
-            "titulo": f"{emoji} {_hook_a_titulo(hook_txt, 55)}",
-            "descripcion": f"{hook_txt}\n\n🔔 Suscríbete.\n\n#Shorts #AnálisisMediático #ElEncuadre",
-            "hashtags": "#Shorts #AnálisisMediático #ElEncuadre"
-        })
+    if not prod_path.exists():
+        print(f"❌ No existe produccion_{FECHA}.json")
+        return False
+    prod = json.loads(prod_path.read_text())
+    analisis = json.loads(analisis_path.read_text()) if analisis_path.exists() else {}
+    timeline = json.loads(tl_path.read_text()) if tl_path.exists() else []
+    top16 = analisis.get("top16", [])
+    texto = prod.get("texto_voz_largo", "")
+    fecha_larga = _fecha_bonita(FECHA)
 
-    seo = {"fecha": FECHA,
-           "largo": {"titulo": titulo_largo, "descripcion": desc, "tags": tags_largo},
-           "shorts": shorts,
-           "canal": {"keywords": "análisis mediático, framing, sesgo informativo, El Encuadre"}}
+    print(f"[seo] Top16 disponible: {len(top16)} medios")
+    print(f"[seo] Timeline: {len(timeline)} segmentos")
+
+    # 1) Título
+    titulo_largo = _titulo(top16, texto)
+
+    # 2) Capítulos
+    capitulos = _capitulos(prod, top16, timeline)
+
+    # 3) Descripción
+    desc = _descripcion(titulo_largo, capitulos)
+    tags_largo = f"análisis mediático, framing, manipulación, El Encuadre, {FECHA}"
+
+    # 4) Shorts (del monólogo)
+    shorts = _shorts(prod)
+
+    # 5) Guardar
+    seo = {
+        "fecha": FECHA,
+        "largo": {"titulo": titulo_largo, "descripcion": desc, "tags": tags_largo},
+        "shorts": shorts,
+        "canal": {"keywords": "análisis mediático, framing, sesgo informativo, El Encuadre"},
+    }
     out = OUT / f"seo_{FECHA}.json"
     out.write_text(json.dumps(seo, indent=2, ensure_ascii=False))
 
-    print(f"✅ Generado: {out}")
+    # 6) Reporte
+    print(f"\n✅ Generado: {out}")
     print(f"\nTÍTULO LARGO: {titulo_largo} ({len(titulo_largo)} chars)")
     print(f"\nCAPÍTULOS ({len(capitulos)}):")
     for ts, label in capitulos:
         print(f"  {_fmt_ts(ts)} {label}")
-    print(f"\nSHORTS:")
+    print(f"\nSHORTS ({len(shorts)}):")
     for s in shorts:
         print(f"  Short {s['num']} ({s['tipo']}): {s['titulo']} ({len(s['titulo'])} chars)")
     return True
+
 
 if __name__ == "__main__":
     sys.exit(0 if generar() else 1)
