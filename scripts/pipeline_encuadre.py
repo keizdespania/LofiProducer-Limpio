@@ -165,11 +165,10 @@ def main():
         ("enriquecer_dossier.py", [fecha], 300, False),
         ("scrapear_medios_completo.py", [fecha], 300, False),
         ("fase2_produccion.py", ["--modo", "monologo", fecha], 1800, False),  # monologo (2026-11-04)
-        ("director_arte.py", None, 1800, True),
         ("generar_imagenes_web.py", [fecha], 600, False),
         ("generar_imagenes_shorts.py", [fecha], 600, False),
         ("voz_edge.py", None, 600, False),
-        ("segmentar_imagenes.py", [fecha], 1800, False),
+        ("director_arte.py", [fecha], 2400, False),  # 2026-11-04: fusionado (72 imgs + timeline)
         ("render_robusto.py", [fecha], 1800, False),
         ("generar_podcast.py", [fecha], 600, True),  # podcast (2026-11-04)
     ]
