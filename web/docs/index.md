@@ -13,32 +13,32 @@ hide:
 <h2 class="holo-section-title">Últimos Análisis</h2>
 
 <div class="holo-grid">
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-03-mediano-tutorial/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-04-mediano-radar/'">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     
-    <h3>Cómo detectar la técnica: Card Stacking</h3>
-    <p>Analisis tutorial: Cómo detectar la técnica: Card Stacking</p>
-    <div class="holo-meta"><span>📅 2026-11-03</span></div>
+    <h3>Radar de medios: El Encuadre: Los demócratas sacuden el mapa electo</h3>
+    <p>Analisis radar: Radar de medios: El Encuadre: Los demócratas sacuden el mapa electo</p>
+    <div class="holo-meta"><span>📅 2026-11-04</span></div>
     
     <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-03-largo/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-04-largo/'">
     <div class="holo-badge badge-new">🔥 Análisis Diario</div>
     
-    <h3>El Encuadre: Feijóo: 'España está en situación de emergencia</h3>
-    <p>Analisis largo: El Encuadre: Feijóo: 'España está en situación de emergencia</p>
-    <div class="holo-meta"><span>📅 2026-11-03</span></div>
+    <h3>El Encuadre: Los demócratas sacuden el mapa electoral con vi</h3>
+    <p>Analisis largo: El Encuadre: Los demócratas sacuden el mapa electoral con vi</p>
+    <div class="holo-meta"><span>📅 2026-11-04</span></div>
     
-    <a href="https://theobjective.com/espana/2026-11-03/mujer-lopez-obrador-preferente-nacionalidad/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+    <a href="https://theobjective.com/podcasts/así-empece/podcast-así-empece-juan-carlos-tous/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-03-dossier-v2/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-04-dossier-v2/'">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
     
-    <h3>Dossier del día: El Encuadre: Feijóo: 'España está en situación de emergencia</h3>
-    <p>Dossier ejecutivo: El Encuadre: Feijóo: 'España está en situación de emergencia y necesita gente qu</p>
-    <div class="holo-meta"><span>📅 2026-11-03</span></div>
+    <h3>Dossier del día: El Encuadre: Los demócratas sacuden el mapa electoral con vi</h3>
+    <p>Dossier ejecutivo: El Encuadre: Los demócratas sacuden el mapa electoral con victorias en Texas y l</p>
+    <div class="holo-meta"><span>📅 2026-11-04</span></div>
     
-    <a href="https://theobjective.com/espana/2026-11-03/mujer-lopez-obrador-preferente-nacionalidad/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+    <a href="https://theobjective.com/podcasts/así-empece/podcast-así-empece-juan-carlos-tous/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
   </div>
   <a href="glosario/" class="holo-card">
     <div class="holo-badge badge-guide">📚 Guía Definitiva</div>

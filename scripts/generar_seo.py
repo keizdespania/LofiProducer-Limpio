@@ -72,37 +72,38 @@ def generar():
     escenas = prod.get("escenas", [])
     if not hooks: print("❌ No hay hooks"); return False
 
-    # Lógica experta 2026-11-04: Leer del monólogo, no del pipeline viejo
-    import json
-    from pathlib import Path
-    prod_path = OUT / f"produccion_{fecha}.json"
-    if prod_path.exists():
-        prod = json.loads(prod_path.read_text())
-        texto = prod.get("texto_voz_largo", "")
-        
-        # Buscar el primer titular real mencionado en el monólogo (El Mundo, OkDiario, etc.)
-        match = re.search(r'Fíjate en ([^,.]+),? que publicó «([^»]+)»', texto)
-        if match:
-            medio = match.group(1).strip()
-            titular = match.group(2).strip()
-            # Título magnético: "El Mundo oculta esto sobre [titular]"
-            titulo_largo = f"Lo que {medio} no te cuenta: {titular[:45]}..."
-        else:
-            # Si no hay titular, usar la fecha
-            titulo_largo = f"El Encuadre | Análisis mediático del {fecha_bonita}"
+    # TÍTULO 2026-11-04: del primer medio del monólogo (sin regex frágiles)
+    _medios_prod = prod.get("medios", [])
+    _titulo_real = ""
+    if _medios_prod and len(_medios_prod) > 0:
+        _m0 = _medios_prod[0] if isinstance(_medios_prod[0], dict) else {}
+        _medio_n = _m0.get("medio", "")
+        _tit_real = _m0.get("titular", "")[:60]
+        if _medio_n and _tit_real:
+            _titulo_real = f"{_medio_n}: {_tit_real}"
+    # Fallback: buscar "Fíjate en [Medio]" en el texto
+    if not _titulo_real:
+        _m = re.search(r'Fíjate en ([A-Z][^.,]{3,30})', texto)
+        if _m:
+            _titulo_real = f"{_m.group(1).strip()}: lo que no te cuentan"
+    titulo_largo = _titulo_real or f"El Encuadre | Análisis mediático del {fecha_bonita}"
     else:
         # Fallback de seguridad (no debería pasar)
         titulo_largo = f"El Encuadre | Análisis mediático del {fecha_bonita}"
 
     # Capítulos con matching robusto
-    labels_bloques = ["🟠 HuffPost: el teatro de Delgado",
-                      "🟡 Expansión: la fábula bursátil",
-                      "🔴 OkDiario: el precio de 'gratis'",
-                      "🟤 Plutarco: el miedo premium",
-                      "🟢 PP y luto: la maniobra",
-                      "🔵 Sonrisa corporativa",
-                      "🟣 Big Tech: los cuatro gigantes",
-                      "⚫ Cortina de humo y hombre de paja"]
+    # 2026-11-04: capítulos desde prod.medios (sin regex frágiles)
+    labels_bloques = []
+    _emoji_pool = ["🟠", "🟡", "🔴", "🟤", "🟢", "🔵", "🟣", "⚫"]
+    _medios_caps = prod.get("medios", [])
+    for _i, _m in enumerate(_medios_caps[:4]):
+        if isinstance(_m, dict):
+            _medio_n = _m.get("medio", "")
+            _tit_real = _m.get("titular", "")[:40]
+            if _medio_n:
+                labels_bloques.append(f"{_emoji_pool[_i % 8]} {_medio_n}: {_tit_real}...")
+    if not labels_bloques:
+        labels_bloques = ["🎬 Intro: el mecanismo del día", "🎯 Conclusión: qué mirar mañana"]
     capitulos = [(0.0, "🎬 Intro: el mecanismo del día")]
     if timeline:
         for i, label in enumerate(labels_bloques):
