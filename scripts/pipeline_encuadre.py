@@ -313,12 +313,16 @@ def main():
     # generar_podcast.py ya se ejecuta en pasos (no duplicar)
     _run("generar_web_v3.py", [fecha], 900, 1)
     _run("generar_web_dossier.py", [fecha], 600, 1)
+    _run("generar_seo.py", [fecha], 300, 1)  # SEO explícito (2026-11-04)
+    _run("generar_titulo_seo.py", [fecha, "video_largo"], 120, 1)  # A/B título (2026-11-04)
     _run("verificar_alucinaciones.py", [fecha], 120, 1)
     _publicar_web(fecha)
     # ===== FIN NUEVO FLUJO WEB =====
     
     if BLOGGER_PAUSADO:
-        print(f"   [blogger] PAUSADO hasta {BLOGGER_DESBLOQUEO} (baneo API)", flush=True)
+        # Guardar posts en cola para publicación manual futura (2026-11-04)
+        print(f"   [blogger] PAUSADO hasta {BLOGGER_DESBLOQUEO}. Guardando en cola...", flush=True)
+        _run("generar_blogs_blogger.py", [fecha], 600, 1)
     else:
         _run("generar_blogs_blogger.py", [fecha], 600, 1)
     _run("generar_redes.py", [fecha], 300, 1)
@@ -379,8 +383,8 @@ def main():
             _ss = next((s for s in _seo.get("shorts", []) if s.get("num") == num), {})
             _subir_youtube(str(s_path), _ss.get("titulo", f"Short {num} {fecha}"), _ss.get("descripcion", "Análisis rápido."), publish_at=pub_at.strftime('%Y-%m-%dT%H:%M:%SZ'))
 
-    _run("community_manager_auto.py", [fecha], 300, 1)
-    _run("detector_tendencias_vivas.py", [fecha], 300, 1)
+    # [2026-11-04] ELIMINADO: _run("community_manager_auto.py", [fecha], 300, 1)
+    # [2026-11-04] ELIMINADO: _run("detector_tendencias_vivas.py", [fecha], 300, 1)
 
     try:
         subprocess.run(["termux-notification", "-t", "🎬 Encuadre " + fecha, "-c", "Pipeline completado.", "--priority", "high"], check=False)
@@ -389,9 +393,9 @@ def main():
     state = {"fecha": fecha, "completado": True, "video": str(video_path)}
     (OUT / f"pipeline_{fecha}.json").write_text(json.dumps(state, indent=2))
     # CAPA 4: Post-producción inteligente
-    _run("calendario_editorial.py", [fecha], 300, 1)
-    _run("detector_evergreen.py", [fecha], 300, 1)
-    _run("optimizador_adsense.py", [fecha], 300, 1)
+    # [2026-11-04] ELIMINADO: _run("calendario_editorial.py", [fecha], 300, 1)
+    # [2026-11-04] ELIMINADO: _run("detector_evergreen.py", [fecha], 300, 1)
+    # [2026-11-04] ELIMINADO: _run("optimizador_adsense.py", [fecha], 300, 1)
     
     # CAPA 1/3: Mantenimiento
     _run("monitor_salud.py", None, 300, 1)
