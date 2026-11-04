@@ -168,7 +168,6 @@ def main():
         ("director_arte.py", None, 1800, True),
         ("generar_imagenes_web.py", [fecha], 600, False),
         ("generar_imagenes_shorts.py", [fecha], 600, False),
-        # descargar_lofi.py ELIMINADO — solo como fallback en try/except (abajo)
         ("voz_edge.py", None, 600, False),
         ("segmentar_imagenes.py", [fecha], 1800, False),
         ("render_robusto.py", [fecha], 1800, False),
@@ -194,13 +193,14 @@ def main():
 
     # Preparar LOFI LARGO del día (pool CC + rotador)
     print("\n" + "="*60 + "\nPREPARANDO LOFI LARGO DEL DÍA\n" + "="*60, flush=True)
+    lofi_largo = None
     try:
         from lofi_largo_del_dia import preparar as preparar_lofi_largo
         lofi_largo = preparar_lofi_largo()
         if lofi_largo:
             print(f"✅ Lofi largo del día: {Path(lofi_largo).name}", flush=True)
         else:
-            print("⚠️ Sin lofi largo del pool, usando descargar_lofi.py como fallback", flush=True)
+            print("⚠️ Sin lofi largo del pool. Podcast irá SIN MÚSICA si es necesario.", flush=True)
     except Exception as _e:
         print(f"⚠️ Lofi largo falló ({_e})", flush=True)
 
