@@ -25,6 +25,21 @@ MOODS = {
         "stock market screen crashing red, dramatic dark background, cinematic, no text",
         "shattered glass with red emergency lights, impact moment, cinematic, no text",
     ],
+    "contradiccion": [
+        "split screen with two conflicting headlines, tension, cinematic, no text",
+        "two-faced mask half light half shadow, symbolic duality, red accent, cinematic, no text",
+        "broken mirror reflecting opposite scenes, contradiction, cinematic, no text",
+    ],
+    "prediccion": [
+        "crystal ball with red glow revealing future headlines, cinematic, no text",
+        "clock face melting like Dali painting, time pressure, red accent, cinematic, no text",
+        "futuristic holographic newspapers floating, prediction, cinematic, no text",
+    ],
+    "tutorial": [
+        "magnifying glass over newspaper text, detective analysis, cinematic, no text",
+        "checklist with red pen marks on documents, verification, cinematic, no text",
+        "step-by-step diagram on chalkboard, educational, red accent, cinematic, no text",
+    ],
     "default": [
         "cinematic newspaper scene, dramatic light, red accent, no text",
         "dark office with red glow, mysterious mood, cinematic, no text",
@@ -107,9 +122,14 @@ def _cargar_hooks(fecha):
 
 def _normalizar_tipo(tipo):
     t = (tipo or "").lower().strip()
+    # Monólogo (2026-11-04): 4 tipos reales
+    if "dato" in t: return "dato_impactante"
+    if "contradic" in t: return "contradiccion"
+    if "predic" in t: return "prediccion"
+    if "tutorial" in t: return "tutorial"
+    # Legacy
     if "cita" in t: return "cita"
     if "pregunta" in t: return "pregunta"
-    if "dato" in t or "impactante" in t: return "dato_impactante"
     return "default"
 
 def generar_todos(fecha=None):
