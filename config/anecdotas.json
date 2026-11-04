@@ -204,15 +204,15 @@
       "id": 26,
       "categoria": "supermercado",
       "texto": "En la caja de Mercadona, Paco la cajera me preguntó: \"¿Cuántos kilos de patatas?\" Yo le dije: \"Sólo la que necesites para la dieta de los políticos.\" El peso de la verdad se mide en kilos.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-04T06:42:41.241736"
     },
     {
       "id": 27,
       "categoria": "supermercado",
       "texto": "La vecina en la cola del súper me susurró: \"¿Ves esa etiqueta? 'Oferta del día'?\" Yo respondí: \"Sí, y la oferta es que me paguen por esperar.\" La paciencia se vende al precio del silencio.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-04T06:44:07.853034"
     },
     {
       "id": 28,

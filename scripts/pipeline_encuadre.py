@@ -70,9 +70,9 @@ def _publicar_web(fecha):
     dest = ROOT / "web" / "docs" / "analisis"
     dest.mkdir(parents=True, exist_ok=True)
     
-    # Ficheros a publicar: largo + dossier-v2 + mediano-*
+    # Ficheros a publicar: TODOS los del día (fix 2026-11-04)
     ficheros = list(cola.glob(f"{fecha}-*.md"))
-    publicar = [f for f in ficheros if any(k in f.name for k in ["-largo", "-dossier-v2", "-mediano-"])]
+    publicar = ficheros
     
     # Copiar podcast también
     podcast_src = ROOT / "output" / "encuadre" / "podcast"
