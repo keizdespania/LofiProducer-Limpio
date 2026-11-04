@@ -213,18 +213,18 @@ def main():
     except Exception as _e:
         print(f"⚠️ Música del día falló: {_e}", flush=True)
 
-    # Render Shorts
-    print("\n" + "="*60 + "\nRENDERIZANDO SHORTS CON ROT\n" + "="*60, flush=True)
-    from render_short_rot import generar_short
-    from descargar_musica_dinamica import descargar_por_mood
-    # Cleaner local (voz_edge ya no tiene _limpiar)
-    import re as _re_local
+    # Render Shorts (2026-11-04 audit: usa 3 imagenes + logo + musica por mood)
+    print("\n" + "="*60 + "\nRENDERIZANDO SHORTS (multi-imagen + logo)\n" + "="*60, flush=True)
+    from render_short_rot import generar_short, generar_short_multi
+    from pathlib import Path as _Path
+
     def _limpiar_texto_voz(texto):
+        import re as _re_local
         if not texto: return ""
-        texto = _re_local.sub(r'\[[^\]]*\]', '', texto)   # [Fade out], [Pausa]
-        texto = _re_local.sub(r'\([^\)]*\)', '', texto)   # (silencio), (énfasis)
-        texto = _re_local.sub(r'\*[^\*]*\*', '', texto)   # *cursiva*
-        texto = _re_local.sub(r'#+\s*', '', texto)        # markdown headers
+        texto = _re_local.sub(r'\[[^\]]*\]', '', texto)
+        texto = _re_local.sub(r'\([^\)]*\)', '', texto)
+        texto = _re_local.sub(r'\*[^\*]*\*', '', texto)
+        texto = _re_local.sub(r'#+\s*', '', texto)
         texto = _re_local.sub(r'\s+', ' ', texto).strip()
         return texto
 
@@ -233,166 +233,80 @@ def main():
     datos = json.loads(prod_file.read_text()) if prod_file.exists() else {}
     shorts = datos.get("shorts_finales", [])[:4]
 
+    # Cargar mapa de 12 imagenes (3 por short) de generar_imagenes_shorts.py
+    mapa_imgs = {}
+    mapa_path = ROOT / "web" / "media" / "imagenes" / f"short_urls_{fecha}.json"
+    if mapa_path.exists():
+        try:
+            mapa_imgs = json.loads(mapa_path.read_text())
+            print(f"   [shorts] Mapa de imagenes cargado: {sum(len(v) for v in mapa_imgs.values())} imagenes", flush=True)
+        except Exception as _e:
+            print(f"   ⚠️ Mapa de imagenes: {_e}", flush=True)
+
+    # Logo
+    logo_path = ROOT / "web" / "media" / "logo_elencuadre.jpg"
+    logo_arg = str(logo_path) if logo_path.exists() else None
+    if logo_arg:
+        print(f"   [shorts] Logo: {logo_path.name}", flush=True)
+
+    # Musica por mood (preparar 4 moods si no existen)
+    musica_por_mood = {}
+    try:
+        from musica_short_del_dia import preparar as prep_musica_mood
+        for _tipo, _mood in MOODS_SHORTS.items():
+            _mp = ROOT / "output" / "musica_temp" / f"short_dia_{fecha}_{_mood}.mp3"
+            if not _mp.exists():
+                try:
+                    _r = prep_musica_mood(_mood)
+                    if _r: _mp = _Path(_r)
+                except Exception as _e:
+                    print(f"   ⚠️ Musica {_mood}: {_e}", flush=True)
+            if _mp.exists():
+                musica_por_mood[_mood] = str(_mp)
+        print(f"   [shorts] Musicas: {len(musica_por_mood)}/4 moods", flush=True)
+    except Exception as _e:
+        print(f"   ⚠️ musica_short_del_dia: {_e}", flush=True)
+
     for i, short in enumerate(shorts):
         num = i + 1
         tipo = _normalizar(short.get("tipo", "dato"))
-        texto = short.get("guion") or short.get("hook", "")
-        texto = _limpiar_texto_voz(texto)
-        # Truncar a 50 palabras máximo (rot necesita textos cortos)
+        texto = _limpiar_texto_voz(short.get("guion") or short.get("hook", ""))
         palabras_txt = texto.split()
         if len(palabras_txt) > 50:
             texto = " ".join(palabras_txt[:50]) + "..."
-            print(f"     ✂️ Texto truncado a 50 palabras para rot")
-        if not texto: texto = "Análisis del día en Somos El Encuadre."
+        if not texto:
+            texto = "Analisis del dia en Somos El Encuadre."
 
         voz_path = OUT / f"short_{num}_voz_{fecha}.mp3"
-        if not voz_path.exists(): asyncio.run(_gen_voz(texto, voz_path))
+        if not voz_path.exists():
+            asyncio.run(_gen_voz(texto, voz_path))
 
-        # Música: gestor_musica → YouTube CC primero, Tunetank fallback interno
-        musica_short = None
         mood = MOODS_SHORTS.get(tipo, "epico")
-        print(f"  [{num}/{len(shorts)}] Música ({mood}) [contexto=short_{num}]...", flush=True)
-        # Música: usar la del día (del pool CC)
-        musica_short = None
-        if musica_dia and Path(musica_dia).exists():
-            musica_short = Path(musica_dia)
-            print(f"     🎵 Música del día: {musica_short.name}", flush=True)
-        elif (ROOT / "output" / "musica_temp" / "short_musica_peak.mp3").exists():
-            musica_short = ROOT / "output" / "musica_temp" / "short_musica_peak.mp3"
-            print(f"     🎵 Fallback: short_musica_peak.mp3", flush=True)
-        else:
-            # 2. gestor_musica
-            try:
-                sys.path.insert(0, str(ROOT / "scripts"))
-                from gestor_musica import obtener_musica
-                _m = obtener_musica(mood=mood, duracion_objetivo=40, contexto=f"short_{num}")
-                musica_short = _m["archivo"]
-                print(f"     🎵 {musica_short.name}", flush=True)
-            except Exception as e:
-                print(f"     ⚠️ gestor_musica: {e}", flush=True)
-                # 3. Fallback Tunetank
-                try:
-                    r = descargar_por_mood(mood, 1)
-                    if r: musica_short = ROOT / "output" / "musica_temp" / r[0]["archivo"]
-                except: pass
-        musica_arg = str(musica_short) if musica_short else ""
+        musica_arg = musica_por_mood.get(mood) or (str(musica_dia) if musica_dia else "")
 
-        # ═══════════════════════════════════════════════════════════════
-        # IMAGEN VERTICAL: PRIORIDAD ESTRICTA (Regla #45)
-        # 1. short_{num}_*{fecha}* (imágenes específicas del short) — OBLIGATORIO
-        # 2. short_bg_{num}.png (fondo genérico por short)
-        # 3. short_bg_01.png (fondo global) — solo si es vertical
-        # 4. Generar con SDXL 9:16 si no hay nada
-        # 5. Fondo negro de emergencia
-        # ═══════════════════════════════════════════════════════════════
-        from PIL import Image as _Img
-        def _es_vertical(_p):
-            try:
-                _im = _Img.open(_p)
-                return _im.size[1] > _im.size[0]
-            except: return False
+        # 3 imagenes del mapa (fallback a 1 imagen vertical si el mapa no existe)
+        imgs = [p for p in mapa_imgs.get(str(num), [])[:3] if Path(p).exists()]
 
-        img_vertical = None
-        # 1. PRIORIDAD MÁXIMA: imágenes específicas del short
-        imgs_short_especificas = sorted(
-            (ROOT / "web" / "media" / "imagenes").glob(f"short_{num}_*{fecha}*")
-        )
-        if imgs_short_especificas:
-            for candidata in imgs_short_especificas:
-                if _es_vertical(candidata):
-                    img_vertical = candidata
-                    print(f"     🖼️ [P1] Imagen propia del short: {candidata.name}", flush=True)
-                    break
-            if img_vertical is None:
-                # hay imágenes del short pero ninguna vertical → usar la primera y forzar
-                img_vertical = imgs_short_especificas[0]
-                print(f"     ⚠️ [P1] Ninguna vertical, forzando: {img_vertical.name}", flush=True)
-                # Forzar a 9:16 con ffmpeg
-                try:
-                    vertical_temp = ROOT / "output" / "render_tmp" / f"forzada_{num}.png"
-                    vertical_temp.parent.mkdir(parents=True, exist_ok=True)
-                    subprocess.run([
-                        "ffmpeg", "-y", "-loglevel", "quiet", "-i", str(img_vertical),
-                        "-vf", "scale=768:1344:force_original_aspect_ratio=increase,crop=768:1344",
-                        str(vertical_temp)
-                    ], capture_output=True, timeout=30)
-                    if vertical_temp.exists():
-                        img_vertical = vertical_temp
-                        print(f"     ✅ [P1] Forzada a 9:16", flush=True)
-                except Exception as _e:
-                    print(f"     ⚠️ Forzado falló: {_e}", flush=True)
-
-        # 2. FALLBACK: short_bg_{num}.png específico
-        if img_vertical is None:
-            bg_especifico = ROOT / "web" / "media" / "imagenes" / f"short_bg_{num:02d}.png"
-            if bg_especifico.exists() and _es_vertical(bg_especifico):
-                img_vertical = bg_especifico
-                print(f"     🖼️ [P2] Fondo específico short: {bg_especifico.name}", flush=True)
-
-        # 3. FALLBACK: short_bg_01.png global (si es vertical)
-        if img_vertical is None:
-            bg_global = ROOT / "web" / "media" / "imagenes" / "short_bg_01.png"
-            if bg_global.exists() and _es_vertical(bg_global):
-                img_vertical = bg_global
-                print(f"     🖼️ [P3] Fondo global short_bg_01.png", flush=True)
-
-        # 4. FALLBACK: escenas verticales
-        if img_vertical is None:
-            escenas = sorted((ROOT / "web" / "media" / "imagenes").glob("escena_*.png"))
-            for e in escenas:
-                if _es_vertical(e):
-                    img_vertical = e
-                    print(f"     🖼️ [P4] Escena vertical: {e.name}", flush=True)
-                    break
-
-        # 5. ÚLTIMO RECURSO: generar con SDXL 9:16
-        if img_vertical is None:
-            print(f"     🖼️ [P5] Sin imágenes verticales. Generando con SDXL 9:16...", flush=True)
-            try:
-                sys.path.insert(0, str(ROOT / "scripts"))
-                from generar_imagen import generar
-                r = generar(
-                    f"cinematic dark news analysis, vertical composition, {tipo} concept, dramatic lighting, no text",
-                    preset="cinematic", aspect="9:16", canal="encuadre"
-                )
-                if 'OK: ' in r:
-                    ruta = r.split('OK: ')[1].split(' ')[0]
-                    if Path(ruta).exists():
-                        import shutil
-                        destino = ROOT / "web" / "media" / "imagenes" / f"short_bg_{num:02d}.png"
-                        shutil.copy2(ruta, destino)
-                        img_vertical = destino
-                        print(f"     ✅ [P5] Generada: {destino.name}", flush=True)
-            except Exception as e:
-                print(f"     ⚠️ [P5] SDXL falló: {e}", flush=True)
-
-        # 6. EMERGENCIA: fondo negro 1080x1920
-        if img_vertical is None or not Path(img_vertical).exists():
-            print(f"     ⚠️ [P6] Fondo negro de emergencia", flush=True)
-            emergencia = ROOT / "output" / "render_tmp" / f"emergencia_{num}.png"
-            emergencia.parent.mkdir(parents=True, exist_ok=True)
-            subprocess.run([
-                "ffmpeg", "-y", "-f", "lavfi", "-i", "color=c=black:s=1080x1920:d=1",
-                "-frames:v", "1", str(emergencia)
-            ], capture_output=True)
-            img_vertical = emergencia
-
-        print(f"     ✅ [FINAL] Usando: {Path(img_vertical).name}", flush=True)
         salida_short = OUT / f"short_{num}_{fecha}.mp4"
-        print(f"  [{num}/{len(shorts)}] Renderizando short...", flush=True)
-        for intento in range(2):
-            try:
-                generar_short(str(img_vertical), texto, str(voz_path), musica_arg, str(salida_short))
-                print(f"     ✅ {salida_short.name}", flush=True)
-                break
-            except Exception as e:
-                print(f"     ⚠️ rot falló (intento {intento+1}/2): {e}", flush=True)
-                time.sleep(2)
+        print(f"  [{num}/{len(shorts)}] {tipo} → {mood} | {len(imgs)} imgs | música: {Path(musica_arg).name if musica_arg else 'NO'}", flush=True)
 
-    # Publicación
+        try:
+            if len(imgs) >= 2:
+                generar_short_multi(imgs, texto, str(voz_path), musica_arg, str(salida_short), logo_path=logo_arg)
+            elif len(imgs) == 1:
+                generar_short(imgs[0], texto, str(voz_path), musica_arg, str(salida_short))
+            else:
+                print(f"     ⚠️ Short {num} sin imagenes, saltando", flush=True)
+                continue
+            if salida_short.exists():
+                print(f"     ✅ {salida_short.name} ({salida_short.stat().st_size//1024//1024}MB)", flush=True)
+        except Exception as _e:
+            print(f"     ⚠️ Short {num} fallo: {_e}", flush=True)
+
+# Publicación
     print("\n" + "="*60 + "\nPUBLICACIÓN MASIVA\n" + "="*60, flush=True)
     # ===== NUEVO FLUJO WEB (v3 + dossier + verificación + publicación) =====
-    _run("generar_podcast.py", [fecha], 600, 1)
+    # generar_podcast.py ya se ejecuta en pasos (no duplicar)
     _run("generar_web_v3.py", [fecha], 900, 1)
     _run("generar_web_dossier.py", [fecha], 600, 1)
     _run("verificar_alucinaciones.py", [fecha], 120, 1)
@@ -447,11 +361,14 @@ def main():
         num = i+1
         s_path = OUT / f"short_{num}_{fecha}.mp4"
         if s_path.exists():
-            if num <= 2:
-                pub_at = ahora + datetime.timedelta(hours=1 + (num-1)*0.5)
-            else:
-                base = hoy_dt.replace(hour=13, minute=0) + datetime.timedelta(days=1)
-                pub_at = max(base, ahora + datetime.timedelta(hours=1)) + datetime.timedelta(hours=(num-3)*0.5)
+            # Horarios óptimos: shorts 18:30, 19:00, 19:30, 20:00 ES del día
+            _horas_short = [18, 19, 19, 20]
+            _min_short = [30, 0, 30, 0]
+            _idx = min(num-1, 3)
+            _hoy_short = hoy_dt.replace(hour=_horas_short[_idx], minute=_min_short[_idx])
+            if _hoy_short <= ahora:
+                _hoy_short = _hoy_short + datetime.timedelta(days=1)
+            pub_at = max(_hoy_short, ahora + datetime.timedelta(hours=1))
             _ss = next((s for s in _seo.get("shorts", []) if s.get("num") == num), {})
             _subir_youtube(str(s_path), _ss.get("titulo", f"Short {num} {fecha}"), _ss.get("descripcion", "Análisis rápido."), publish_at=pub_at.strftime('%Y-%m-%dT%H:%M:%SZ'))
 
