@@ -354,7 +354,26 @@ def main():
         try: _seo = json.loads(_seo_path.read_text())
         except: pass
 
-    if _score >= _umbral:
+    # VALIDACIÓN VÍDEO (2026-11-04): si no cumple YouTube, no subir
+    _video_ok = True
+    try:
+        import subprocess as _sp_val
+        _val_r = _sp_val.run(
+            [sys.executable, str(ROOT / "scripts" / "validar_video.py"), fecha],
+            cwd=str(ROOT), capture_output=True, text=True, timeout=60
+        )
+        if _val_r.returncode != 0:
+            _video_ok = False
+            print(f"   ❌ Validación vídeo FALLÓ (código {_val_r.returncode})", flush=True)
+            print(_val_r.stdout[-500:], flush=True)
+        else:
+            print(f"   ✅ Vídeo válido para YouTube", flush=True)
+    except Exception as _e:
+        print(f"   ⚠️ Validación vídeo: {_e} (continuando)", flush=True)
+
+    if not _video_ok:
+        print(f"   ⚠️ Saltando subida YouTube (vídeo no válido)", flush=True)
+    elif _score >= _umbral:
         print(f"   Viralidad {_score}/100 >= {_umbral} -> PUBLICAR YouTube", flush=True)
         _sl = _seo.get("largo", {})
         _subir_youtube(str(video_path), _sl.get("titulo", f"Vídeo Largo {fecha}"), _sl.get("descripcion", "Análisis completo."), tags=_sl.get("tags"), publish_at=pub_v.strftime('%Y-%m-%dT%H:%M:%SZ'))
