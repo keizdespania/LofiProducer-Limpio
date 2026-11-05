@@ -218,8 +218,8 @@
       "id": 28,
       "categoria": "supermercado",
       "texto": "Mi cuñado Manolo, en la caja, me dijo: \"¿Cuánto te cobran por el ticket?\" Yo le contesté: \"Por la ilusión de que lo necesites.\" El ticket es la entrada a la falsa urgencia.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-05T06:09:42.859072"
     },
     {
       "id": 29,

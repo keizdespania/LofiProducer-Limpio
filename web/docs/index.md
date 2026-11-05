@@ -13,32 +13,32 @@ hide:
 <h2 class="holo-section-title">Últimos Análisis</h2>
 
 <div class="holo-grid">
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-04-mediano-radar/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-05-mediano-cita/'">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     
-    <h3>Radar de medios: El Encuadre: Los demócratas sacuden el mapa electo</h3>
-    <p>Analisis radar: Radar de medios: El Encuadre: Los demócratas sacuden el mapa electo</p>
-    <div class="holo-meta"><span>📅 2026-11-04</span></div>
+    <h3>La cita que lo cambia todo</h3>
+    <p>Analisis cita: La cita que lo cambia todo</p>
+    <div class="holo-meta"><span>📅 2026-11-05</span></div>
     
     <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-04-largo/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-05-largo/'">
     <div class="holo-badge badge-new">🔥 Análisis Diario</div>
     
-    <h3>El Encuadre: Los demócratas sacuden el mapa electoral con vi</h3>
-    <p>Analisis largo: El Encuadre: Los demócratas sacuden el mapa electoral con vi</p>
-    <div class="holo-meta"><span>📅 2026-11-04</span></div>
+    <h3>El Encuadre: El presidente de Adif renuncia al cargo ante Ca</h3>
+    <p>Analisis largo: El Encuadre: El presidente de Adif renuncia al cargo ante Ca</p>
+    <div class="holo-meta"><span>📅 2026-11-05</span></div>
     
-    <a href="https://theobjective.com/podcasts/así-empece/podcast-así-empece-juan-carlos-tous/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+    <a href="https://theobjective.com/podcasts/analisis-economico-podcast/podcast-analisis-economico-espana-funciona/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-04-dossier-v2/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-05-dossier-v2/'">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
     
-    <h3>Dossier del día: El Encuadre: Los demócratas sacuden el mapa electoral con vi</h3>
-    <p>Dossier ejecutivo: El Encuadre: Los demócratas sacuden el mapa electoral con victorias en Texas y l</p>
-    <div class="holo-meta"><span>📅 2026-11-04</span></div>
+    <h3>Dossier del día: El Encuadre: El presidente de Adif renuncia al cargo ante Ca</h3>
+    <p>Dossier ejecutivo: El Encuadre: El presidente de Adif renuncia al cargo ante Carlos Cuerpo...</p>
+    <div class="holo-meta"><span>📅 2026-11-05</span></div>
     
-    <a href="https://theobjective.com/podcasts/así-empece/podcast-así-empece-juan-carlos-tous/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+    <a href="https://www.eldiario.es/economia/presidente-adif-luis-pedro-marco-pena-presenta-cuerpo-renuncia-cargo_1_13639153.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · eldiario.es</a>
   </div>
   <a href="glosario/" class="holo-card">
     <div class="holo-badge badge-guide">📚 Guía Definitiva</div>
