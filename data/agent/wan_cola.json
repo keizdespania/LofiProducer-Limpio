@@ -1,0 +1,11 @@
+[
+  {
+    "nombre": "piramide_animada",
+    "imagen_url": "https://raw.githubusercontent.com/keizdespania/LofiProducer-Limpio/main/assets/wan_inputs/piramide_boca.png",
+    "prompt": "The pyramid slowly rotates, red smoke swirling around it, ominous cinematic atmosphere, subtle camera push-in",
+    "resolution": "832x480",
+    "num_frames": 49,
+    "num_steps": 4,
+    "completado": false
+  }
+]
