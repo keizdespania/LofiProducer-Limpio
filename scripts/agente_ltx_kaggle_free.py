@@ -145,6 +145,7 @@ for i, item in enumerate(pendientes):
             "prompt": prompt,
             "negative_prompt": "worst quality, inconsistent motion, blurry, jittery, text, letters, words, writing, subtitles, watermark",
             "init_image": img_data_uri,
+            "vae_decode_only": False,
             "video_frames": 97,
             "fps": 24,
             "width": 832,
