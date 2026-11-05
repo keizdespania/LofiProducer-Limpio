@@ -1,0 +1,201 @@
+"""agente_ltx_kaggle_free.py - LTX 2.3 en Kaggle T4 (Q3, sin limite).
+Replica el notebook de free-aistudio y procesa la cola de pendientes.
+"""
+import sys, json, pathlib
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+from kaggle_bearer import push_kernel, estado_kernel
+
+KAGGLE_USER = "keizproductions"
+KERNEL_SLUG = "ltx-free-t4"
+REPO = "keizdespania/LofiProducer-Limpio"
+COLA_PENDIENTE_URL = "https://raw.githubusercontent.com/" + REPO + "/main/data/agent/ltx_cola_pendiente.json"
+COLA_COMPLETADOS_URL = "https://raw.githubusercontent.com/" + REPO + "/main/data/agent/ltx_cola_completados.json"
+
+
+def _leer_env(k):
+    for line in (ROOT / ".env").read_text().splitlines():
+        if line.startswith(k + "="):
+            return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return ""
+
+
+def _construir_kernel():
+    github_token = _leer_env("GITHUB_TOKEN")
+
+    codigo = '''"""LTX 2.3 Free en Kaggle T4 (Q3, sin limite)."""
+import sys, subprocess, os, json, time, pathlib, urllib.request, base64
+
+COLA_PENDIENTE_URL = "''' + COLA_PENDIENTE_URL + '''"
+COLA_COMPLETADOS_URL = "''' + COLA_COMPLETADOS_URL + '''"
+GITHUB_TOKEN = "''' + github_token + '''"
+GITHUB_REPO = "''' + REPO + '''"
+
+print("=== LTX 2.3 Free T4 ===", flush=True)
+
+# 1. Clonar repo free-aistudio
+WORK = "/kaggle/working/free-aistudio"
+if not os.path.exists(WORK):
+    print("Clonando free-aistudio...", flush=True)
+    subprocess.run(["git", "clone", "https://github.com/airesearch-official/free-aistudio.git", WORK], check=True)
+else:
+    print("Actualizando free-aistudio...", flush=True)
+    subprocess.run(["git", "-C", WORK, "pull"], check=True)
+
+# 2. Instalar requirements
+print("Instalando dependencias...", flush=True)
+subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-r", WORK + "/requirements.txt"], check=True)
+sys.path.append(WORK)
+
+# 3.5 Instalar CUDA runtime 12 (Kaggle tiene CUDA 13; sd-server busca libcudart.so.12)
+# find_cuda_library_paths() de start_server() ya glob-ea site-packages/nvidia/*/lib
+print("Instalando CUDA runtime 12 (para sd-server)...", flush=True)
+subprocess.run([sys.executable, "-m", "pip", "install", "-q",
+                "nvidia-cuda-runtime-cu12", "nvidia-cublas-cu12",
+                "nvidia-cudnn-cu12"], check=False)
+import importlib.util as _iu
+for _pkg in ("nvidia.cuda_runtime", "nvidia.cublas", "nvidia.cudnn"):
+    print(f"  {_pkg}: {'OK' if _iu.find_spec(_pkg) else 'MISSING'}", flush=True)
+
+# 3. Descargar binario + pesos
+print("Descargando binario y pesos (Q3)...", flush=True)
+from src.downloader import restore_binary, download_models
+restore_binary(repo="airesearch-official/free-aistudio", tag="v1.0.0")
+download_models(preset="LTX-Video-2.3-Q3")
+
+# 4. Levantar servidor C++
+print("Arrancando servidor C++...", flush=True)
+from src.server import start_server, tail_logs
+server_process = start_server(load_audio_vae=True)
+print("Esperando 90s a que cargue el modelo...", flush=True)
+time.sleep(90)
+print("Server logs:", flush=True)
+print(tail_logs(), flush=True)
+
+# 5. Descargar colas
+print("Descargando colas...", flush=True)
+with urllib.request.urlopen(COLA_PENDIENTE_URL) as r:
+    pendientes = json.loads(r.read())
+try:
+    with urllib.request.urlopen(COLA_COMPLETADOS_URL) as r:
+        completados = json.loads(r.read())
+except Exception:
+    completados = []
+
+print("Pendientes:", len(pendientes), "| Completados:", len(completados), flush=True)
+
+if not pendientes:
+    print("Nada que hacer.", flush=True)
+    sys.exit(0)
+
+# 6. Procesar cada item llamando al servidor local
+# El servidor sd-server expone un endpoint HTTP en localhost (puerto por defecto 8080)
+SERVER_URL = "http://127.0.0.1:1234"
+
+for i, item in enumerate(pendientes):
+    nombre = item["nombre"]
+    prompt = item["prompt"]
+    img_url = item["imagen_url"]
+
+    print("", flush=True)
+    print("[" + str(i+1) + "/" + str(len(pendientes)) + "] " + nombre, flush=True)
+
+    # Descargar imagen
+    img_path = "/kaggle/working/" + nombre + "_in.png"
+    urllib.request.urlretrieve(img_url, img_path)
+    print("Imagen:", os.path.getsize(img_path) // 1024, "KB", flush=True)
+
+    # Llamar al servidor local (endpoint generico de sd-server)
+    # sd-server acepta POST en /v1/images/generations o similar
+    # Por seguridad, intentamos con el endpoint estandar
+    import requests
+    try:
+        # El servidor sd-server de stable-diffusion.cpp usa /sdcpp/v1/... o /v1/...
+        # Intentamos con el formato que usa la UI de free-aistudio
+        payload = {
+            "prompt": prompt,
+            "negative_prompt": "worst quality, inconsistent motion, blurry, jittery",
+            "image_path": img_path,
+            "duration": 8,
+            "width": 832,
+            "height": 480,
+            "fps": 24,
+        }
+        # Intentar varios endpoints comunes
+        for ep in ["/generate", "/api/generate", "/v1/generate", "/sdcpp/v1/generate"]:
+            try:
+                r = requests.post(SERVER_URL + ep, json=payload, timeout=300)
+                if r.status_code == 200:
+                    print("Endpoint OK:", ep, flush=True)
+                    result = r.json()
+                    print("Resultado:", str(result)[:300], flush=True)
+                    break
+            except Exception:
+                continue
+        else:
+            print("Ningun endpoint respondio", flush=True)
+            continue
+
+        # Extraer el video (puede venir como base64 o path)
+        video_data = None
+        if isinstance(result, dict):
+            if "video" in result:
+                video_data = result["video"]
+            elif "data" in result and isinstance(result["data"], list) and result["data"]:
+                video_data = result["data"][0].get("video") or result["data"][0].get("path")
+
+        if video_data:
+            # Si es base64, decodificar
+            out_path = "/kaggle/working/" + nombre + ".mp4"
+            if isinstance(video_data, str) and video_data.startswith("/"):
+                # Es un path
+                import shutil
+                shutil.copy(video_data, out_path)
+            elif isinstance(video_data, str):
+                # Es base64
+                with open(out_path, "wb") as f:
+                    f.write(base64.b64decode(video_data))
+            print("Video:", os.path.getsize(out_path) // 1024, "KB", flush=True)
+
+            # Subir a GitHub
+            if GITHUB_TOKEN:
+                url = "https://api.github.com/repos/" + GITHUB_REPO + "/contents/output/videos/" + nombre + ".mp4"
+                headers = {"Authorization": "token " + GITHUB_TOKEN, "Accept": "application/vnd.github.v3+json"}
+                rr = requests.get(url, headers=headers)
+                sha = rr.json().get("sha") if rr.status_code == 200 else None
+                data = {
+                    "message": "Add " + nombre + ".mp4",
+                    "content": base64.b64encode(pathlib.Path(out_path).read_bytes()).decode(),
+                    "branch": "main"
+                }
+                if sha: data["sha"] = sha
+                rr = requests.put(url, headers=headers, json=data)
+                print("GitHub:", "OK" if rr.status_code in (200, 201) else rr.text[:100], flush=True)
+                if rr.status_code in (200, 201):
+                    item["completado"] = True
+        else:
+            print("Sin video en respuesta:", result, flush=True)
+    except Exception as e:
+        print("Error:", type(e).__name__, ":", e, flush=True)
+
+print("=== FIN ===", flush=True)
+'''
+    return codigo
+
+
+def lanzar():
+    print("Lanzando LTX Free T4 a Kaggle (sin limite)...")
+    codigo = _construir_kernel()
+    print("   Código:", len(codigo), "chars")
+    res = push_kernel(KAGGLE_USER + "/" + KERNEL_SLUG, codigo, enable_gpu=True, enable_internet=True)
+    print("   Push:", res)
+    return not (isinstance(res, dict) and res.get("hasError"))
+
+
+if __name__ == "__main__":
+    cmd = sys.argv[1] if len(sys.argv) > 1 else "lanzar"
+    if cmd == "lanzar":
+        sys.exit(0 if lanzar() else 1)
+    elif cmd == "estado":
+        print(json.dumps(estado_kernel(KAGGLE_USER + "/" + KERNEL_SLUG), indent=2))

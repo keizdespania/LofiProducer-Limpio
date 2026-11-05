@@ -55,16 +55,18 @@
       ]
     },
     "via_c_kaggle_free_t4": {
-      "estado": "EN_PRUEBAS (recien montada)",
+      "estado": "EN_PRUEBAS (fix CUDA aplicado 2026-11-05 15:50, pendiente de re-lanzar)",
       "metodo": "free-aistudio repo (C++ + Q3) en Kaggle T4 con servidor local",
-      "script": "scripts/agente_ltx_free.py",
+      "script": "scripts/agente_ltx_kaggle_free.py",
       "notebook_fuente": "https://github.com/airesearch-official/free-aistudio/blob/main/notebooks/ltx2-3-video.ipynb",
       "ventaja": "SIN LIMITE de generaciones. Usa la GPU T4 del kernel (9h por sesion, ~30h/semana).",
       "como_funciona": "Clona repo, descarga binario C++ y pesos Q3, levanta sd-server en localhost:7860, envia imagenes al servidor local, sube MP4 a GitHub.",
-      "endpoint_local": "http://127.0.0.1:7860/generate",
+      "endpoint_local": "http://127.0.0.1:1234",
       "duracion_max_seg": 8.5,
       "requisitos": "Kaggle GPU T4 + Internet ON",
-      "riesgo": "El endpoint /generate y los parametros del sd-server pueden no ser exactamente esos. Ajustar mirando src/server.py del repo."
+      "riesgo": "El endpoint /generate y los parametros del sd-server pueden no ser exactamente esos. Ajustar mirando src/server.py del repo.",
+      "fix_aplicado_2026_11_05": "pip install nvidia-cuda-runtime-cu12 + nvidia-cublas-cu12 + nvidia-cudnn-cu12 ANTES de start_server(). find_cuda_library_paths() de src/server.py ya glob-ea site-packages/nvidia/*/lib y monta LD_LIBRARY_PATH automaticamente. Tambien corregido puerto 8080->1234.",
+      "script_anterior_obsoleto": "scripts/agente_ltx_free.py (NO EXISTE)"
     }
   },
   "input": {
@@ -96,7 +98,7 @@
     "ftfy_no_definido": "Instalar ftfy, sentencepiece, protobuf antes de cargar el pipeline.",
     "bad_credentials_github": "Verificar GITHUB_TOKEN (Fine-grained con Contents: Read and write).",
     "repo_turbo_inexistente": "cbensimon/Wan2.2-TI2V-5B-Turbo-Diffusers NO EXISTE. Correcto: yetter-ai/...",
-    "libcudart_no_encontrada": "Kaggle tiene CUDA 13.0. Los binarios compilados para CUDA 12 fallan.",
+    "libcudart_no_encontrada": "Kaggle T4 tiene CUDA 13.0 del sistema; sd-server busca libcudart.so.12. FIX: pip install nvidia-cuda-runtime-cu12 antes de start_server(). start_server() ya maneja LD_LIBRARY_PATH via find_cuda_library_paths().",
     "zerogpu_quota": "HF gratis = 5 min/dia. Cada video reserva 150s."
   },
   "historial_test": {
