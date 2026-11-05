@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from kaggle_bearer import push_kernel, estado_kernel, salida_kernel
 
 KAGGLE_USER = "keizproductions"
-KERNEL_SLUG = "wan-factory-encuadre"
+KERNEL_SLUG = "wan-factory-v2"
 REPO = "keizdespania/LofiProducer-Limpio"
 COLA_URL = f"https://raw.githubusercontent.com/{REPO}/main/data/agent/wan_cola.json"
 COLA_LOCAL = ROOT / "data" / "agent" / "wan_cola.json"

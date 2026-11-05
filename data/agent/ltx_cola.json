@@ -1,0 +1,12 @@
+[
+  {
+    "nombre": "piramide_ltx_10s",
+    "imagen_url": "https://raw.githubusercontent.com/keizdespania/LofiProducer-Limpio/main/assets/wan_inputs/piramide_boca.png",
+    "prompt": "The pyramid slowly rotates, red smoke swirling around it, ominous cinematic atmosphere, subtle camera push-in, highly detailed, 10 seconds",
+    "negative_prompt": "text, letters, words, writing, subtitles, watermark, logo, blurry, low quality",
+    "duracion_seg": 10,
+    "resolution": "480p",
+    "num_inference_steps": 20,
+    "completado": false
+  }
+]
