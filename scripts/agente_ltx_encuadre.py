@@ -34,16 +34,48 @@ print("=== LTX 2.3 I2V (CLI) ===", flush=True)
 # 1. Instalar dependencias
 subprocess.run([sys.executable, "-m", "pip", "install", "-q", "huggingface_hub"], check=True)
 
-# 2. Descargar binario sd-cli
-print("Descargando sd-cli...", flush=True)
-import urllib.request
-BIN_URL = "https://github.com/leejet/stable-diffusion.cpp/releases/download/master-515-8c442fb/sd-cli-linux-x64.zip"
+# 2. Descargar binario sd-cli (dinámico vía API de GitHub)
+print("Consultando última release de sd-cli...", flush=True)
+import urllib.request, json
+API_URL = "https://api.github.com/repos/leejet/stable-diffusion.cpp/releases/latest"
+req = urllib.request.Request(API_URL, headers={"Accept": "application/vnd.github+json", "User-Agent": "LofiProducer"})
+with urllib.request.urlopen(req, timeout=30) as r:
+    release = json.loads(r.read())
+
+# Buscar asset Linux x64 (preferir CUDA, fallback Vulkan/CPU)
+assets = release.get("assets", [])
+candidatos = [a for a in assets if "linux" in a["name"].lower() and ("x86_64" in a["name"].lower() or "x64" in a["name"].lower())]
+elegido = None
+for pref in ["cuda", "vulkan", "cpu"]:
+    for a in candidatos:
+        if pref in a["name"].lower():
+            elegido = a
+            break
+    if elegido:
+        break
+if not elegido and candidatos:
+    elegido = candidatos[0]
+
+if not elegido:
+    print(f"No hay asset Linux x64. Assets: {[a['name'] for a in assets]}", flush=True)
+    sys.exit(1)
+
+print(f"Descargando: {elegido['name']} ({elegido['size']//1024//1024}MB)", flush=True)
 BIN_ZIP = "/kaggle/working/sd-cli.zip"
-urllib.request.urlretrieve(BIN_URL, BIN_ZIP)
+urllib.request.urlretrieve(elegido["browser_download_url"], BIN_ZIP)
 subprocess.run(["unzip", "-o", BIN_ZIP, "-d", "/kaggle/working/sd-cli"], check=True)
-subprocess.run(["chmod", "+x", "/kaggle/working/sd-cli/sd-cli"], check=True)
-SD_CLI = "/kaggle/working/sd-cli/sd-cli"
-print("sd-cli listo", flush=True)
+
+# Buscar el binario sd-cli en la carpeta extraída (puede estar en subcarpeta)
+import glob
+binarios = glob.glob("/kaggle/working/sd-cli/**/sd-cli", recursive=True)
+if not binarios:
+    binarios = glob.glob("/kaggle/working/sd-cli/sd-cli")
+if not binarios:
+    print("No se encontró sd-cli en el zip", flush=True)
+    sys.exit(1)
+SD_CLI = binarios[0]
+subprocess.run(["chmod", "+x", SD_CLI], check=True)
+print(f"sd-cli listo: {SD_CLI}", flush=True)
 
 # 3. Descargar pesos GGUF
 print("Descargando pesos GGUF (Q4_K_M)...", flush=True)
