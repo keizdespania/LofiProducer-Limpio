@@ -101,21 +101,23 @@ def push_kernel(slug, codigo, enable_gpu=True, enable_internet=True, dataset_sou
 
 def salida_kernel(slug):
     """Lista los archivos de salida de un kernel."""
-    return _req(f"/kernels/output/{slug}")
+    partes = slug.split('/')
+    if len(partes) != 2:
+        return {'error': 'Slug invalido'}
+    return _req(f"/kernels/output?userName={partes[0]}&kernelSlug={partes[1]}")
 
 
 def output_kernel(slug):
     """Lista archivos en cuenta 1; si da 404, prueba cuenta 2."""
-    r1 = _req(f"/kernels/list/{slug}/files", cuenta=1)
-    if not (isinstance(r1, dict) and "error" in r1):
-        return r1
-    
-    r2 = _req(f"/kernels/list/{slug}/files", cuenta=2)
-    if not (isinstance(r2, dict) and "error" in r2):
-        return r2
-        
-    return r1
-
+    partes = slug.split("/")
+    if len(partes) != 2:
+        return {"error": "Slug invalido"}
+    u, k = partes
+    for cuenta in (1, 2):
+        r = _req(f"/kernels/output?userName={u}&kernelSlug={k}", cuenta=cuenta)
+        if not (isinstance(r, dict) and "error" in r):
+            return r
+    return {"error": "No se pudo listar output en ninguna cuenta"}
 
 
 def stop_kernel(slug):
