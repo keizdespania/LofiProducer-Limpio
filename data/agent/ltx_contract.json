@@ -55,18 +55,45 @@
       ]
     },
     "via_c_kaggle_free_t4": {
-      "estado": "EN_PRUEBAS (fix CUDA aplicado 2026-11-05 15:50, pendiente de re-lanzar)",
+      "estado": "OPERATIVA (2026-11-06 00:17)",
       "metodo": "free-aistudio repo (C++ + Q3) en Kaggle T4 con servidor local",
       "script": "scripts/agente_ltx_kaggle_free.py",
       "notebook_fuente": "https://github.com/airesearch-official/free-aistudio/blob/main/notebooks/ltx2-3-video.ipynb",
       "ventaja": "SIN LIMITE de generaciones. Usa la GPU T4 del kernel (9h por sesion, ~30h/semana).",
       "como_funciona": "Clona repo, descarga binario C++ y pesos Q3, levanta sd-server en localhost:7860, envia imagenes al servidor local, sube MP4 a GitHub.",
-      "endpoint_local": "http://127.0.0.1:1234",
+      "endpoint_local": "http://127.0.0.1:1234/sdcpp/v1/vid_gen",
       "duracion_max_seg": 8.5,
       "requisitos": "Kaggle GPU T4 + Internet ON",
       "riesgo": "El endpoint /generate y los parametros del sd-server pueden no ser exactamente esos. Ajustar mirando src/server.py del repo.",
-      "fix_aplicado_2026_11_05": "pip install nvidia-cuda-runtime-cu12 + nvidia-cublas-cu12 + nvidia-cudnn-cu12 ANTES de start_server(). find_cuda_library_paths() de src/server.py ya glob-ea site-packages/nvidia/*/lib y monta LD_LIBRARY_PATH automaticamente. Tambien corregido puerto 8080->1234.",
-      "script_anterior_obsoleto": "scripts/agente_ltx_free.py (NO EXISTE)"
+      "fix_aplicado_2026_11_05": "pip install --target /tmp/cuda12_libs + LD_LIBRARY_PATH global (bypass bug dist-packages en find_cuda_library_paths)",
+      "script_anterior_obsoleto": "scripts/agente_ltx_free.py (NO EXISTE)",
+      "polling": "GET /sdcpp/v1/jobs/{id} cada 5s, max 15 min",
+      "payload_obligatorio": {
+        "init_image": "data:image/png;base64,...",
+        "video_frames": "25 (8n+1, minimo; 97=3s, 121=5s)",
+        "fps": 24,
+        "width": 832,
+        "height": 480,
+        "sample_params": {
+          "sample_steps": 20,
+          "cfg_scale": 3.0,
+          "sample_method": "euler",
+          "scheduler": "discrete"
+        },
+        "vae_decode_only": false
+      },
+      "fix_aplicado_2026_11_06": "sample_params ANIDADO (steps/cfg/method/scheduler). Sin anidar -> generate_video returned no results.",
+      "historial": {
+        "2026-11-05_14:35": "FAIL libcudart.so.12 (binario busca CUDA 12, Kaggle tiene 13)",
+        "2026-11-05_22:29": "start_server OK con fix pip --target + LD_LIBRARY_PATH global",
+        "2026-11-05_23:00": "FAIL generate_video returned no results (falta sample_params)",
+        "2026-11-06_00:17": "OK: capibara_4 (4.2 MB) + capibara_5 (3.7 MB) en GitHub + galeria"
+      },
+      "limitaciones_conocidas": [
+        "160s descarga modelos cada run (fix futuro: Dataset Kaggle cacheado)",
+        "90s carga modelo Q3 en RAM (no VRAM, offload-to-cpu activo)",
+        "video_frames maximo seguro en T4 15GB: 97 (3s). Subir a 121 arriesga OOM."
+      ]
     }
   },
   "input": {
@@ -107,6 +134,10 @@
       "via_a_capibaras": "3 de 5 OK (capibara_1,2,3), 2 fallidos por ZeroGPU quota agotada",
       "via_b_wan": "OK: 3s, 386KB, generado con Wan 2.2 en Kaggle (250s)",
       "via_c_pendiente": "Pendiente de probar. Si funciona, es la via definitiva para produccion masiva."
+    },
+    "2026-11-06": {
+      "via_c_capibara_4": "OK 4.2 MB, 25 frames, generado en ~370s",
+      "via_c_capibara_5": "OK 3.7 MB"
     }
   }
 }
