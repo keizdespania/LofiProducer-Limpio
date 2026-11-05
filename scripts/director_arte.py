@@ -36,20 +36,22 @@ def _duracion_audio(path):
 
 
 def _detectar_tipo(texto, idx, total):
-    """Detecta el tipo narrativo de una frase para prompt/duración."""
+    """Detecta el tipo narrativo de una frase para prompt/duracion (ampliado 2026-11-04)."""
     t = (texto or "").lower().strip()
-    if idx == 0 or any(t.startswith(x) for x in ["hola", "buenas", "saludos", "¿", "bienvenidos"]):
+    if idx == 0 or any(t.startswith(x) for x in ["mira", "hola", "buenas", "vamos", "¿", "bienvenidos"]):
         return "hook"
     if idx >= total - 1:
         return "cierre"
-    if any(x in t for x in ["tituló", "titular de", "publicó", "reza:", "\""]):
-        return "cita"
-    if any(x in t for x in ["framing", "sesgo", "técnica", "manipulación", "significa", "implica", "esto es"]):
-        return "explicacion"
-    if any(x in t for x in ["en cambio", "por su parte", "sin embargo", "mientras", "contrasta"]):
-        return "contraste"
-    if any(c.isdigit() for c in t) and any(x in t for x in ["%", "millones", "mil ", "dato", "cifra"]):
+    if "[pattern" in t:
+        return "pattern"
+    if any(c.isdigit() for c in t) and any(x in t for x in ["%", "millones", "mil ", "dato", "cifra", "115", "4.000"]):
         return "dato"
+    if '"' in t or '«' in t or any(x in t for x in ["publicó", "dice que", "afirma", "asegura", "tituló", "titular", "según", "reza:"]):
+        return "cita"
+    if any(x in t for x in ["en cambio", "por su parte", "sin embargo", "mientras", "contrasta", "aunque"]):
+        return "contraste"
+    if any(x in t for x in ["framing", "sesgo", "técnica", "manipulación", "significa", "implica", "esto es", "fíjate", "medios", "prensa", "periodista", "oculta", "omite", "vende", "narrativa"]):
+        return "explicacion"
     return "default"
 
 
@@ -108,30 +110,18 @@ def _fusionar_a_segmentos(frases, duracion_audio, cada_seg=8.5):
 
 
 def _generar_conceptos_visuales(segmentos):
-    """Genera un prompt visual en INGLÉS por segmento con LLM (disenador_visual)."""
-    from especialistas import pedir_a_especialista
-    print(f"[arte] {len(segmentos)} segmentos → conceptos visuales (LLM)...", flush=True)
-    for i, s in enumerate(segmentos):
-        tipo = s["tipo"]
-        prompt = (
-            f"Segmento tipo={tipo}. Texto: {s['texto'][:200]}. "
-            f"Devuelve SOLO un prompt visual en INGLÉS de 8-15 palabras para SDXL, "
-            f"formato Subject + Action + Environment + Lighting + Style. "
-            f"Sin comillas, sin texto legible."
-        )
-        try:
-            r = pedir_a_especialista("disenador_visual", prompt, contexto=s["texto"], proveedor="omni")
-            r = r.strip().strip('"').strip("'").split('\n')[0][:150]
-            if len(r) > 15 and not re.search(r'[ñáéíóú]', r.lower()):
-                s["concepto_visual"] = r
-            else:
-                s["concepto_visual"] = f"cinematic newspaper scene about {tipo}, dramatic light, no text"
-        except Exception:
-            s["concepto_visual"] = f"cinematic newspaper scene about {tipo}, dramatic light, no text"
-        if i % 10 == 0:
-            print(f"  [{i+1}/{len(segmentos)}] {s['concepto_visual'][:60]}", flush=True)
-    return segmentos
+    """Genera prompts visuales usando el módulo central (Groq 4 sin filtros)."""
+    from director_fotografia import generar_prompt_visual
+    print(f"[arte] {len(segmentos)} segmentos → conceptos visuales (Director de Fotografía)...", flush=True)
 
+    for i, s in enumerate(segmentos):
+        # Usamos el texto completo del segmento para que el director de foto se inspire
+        s["concepto_visual"] = generar_prompt_visual(s["texto"], vertical=False)
+        
+        if i % 10 == 0:
+            print(f"  [{i+1}/{len(segmentos)}] {s['concepto_visual'][:70]}", flush=True)
+
+    return segmentos
 
 def _insertar_pattern_interrupts(segmentos, cada_n=15):
     """Cada N segmentos, inserta 1 pattern interrupt de 3s (imagen abstracta)."""

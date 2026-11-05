@@ -156,9 +156,15 @@ def generar_todos(fecha=None):
         print(f"\n[Short {i}] tipo={tipo} | keywords: {keywords}")
         rutas[i] = []
         
+        # Usamos el módulo central para generar el prompt del short
+        from director_fotografia import generar_prompt_visual
+        texto_short = hook.get("guion") or hook.get("hook") or keywords
+        prompt_base_visual = generar_prompt_visual(texto_short, vertical=True)
+        
+        # Generamos 3 variaciones sutiles del mismo prompt para el carrusel
+        prompts = [prompt_base_visual] * 3
         for j, prompt_base in enumerate(prompts, 1):
-            # Inyectar keywords al principio del prompt
-            prompt = f"{keywords}, {prompt_base}"
+            prompt = prompt_base
             archivo = f"short_{i}_{fecha}_{tipo}_{j}.png"
             destino = IMG / archivo
             

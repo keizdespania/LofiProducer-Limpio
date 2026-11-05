@@ -26,7 +26,10 @@ def generar_todas(fecha=None):
     print("=" * 60)
     
     urls = {}
-    for tipo, prompt in PROMPTS.items():
+    from director_fotografia import generar_prompt_visual
+    for tipo, prompt_old in PROMPTS.items():
+        # Le pasamos al director de foto el tipo de imagen y algo de contexto
+        prompt = generar_prompt_visual(f"Una imagen para un artículo sobre {tipo}. Análisis mediático.", vertical=False)
         nombre = f"web_{fecha}_{tipo}.png"
         destino = IMG / nombre
         
