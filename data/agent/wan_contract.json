@@ -9,7 +9,6 @@
   "tiempo_carga_modelo_seg": 300,
   "tiempo_generacion_25_steps_seg": 250,
   "tiempo_generacion_4_steps_seg": 45,
-
   "presets": {
     "cinematic_480p": {
       "resolution": "832x480",
@@ -34,31 +33,45 @@
       "nota": "Usa checkpoint destilado Wan2.2-TI2V-5B-Turbo-Diffusers"
     }
   },
-
   "aceleracion": {
-    "checkpoint_turbo": "cbensimon/Wan2.2-TI2V-5B-Turbo-Diffusers",
+    "checkpoint_turbo": "yetter-ai/Wan2.2-TI2V-5B-Turbo-Diffusers",
     "reduccion_tiempo": "250s -> 45s (4 pasos en vez de 25)",
     "batch_en_kernel": "Cargar el modelo UNA VEZ y procesar N imagenes en bucle. Ahorra 300s de carga por video.",
-    "precision": "bfloat16 (evita artefactos de float16)"
+    "precision": "bfloat16 (evita artefactos de float16)",
+    "torch_dtype": "bfloat16",
+    "num_inference_steps": 4,
+    "guidance_scale": 1.0
   },
-
   "validacion": {
-    "width": {"min": 128, "max": 1280, "multiplo": 32},
-    "height": {"min": 128, "max": 1280, "multiplo": 32},
-    "num_frames": {"min": 8, "max": 121, "formula": "4n+1"},
-    "num_inference_steps": {"min": 4, "max": 50}
+    "width": {
+      "min": 128,
+      "max": 1280,
+      "multiplo": 32
+    },
+    "height": {
+      "min": 128,
+      "max": 1280,
+      "multiplo": 32
+    },
+    "num_frames": {
+      "min": 8,
+      "max": 121,
+      "formula": "4n+1"
+    },
+    "num_inference_steps": {
+      "min": 4,
+      "max": 50
+    }
   },
-
   "prompt": {
     "negativo": "text, letters, words, writing, subtitles, watermark, logo, signature",
     "nota": "Wan 2.2 no sabe escribir. Prohibir texto explicitamente en el prompt negativo."
   },
-
   "errores_conocidos": {
     "ftfy_no_definido": "Instalar ftfy, sentencepiece y protobuf antes de cargar el pipeline.",
-    "bad_credentials_github": "El GITHUB_TOKEN del kernel no es valido o ha caducado. Verificar permisos 'repo' y fecha de expiracion."
+    "bad_credentials_github": "El GITHUB_TOKEN del kernel no es valido o ha caducado. Verificar permisos 'repo' y fecha de expiracion.",
+    "repo_turbo_inexistente": "cbensimon/Wan2.2-TI2V-5B-Turbo-Diffusers NO EXISTE. Usar yetter-ai/Wan2.2-TI2V-5B-Turbo-Diffusers"
   },
-
   "limites_kaggle": {
     "sesion_max_horas": 9,
     "gpu_horas_semanales": 30,

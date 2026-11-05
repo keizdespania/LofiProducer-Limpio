@@ -1004,3 +1004,26 @@ DRY_RUN=1 python3 scripts/pipeline_encuadre.py 2>&1 | tee data/logs/test_$(date 
 - `scripts/director_fotografia.py` (el que manda los prompts a Groq 4).
 - `scripts/notificar_resumen_dia.py` (el que manda el resumen a Telegram).
 - `scripts/validar_video.py` (el que valida antes de YouTube).
+
+
+---
+
+## 🆕 SESIÓN 2026-11-05 (WAN FACTORY + TURBO)
+
+### ✅ HECHO
+- Contrato Wan 2.2 creado con presets, aceleración y errores conocidos.
+- Agente paralelo 'scripts/agente_wan_encuadre.py' con Factory (cola JSON + batch).
+- Checkpoint Turbo: 'yetter-ai/Wan2.2-TI2V-5B-Turbo-Diffusers' (4 pasos, ~45s/video).
+- Cola: 'data/agent/wan_cola.json'.
+- Prompt negativo: text, letters, words, writing, subtitles, watermark.
+
+### 🚨 ERRORES CONOCIDOS
+- Repo Turbo: 'cbensimon/...' NO EXISTE. Correcto: 'yetter-ai/...'
+- GitHub Token: ghp_ caduca. Usar Fine-grained (github_pat_) con Contents: Read and write.
+- VRAM T4: bfloat16 + enable_model_cpu_offload(). 480p (832x480) seguro.
+
+### 📋 ESTRATEGIA
+1. Batch 20-30 imagenes/kernel (amortiza 300s de carga).
+2. Cola en GitHub: kernel lee, procesa, sube MP4, marca 'completado'.
+3. SDXL para 90% del video, Wan Turbo solo para Hook de intro.
+4. Limites Kaggle: ~9h/sesion, ~30h GPU/semana, 2 cuentas.

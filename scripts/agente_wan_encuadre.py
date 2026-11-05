@@ -60,7 +60,7 @@ if not pendientes:
     sys.exit(0)
 
 # 2. Cargar modelo Turbo
-model_id = "cbensimon/Wan2.2-TI2V-5B-Turbo-Diffusers"
+model_id = "yetter-ai/Wan2.2-TI2V-5B-Turbo-Diffusers"
 print(f"Cargando VAE ({{model_id}})...", flush=True)
 vae = AutoencoderKLWan.from_pretrained(model_id, subfolder="vae", torch_dtype=torch.bfloat16)
 print("Cargando pipeline I2V Turbo...", flush=True)

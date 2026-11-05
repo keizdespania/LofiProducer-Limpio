@@ -1,31 +1,37 @@
 # HANDOFF — SOMOS EL ENCUADRE · 2026-11-05
 
 ## ESTADO EN 30 SEGUNDOS
-**Pipeline rediseñado a nivel visual.** Las imágenes cuentan la historia. SDXL hackeado usando un Director de Fotografía (Groq 4) que traduce a inglés literal. Shorts divididos en 3 escenas. Telegram envía métricas.
+Pipeline visual rediseñado. SDXL genera 72 fotos cinematográficas, shorts con 3 escenas, voz de Álvaro con pitch grave y pausas 0.75s. Wan 2.2 Turbo configurado como agente paralelo (I2V) en Kaggle. Falló primera prueba por repo Turbo inexistente. Corregido a yetter-ai/Wan2.2-TI2V-5B-Turbo-Diffusers.
 
 ## COMMITS RECIENTES
-- 47fcbf6 Prompt Maestro actualizado a literales
-- 443c0d0 Conectar Director de Fotografía a todas las fábricas
-- 178f4f0 Fusionar director_arte + segmentar_imagenes
+- 3c1c813 feat(wan): factory con Turbo (4 steps) + batch + prompt negativo
+- 79120f4 docs(contracts): actualizar contratos, BOOT y HANDOFF
+- 4d7f849 feat(voz): narrador Top 1 - pausa 0.75s y tono grave
 
-## EL NUEVO FLUJO VISUAL
-1. voz_edge.py genera el .ass.
-2. director_arte.py lee el ASS, crea 72 segmentos y llama a director_fotografia.py.
-3. director_fotografia.py llama a Groq 4 pidiendo descripciones literales.
-4. SDXL genera las 72 imágenes sin texto alienígena.
-5. render_robusto.py monta el vídeo.
+## FUNCIONA
+- Pipeline diario (SDXL + Groq 4 + voz + podcast + web).
+- Shorts con 3 escenas narrativas (9:16).
+- Token GitHub Fine-grained verificado.
+- Contrato Wan 2.2 con presets y errores conocidos.
 
 ## PENDIENTE
-- Blogger: Pausado por baneo (reactivar 11/11).
-- YouTube: Verificar subida con los títulos correctos (SEO del top16).
-- Web: Generar los 2-3 posts diarios y publicar en Cloudflare.
+- Wan Factory: relanzar con repo yetter-ai.
+- Blogger: pausado hasta 11/11.
+- Batch Wan: probar 20-30 imagenes/kernel.
 
-## PRIMEROS PASOS PRÓXIMA IA
-Para ver el log: tail -100 data/logs/pipeline.log | grep -E 'Director|arte|OK|Error'
-ls -lh output/encuadre/video_largo_2026-11-05.mp4
-ls -lh web/media/imagenes/seg_*.png | head -5
+## PRIMEROS PASOS
+cd ~/LofiProducer
+python3 scripts/agente_wan_encuadre.py lanzar
+tail -100 data/logs/pipeline.log | grep -E 'Director|arte|OK|Error'
+
+## REGLAS CRITICAS
+- #56: SDXL no entiende metaforas. Describe objetos fisicos.
+- #57: SDXL no sabe escribir. Prohibido titulares.
+- #58: Groq 4 directo para prompts visuales.
+- #59: 3 escenas por short.
+- #60: Wan 2.2 Turbo: yetter-ai/Wan2.2-TI2V-5B-Turbo-Diffusers (bfloat16, 4 pasos).
 
 ## NO ROMPER
-- producir_fase2() (el clásico).
-- El cron de las 06:00.
+- producir_fase2() (clasico).
+- Cron 06:00.
 - web/site/ (Cloudflare).
