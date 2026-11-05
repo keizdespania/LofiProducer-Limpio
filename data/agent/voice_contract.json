@@ -1,18 +1,18 @@
 {
   "nombre": "Contrato de Voz - Somos El Encuadre",
-  "version": "2.0",
-  "fecha": "2026-10-27",
-  "motor_principal": "Edge-TTS (Microsoft)",
-  "motivo": "Voz neuronal humana, gratuita, con timestamps precisos para karaoke.",
+  "version": "2.1",
+  "fecha": "2026-11-05",
+  "motor_principal": "Edge-TTS (Microsoft) - Tono Documental",
+  "motivo": "Voz de Álvaro con pitch bajo para sonar a documental de Netflix. Pausas humanas.",
   "voces_disponibles": {
     "es-ES-AlvaroNeural": "Masculina, España, tono natural y cercano (ELEGIDA)",
     "es-ES-ElviraNeural": "Femenina, España, tono profesional",
     "es-MX-JorgeNeural": "Masculina, México, tono cálido"
   },
   "parametros": {
-    "rate": "-5%",
+    "rate": "-5% (dinámico por escena)",
     "volume": "+0%",
-    "pitch": "+0Hz"
+    "pitch": "-20Hz"
   },
   "ventajas_sobre_sherpa": [
     "Voz 100% humana (no robótica)",
@@ -21,5 +21,12 @@
     "Solo requiere conexión a internet"
   ],
   "script_soporte": "scripts/voz_edge.py",
-  "fallback": "Sherpa-ONNX (si falla internet)"
+  "fallback": "Sherpa-ONNX (si falla internet)",
+  "pausa_entre_escenas_seg": 0.75,
+  "notas_top1": [
+    "Pitch -20Hz aplicado a es-ES-AlvaroNeural para darle gravedad de narrador veterano.",
+    "Silencio entre escenas reducido a 0.75s para simular respiración humana.",
+    "Velocidad (rate) se ajusta dinámicamente según el tipo de escena.",
+    "Efecto radio antigua descartado, se prefiere la limpieza del estudio."
+  ]
 }
