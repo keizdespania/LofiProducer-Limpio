@@ -146,10 +146,16 @@ for i, item in enumerate(pendientes):
             "negative_prompt": "worst quality, inconsistent motion, blurry, jittery, text, letters, words, writing, subtitles, watermark",
             "init_image": img_data_uri,
             "vae_decode_only": False,
-            "video_frames": 97,
+            "video_frames": 25,
             "fps": 24,
             "width": 832,
             "height": 480,
+            "sample_params": {
+                "sample_steps": 20,
+                "cfg_scale": 3.0,
+                "sample_method": "euler",
+                "scheduler": "discrete",
+            },
         }
         r = requests.post(SERVER_URL + "/sdcpp/v1/vid_gen", json=payload, timeout=600)
         if r.status_code not in (200, 201, 202):
@@ -177,7 +183,16 @@ for i, item in enumerate(pendientes):
             if st in ("completed", "succeeded", "done"):
                 result = jd; break
             if st in ("failed", "error", "cancelled"):
-                print("Job fallido:", jd, flush=True); break
+                print("Job fallido:", jd, flush=True)
+                try:
+                    with open("/kaggle/working/server.log") as _lf:
+                        _lines = _lf.readlines()[-40:]
+                    print("--- server.log (ultimas 40) ---", flush=True)
+                    print("".join(_lines), flush=True)
+                    print("--- fin ---", flush=True)
+                except Exception as _le:
+                    print("No se pudo leer server.log:", _le, flush=True)
+                break
         if not result:
             print("Timeout o fallo de job", flush=True); continue
 
