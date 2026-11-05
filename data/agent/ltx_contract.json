@@ -1,0 +1,32 @@
+{
+  "nombre": "Contrato LTX-Video 2.3 - El Encuadre",
+  "version": "1.0",
+  "fecha": "2026-11-05",
+  "motor": "LTX-Video 2.3 (Distilled)",
+  "hardware_objetivo": "Kaggle T4 x2",
+  "notebook_fuente": "free-aistudio/ltx2-3-video.ipynb",
+  "repo_fuente": "https://github.com/airesearch-official/free-aistudio",
+  "metodo": "stable-diffusion.cpp CLI (sd-cli)",
+  "duracion_max_seg": 10,
+  "resoluciones": [
+    "480p",
+    "720p"
+  ],
+  "vram_saving": "VAE tiling + offload-to-cpu",
+  "prompt": {
+    "negativo": "text, letters, words, writing, subtitles, watermark, logo, signature",
+    "nota": "LTX tambien intenta escribir. Prohibir texto explicitamente."
+  },
+  "errores_conocidos": {
+    "oom_t4": "Usar VAE Tiling. Bajar a 480p si 720p falla.",
+    "repo_wan_turbo": "yetter-ai/Wan2.2-TI2V-5B-Turbo-Diffusers (para Wan, no LTX)"
+  },
+  "cola": "data/agent/ltx_cola.json",
+  "agente": "scripts/agente_ltx_encuadre.py",
+  "binario": "sd-cli (release pre-compilado de leejet/stable-diffusion.cpp)",
+  "pesos_gguf": "unsloth/LTX-2.3-GGUF (Q4_K_M)",
+  "comando_i2v": "sd-cli -M vid_gen --diffusion-model ... -i input.png -o output.webm",
+  "frames_validos": "8n+1 (33, 81, 97, 121...)",
+  "duracion_inicial_seg": 1.4,
+  "offload": "--offload-to-cpu (obligatorio en T4)"
+}
