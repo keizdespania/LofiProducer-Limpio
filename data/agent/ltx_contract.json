@@ -70,10 +70,7 @@
       "polling": "GET /sdcpp/v1/jobs/{id} cada 5s, max 15 min",
       "payload_obligatorio": {
         "init_image": "data:image/png;base64,...",
-        "video_frames": "25 (8n+1, minimo; 97=3s, 121=5s)",
-        "fps": 24,
-        "width": 832,
-        "height": 480,
+        "video_frames": "25=1s, 73=3s, 121=5s (8n+1)",
         "sample_params": {
           "sample_steps": 20,
           "cfg_scale": 3.0,
@@ -84,16 +81,17 @@
       },
       "fix_aplicado_2026_11_06": "sample_params ANIDADO (steps/cfg/method/scheduler). Sin anidar -> generate_video returned no results.",
       "historial": {
-        "2026-11-05_14:35": "FAIL libcudart.so.12 (binario busca CUDA 12, Kaggle tiene 13)",
-        "2026-11-05_22:29": "start_server OK con fix pip --target + LD_LIBRARY_PATH global",
-        "2026-11-05_23:00": "FAIL generate_video returned no results (falta sample_params)",
-        "2026-11-06_00:17": "OK: capibara_4 (4.2 MB) + capibara_5 (3.7 MB) en GitHub + galeria"
+        "2026-11-05_14:35": "FAIL libcudart.so.12 (Kaggle CUDA 13, binario busca 12)",
+        "2026-11-05_22:29": "start_server OK con pip --target /tmp/cuda12_libs + LD_LIBRARY_PATH global",
+        "2026-11-05_23:00": "FAIL generate_video no results (payload plano, falta sample_params anidado)",
+        "2026-11-06_00:17": "OK: capibara_4 (4.2 MB) + capibara_5 (3.7 MB, con audio LTX nativo)"
       },
       "limitaciones_conocidas": [
         "160s descarga modelos cada run (fix futuro: Dataset Kaggle cacheado)",
         "90s carga modelo Q3 en RAM (no VRAM, offload-to-cpu activo)",
         "video_frames maximo seguro en T4 15GB: 97 (3s). Subir a 121 arriesga OOM."
-      ]
+      ],
+      "fix_2026_11_06": "sample_params ANIDADO. Sin anidar -> generate_video returned no results."
     }
   },
   "input": {
@@ -136,8 +134,7 @@
       "via_c_pendiente": "Pendiente de probar. Si funciona, es la via definitiva para produccion masiva."
     },
     "2026-11-06": {
-      "via_c_capibara_4": "OK 4.2 MB, 25 frames, generado en ~370s",
-      "via_c_capibara_5": "OK 3.7 MB"
+      "via_c": "OPERATIVA. 2 capibaras generados, 25 frames, ~370s/generacion"
     }
   }
 }
