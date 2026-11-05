@@ -48,15 +48,41 @@ print("Instalando dependencias...", flush=True)
 subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-r", WORK + "/requirements.txt"], check=True)
 sys.path.append(WORK)
 
-# 3.5 Instalar CUDA runtime 12 (Kaggle tiene CUDA 13; sd-server busca libcudart.so.12)
-# find_cuda_library_paths() de start_server() ya glob-ea site-packages/nvidia/*/lib
-print("Instalando CUDA runtime 12 (para sd-server)...", flush=True)
-subprocess.run([sys.executable, "-m", "pip", "install", "-q",
-                "nvidia-cuda-runtime-cu12", "nvidia-cublas-cu12",
-                "nvidia-cudnn-cu12"], check=False)
-import importlib.util as _iu
-for _pkg in ("nvidia.cuda_runtime", "nvidia.cublas", "nvidia.cudnn"):
-    print(f"  {_pkg}: {'OK' if _iu.find_spec(_pkg) else 'MISSING'}", flush=True)
+# 3.5 Fix CUDA runtime 12 (Kaggle T4 tiene CUDA 13, sd-server busca libcudart.so.12)
+# Instalamos a /tmp/cuda12_libs (--target) y seteamos LD_LIBRARY_PATH global
+# ANTES del import start_server (que hace env=os.environ.copy()).
+# Bypass del bug de find_cuda_library_paths() en src/server.py: filtra por
+# "site-packages" pero Kaggle usa /usr/local/lib/python3.13/dist-packages.
+print("Instalando CUDA 12 runtime en /tmp/cuda12_libs...", flush=True)
+r = subprocess.run([sys.executable, "-m", "pip", "install",
+                    "--target", "/tmp/cuda12_libs",
+                    "nvidia-cuda-runtime-cu12==12.4.127",
+                    "nvidia-cublas-cu12==12.4.5.8",
+                    "nvidia-cudnn-cu12==9.1.0.70"],
+                   capture_output=True, text=True)
+print("  pip rc:", r.returncode, flush=True)
+if r.returncode != 0:
+    print("  pip stderr (tail):", r.stderr[-500:], flush=True)
+
+# Buscar libcudart.so.12 y demas libs CUDA 12 en /tmp/cuda12_libs
+import glob as _glob
+cuda_lib_dirs = sorted(_glob.glob("/tmp/cuda12_libs/nvidia/*/lib"))
+cudart = _glob.glob("/tmp/cuda12_libs/**/libcudart.so.12", recursive=True)
+cublas = _glob.glob("/tmp/cuda12_libs/**/libcublas.so.12", recursive=True)
+cudnn  = _glob.glob("/tmp/cuda12_libs/**/libcudnn.so*", recursive=True)
+print("  dirs CUDA:", cuda_lib_dirs, flush=True)
+print("  libcudart.so.12:", cudart, flush=True)
+print("  libcublas.so.12:", cublas, flush=True)
+print("  libcudnn:", cudnn, flush=True)
+
+if cudart:
+    ld = ":".join(cuda_lib_dirs)
+    os.environ["LD_LIBRARY_PATH"] = ld + ":" + os.environ.get("LD_LIBRARY_PATH", "")
+    print("  LD_LIBRARY_PATH =", os.environ["LD_LIBRARY_PATH"][:300], flush=True)
+    print("  ✅ libcudart encontrada — start_server deberia arrancar", flush=True)
+else:
+    print("  ❌ libcudart.so.12 NO se descargo — via_c sigue bloqueada", flush=True)
+    raise RuntimeError("libcudart.so.12 no disponible tras pip install --target")
 
 # 3. Descargar binario + pesos
 print("Descargando binario y pesos (Q3)...", flush=True)
