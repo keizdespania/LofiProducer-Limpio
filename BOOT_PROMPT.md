@@ -1027,3 +1027,50 @@ DRY_RUN=1 python3 scripts/pipeline_encuadre.py 2>&1 | tee data/logs/test_$(date 
 2. Cola en GitHub: kernel lee, procesa, sube MP4, marca 'completado'.
 3. SDXL para 90% del video, Wan Turbo solo para Hook de intro.
 4. Limites Kaggle: ~9h/sesion, ~30h GPU/semana, 2 cuentas.
+
+---
+
+## SESION 2026-11-05 (LTX VIDEO I2V + CAPIBARAS + COLA SEPARADA)
+
+### LO HECHO
+1. LTX 2.3 I2V via Hugging Face Space (agente_ltx_hf_kaggle.py):
+   - Pirámide animada OK (8s, 386KB).
+   - 3/5 capibaras OK. 2 fallidos por ZeroGPU (5 min/dia).
+   - Solucion: cola separada en pendiente/completados para evitar conflictos git.
+2. Contrato LTX v2.0 (data/agent/ltx_contract.json):
+   - via_a: HF Space (OPERATIVA, 5 min/dia).
+   - via_b: Kaggle GPU con dangkhoa2016 (EN PRUEBAS, bloqueada por libcudart).
+   - via_c: Kaggle T4 free-aistudio (NUEVA, ILIMITADA, pendiente de probar).
+3. Agente agente_ltx_free.py: kernel T4 que clona free-aistudio, descarga Q3, levanta sd-server local y genera sin limite.
+4. Cola separada:
+   - data/agent/ltx_cola_pendiente.json (solo escribe Termux).
+   - data/agent/ltx_cola_completados.json (solo escribe Kaggle).
+   - Cero conflictos git.
+
+### REGLAS NUEVAS
+- #61: NUNCA poner el mismo fichero de cola como fuente y destino. Separar en pendiente/completados.
+- #62: El Space de LTX tiene 6 replicas. NO usar HTTP manual para el polling (falla con 404). Usar gradio_client en Python 3.10 (Kaggle CPU).
+- #63: ZeroGPU regala 5 min/dia. Cada video reserva 150s. Max 2 videos/dia. Avisar al usuario ANTES de lanzar.
+- #64: Para LTX ilimitado, usar free-aistudio en Kaggle T4 (via_c). NO cuesta nada y no tiene limite.
+- #65: duration_ui maximo en LTX = 8.5s.
+- #66: Si un binario pre-compilado falla por GLIBC o libcudart, compilar dentro de Kaggle o usar el dataset de free-aistudio.
+
+### ESTADO ACTUAL
+- via_a: OPERATIVA (pirámide + 3 capibaras en GitHub).
+- via_b: APARCADA (bloqueo libcudart, no merece la pena si via_c funciona).
+- via_c: PENDIENTE DE PROBAR (kernel lanzado, esperando resultado).
+
+### PENDIENTE
+1. Verificar via_c (free-aistudio en T4). Si funciona, es la via definitiva.
+2. Si via_c falla, ajustar el endpoint /generate mirando src/server.py.
+3. Integrar LTX solo para el Hook de la intro (3-5s animados).
+4. Actualizar HANDOFF con el resultado de via_c.
+
+### FICHEROS NUEVOS
+- scripts/agente_ltx_hf.py (cliente HF desde Termux, roto por Python 3.14).
+- scripts/agente_ltx_hf_kaggle.py (cliente HF desde Kaggle CPU, OPERATIVO).
+- scripts/agente_ltx_free.py (cliente T4 ilimitado, EN PRUEBAS).
+- scripts/crear_dataset_ltx.py (dataset de pesos, aparcado).
+- data/agent/ltx_contract.json v2.0.
+- data/agent/ltx_cola_pendiente.json.
+- data/agent/ltx_cola_completados.json.
