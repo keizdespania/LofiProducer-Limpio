@@ -976,3 +976,31 @@ DRY_RUN=1 python3 scripts/pipeline_encuadre.py 2>&1 | tee data/logs/test_$(date 
 4. Configurar Spotify for Podcasters (manual, 10 min)
 5. Configurar Cloudflare R2 (manual, 10 min)
 6. Borrar MP3 viejos del repo cuando R2 esté OK
+
+---
+
+## 🆕 SESIÓN 2026-11-05 (EL DIRECTOR DE FOTOGRAFÍA + PIPELINE TOP 1)
+
+### ✅ LO HECHO
+1. **Director de Fotografía (`scripts/director_fotografia.py`)**: Módulo central que traduce guiones a prompts visuales. Usa **Groq 4 directo** para evitar el firewall de especialistas.
+2. **Fórmula SDXL Top 1**: Prompts literales (Sujeto + Acción + Entorno). PROHIBIDO "cinematic, 8k". **SDXL no sabe escribir**, prohibido pedir texto legible.
+3. **3 Escenas por Short**: Los shorts ya no repiten la misma imagen. Formato 9:16.
+4. **Limpieza**: Eliminados `segmentar_imagenes.py`, `descargar_lofi.py`, `calendario_editorial.py`.
+5. **Notificador**: `notificar_resumen_dia.py` manda métricas ricas a Telegram.
+6. **Validación de vídeo**: `validar_video.py` comprueba duración, ratio y streams antes de subir.
+
+### 🚨 REGLAS NUEVAS
+- **#56**: SDXL no entiende metáforas. Describe objetos físicos.
+- **#57**: SDXL no sabe escribir. Prohibido pedir titulares o fechas exactas.
+- **#58**: Usar Groq 4 directo para prompts (evita que la IA responda en castellano).
+- **#59**: 3 escenas por short (inicio, nudo, fin).
+
+### 📊 ESTADO VISUAL
+- Video largo: 72 fotogramas 16:9.
+- Shorts: 12 fotogramas 9:16.
+- Web: 6 fotogramas 16:9.
+
+### 📁 FICHEROS CLAVE NUEVOS
+- `scripts/director_fotografia.py` (el que manda los prompts a Groq 4).
+- `scripts/notificar_resumen_dia.py` (el que manda el resumen a Telegram).
+- `scripts/validar_video.py` (el que valida antes de YouTube).

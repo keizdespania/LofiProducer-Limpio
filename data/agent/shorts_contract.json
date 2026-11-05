@@ -129,5 +129,12 @@
     "short_3": "19:30 UTC",
     "short_4": "20:00 UTC",
     "nota": "Escalonados para no saturar. Vídeo largo también a las 20:00."
+  },
+  "reglas_visuales_2026_11_05": {
+    "formato": "9:16 (1080x1920)",
+    "escenas_por_short": 3,
+    "descripcion": "Inicio, nudo y desenlace. Generadas por director_fotografia.py.",
+    "prohibido": "Texto legible. Usar objetos físicos.",
+    "logo": "web/media/logo_elencuadre.jpg"
   }
 }

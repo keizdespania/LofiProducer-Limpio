@@ -22,23 +22,7 @@
     "bitrate_video": "10M",
     "bitrate_audio": "192k"
   },
-  "imagenes": {
-    "fuente": "SDXL Lightning (@cf/bytedance/stable-diffusion-xl-lightning)",
-    "cantidad": "72 escenas (segmentar_imagenes.py v2)",
-    "aspect": "16:9",
-    "resolucion_generada": "1344x768 (HORIZONTAL)",
-    "resolucion_render": "escala a 2560x1440 → crop → 1920x1080",
-    "efecto": "zoompan (Ken Burns) por escena",
-    "preset": "cinematic",
-    "timeout": "60s por imagen",
-    "tiempo_medio": "3.7s por imagen (Lightning, 33x más rápido que SDXL base)",
-    "scripts": {
-      "generador": "scripts/director_arte.py (aspect=16:9)",
-      "segmentador": "scripts/segmentar_imagenes.py (aspect=16:9)",
-      "render": "scripts/render_robusto.py (escala a 1920x1080)"
-    },
-    "nota": "Las imágenes 9:16 son SOLO para shorts (short_bg_XX.png). NUNCA usar 9:16 en vídeo largo."
-  },
+  "imagenes": "72 imagenes generadas por director_arte.py (16:9)",
   "musica": {
     "fuente": "YouTube con filtro license=creativeCommon",
     "pool": "config/lofi_largo_pool.json (16 links actuales)",
@@ -144,5 +128,13 @@
     "ejemplo_2026_11_03": "HuffPost: el teatro de Delgado — lo que NO te cuentan los medios",
     "max_chars": 100,
     "regla": "NUNCA 'Los 8 mecanismos mediáticos del X de Y'. SIEMPRE usar el tema real del día."
+  },
+  "validacion_previa_2026_11_05": {
+    "duracion_min_seg": 60,
+    "duracion_max_seg": 900,
+    "ratio_aspecto": "1.78 (16:9)",
+    "tamano_max_mb": 2048,
+    "requiere_audio": true,
+    "script": "scripts/validar_video.py"
   }
 }
