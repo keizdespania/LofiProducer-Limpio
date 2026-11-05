@@ -10,7 +10,8 @@ from kaggle_bearer import push_kernel, estado_kernel
 KAGGLE_USER = "keizproductions"
 KERNEL_SLUG = "ltx-hf-client"
 REPO = "keizdespania/LofiProducer-Limpio"
-COLA_URL = "https://raw.githubusercontent.com/" + REPO + "/main/data/agent/ltx_cola.json"
+COLA_URL = "https://raw.githubusercontent.com/" + REPO + "/main/data/agent/ltx_cola_pendiente.json"
+COMPLETADOS_URL = "https://raw.githubusercontent.com/" + REPO + "/main/data/agent/ltx_cola_completados.json"
 
 
 def _leer_env(k):
@@ -39,10 +40,16 @@ subprocess.run([sys.executable, "-m", "pip", "install", "-q", "gradio_client", "
 from gradio_client import Client, handle_file
 
 # 2. Descargar cola
-print("Descargando cola...", flush=True)
+print("Descargando colas...", flush=True)
 with urllib.request.urlopen(COLA_URL) as r:
-    cola = json.loads(r.read())
-pendientes = [item for item in cola if not item.get("completado", False)]
+    cola_pendientes = json.loads(r.read())
+try:
+    with urllib.request.urlopen(COMPLETADOS_URL) as r:
+        cola_completados = json.loads(r.read())
+except Exception:
+    cola_completados = []
+print("Pendientes:", len(cola_pendientes), "| Completados:", len(cola_completados), flush=True)
+pendientes = cola_pendientes  # ya son solo los pendientes
 print("Cola:", len(pendientes), "pendientes", flush=True)
 if not pendientes:
     print("Nada que hacer.", flush=True)
@@ -133,21 +140,40 @@ for i, item in enumerate(pendientes):
     except Exception as e:
         print("ERROR predict:", type(e).__name__, ":", e, flush=True)
 
-# 5. Actualizar cola
+# 5. Actualizar SOLO el fichero de completados
 if GITHUB_TOKEN:
     import requests
-    url = "https://api.github.com/repos/" + GITHUB_REPO + "/contents/data/agent/ltx_cola.json"
+    # Marcar como completados los que se hayan generado
+    completados_actualizados = list(cola_completados)
+    # Los pendientes que se han completado ahora (marcados en el bucle)
+    for item in pendientes:
+        if item.get("completado"):
+            completados_actualizados.append(item)
+    url = "https://api.github.com/repos/" + GITHUB_REPO + "/contents/data/agent/ltx_cola_completados.json"
     headers = {"Authorization": "token " + GITHUB_TOKEN, "Accept": "application/vnd.github.v3+json"}
     r = requests.get(url, headers=headers)
     if r.status_code == 200:
         sha = r.json().get("sha")
         data = {
-            "message": "Update ltx_cola",
-            "content": base64.b64encode(json.dumps(cola, indent=2).encode()).decode(),
+            "message": "Update ltx_cola_completados",
+            "content": base64.b64encode(json.dumps(completados_actualizados, indent=2).encode()).decode(),
             "branch": "main",
             "sha": sha
         }
         requests.put(url, headers=headers, json=data)
+    # Actualizar pendientes (solo los que NO se han completado)
+    pendientes_restantes = [item for item in pendientes if not item.get("completado")]
+    url2 = "https://api.github.com/repos/" + GITHUB_REPO + "/contents/data/agent/ltx_cola_pendiente.json"
+    r2 = requests.get(url2, headers=headers)
+    if r2.status_code == 200:
+        sha2 = r2.json().get("sha")
+        data2 = {
+            "message": "Update ltx_cola_pendiente",
+            "content": base64.b64encode(json.dumps(pendientes_restantes, indent=2).encode()).decode(),
+            "branch": "main",
+            "sha": sha2
+        }
+        requests.put(url2, headers=headers, json=data2)
 
 print("=== FIN ===", flush=True)
 '''

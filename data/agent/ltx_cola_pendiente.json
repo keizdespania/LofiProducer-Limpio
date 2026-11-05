@@ -1,0 +1,14 @@
+[
+  {
+    "nombre": "capibara_4",
+    "imagen_url": "https://raw.githubusercontent.com/keizdespania/LofiProducer-Limpio/main/assets/wan_inputs/capibara_4.png",
+    "prompt": "The capybara astronaut floats slowly in zero gravity, stars twinkling, cinematic",
+    "completado": false
+  },
+  {
+    "nombre": "capibara_5",
+    "imagen_url": "https://raw.githubusercontent.com/keizdespania/LofiProducer-Limpio/main/assets/wan_inputs/capibara_5.png",
+    "prompt": "The capybara DJ bobs its head to the music, neon lights pulsing, cinematic",
+    "completado": false
+  }
+]
