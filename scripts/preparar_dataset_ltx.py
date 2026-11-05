@@ -1,8 +1,10 @@
 """preparar_dataset_ltx.py - Kernel que prepara runtime LTX y crea Dataset Kaggle.
 Evita descarga manual: el kernel hace pip install CUDA 12 + restore_binary
 y publica /kaggle/working/ltx_runtime como Dataset keizproductions/ltx-free-runtime.
+
+Regla #20: reescrito limpio 2026-11-06 tras 3 parches fallidos.
 """
-import sys, pathlib
+import sys, pathlib, json
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -20,106 +22,111 @@ def _leer_env(k):
     return ""
 
 
-def _construir_kernel():
-    token = _leer_env("KAGGLE_API_TOKEN")  # KGAT de keizproductions
-    if not token:
-        raise RuntimeError("KAGGLE_API_TOKEN no encontrado en .env")
+# Template del kernel: comillas simples triples exteriores, dentro SIN triples
+# comillas (comentarios # y strings normales). Placeholders %TOKEN% y %DATASET_ID%
+_KERNEL_TEMPLATE = r'''"""Kernel: prepara runtime LTX + crea Dataset Kaggle."""
+import sys, subprocess, os, json, shutil
 
-    codigo = '''"""Prepara runtime LTX + crea Dataset Kaggle (sin descarga manual)."""
-import sys, subprocess, os, json, pathlib, shutil
-
-DATASET_ID = "''' + DATASET_ID + '''"
-KAGGLE_TOKEN = "''' + token + '''"
+DATASET_ID = "%DATASET_ID%"
+KAGGLE_TOKEN = "%TOKEN%"
 KAGGLE_USER = "keizproductions"
 
 print("=== PREPARANDO RUNTIME LTX ===", flush=True)
 
-# 1. Instalar CUDA 12 en /kaggle/working/ltx_runtime/nvidia_libs
-print("[1/4] pip install CUDA 12...", flush=True)
 rt = "/kaggle/working/ltx_runtime"
 os.makedirs(rt, exist_ok=True)
-subprocess.run([sys.executable, "-m", "pip", "install", "--target", rt + "/nvidia_libs",
-                "nvidia-cuda-runtime-cu12==12.4.127",
-                "nvidia-cublas-cu12==12.4.5.8",
-                "nvidia-cudnn-cu12==9.1.0.70"], check=True)
 
-# 2. Clonar repo + restaurar binario
-print("[2/4] Clonando free-aistudio...", flush=True)
+# [1/4] CUDA 12
+print("[1/4] pip install CUDA 12...", flush=True)
+if not os.path.exists(rt + "/nvidia_libs/nvidia"):
+    subprocess.run([sys.executable, "-m", "pip", "install", "--target", rt + "/nvidia_libs",
+                    "nvidia-cuda-runtime-cu12==12.4.127",
+                    "nvidia-cublas-cu12==12.4.5.8",
+                    "nvidia-cudnn-cu12==9.1.0.70"], check=True)
+else:
+    print("  ya existe nvidia_libs, skip", flush=True)
+
+# [2/4] Binario
+print("[2/4] Restaurando binario...", flush=True)
 WORK = "/kaggle/working/free-aistudio"
-subprocess.run(["git", "clone", "https://github.com/airesearch-official/free-aistudio.git", WORK], check=True)
+if not os.path.exists(WORK):
+    subprocess.run(["git", "clone", "https://github.com/airesearch-official/free-aistudio.git", WORK], check=True)
 sys.path.append(WORK)
 subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-r", WORK + "/requirements.txt"], check=True)
-
-print("[3/4] Restaurando binario sd-server...", flush=True)
 from src.downloader import restore_binary
 restore_binary(repo="airesearch-official/free-aistudio", tag="v1.0.0")
-shutil.copytree("/tmp/sd_bin", rt + "/sd_bin", dirs_exist_ok=True)
+if os.path.exists(rt + "/sd_bin"):
+    shutil.rmtree(rt + "/sd_bin")
+shutil.copytree("/tmp/sd_bin", rt + "/sd_bin")
 
-# 3. Metadata del dataset
-print("[4/4] Creando Dataset...", flush=True)
-meta = {
-    "title": "LTX Free Runtime",
-    "id": DATASET_ID,
-    "licenses": [{"name": "CC0-1.0"}]
-}
+# [3/4] Metadata
+print("[3/4] Metadata...", flush=True)
+meta = {"title": "LTX Free Runtime", "id": DATASET_ID, "licenses": [{"name": "CC0-1.0"}]}
 with open(rt + "/dataset-metadata.json", "w") as f:
     json.dump(meta, f, indent=2)
 
-# 4. Intentar CLI primero
+# [4/4] Crear dataset
+print("[4/4] Creando Dataset con --dir-mode zip...", flush=True)
 os.environ["KAGGLE_USERNAME"] = KAGGLE_USER
 os.environ["KAGGLE_KEY"] = KAGGLE_TOKEN
-r = subprocess.run(["kaggle", "datasets", "create", "-p", rt],
-                   capture_output=True, text=True, timeout=600)
+r = subprocess.run(["kaggle", "datasets", "create", "-p", rt, "--dir-mode", "zip"],
+                   capture_output=True, text=True, timeout=900)
+out = (r.stdout or "") + (r.stderr or "")
 print("CLI rc:", r.returncode, flush=True)
-print("CLI stdout:", r.stdout[-1500:], flush=True)
-print("CLI stderr:", r.stderr[-1500:], flush=True)
+print("CLI out (tail):", out[-2000:], flush=True)
 
-# 5. Fallback REST multipart si CLI falla
-if r.returncode != 0:
-    print("CLI fallo, probando REST multipart...", flush=True)
-    import urllib.request, zipfile, tempfile
-    # Comprimir solo lo necesario (excluye dataset-metadata.json y cosas gordas)
-    zip_path = "/kaggle/working/ltx_runtime.zip"
-    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+errores = ("error", "failed", "please upload", "skipping folder")
+cli_ok = r.returncode == 0 and not any(e in out.lower() for e in errores)
+
+if not cli_ok:
+    print("CLI fallo, intentando REST multipart...", flush=True)
+    import urllib.request, zipfile
+    zip_path = "/kaggle/working/ltx_runtime_full.zip"
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_STORED) as z:
         for root, dirs, files in os.walk(rt):
             for f in files:
                 if f == "dataset-metadata.json":
                     continue
                 fp = os.path.join(root, f)
-                rel = os.path.relpath(fp, rt)
-                z.write(fp, rel)
+                z.write(fp, os.path.relpath(fp, rt))
     print("ZIP:", os.path.getsize(zip_path) // 1024 // 1024, "MB", flush=True)
 
-    # POST multipart a /api/v1/datasets/create/new
     boundary = "----kaggleBoundary"
-    meta_json = json.dumps(meta)
     body = b""
-    for name, filename, content, ctype in [
-        ("metadata", "dataset-metadata.json", meta_json.encode(), "application/json"),
-        ("file", "ltx_runtime.zip", open(zip_path, "rb").read(), "application/zip"),
+    for name, fname, content, ctype in [
+        ("metadata", "dataset-metadata.json", json.dumps(meta).encode(), "application/json"),
+        ("file", "ltx_runtime_full.zip", open(zip_path, "rb").read(), "application/zip"),
     ]:
-        body += b"--" + boundary.encode() + b"\\r\\n"
-        body += b'Content-Disposition: form-data; name="' + name.encode() + b'"; filename="' + filename.encode() + b'"\\r\\n'
-        body += b"Content-Type: " + ctype.encode() + b"\\r\\n\\r\\n"
-        body += content + b"\\r\\n"
-    body += b"--" + boundary.encode() + b"--\\r\\n"
+        body += b"--" + boundary.encode() + b"\r\n"
+        body += b'Content-Disposition: form-data; name="' + name.encode() + b'"; filename="' + fname.encode() + b'"\r\n'
+        body += b"Content-Type: " + ctype.encode() + b"\r\n\r\n"
+        body += content + b"\r\n"
+    body += b"--" + boundary.encode() + b"--\r\n"
 
     req = urllib.request.Request(
         "https://www.kaggle.com/api/v1/datasets/create/new",
         data=body, method="POST",
-        headers={
-            "Authorization": "Bearer " + KAGGLE_TOKEN,
-            "Content-Type": "multipart/form-data; boundary=" + boundary,
-        }
+        headers={"Authorization": "Bearer " + KAGGLE_TOKEN,
+                 "Content-Type": "multipart/form-data; boundary=" + boundary},
     )
     try:
-        with urllib.request.urlopen(req, timeout=600) as resp:
+        with urllib.request.urlopen(req, timeout=900) as resp:
             print("REST OK:", resp.read().decode()[:500], flush=True)
     except Exception as e:
-        print("REST fallo:", type(e).__name__, str(e)[:500], flush=True)
+        body_err = e.read()[:500].decode(errors="replace") if hasattr(e, "read") else str(e)[:500]
+        print("REST fallo:", type(e).__name__, body_err, flush=True)
+else:
+    print("CLI creo el dataset OK", flush=True)
 
 print("=== FIN ===", flush=True)
 '''
+
+
+def _construir_kernel():
+    token = _leer_env("KAGGLE_API_TOKEN")
+    if not token:
+        raise RuntimeError("KAGGLE_API_TOKEN no encontrado en .env")
+    codigo = _KERNEL_TEMPLATE.replace("%TOKEN%", token).replace("%DATASET_ID%", DATASET_ID)
     return codigo
 
 
@@ -137,5 +144,4 @@ if __name__ == "__main__":
     if cmd == "lanzar":
         sys.exit(0 if lanzar() else 1)
     elif cmd == "estado":
-        import json
         print(json.dumps(estado_kernel(f"{KAGGLE_USER}/{KERNEL_SLUG}"), indent=2))
