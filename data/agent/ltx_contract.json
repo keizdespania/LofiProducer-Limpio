@@ -1,32 +1,105 @@
 {
   "nombre": "Contrato LTX-Video 2.3 - El Encuadre",
-  "version": "1.0",
+  "version": "2.0",
   "fecha": "2026-11-05",
   "motor": "LTX-Video 2.3 (Distilled)",
-  "hardware_objetivo": "Kaggle T4 x2",
-  "notebook_fuente": "free-aistudio/ltx2-3-video.ipynb",
-  "repo_fuente": "https://github.com/airesearch-official/free-aistudio",
-  "metodo": "stable-diffusion.cpp CLI (sd-cli)",
-  "duracion_max_seg": 10,
-  "resoluciones": [
-    "480p",
-    "720p"
-  ],
-  "vram_saving": "VAE tiling + offload-to-cpu",
+  "modelo_hf": "Lightricks/ltx-video-distilled",
+
+  "vias_de_ejecucion": {
+    "via_a_hugging_face_space": {
+      "estado": "OPERATIVA (probada)",
+      "metodo": "gradio_client en Kaggle CPU (Python 3.10) llamando al Space de HF",
+      "script_cliente": "scripts/agente_ltx_hf_kaggle.py",
+      "script_local_test": "scripts/agente_ltx_hf.py",
+      "space_url": "https://lightricks-ltx-video-distilled.hf.space",
+      "api_endpoint": "/image_to_video",
+      "duracion_max_seg": 8.5,
+      "resolucion": "480p",
+      "tiempo_generacion_seg": 35,
+      "cuota_gratis": {
+        "tipo": "ZeroGPU",
+        "minutos_por_dia": 5,
+        "segundos_por_video": 150,
+        "videos_max_por_dia": 2,
+        "reset": "24h desde la primera llamada del día",
+        "error_al_agotar": "You have exceeded your free ZeroGPU quota",
+        "nota": "Cada video RESERVA 150s de cuota, aunque tarde 20s en generarse."
+      },
+      "recomendacion": "Usar solo para tests y clips estrella (Hook de intro). NO para produccion masiva.",
+      "spaces_alternativos": [
+        "KingNish/ltx-video-distilled",
+        "multimodalart/ltx-video-distilled"
+      ],
+      "hf_pro": {
+        "precio_mes_usd": 9,
+        "minutos_gpu_dia": 40,
+        "videos_max_por_dia": 16
+      }
+    },
+
+    "via_b_kaggle_gpu": {
+      "estado": "EN_PRUEBAS (no completada)",
+      "metodo": "stable-diffusion.cpp CLI con binario CUDA en Kaggle T4",
+      "scripts": [
+        "scripts/agente_ltx_encuadre.py",
+        "scripts/crear_dataset_ltx.py"
+      ],
+      "datasets_probados": {
+        "songqinghuang/sd-cli-cuda128-t4": "Binario compilado en Kaggle con CUDA 12.8. Falla por libcudart.so.12 (Kaggle tiene CUDA 13).",
+        "dangkhoa2016/stable-diffusion-cpp-6b3edaa-cuda-t4-runtime": "Runtime completo con run-sd-cli.sh. Falla por libcudart.so.12 (ruta incorrecta)."
+      },
+      "bloqueo_actual": "El binario busca libcudart.so.12 pero Kaggle tiene CUDA 13.0.",
+      "proximos_pasos": [
+        "Probar a añadir /usr/local/lib/python3.13/dist-packages/nvidia/cuda_runtime/lib al LD_LIBRARY_PATH.",
+        "Probar a compilar el binario desde fuente con CUDA 13.",
+        "Probar otro dataset con CUDA 13.",
+        "Si falla, abandonar via_b y usar solo via_a con HF PRO."
+      ]
+    }
+  },
+
+  "input": {
+    "formato": "PNG 16:9 (idealmente 1344x768 o similar)",
+    "imagen_max_mb": 10
+  },
+
+  "output": {
+    "formato": "MP4",
+    "fps": 24,
+    "resolucion_480p": "832x480 (o 480x832 para vertical)",
+    "ruta_github": "output/videos/<nombre>.mp4"
+  },
+
   "prompt": {
     "negativo": "text, letters, words, writing, subtitles, watermark, logo, signature",
-    "nota": "LTX tambien intenta escribir. Prohibir texto explicitamente."
+    "nota": "LTX tambien intenta escribir texto. Prohibir explicitamente."
   },
+
+  "cola": {
+    "archivo": "data/agent/ltx_cola.json",
+    "estructura": [
+      {
+        "nombre": "string (sin extension)",
+        "imagen_url": "string (raw github url)",
+        "prompt": "string (descripcion del movimiento)",
+        "completado": "boolean"
+      }
+    ]
+  },
+
   "errores_conocidos": {
-    "oom_t4": "Usar VAE Tiling. Bajar a 480p si 720p falla.",
-    "repo_wan_turbo": "yetter-ai/Wan2.2-TI2V-5B-Turbo-Diffusers (para Wan, no LTX)"
+    "ftfy_no_definido": "Instalar ftfy, sentencepiece, protobuf antes de cargar el pipeline.",
+    "bad_credentials_github": "Verificar GITHUB_TOKEN (Fine-grained con Contents: Read and write).",
+    "repo_turbo_inexistente": "cbensimon/Wan2.2-TI2V-5B-Turbo-Diffusers NO EXISTE. Correcto: yetter-ai/...",
+    "libcudart_no_encontrada": "Kaggle tiene CUDA 13.0. Los binarios compilados para CUDA 12 fallan.",
+    "zerogpu_quota": "HF gratis = 5 min/dia. Cada video reserva 150s."
   },
-  "cola": "data/agent/ltx_cola.json",
-  "agente": "scripts/agente_ltx_encuadre.py",
-  "binario": "sd-cli (release pre-compilado de leejet/stable-diffusion.cpp)",
-  "pesos_gguf": "unsloth/LTX-2.3-GGUF (Q4_K_M)",
-  "comando_i2v": "sd-cli -M vid_gen --diffusion-model ... -i input.png -o output.webm",
-  "frames_validos": "8n+1 (33, 81, 97, 121...)",
-  "duracion_inicial_seg": 1.4,
-  "offload": "--offload-to-cpu (obligatorio en T4)"
+
+  "historial_test": {
+    "2026-11-05": {
+      "via_a_piramide": "OK: 8s, 386KB, subido a GitHub",
+      "via_a_capibaras": "3 de 5 OK (capibara_1,2,3), 2 fallidos por ZeroGPU quota agotada",
+      "via_b_wan": "OK: 3s, 386KB, generado con Wan 2.2 en Kaggle (250s)"
+    }
+  }
 }
