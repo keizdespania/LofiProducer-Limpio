@@ -5,17 +5,44 @@ hide:
 
 <div class="holo-hero">
   <h1>El Archivo del Anti-Medio</h1>
-  <p>Todo nuestro arsenal. 36 análisis publicados. Sin filtros, con enlaces verificables.</p>
+  <p>Todo nuestro arsenal. 39 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (36)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (5)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (8)</button>
-  <button class="holo-filter-btn" data-filter="mediano">Medianos (4)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (39)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (6)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (9)</button>
+  <button class="holo-filter-btn" data-filter="mediano">Medianos (5)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-05-mediano-cita/'" data-category="mediano">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    
+    <h3>La cita que lo cambia todo</h3>
+    <p>Analisis cita: La cita que lo cambia todo</p>
+    <div class="holo-meta"><span>📅 2026-11-05</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-05-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    
+    <h3>El Encuadre: El presidente de Adif renuncia al cargo ante Ca</h3>
+    <p>Analisis largo: El Encuadre: El presidente de Adif renuncia al cargo ante Ca</p>
+    <div class="holo-meta"><span>📅 2026-11-05</span></div>
+    
+    <a href="https://theobjective.com/podcasts/analisis-economico-podcast/podcast-analisis-economico-espana-funciona/" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · theobjective.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-05-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier del día: El Encuadre: El presidente de Adif renuncia al cargo ante Ca</h3>
+    <p>Dossier ejecutivo: El Encuadre: El presidente de Adif renuncia al cargo ante Carlos Cuerpo...</p>
+    <div class="holo-meta"><span>📅 2026-11-05</span></div>
+    
+    <a href="https://www.eldiario.es/economia/presidente-adif-luis-pedro-marco-pena-presenta-cuerpo-renuncia-cargo_1_13639153.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · eldiario.es</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-04-mediano-radar/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     
