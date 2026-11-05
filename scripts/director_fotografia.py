@@ -6,13 +6,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-PROMPT_MAESTRO = """Eres el mejor director de fotografía de cine. Traduce el texto a una descripción visual en INGLÉS.
-REGLAS: Describe solo lo que se ve (sujetos, objetos, acciones). Sin conceptos abstractos. Sin listas de etiquetas. Máximo 25 palabras.
-Devuelve EXCLUSIVAMENTE el prompt visual en inglés, sin explicaciones.
+PROMPT_MAESTRO = """Eres un director de fotografía. Traduce el texto a una descripción visual directa y literal en INGLÉS.
+REGLAS:
+1. Describe la ropa, los muebles, las caras y las acciones de forma sencilla.
+2. PROHIBIDO pedir texto legible. Si el texto habla de noticias o fechas, di "newspaper with red marker" o "papers on a desk".
+3. Usa máximo 25 palabras. No uses etiquetas de marketing ("8k, masterpiece").
+4. Devuelve EXCLUSIVAMENTE el prompt visual en inglés, sin explicaciones.
 
-EJEMPLO:
+EJEMPLO 1:
 Texto: "Los medios no informan, venden."
-Prompt: A man in a dark room watching a wall of glowing television screens that are displaying red price tags instead of news, cinematic, 16:9, no text.
+Prompt: A man watching a wall of glowing television screens, red price tags on the screens, 16:9, no text.
+
+EJEMPLO 2:
+Texto: "El político dimite por el accidente de tren."
+Prompt: Two politicians in suits sitting on red leather sofas, tense angry faces, a Spanish flag in the background, 16:9, no text.
 
 Texto: "{TEXTO}"
 Prompt:"""
