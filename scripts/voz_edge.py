@@ -55,7 +55,7 @@ def _rate_para(escena):
     return RATE_MAP.get(escena.get("mood_musical","relax"), "-5%")
 
 async def _gen_audio(texto, salida, rate="-5%"):
-    c = edge_tts.Communicate(texto, VOZ, rate=rate)
+    c = edge_tts.Communicate(texto, VOZ, rate=rate, pitch="-20Hz")
     with open(salida, "wb") as f:
         async for ch in c.stream():
             if ch["type"] == "audio": f.write(ch["data"])
@@ -99,7 +99,7 @@ async def main():
     if not escenas: print("No escenas"); return
 
     print(f"Voz humanizada para {len(escenas)} escenas...")
-    sil2 = TMP/"sil2.mp3"; _silencio(2.0, sil2)
+    sil2 = TMP/"sil2.mp3"; _silencio(0.75, sil2)
     audios, timeline, offset, palabras_all = [], [], 0.0, []
 
     for e in escenas:
@@ -120,7 +120,7 @@ async def main():
             palabras_all.extend([{"palabra":w,"inicio":offset+i*t_pal,"duracion":t_pal} for i,w in enumerate(palabras)])
         offset += d
         if num < len(escenas):
-            audios.append(sil2); offset += 2.0
+            audios.append(sil2); offset += 0.75
 
     lista = TMP/"concat.txt"
     with open(lista,"w") as f:
