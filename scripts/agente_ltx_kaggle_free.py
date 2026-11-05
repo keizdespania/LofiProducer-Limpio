@@ -132,59 +132,70 @@ for i, item in enumerate(pendientes):
     urllib.request.urlretrieve(img_url, img_path)
     print("Imagen:", os.path.getsize(img_path) // 1024, "KB", flush=True)
 
-    # Llamar al servidor local (endpoint generico de sd-server)
-    # sd-server acepta POST en /v1/images/generations o similar
-    # Por seguridad, intentamos con el endpoint estandar
-    import requests
+    # Llamar al servidor sdcpp (API nativa asincrona)
+    import requests, base64 as _b64
     try:
-        # El servidor sd-server de stable-diffusion.cpp usa /sdcpp/v1/... o /v1/...
-        # Intentamos con el formato que usa la UI de free-aistudio
+        # 1) Codificar imagen como data URI base64
+        with open(img_path, "rb") as f:
+            img_b64 = _b64.b64encode(f.read()).decode()
+        img_data_uri = "data:image/png;base64," + img_b64
+
+        # 2) POST a /sdcpp/v1/vid_gen (endpoint real de sd-server)
         payload = {
             "prompt": prompt,
-            "negative_prompt": "worst quality, inconsistent motion, blurry, jittery",
-            "image_path": img_path,
-            "duration": 8,
+            "negative_prompt": "worst quality, inconsistent motion, blurry, jittery, text, letters, words, writing, subtitles, watermark",
+            "init_image": img_data_uri,
+            "video_frames": 97,
+            "fps": 24,
             "width": 832,
             "height": 480,
-            "fps": 24,
         }
-        # Intentar varios endpoints comunes
-        for ep in ["/generate", "/api/generate", "/v1/generate", "/sdcpp/v1/generate"]:
-            try:
-                r = requests.post(SERVER_URL + ep, json=payload, timeout=300)
-                if r.status_code == 200:
-                    print("Endpoint OK:", ep, flush=True)
-                    result = r.json()
-                    print("Resultado:", str(result)[:300], flush=True)
-                    break
-            except Exception:
-                continue
-        else:
-            print("Ningun endpoint respondio", flush=True)
+        r = requests.post(SERVER_URL + "/sdcpp/v1/vid_gen", json=payload, timeout=600)
+        if r.status_code not in (200, 201, 202):
+            print("POST fallo:", r.status_code, r.text[:300], flush=True)
+            continue
+        job = r.json()
+        job_id = job.get("id") or job.get("job_id") or job.get("task_id")
+        print("Job lanzado:", job_id, "| status:", job.get("status"), flush=True)
+        if not job_id:
+            print("Sin job_id en respuesta:", job, flush=True)
             continue
 
-        # Extraer el video (puede venir como base64 o path)
+        # 3) Polling a /sdcpp/v1/jobs/{id} hasta completar (max 15 min)
+        import time as _time
+        deadline = _time.time() + 900
+        result = None
+        while _time.time() < deadline:
+            _time.sleep(5)
+            jr = requests.get(SERVER_URL + "/sdcpp/v1/jobs/" + job_id, timeout=30)
+            if jr.status_code != 200:
+                print("Poll fallo:", jr.status_code, flush=True); continue
+            jd = jr.json()
+            st = jd.get("status", "?")
+            print("  poll:", st, flush=True)
+            if st in ("completed", "succeeded", "done"):
+                result = jd; break
+            if st in ("failed", "error", "cancelled"):
+                print("Job fallido:", jd, flush=True); break
+        if not result:
+            print("Timeout o fallo de job", flush=True); continue
+
+        # 4) Extraer b64 del video
         video_data = None
         if isinstance(result, dict):
-            if "video" in result:
-                video_data = result["video"]
-            elif "data" in result and isinstance(result["data"], list) and result["data"]:
-                video_data = result["data"][0].get("video") or result["data"][0].get("path")
+            r2 = result.get("result") or {}
+            if isinstance(r2, dict):
+                video_data = r2.get("b64_json") or r2.get("video")
+            if not video_data:
+                video_data = result.get("b64_json") or result.get("video")
 
         if video_data:
-            # Si es base64, decodificar
             out_path = "/kaggle/working/" + nombre + ".mp4"
-            if isinstance(video_data, str) and video_data.startswith("/"):
-                # Es un path
-                import shutil
-                shutil.copy(video_data, out_path)
-            elif isinstance(video_data, str):
-                # Es base64
-                with open(out_path, "wb") as f:
-                    f.write(base64.b64decode(video_data))
+            with open(out_path, "wb") as f:
+                f.write(_b64.b64decode(video_data))
             print("Video:", os.path.getsize(out_path) // 1024, "KB", flush=True)
 
-            # Subir a GitHub
+            # 5) Subir a GitHub
             if GITHUB_TOKEN:
                 url = "https://api.github.com/repos/" + GITHUB_REPO + "/contents/output/videos/" + nombre + ".mp4"
                 headers = {"Authorization": "token " + GITHUB_TOKEN, "Accept": "application/vnd.github.v3+json"}
@@ -192,7 +203,7 @@ for i, item in enumerate(pendientes):
                 sha = rr.json().get("sha") if rr.status_code == 200 else None
                 data = {
                     "message": "Add " + nombre + ".mp4",
-                    "content": base64.b64encode(pathlib.Path(out_path).read_bytes()).decode(),
+                    "content": _b64.b64encode(pathlib.Path(out_path).read_bytes()).decode(),
                     "branch": "main"
                 }
                 if sha: data["sha"] = sha
@@ -201,7 +212,7 @@ for i, item in enumerate(pendientes):
                 if rr.status_code in (200, 201):
                     item["completado"] = True
         else:
-            print("Sin video en respuesta:", result, flush=True)
+            print("Sin video en respuesta:", str(result)[:300], flush=True)
     except Exception as e:
         print("Error:", type(e).__name__, ":", e, flush=True)
 
