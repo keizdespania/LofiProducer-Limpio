@@ -55,7 +55,7 @@
       ]
     },
     "via_c_kaggle_free_t4": {
-      "estado": "OPERATIVA (2026-11-06 00:17)",
+      "estado": "OPERATIVA (2026-11-06 00:30)",
       "metodo": "free-aistudio repo (C++ + Q3) en Kaggle T4 con servidor local",
       "script": "scripts/agente_ltx_kaggle_free.py",
       "notebook_fuente": "https://github.com/airesearch-official/free-aistudio/blob/main/notebooks/ltx2-3-video.ipynb",
@@ -83,8 +83,8 @@
       "historial": {
         "2026-11-05_14:35": "FAIL libcudart.so.12 (Kaggle CUDA 13, binario busca 12)",
         "2026-11-05_22:29": "start_server OK con pip --target /tmp/cuda12_libs + LD_LIBRARY_PATH global",
-        "2026-11-05_23:00": "FAIL generate_video no results (payload plano, falta sample_params anidado)",
-        "2026-11-06_00:17": "OK: capibara_4 (4.2 MB) + capibara_5 (3.7 MB, con audio LTX nativo)"
+        "2026-11-05_23:00": "FAIL generate_video no results (payload plano)",
+        "2026-11-06_00:17": "OK: capibara_4 (4.2 MB) + capibara_5 (3.7 MB con audio LTX nativo)"
       },
       "limitaciones_conocidas": [
         "160s descarga modelos cada run (fix futuro: Dataset Kaggle cacheado)",
@@ -134,7 +134,7 @@
       "via_c_pendiente": "Pendiente de probar. Si funciona, es la via definitiva para produccion masiva."
     },
     "2026-11-06": {
-      "via_c": "OPERATIVA. 2 capibaras generados, 25 frames, ~370s/generacion"
+      "via_c": "OPERATIVA. 5 capibaras completos (3 via HF, 2 via Kaggle). 2 vias redundantes funcionando."
     }
   }
 }
