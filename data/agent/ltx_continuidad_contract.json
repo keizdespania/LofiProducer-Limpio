@@ -1,0 +1,150 @@
+{
+  "nombre": "Contrato LTX Continuidad - El Encuadre",
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "estado": "EN_VALIDACION",
+  "lectura_obligatoria": {
+    "antes_de_tocar": [
+      "Leer este contrato completo",
+      "Leer data/agent/ltx_contract.json (contrato raíz)",
+      "Leer data/agent/ltx_continuidad/kernel_continuidad.py (código funcional)",
+      "NO improvisar runtime. Copiar kernel_continuidad.py tal cual."
+    ],
+    "si_dudas": "Si algo no está en este contrato, NO lo hagas. Pregunta al usuario."
+  },
+  "proposito": "Encadenar N segmentos de 2s de LTX para crear clips largos sin OOM. Permite shorts 30s y hooks 8s (intro/outro).",
+  "viable_si": "El corte entre segmentos se ve suave al reproducir el MP4 concatenado. Si hay salto -> crossfade FFmpeg.",
+  "base_tecnica": "Reutiliza kernel v6.2 (dataset runtime + LD_LIBRARY_PATH + sd-server). Solo añade: extracción último frame + concat FFmpeg.",
+  "requisitos_kaggle": {
+    "dataset_sources": [
+      "keizproductions/ltx-free-runtime"
+    ],
+    "dataset_version": 1,
+    "dataset_size_gb": 1.89,
+    "dataset_mount_path": "/kaggle/input/ltx-free-runtime/",
+    "dataset_contiene": [
+      "nvidia_libs/",
+      "sd_bin/"
+    ],
+    "enable_gpu": true,
+    "enable_internet": true,
+    "runtime_esperado": "GPU T4 x2",
+    "llamada_push_kernel_exacta": "push_kernel('keizproductions/ltx-test-continuidad-v1', codigo, enable_gpu=True, enable_internet=True, dataset_sources=['keizproductions/ltx-free-runtime'])",
+    "si_falta_dataset": "RuntimeError('Dataset runtime NO encontrado') en paso [1/8]. NUNCA hacer pip install ni git clone de binarios como fallback."
+  },
+  "codigo_funcional": {
+    "kernel_base_v6_2": "data/agent/ltx_continuidad/kernel_v6_2_funcional.py",
+    "kernel_continuidad": "data/agent/ltx_continuidad/kernel_continuidad.py",
+    "script_orquestador": "scripts/agente_ltx_continuidad.py",
+    "nota": "kernel_continuidad.py es copia-pega. NO reescribir la sección RUNTIME. Solo adaptar la sección LÓGICA CONTINUIDAD si hace falta."
+  },
+  "patron_de_ejecucion": [
+    "PASO 1: Montar dataset runtime -> /kaggle/working/rt/",
+    "PASO 2: LD_LIBRARY_PATH con glob RT/nvidia_libs/nvidia/*/lib",
+    "PASO 3: Copiar sd_bin/bin/sd-server -> /tmp/sd_bin/bin/sd-server + chmod 755",
+    "PASO 4: git clone free-aistudio + pip install -r requirements.txt",
+    "PASO 5: download_models(preset='LTX-Video-2.3-Q3')",
+    "PASO 6: start_server(load_audio_vae=True) + sleep(90)",
+    "PASO 7: Job1 init=hacker_base_832x480.jpg, 49f, 832x480 -> seg1.mp4",
+    "PASO 8: ffmpeg -y -sseof -0.1 -i seg1.mp4 -vframes 1 seg1_last.png",
+    "PASO 9: Job2 init=seg1_last.png, 49f -> seg2.mp4",
+    "PASO 10: ffmpeg -y -sseof -0.1 -i seg2.mp4 -vframes 1 seg2_last.png",
+    "PASO 11: Job3 init=seg2_last.png, 49f -> seg3.mp4",
+    "PASO 12: ffmpeg -f concat -safe 0 -i lista.txt -c copy test_continuidad_6s.mp4",
+    "PASO 13: Upload 4 MP4s a output/videos/test_continuidad/"
+  ],
+  "comandos_exactos": {
+    "extraer_ultimo_frame": "ffmpeg -y -sseof -0.1 -i video.mp4 -vframes 1 frame.png",
+    "concatenar_lista_txt": "Fichero lista.txt con líneas 'file /ruta/video.mp4' (una por vídeo)",
+    "concatenar_ejecutar": "ffmpeg -y -f concat -safe 0 -i lista.txt -c copy out.mp4",
+    "payload_vid_gen": {
+      "endpoint": "POST http://127.0.0.1:1234/sdcpp/v1/vid_gen",
+      "body": {
+        "prompt": "descripción movimiento (no estático)",
+        "negative_prompt": "worst quality, inconsistent motion, blurry, jittery, text, letters, words, writing, subtitles, watermark",
+        "init_image": "data:image/png;base64,<base64>",
+        "vae_decode_only": false,
+        "video_frames": 49,
+        "fps": 24,
+        "width": 832,
+        "height": 480,
+        "sample_params": {
+          "sample_steps": 12,
+          "cfg_scale": 3.0,
+          "sample_method": "euler",
+          "scheduler": "discrete"
+        }
+      }
+    },
+    "polling": {
+      "endpoint": "GET http://127.0.0.1:1234/sdcpp/v1/jobs/{job_id}",
+      "intervalo_seg": 5,
+      "timeout_seg": 900,
+      "estados_ok": [
+        "completed",
+        "succeeded",
+        "done"
+      ],
+      "estados_fail": [
+        "failed",
+        "error",
+        "cancelled"
+      ]
+    }
+  },
+  "coste_estimado": {
+    "3_segmentos": "~25 min (carga + 3 jobs + concat + upload)",
+    "hook_8s": "~13 min (4 segmentos)",
+    "short_30s": "~100 min (15 segmentos en 2 kernels de 55min, 7-8 segmentos c/u)"
+  },
+  "modo_aislado": {
+    "no_toca_colas": true,
+    "no_toca_cola_pendiente": "data/agent/ltx_cola_pendiente.json",
+    "no_toca_cola_completados": "data/agent/ltx_cola_completados.json",
+    "resultado_va_a": "output/videos/test_continuidad/"
+  },
+  "nunca_hacer": [
+    "NUNCA hacer 'pip install --target /tmp/cuda12_libs' (dataset ya trae las libs)",
+    "NUNCA usar patchelf, ldconfig, ni copy2 a /usr/local/lib",
+    "NUNCA hardcodear puerto 8080 (es 1234)",
+    "NUNCA usar '-sseof 0' (saca frame inicial). Usar '-sseof -0.1'",
+    "NUNCA usar sample_params plano (debe ir anidado)",
+    "NUNCA usar init_image como path (debe ser data URI base64)",
+    "NUNCA encadenar >4 segmentos sin validar el corte primero",
+    "NUNCA meter 73f (3s) hasta validar 49f (2s) con corte suave",
+    "NUNCA tocar colas en modo aislado",
+    "NUNCA hacer git clone de free-aistudio si ya existe en /kaggle/working/",
+    "NUNCA saltarse start_server + sleep(90) — el server tarda en cargar modelo",
+    "NUNCA usar 'video_frames' > 49 en T4 15GB (VAE decode OOM confirmado a 73f)"
+  ],
+  "errores_vistos_y_su_fix": {
+    "Dataset_runtime_NO_encontrado": "Falta dataset_sources=['keizproductions/ltx-free-runtime'] en push_kernel",
+    "libcudart.so.12_cannot_open": "Dataset no montado o LD_LIBRARY_PATH mal. NO instalar pip. Revisar glob de nvidia/*/lib",
+    "NameError_WORK": "WORK debe definirse dentro del kernel string, no en el orquestador",
+    "generate_video_returned_no_results": "sample_params plano. Debe ir anidado (steps/cfg/method/scheduler)",
+    "POST_404": "Puerto incorrecto. Server está en 1234, no 8080",
+    "frame_negro_al_concatenar": "Último frame extraído con '-sseof 0'. Usar '-sseof -0.1'",
+    "OOM_a_73f": "VAE decode atómico. 73f=16.5GB > 15GB T4. Usar 49f (2s) y concatenar"
+  },
+  "pendiente_validar": [
+    "Corte entre segmentos suave en test_continuidad_6s.mp4",
+    "LTX acepta el último frame sin artefactos visibles",
+    "Coste real ~25 min para 3 segmentos",
+    "Viabilidad para short completo 30s (15 segmentos en 2 kernels)"
+  ],
+  "referencia_v6_2": {
+    "kernel_productor": "scripts/agente_ltx_kaggle_v6.py",
+    "dataset_id": "keizproductions/ltx-free-runtime",
+    "dataset_version": 1,
+    "dataset_size_gb": 1.89,
+    "endpoint_local": "http://127.0.0.1:1234/sdcpp/v1/vid_gen",
+    "resolucion_segura": "832x480 con 49 frames",
+    "resolucion_riesgo": ">=73 frames OOM por VAE decode",
+    "sample_params_validados": {
+      "sample_steps": 12,
+      "cfg_scale": 3.0,
+      "sample_method": "euler",
+      "scheduler": "discrete"
+    }
+  }
+}

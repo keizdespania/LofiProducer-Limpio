@@ -214,6 +214,16 @@
         "Forkear free-aistudio para exponer --vae-tile-size menor",
         "Vae tiling forzado con tiles 512x512"
       ]
+    },
+    "dataset_no_montado": {
+      "sintoma": "RuntimeError: Dataset runtime NO encontrado",
+      "causa": "Kernel lanzado sin dataset_sources=['keizproductions/ltx-free-runtime']",
+      "fix": "Añadir dataset_sources en push_kernel. NUNCA hacer pip install como fallback."
+    },
+    "libcudart_a_pesar_de_dataset": {
+      "sintoma": "libcudart.so.12 cannot open shared object file",
+      "causa": "LD_LIBRARY_PATH no incluye RT/nvidia_libs/nvidia/*/lib",
+      "fix": "glob(RT + '/nvidia_libs/nvidia/*/lib') y unir con ':' en LD_LIBRARY_PATH ANTES de start_server()"
     }
   },
   "historial_test": {
@@ -225,6 +235,34 @@
     },
     "2026-11-06": {
       "via_c": "OPERATIVA. 5 capibaras completos (3 via HF, 2 via Kaggle). 2 vias redundantes funcionando."
+    }
+  },
+  "funciones_derivadas": {
+    "continuidad": {
+      "contrato_completo": "data/agent/ltx_continuidad_contract.json",
+      "codigo_funcional": "data/agent/ltx_continuidad/kernel_continuidad.py",
+      "codigo_base_referencia": "data/agent/ltx_continuidad/kernel_v6_2_funcional.py",
+      "script_orquestador": "scripts/agente_ltx_continuidad.py",
+      "estado": "EN_VALIDACION",
+      "kernel_slug": "keizproductions/ltx-test-continuidad-v1",
+      "que_hace": "Encadena N segmentos de 2s por último frame para clips largos (shorts 30s, hooks 8s)",
+      "cuando_usar": "Cuando un clip necesita superar el límite de 2s por VAE decode OOM",
+      "requiere": {
+        "dataset_sources": [
+          "keizproductions/ltx-free-runtime"
+        ],
+        "enable_gpu": true,
+        "enable_internet": true
+      },
+      "instruccion_para_ia": "Antes de tocar continuidad, leer ltx_continuidad_contract.json COMPLETO. Tiene el código funcional y los errores vistos. NO improvisar.",
+      "errores_conocidos": [
+        "Dataset no montado -> RuntimeError en paso [1/8]",
+        "LD_LIBRARY_PATH mal -> libcudart.so.12 cannot open",
+        "sample_params plano -> generate_video no results",
+        "puerto 8080 -> POST 404 (es 1234)",
+        "-sseof 0 -> frame negro (usar -0.1)",
+        "73f en T4 -> OOM VAE decode (usar 49f)"
+      ]
     }
   }
 }

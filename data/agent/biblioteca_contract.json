@@ -1,0 +1,87 @@
+{
+  "nombre": "Contrato Biblioteca de Producción - Somos El Encuadre",
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "estado": "DISEÑO",
+  "proposito": "Almacén de clips generados una vez que sirven para montar N shorts y N vídeos express sin coste recurrente de GPU.",
+
+  "estructura_repo": {
+    "imagenes_base": "data/agent/ltx_assets/biblioteca/{categoria}/*.jpg",
+    "clips_generados": "output/videos/biblioteca/{categoria}/*.mp4",
+    "metadatos_por_clip": "data/agent/biblioteca_meta/{nombre_clip}.json",
+    "fuente_imagenes": "Gemini (Veo/Imagen) o SDXL. Base común: hacker_base_832x480.jpg",
+    "nota": "output/ está en .gitignore. Los clips viven en GitHub Releases o Cloudflare R2, no en el repo principal."
+  },
+
+  "categorias_iniciales": [
+    "hacker_frente", "hacker_lateral", "hacker_cenital", "hacker_movil",
+    "hacker_meditando", "hacker_teclado", "hacker_escribiendo",
+    "pantalla_codigo", "pantalla_noticias", "pantalla_datos",
+    "detalle_manos", "detalle_pantalla", "detalle_teclado",
+    "entorno_oficina", "entorno_oscuro", "entorno_neon",
+    "transiciones", "intro_logo", "outro_logo"
+  ],
+
+  "proceso_generacion": {
+    "fase_1_imagenes": "60 imágenes nuevas (Gemini o SDXL). Cada una preprocesada a 832x480 con pad negro.",
+    "fase_2_clips": "Cada imagen → 49 frames (2s) con LTX via_c. ~375s por clip = 6.25 min.",
+    "fase_3_metadatos": "Por clip: categoria, prompt, imagen_origen, fecha, hash_sha256.",
+    "fase_4_subida": "Clips a GitHub Release (tag biblioteca-v1) o Cloudflare R2. NUNCA al repo principal (100MB+).",
+    "fase_5_indice": "biblioteca_indice.json con {categoria: [lista_nombres]} para selección rápida por render_express."
+  },
+
+  "kernels_necesarios": {
+    "60_clips": "2 kernels de ~3h cada uno (30 clips/kernel, ~3h/clip con margen)",
+    "por_kernel": "30 clips x 6.25 min = 187 min (~3.1h) + arranque 5 min. Cabe en 1 kernel de 55min? NO. 2 sesiones o 6h de GPU acumuladas.",
+    "recomendacion": "3 kernels de 20 clips cada uno (2h/kernel) para no rozar el límite de 55 min por sesión de Kaggle.",
+    "cuentas": "keizproductions (cuenta 1) primaria. lofiproducer (cuenta 2) backup si cuota 1 pete."
+  },
+
+  "render_express_uso": {
+    "seleccion": "Por categoria, sin repetir hasta agotar. Nunca 3 seguidos de la misma categoria.",
+    "short_30s": "15 clips de 2s = 30s. Con intro/outro: 12 clips base + intro + outro.",
+    "express_3min": "90 clips de 2s = 3 min. Con intro/outro y musica: 85 clips base.",
+    "express_5min": "150 clips de 2s = 5 min. Con intro/outro y musica: 145 clips base.",
+    "repeticion": "Cada clip puede repetirse en videos distintos, pero NUNCA en el mismo video."
+  },
+
+  "reglas_oro": [
+    "Nunca 2 videos consecutivos con mismo primer clip (tras intro)",
+    "Cada video debe tener mínimo 4 categorias distintas",
+    "Los clips de intro_logo y outro_logo son únicos y fijos por canal",
+    "Metadatos completos: sin hash no hay clip válido",
+    "Copia de seguridad en GitHub Releases + R2 (redundancia)"
+  ],
+
+  "coste_estimado": {
+    "generacion_60_clips": "~6h GPU Kaggle (2-3 kernels, gratis)",
+    "almacenamiento": "60 clips x 5MB = 300MB. GitHub Releases gratis hasta 2GB. R2 gratis 10GB.",
+    "uso_recurrente": "0 GPU. Cada video express consume solo FFmpeg local (~3-8 min).",
+    "amortizacion": "60 clips generados una vez producen N videos para siempre. N>100 sin añadir clips."
+  },
+
+  "integracion": {
+    "ltx_contract": "data/agent/ltx_contract.json → sección funciones_derivadas.biblioteca (por crear)",
+    "express_contract": "data/agent/videos_express_contract.json → usa biblioteca como fuente",
+    "pipeline_06_00": "recolector → analisis → guion → voz → render_express (usa biblioteca)"
+  },
+
+  "estado_actual": {
+    "imagenes_generadas": 0,
+    "clips_generados": 0,
+    "indice": "no creado",
+    "prioridad": "Alta. Es la base de todo el pipeline express."
+  },
+
+  "siguiente_paso_inmediato": [
+    "1. Preparar 60 prompts de imágenes (1 por categoría x variantes)",
+    "2. Generar 60 imágenes con Gemini/Veo (este paso lo hace el usuario)",
+    "3. Preprocesar a 832x480 (script preprocesar_biblioteca.py)",
+    "4. Subir imágenes a GitHub en data/agent/ltx_assets/biblioteca/",
+    "5. Preparar kernel Kaggle ltx_biblioteca_v1 que las descargue y genere clips",
+    "6. Lanzar kernel 1 (20 clips), kernel 2 (20 clips), kernel 3 (20 clips)",
+    "7. Descargar clips + metadatos a local",
+    "8. Subir clips a GitHub Releases (tag biblioteca-v1)",
+    "9. Generar biblioteca_indice.json con {categoria: [nombres]}"
+  ]
+}

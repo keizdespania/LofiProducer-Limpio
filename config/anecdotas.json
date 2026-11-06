@@ -225,8 +225,8 @@
       "id": 29,
       "categoria": "supermercado",
       "texto": "El becario en la fila preguntó: \"¿Por qué la caja está tan lenta?\" Yo le expliqué: \"Porque cada escáner es un discurso de paz.\" La velocidad es la mentira que se vende.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-06T06:06:36.985664"
     },
     {
       "id": 30,
