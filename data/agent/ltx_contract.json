@@ -122,6 +122,17 @@
         "kernel_creador": "lofiproducer/ltx-runtime-to-dataset-2",
         "nota": "Aislado de cuenta 1. Sin productor asignado (reserva). Rotator 1→2 solo si cuota 1 pete.",
         "verificado": "2026-11-06 via /datasets/view (list tarda en propagar)"
+      },
+      "tuning_2026_11_06": {
+        "sample_steps_validado": 12,
+        "vs_steps_20": {
+          "throughput": "+25% (771s vs 1031s para 2 videos)",
+          "bitrate": "-20/-30%",
+          "juicio_visual": "indistinguible o mejor"
+        },
+        "decision": "ADOPTAR steps:12 como default en v6.2+",
+        "leccion": "1s es muy corto para juzgar calidad. Proximo test: video_frames:73 (3s) y 121 (5s).",
+        "nota": "Capibara en agua (test_steps12_b, imagen capibara_1) = referencia calidad top."
       }
     }
   },
