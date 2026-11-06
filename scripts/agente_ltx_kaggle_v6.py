@@ -33,23 +33,50 @@ DATASET_ID = "%DS%"
 
 print("=== LTX v6 (runtime cacheado) ===", flush=True)
 
-# 1. Dataset runtime ya montado en /kaggle/input/ por dataset_sources
-# (no necesita kaggle CLI ni credenciales — Kaggle lo monta read-only automaticamente)
-print("[1/6] Copiando dataset runtime de /kaggle/input/...", flush=True)
+# 1. Localizar runtime: walk recursivo /kaggle/input + fallback descarga API
+print("[1/6] Buscando runtime...", flush=True)
 RT = "/kaggle/working/rt"
 os.makedirs(RT, exist_ok=True)
-# Kaggle monta como /kaggle/input/<slug-sin-user>/ donde slug = "ltx-free-runtime"
-SRC = "/kaggle/input/ltx-free-runtime"
-if not os.path.exists(SRC):
-    # Fallback: buscar cualquier dir que contenga nvidia_libs o sd_bin
-    for cand in glob.glob("/kaggle/input/*"):
-        if os.path.exists(cand + "/nvidia_libs") or os.path.exists(cand + "/sd_bin"):
-            SRC = cand; break
-if not os.path.exists(SRC):
-    raise RuntimeError("Dataset runtime no encontrado. Revisar dataset_sources en push_kernel.")
-print("  SRC:", SRC, flush=True)
-shutil.copytree(SRC, RT, dirs_exist_ok=True)
-print("  RT listo:", len(os.listdir(RT)), "entradas", flush=True)
+
+# Debug: listar /kaggle/input para ver donde esta
+print("  /kaggle/input/:", flush=True)
+os.system("ls -la /kaggle/input/ 2>/dev/null | head -20")
+
+# Capa 1: walk recursivo buscando sd_bin o nvidia_libs
+SRC = None
+for root, dirs, files in os.walk("/kaggle/input"):
+    if "sd_bin" in dirs or "nvidia_libs" in dirs:
+        SRC = root
+        break
+
+if SRC:
+    print("  encontrado via walk:", SRC, flush=True)
+    shutil.copytree(SRC, RT, dirs_exist_ok=True)
+else:
+    # Capa 2: kaggle datasets download con credenciales explicitas
+    print("  no montado, descargando via kaggle CLI...", flush=True)
+    os.environ["KAGGLE_USERNAME"] = KAGGLE_USER
+    os.environ["KAGGLE_KEY"] = KAGGLE_TOKEN
+    r = subprocess.run(["kaggle", "datasets", "download", "-d", DATASET_ID, "--unzip", "-p", RT],
+                       capture_output=True, text=True, timeout=300)
+    print("  kaggle rc:", r.returncode, "| out:", (r.stdout or "")[-300:], "| err:", (r.stderr or "")[-300:], flush=True)
+
+    if not (os.path.exists(RT + "/sd_bin") or os.path.exists(RT + "/nvidia_libs")):
+        # Capa 3: descarga HTTP directa con Bearer
+        print("  kaggle fallo, descarga HTTP directa...", flush=True)
+        import urllib.request, zipfile
+        url = "https://www.kaggle.com/api/v1/datasets/download/" + DATASET_ID
+        req = urllib.request.Request(url, headers={"Authorization": "Bearer " + KAGGLE_TOKEN})
+        with urllib.request.urlopen(req, timeout=300) as resp:
+            data = resp.read()
+        zpath = "/kaggle/working/rt.zip"
+        with open(zpath, "wb") as f:
+            f.write(data)
+        print("  ZIP:", os.path.getsize(zpath) // 1024 // 1024, "MB", flush=True)
+        with zipfile.ZipFile(zpath) as z:
+            z.extractall(RT)
+
+print("  RT listo:", sorted(os.listdir(RT)), flush=True)
 
 # 2. Montar LD_LIBRARY_PATH
 print("[2/6] Montando LD_LIBRARY_PATH...", flush=True)
