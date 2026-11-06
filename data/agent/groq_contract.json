@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "modelos_validos": [
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "qwen/qwen3.8-27b"
+  ],
+  "modelos_invalidos": [
+    "llama-3.3-70b",
+    "llama-3.1-8b"
+  ],
+  "keys": [
+    "GROQ_API_KEY",
+    "GROQ_API_KEY_2",
+    "GROQ_API_KEY_3",
+    "GROQ_API_KEY_4"
+  ],
+  "reglas": [
+    "Regla #36: max_tokens=1500 + retry 15s (evita 429 TPM 8000).",
+    "Regla #38: modelos válidos SOLO los 3 arriba.",
+    "Regla #39: User-Agent Chrome OBLIGATORIO (403 Cloudflare sin él)."
+  ],
+  "debug_payload": "/data/data/com.termux/files/home/tmp/payload_debug.json"
+}

@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "colas": {
+    "data/agent/cola.db": "Cola general FIFO (SQLite)",
+    "data/agent/cola_publicacion.db": "Programación YouTube Lun-Vie 13:00 (publishAt ISO 8601 UTC)",
+    "data/agent/ltx_cola_pendiente.json": "Items LTX a generar (Termux escribe)",
+    "data/agent/ltx_cola_completados.json": "Items LTX completados (Kaggle escribe)"
+  },
+  "reglas": [
+    "Regla #61: NUNCA misma fuente y destino. Separar pendiente/completados.",
+    "Regla #22: Kernel mueve item a completados SOLO tras GitHub OK.",
+    "Programación YouTube: privacyStatus=private + publishAt."
+  ],
+  "no_hacer": [
+    "IA B no toca ltx_cola_*. IA B pide al usuario."
+  ]
+}

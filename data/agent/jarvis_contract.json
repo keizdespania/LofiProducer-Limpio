@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "script": "scripts/jarvis_listen.py",
+  "modo": "push-to-talk 6s (NO always-on, Regla #42)",
+  "shortcut": "~/.shortcuts/jarvis_listen.sh",
+  "stt": "Whisper ES via Groq",
+  "tts": "Davefx (edge_tts es-ES-AlvaroNeural)",
+  "stop_words": [
+    "para",
+    "stop",
+    "cállate",
+    "silencio",
+    "basta",
+    "detente"
+  ],
+  "endpoints": [
+    "POST /api/jarvis/chat (dios.py completo 43 tools)"
+  ]
+}

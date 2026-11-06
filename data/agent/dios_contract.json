@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "fichero": "scripts/dios.py",
+  "tamano": "~1500 líneas",
+  "tools": 43,
+  "zonas": {
+    "_call_llm": "Cascada LLM (ver llm_contract.json)",
+    "_filtrar_tools": "Filtra tools por prompt (reduce payload -92%)",
+    "_contexto_proyecto": "Contexto dinámico (Regla #37, 47KB→18KB)",
+    "memoria": "SQLite en data/agent/dios_memoria.db",
+    "ReAct": "Loop thought/action/observation"
+  },
+  "recomendaciones": [
+    "No añadir tool nueva sin actualizar este contrato.",
+    "Verificar tools con re.findall antes de tocar.",
+    "El pruner reduce contexto; no meter prompts enormes."
+  ],
+  "zonas_privadas": "Solo IA A toca scripts/dios.py"
+}

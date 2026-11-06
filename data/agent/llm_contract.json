@@ -1,0 +1,50 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "motor_principal": "dios.py._call_llm",
+  "no_duplicar": "brain/llm.py existe pero NO se usa. Si un script necesita LLM, usar dios._call_llm.",
+  "cascada": [
+    {"orden": 1, "motor": "groq", "modelo": "openai/gpt-oss-120b", "key_env": "GROQ_API_KEY",   "max_tokens": 4096, "timeout": 60},
+    {"orden": 2, "motor": "groq", "modelo": "openai/gpt-oss-20b",  "key_env": "GROQ_API_KEY_2", "max_tokens": 4096, "timeout": 60},
+    {"orden": 3, "motor": "groq", "modelo": "openai/gpt-oss-20b",  "key_env": "GROQ_API_KEY_3", "max_tokens": 4096, "timeout": 60},
+    {"orden": 4, "motor": "groq", "modelo": "qwen/qwen3.8-27b",    "key_env": "GROQ_API_KEY_4", "max_tokens": 4096, "timeout": 60},
+    {"orden": 5, "motor": "gemini", "modelo": "gemini-flash-lite-latest", "key_env": "GEMINI_API_KEY", "via": "brain/llm_gemini.py", "timeout": 20},
+    {"orden": 6, "motor": "omniroute", "modelo": "rotativo_4", "key_env": "OMNIROUTE_API_KEY", "cooldown_429_s": 60, "timeout": 180},
+    {"orden": 7, "motor": "especialistas", "modelo": "local", "fallback_final": true}
+  ],
+  "reglas": [
+    "Groq#1-4 primero. Si los 4 fallan, esperar 15s y reintentar solo #1 y #2.",
+    "Gemini SIEMPRE antes de OmniRoute (Regla #35: OmniRoute saturado).",
+    "OmniRoute 429 → cooldown 60s por modelo (data/agent/cooldowns.json).",
+    "Especialistas = último recurso local, no cascada principal.",
+    "Retorno estándar: dict OpenAI {choices:[{message:{content}}], model, usage}."
+  ],
+  "flags_test": {
+    "FORCE_GEMINI=1": "Vacía claves Groq → va directo a Gemini (test cascada).",
+    "SKIP_GEMINI=1": "Desactiva bloque Gemini → cascada clásica Groq+OmniRoute."
+  },
+  "no_hacer": [
+    "Cascada paralela con lógica distinta en brain/llm.py (existe pero NO se importa).",
+    "Meter OmniRoute antes de Gemini.",
+    "Añadir proveedor LLM nuevo sin actualizar este contrato.",
+    "Cambiar el orden de la cascada sin pasar por FORCE_GEMINI=1 para verificar."
+  ],
+  "modelos_descartados": {
+    "lyria_*": "Sin tier gratuito (429 desde el primer intento, 2026-11-06).",
+    "gemini-2.5-*": "Retirados (404).",
+    "gemini-3.8-flash": "Saturado crónico (timeout/503). Solo como manual, no automático.",
+    "openai_*": "Sin tier gratuito. No integrar."
+  },
+  "modelos_verificados_2026_11_06": [
+    "gemini-flash-lite-latest (fallback #5 elegido)",
+    "gemini-3.1-flash-lite",
+    "gemini-3.1-flash-lite-preview",
+    "gemini-3-flash-preview",
+    "gemma-4-26b-a4b-it"
+  ],
+  "historial": [
+    {"fecha": "2026-11-06", "accion": "Gemini integrado como fallback #5 antes de OmniRoute"},
+    {"fecha": "2026-11-06", "accion": "SDK oficial google-genai descartado (Rust+pydantic+Py3.14 incompatible Termux)"},
+    {"fecha": "2026-11-06", "accion": "Lyria descartado (sin tier gratuito)"}
+  ]
+}

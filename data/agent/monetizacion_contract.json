@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "fase_0_gratis": [
+    "AdSense (10+ posts)",
+    "Afiliados Amazon (Kahneman, Chomsky)",
+    "Buy Me a Coffee",
+    "Cripto",
+    "Producto digital Lemon Squeezy",
+    "Telegram VIP 5€/mes"
+  ],
+  "fase_1_meses_1_3": [
+    "Printify",
+    "KDP libro PDF",
+    "Spotify + Apple Podcasts"
+  ],
+  "prioridad": "Comprar dominio .com + VPS financiado con ingresos Fase 0",
+  "no_hacer": [
+    "Content ID (penaliza)",
+    "Declarar NO IA en Spotify",
+    "Anuncios agresivos pre-YPP"
+  ]
+}

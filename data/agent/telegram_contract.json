@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "chat_id": "-1003932701023",
+  "bot_notificaciones": "notificar_resumen_dia.py + avisar_videos_privados",
+  "formato": "HTML + botones inline (links a YouTube Studio)",
+  "usos": [
+    "Resumen día",
+    "Aviso vídeos privados (auditoría manual)",
+    "Aviso errores críticos"
+  ]
+}

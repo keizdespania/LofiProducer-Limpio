@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "fichero": "scripts/pipeline_encuadre.py",
+  "cron": "0 6 * * * (nacional) · 0 7 * * 1,4 (internacional)",
+  "fases": [
+    "1. recolector.py (20 medios RSS+YouTube)",
+    "2. transcribir_groq.py (Whisper)",
+    "3. analista_fase1.py (15 agentes: forense, emocional, sesgos)",
+    "4. sintetizador.py (dossier 24 hooks)",
+    "5. fase2_produccion.py (artículo + 18 escenas)",
+    "6. director_arte.py (7 vídeos Coverr + 11 SDXL)",
+    "7. voz_edge.py (18 MP3 + timeline.json)",
+    "8. planificador_montaje.py (música)",
+    "9. generar_blueprint.py (FFmpeg command)",
+    "10. renderizador.py (largo + shorts)",
+    "11. subida YouTube + Blogger + Telegram"
+  ],
+  "modo_test": "DRY_RUN=1 python3 scripts/pipeline_encuadre.py",
+  "fallos_conocidos": [
+    "Token YouTube caduca 7 días → scripts/reautorizar_youtube.py",
+    "FFmpeg crop consume 400% CPU → preset ultrafast"
+  ]
+}

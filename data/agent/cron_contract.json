@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "crons": [
+    {
+      "hora": "06:00",
+      "dias": "*",
+      "script": "pipeline_encuadre.py",
+      "log": "data/logs/pipeline.log"
+    },
+    {
+      "hora": "07:00",
+      "dias": "lun,jue",
+      "script": "pipeline_internacional.py",
+      "log": "data/logs/pipeline_intl.log"
+    }
+  ],
+  "arranque": "bash ~/.shortcuts/despertar.sh → start_all.py → OmniRoute + Worker + Flask",
+  "verificacion": "sv status crond · tail -20 data/logs/pipeline.log",
+  "fallo_tipico": "Cron no ejecutado → pgrep -af pipeline_encuadre · ver data/logs"
+}

@@ -1470,6 +1470,8 @@ def _call_llm(api_key, messages, force_no_tools=False):
             pass
 
     # Si hay 4 Groq disponibles → usar directas
+    if os.environ.get("FORCE_GEMINI") == "1":
+        claves_groq = []
     if claves_groq:
         modelos_defecto = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b", "openai/gpt-oss-120b"]
         for idx, gk in enumerate(claves_groq):
@@ -1516,6 +1518,25 @@ def _call_llm(api_key, messages, force_no_tools=False):
             except Exception:
                 pass
         print("   [Reintento fallido -> especialistas]")
+
+    # ═══ GEMINI FALLBACK (Regla #35: OmniRoute saturado, Gemini gratis antes) ═══
+    if os.environ.get("SKIP_GEMINI") != "1":
+        try:
+            from brain.llm_gemini import generar as _gemini_generar
+            _prompt_gem = _extraer_prompt(comprimir_mensajes(messages))
+            _gem_txt = _gemini_generar(_prompt_gem, timeout=20)
+            if _gem_txt and _gem_txt.strip():
+                print("   [Gemini flash-lite] OK")
+                return {
+                    "id": "gemini-fallback",
+                    "model": "gemini-flash-lite-latest",
+                    "choices": [{"index": 0,
+                                 "message": {"role": "assistant", "content": _gem_txt, "tool_calls": None},
+                                 "finish_reason": "stop"}],
+                    "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+                }
+        except Exception as _e:
+            print(f"   [Gemini] {type(_e).__name__}: {str(_e)[:80]}, siguiente...")
 
     omniroute_key = _leer_api_key("OMNIROUTE_API_KEY")
     omniroute_models = [

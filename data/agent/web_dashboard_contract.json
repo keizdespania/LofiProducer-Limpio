@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "puerto": 8001,
+  "vista_default": "v2",
+  "rutas": {
+    "web_estatica": "/ui/assets/ (Regla #40, NO /assets/)",
+    "api": "/api/*"
+  },
+  "vistas": 21,
+  "componentes": [
+    "tokens.css",
+    "base.css",
+    "layout.css",
+    "components.css",
+    "views.css"
+  ],
+  "js_views": "web/dashboard/assets/js/views/*.js (21 ficheros)",
+  "endpoints_jacuzzi": [
+    "POST /api/jarvis/chat",
+    "POST /api/jarvis/execute",
+    "GET /api/jarvis/tools",
+    "POST /api/jarvis/listen",
+    "GET /api/jarvis/memoria",
+    "POST /api/jarvis/sanar",
+    "GET /api/jarvis/estratega"
+  ],
+  "regla_40": "Rutas v2 = /ui/assets/. NO /assets/. Evita colisión con web vieja."
+}

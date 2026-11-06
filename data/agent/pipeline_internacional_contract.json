@@ -1,0 +1,8 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "cron": "0 7 * * 1,4 (lunes + jueves)",
+  "medios": "The Guardian · Le Monde · BBC · Al Jazeera (traducidos por traductor_humanizado)",
+  "idioma_salida": "castellano",
+  "reutiliza": "90% del pipeline_encuadre.py con override de fuente"
+}

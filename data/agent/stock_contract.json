@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "fuentes": [
+    "Pexels (via yt-dlp search)",
+    "Coverr (7 vídeos/día)",
+    "CC YouTube"
+  ],
+  "limites": {
+    "max_filesize": "100M",
+    "max_resolution": "1080p",
+    "max_per_clip_s": 15
+  },
+  "comando_base": "yt-dlp --max-filesize 100M -f 'best[height<=1080]'",
+  "fallo_conocido": "Cloudflare WAF bloquea Pixabay desde Termux → usar RSS/API o Kaggle proxy"
+}

@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "proveedores": {
+    "youtube": {
+      "token_file": "data/youtube_encuadre_token.json",
+      "refresh": "SIEMPRE antes de subir",
+      "expira_si_inactivo_dias": 7
+    },
+    "blogger": {
+      "reutiliza": "mismo OAuth de YouTube"
+    }
+  },
+  "reglas": [
+    "El token va SOLO en data/youtube_encuadre_token.json (JSON, 6 campos).",
+    ".env solo lleva la RUTA (YOUTUBE_ENCUADRE_TOKEN_FILE=...)",
+    "NUNCA commitear el token.",
+    "Si invalid_grant → scripts/reautorizar_youtube.py (OAuth manual, 2 min)."
+  ],
+  "regla_2026_11_03": "subir_youtube.token() SIEMPRE refresca, no solo si expiró."
+}

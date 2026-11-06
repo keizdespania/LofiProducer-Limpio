@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "fichero": "scripts/director_fotografia.py",
+  "motor": "Groq 4 directo (evita firewall especialistas)",
+  "reglas_sdxl": [
+    "Regla #56: SDXL no entiende metáforas. Objetos físicos.",
+    "Regla #57: SDXL no sabe escribir. PROHIBIDO pedir texto legible.",
+    "Fórmula: Sujeto + Acción + Entorno.",
+    "Prohibido: cinematic, 8k, masterpiece."
+  ],
+  "escenas": {
+    "video_largo": 72,
+    "short": 3,
+    "web": 6
+  },
+  "formatos": {
+    "video_largo": "16:9",
+    "short": "9:16",
+    "web": "16:9"
+  },
+  "no_hacer": [
+    "Pedir titulares con texto (regla #57)",
+    "Usar metáforas (regla #56)"
+  ]
+}

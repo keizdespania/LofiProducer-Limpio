@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "fecha": "2026-11-06",
+  "doc": "agent/design/09_evolucion_top1.md",
+  "meta_agentes": [
+    "arquitecto_sistema",
+    "auditor_codigo",
+    "estratega_negocio"
+  ],
+  "agentes_contenido_top1": [
+    "analista_sentimiento",
+    "verificador_factos ✅",
+    "detector_polarizacion",
+    "predictor_viralidad ✅",
+    "generador_titulos_ab",
+    "analista_competencia",
+    "traductor_multilingue",
+    "doblador_voz XTTS v2",
+    "community_manager_auto",
+    "detector_tendencias_vivas"
+  ],
+  "scripts_feedback": [
+    "analytics_youtube",
+    "auto_ajuste_prompts",
+    "rotador_ab",
+    "monitor_salud",
+    "rollback_auto",
+    "calendario_editorial",
+    "detector_evergreen",
+    "optimizador_adsense"
+  ],
+  "semana_1": "predictor_viralidad ✅ + verificador_factos ✅ + monitor_salud (pendiente)",
+  "semana_2_3": "Analytics + A/B testing"
+}
