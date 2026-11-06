@@ -106,11 +106,13 @@ def push_kernel(slug, codigo, enable_gpu=True, enable_internet=True, dataset_sou
     
     return res
 
-def salida_kernel(slug):
+def salida_kernel(slug, cuenta=None):
     """Lista los archivos de salida de un kernel."""
     partes = slug.split('/')
     if len(partes) != 2:
         return {'error': 'Slug invalido'}
+    if cuenta is not None:
+        return _req(f"/kernels/output?userName={partes[0]}&kernelSlug={partes[1]}", cuenta=cuenta)
     return _req(f"/kernels/output?userName={partes[0]}&kernelSlug={partes[1]}")
 
 

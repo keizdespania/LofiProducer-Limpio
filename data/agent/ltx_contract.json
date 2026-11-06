@@ -113,7 +113,16 @@
           "nota": "sample_steps:20 + video_frames:25 → ~7min/video. Bajar a steps:10-15 puede doblar throughput."
         }
       },
-      "kernel_productor_v6": "scripts/agente_ltx_kaggle_v6.py"
+      "kernel_productor_v6": "scripts/agente_ltx_kaggle_v6.py",
+      "dataset_runtime_cuenta_2": {
+        "id": "lofiproducer/ltx-free-runtime",
+        "version": 1,
+        "size_bytes": 1890462361,
+        "licencia": "CC0-1.0",
+        "kernel_creador": "lofiproducer/ltx-runtime-to-dataset-2",
+        "nota": "Aislado de cuenta 1. Sin productor asignado (reserva). Rotator 1→2 solo si cuota 1 pete.",
+        "verificado": "2026-11-06 via /datasets/view (list tarda en propagar)"
+      }
     }
   },
   "input": {
