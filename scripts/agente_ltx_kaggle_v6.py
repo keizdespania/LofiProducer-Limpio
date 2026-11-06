@@ -33,12 +33,23 @@ DATASET_ID = "%DS%"
 
 print("=== LTX v6 (runtime cacheado) ===", flush=True)
 
-# 1. Descargar dataset runtime (~5-10s vs 325s pip)
-print("[1/6] Descargando dataset runtime...", flush=True)
+# 1. Dataset runtime ya montado en /kaggle/input/ por dataset_sources
+# (no necesita kaggle CLI ni credenciales — Kaggle lo monta read-only automaticamente)
+print("[1/6] Copiando dataset runtime de /kaggle/input/...", flush=True)
 RT = "/kaggle/working/rt"
 os.makedirs(RT, exist_ok=True)
-subprocess.run(["kaggle", "datasets", "download", "-d", DATASET_ID, "--unzip", "-p", RT],
-               check=True, capture_output=True)
+# Kaggle monta como /kaggle/input/<slug-sin-user>/ donde slug = "ltx-free-runtime"
+SRC = "/kaggle/input/ltx-free-runtime"
+if not os.path.exists(SRC):
+    # Fallback: buscar cualquier dir que contenga nvidia_libs o sd_bin
+    for cand in glob.glob("/kaggle/input/*"):
+        if os.path.exists(cand + "/nvidia_libs") or os.path.exists(cand + "/sd_bin"):
+            SRC = cand; break
+if not os.path.exists(SRC):
+    raise RuntimeError("Dataset runtime no encontrado. Revisar dataset_sources en push_kernel.")
+print("  SRC:", SRC, flush=True)
+shutil.copytree(SRC, RT, dirs_exist_ok=True)
+print("  RT listo:", len(os.listdir(RT)), "entradas", flush=True)
 
 # 2. Montar LD_LIBRARY_PATH
 print("[2/6] Montando LD_LIBRARY_PATH...", flush=True)
