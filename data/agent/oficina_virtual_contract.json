@@ -1,0 +1,74 @@
+{
+  "nombre": "Contrato Dashboard Oficina Virtual (Sims) - El Encuadre",
+  "version": "1.0",
+  "fecha": "2026-11-07",
+  "estado": "DISEÑO / VISIÓN",
+  "proposito": "Crear un Gemelo Digital (Digital Twin) isométrico y jugable de todo el ecosistema. El usuario puede ver a los agentes trabajar, interactuar con ellos y tomar decisiones en tiempo real.",
+
+  "filosofia": {
+    "dios_autonomo": "El agente Dios (dios.py) orquesta todo. Los demás agentes son sus trabajadores.",
+    "autoreparacion": "Si un agente falla 3 veces seguidas, Dios reescribe su script con Groq y lo reinicia.",
+    "escalabilidad": "Cada nueva herramienta (Printify, Spotify, Podcasts) añade una nueva sala a la oficina y un nuevo sprite.",
+    "decision_humana": "Los agentes pueden pausar su trabajo y pedir permiso al humano (ej. aprobar un vídeo, elegir un diseño)."
+  },
+
+  "arquitectura_tecnica": {
+    "frontend": "HTML5 + Phaser.js (vista isométrica 2.5D). Renderiza el mapa, los sprites y las animaciones. Cero dependencias pesadas para Termux.",
+    "backend": "Flask (ya existente). Expone endpoints JSON con el estado de la oficina.",
+    "database": "SQLite (ya existente). Tabla 'agentes_estado' para saber quién hace qué.",
+    "comunicacion": "Polling cada 2s (GET /api/oficina/estado) o WebSockets (más eficiente a largo plazo)."
+  },
+
+  "mapa_y_salas": [
+    {"id": "sala_investigacion", "nombre": "Sala de Investigación", "x": 100, "y": 100, "agentes": ["investigador_redes", "detective"]},
+    {"id": "sala_redaccion", "nombre": "Redacción SEO", "x": 300, "y": 100, "agentes": ["redactor_seo", "experto_blog"]},
+    {"id": "sala_kaggle", "nombre": "Sala de Producción (GPU)", "x": 500, "y": 100, "agentes": ["operador_ltx", "renderizador"]},
+    {"id": "sala_audio", "nombre": "Estudio de Audio", "x": 100, "y": 300, "agentes": ["voz_edge", "musico"]},
+    {"id": "sala_distribucion", "nombre": "Torre de Distribución", "x": 300, "y": 300, "agentes": ["youtube_api", "blogger_api", "spotify_api"]},
+    {"id": "sala_printify", "nombre": "Fábrica Printify (POD)", "x": 500, "y": 300, "agentes": ["diseñador_printify", "gestor_productos"]},
+    {"id": "despacho_dios", "nombre": "Despacho Central (Dios)", "x": 300, "y": 500, "agentes": ["dios"]}
+  ],
+
+  "sprites_y_estados": {
+    "animaciones_agente": ["idle", "walking", "typing", "reading", "thinking", "alert"],
+    "estados_posibles": [
+      {"estado": "trabajando", "anim": "typing", "color": "verde"},
+      {"estado": "pensando", "anim": "thinking", "color": "amarillo"},
+      {"estado": "esperando_permiso", "anim": "alert", "color": "rojo", "accion_humana": true},
+      {"estado": "descansando", "anim": "idle", "color": "azul"},
+      {"estado": "fallo", "anim": "alert", "color": "rojo_parpadeante"}
+    ]
+  },
+
+  "endpoints_api_necesarios": {
+    "GET /api/oficina/estado": "Devuelve un JSON con la posición y estado actual de cada agente.",
+    "POST /api/oficina/mover": "Mueve un agente a una sala específica.",
+    "POST /api/oficina/decision": "El humano envía la respuesta a un agente que estaba bloqueado.",
+    "GET /api/oficina/logs": "Devuelve los últimos logs para la ventana de la consola en la oficina."
+  },
+
+  "autoreparacion_y_decisiones": {
+    "flujo_fallo": "Script de agente falla -> Log de error en SQLite -> Dios detecta 3 fallos en el mismo agente -> Dios llama a Groq para reescribir el script -> Dios reinicia el agente -> El agente vuelve a 'trabajando'.",
+    "flujo_pausa_humana": "Script de agente llega a un checkpoint crítico -> Modifica su estado a 'esperando_permiso' -> El frontend muestra una burbuja sobre el sprite -> El humano hace clic -> Se abre un modal con 'Aprobar / Rechazar' -> El endpoint POST /api/oficina/decision recibe la respuesta y el script continúa."
+  },
+
+  "escalabilidad_con_negocio": {
+    "printify": "Nueva sala. Los agentes generan imágenes en SDXL y las suben a Printify. El dashboard muestra los ingresos por camiseta en tiempo real.",
+    "spotify": "Nueva sala. Los agentes suben el podcast. El dashboard muestra los oyentes del último episodio.",
+    "multi_canal": "El mapa se expande. Cada canal de YouTube (El Encuadre, Lofi, etc.) tiene su propia mini-oficina o ala del edificio."
+  },
+
+  "siguiente_paso_ia": [
+    "1. Crear scripts/oficina_engine.py que mantenga el estado de los agentes en un JSON/SQLite.",
+    "2. Modificar los scripts de los agentes para que reporten su estado (ej. 'estoy en sala_kaggle').",
+    "3. Crear el HTML/JS básico con Phaser.js en web/dashboard/oficina.html.",
+    "4. Implementar el sistema de burbujas de decisión humana.",
+    "5. Añadir la autoreparación con Groq en el Dios."
+  ],
+
+  "reglas_oro": [
+    "El frontend NUNCA debe bloquear el backend. Si la oficina web falla, los scripts de producción deben seguir funcionando.",
+    "Los sprites deben ser ligeros (Spritesheets PNG) para no consumir RAM en el servidor de Termux.",
+    "El dashboard debe ser visible también en el móvil (responsive)."
+  ]
+}
