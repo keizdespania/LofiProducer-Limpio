@@ -166,7 +166,22 @@
     "bad_credentials_github": "Verificar GITHUB_TOKEN (Fine-grained con Contents: Read and write).",
     "repo_turbo_inexistente": "cbensimon/Wan2.2-TI2V-5B-Turbo-Diffusers NO EXISTE. Correcto: yetter-ai/...",
     "libcudart_no_encontrada": "Kaggle T4 tiene CUDA 13.0 del sistema; sd-server busca libcudart.so.12. FIX: pip install nvidia-cuda-runtime-cu12 antes de start_server(). start_server() ya maneja LD_LIBRARY_PATH via find_cuda_library_paths().",
-    "zerogpu_quota": "HF gratis = 5 min/dia. Cada video reserva 150s."
+    "zerogpu_quota": "HF gratis = 5 min/dia. Cada video reserva 150s.",
+    "oom_t4": {
+      "fecha": "2026-11-06",
+      "causa": "1344x768x121 = 124M pixel-frames → buffer 10.9GB → cudaMalloc failed",
+      "formula": "buffer_GB ≈ 0.22 * (W*H*F/1M)",
+      "limite_seguro_t4": "35M pixel-frames (buffer ~7.7GB)",
+      "config_seguras": {
+        "832x480x25": "1s, OK",
+        "832x480x73": "3s, buffer ~6.4GB, OK probable",
+        "832x480x97": "4s, buffer ~8.4GB, justo",
+        "832x480x121": "5s, buffer ~10.6GB, OOM probable",
+        "1024x576x73": "3s, buffer ~9.5GB, OOM probable",
+        "1344x768x121": "5s, OOM CONFIRMADO"
+      },
+      "recomendacion": "Hook: 832x480x97 (4s). Escalar a 1080p con FFmpeg en render_robusto.py"
+    }
   },
   "historial_test": {
     "2026-11-05": {
