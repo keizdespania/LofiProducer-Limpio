@@ -160,9 +160,10 @@ for i, item in enumerate(pendientes):
         "negative_prompt": "worst quality, inconsistent motion, blurry, jittery, text, letters, words, writing, subtitles, watermark",
         "init_image": img_uri,
         "vae_decode_only": False,
-        "video_frames": 25,
+        "video_frames": item.get("video_frames", 25),
         "fps": 24,
-        "width": 832, "height": 480,
+        "width": item.get("width", 832),
+        "height": item.get("height", 480),
         "sample_params": {"sample_steps": 12, "cfg_scale": 3.0, "sample_method": "euler", "scheduler": "discrete"},
     }
 
