@@ -40,5 +40,11 @@
     "imagen_url": "https://raw.githubusercontent.com/keizdespania/LofiProducer-Limpio/main/assets/wan_inputs/capibara_1.png",
     "prompt": "Test steps12: capybara slowly blinks, steam rises, cinematic",
     "completado": true
+  },
+  {
+    "nombre": "test_steps12_b",
+    "imagen_url": "https://raw.githubusercontent.com/keizdespania/LofiProducer-Limpio/main/assets/wan_inputs/capibara_2.png",
+    "prompt": "Test steps12: capybara looks around meeting, subtle motion, cinematic",
+    "completado": true
   }
 ]
