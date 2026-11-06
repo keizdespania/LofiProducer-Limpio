@@ -1,5 +1,6 @@
-"""agente_ltx_kaggle_v6.py - LTX 2.3 productor (dataset runtime cacheado).
-Arranque ~81s vs 412s v5: descarga dataset (5-10s) en vez de pip install (325s).
+"""agente_ltx_kaggle_v6.py - LTX 2.3 productor con dataset runtime cacheado.
+Arranque ~81s vs 412s v5: copia /kaggle/input/rt (5s) en vez de pip install (325s).
+Fix v6.1: vae_decode_only:False + video_frames:25 + polling verboso + server.log dump.
 """
 import sys, pathlib, json
 
@@ -22,7 +23,9 @@ def _leer_env(k):
     return ""
 
 
-_KERNEL = r'''"""LTX 2.3 productor (dataset runtime cacheado)."""
+# Template del kernel: usa DOCSTRINGS con """ y strings con ".
+# NUNCA usa ''' para evitar colisión con el string que lo envuelve.
+_KERNEL_TEMPLATE = """
 import sys, subprocess, os, json, time, pathlib, urllib.request, base64, glob, shutil
 
 COLA_PENDIENTE_URL = "%COLA_P%"
@@ -31,98 +34,84 @@ GITHUB_TOKEN = "%GH%"
 GITHUB_REPO = "%REPO%"
 DATASET_ID = "%DS%"
 
-print("=== LTX v6 (runtime cacheado) ===", flush=True)
+def log(msg):
+    print(msg, flush=True)
 
-# 1. Localizar runtime: walk recursivo /kaggle/input + fallback descarga API
-print("[1/6] Buscando runtime...", flush=True)
+log("=== LTX v6.1 (runtime cacheado) ===")
+
+# 1. Localizar runtime
+log("[1/7] Buscando runtime...")
 RT = "/kaggle/working/rt"
 os.makedirs(RT, exist_ok=True)
-
-# Debug: listar /kaggle/input para ver donde esta
-print("  /kaggle/input/:", flush=True)
-os.system("ls -la /kaggle/input/ 2>/dev/null | head -20")
-
-# Capa 1: walk recursivo buscando sd_bin o nvidia_libs
 SRC = None
 for root, dirs, files in os.walk("/kaggle/input"):
     if "sd_bin" in dirs or "nvidia_libs" in dirs:
         SRC = root
         break
+if not SRC:
+    raise RuntimeError("Dataset runtime NO encontrado")
+log("  SRC: " + SRC)
+shutil.copytree(SRC, RT, dirs_exist_ok=True)
 
-if SRC:
-    print("  encontrado via walk:", SRC, flush=True)
-    shutil.copytree(SRC, RT, dirs_exist_ok=True)
-else:
-    # Capa 2: kaggle datasets download con credenciales explicitas
-    print("  no montado, descargando via kaggle CLI...", flush=True)
-    os.environ["KAGGLE_USERNAME"] = KAGGLE_USER
-    os.environ["KAGGLE_KEY"] = KAGGLE_TOKEN
-    r = subprocess.run(["kaggle", "datasets", "download", "-d", DATASET_ID, "--unzip", "-p", RT],
-                       capture_output=True, text=True, timeout=300)
-    print("  kaggle rc:", r.returncode, "| out:", (r.stdout or "")[-300:], "| err:", (r.stderr or "")[-300:], flush=True)
-
-    if not (os.path.exists(RT + "/sd_bin") or os.path.exists(RT + "/nvidia_libs")):
-        # Capa 3: descarga HTTP directa con Bearer
-        print("  kaggle fallo, descarga HTTP directa...", flush=True)
-        import urllib.request, zipfile
-        url = "https://www.kaggle.com/api/v1/datasets/download/" + DATASET_ID
-        req = urllib.request.Request(url, headers={"Authorization": "Bearer " + KAGGLE_TOKEN})
-        with urllib.request.urlopen(req, timeout=300) as resp:
-            data = resp.read()
-        zpath = "/kaggle/working/rt.zip"
-        with open(zpath, "wb") as f:
-            f.write(data)
-        print("  ZIP:", os.path.getsize(zpath) // 1024 // 1024, "MB", flush=True)
-        with zipfile.ZipFile(zpath) as z:
-            z.extractall(RT)
-
-print("  RT listo:", sorted(os.listdir(RT)), flush=True)
-
-# 2. Montar LD_LIBRARY_PATH
-print("[2/6] Montando LD_LIBRARY_PATH...", flush=True)
+# 2. LD_LIBRARY_PATH
+log("[2/7] LD_LIBRARY_PATH...")
 cuda_dirs = glob.glob(RT + "/nvidia_libs/nvidia/*/lib")
 os.environ["LD_LIBRARY_PATH"] = ":".join(cuda_dirs) + ":" + os.environ.get("LD_LIBRARY_PATH", "")
-print("  dirs:", cuda_dirs, flush=True)
-print("  libcudart:", glob.glob(RT + "/nvidia_libs/**/libcudart.so.12", recursive=True), flush=True)
+cudart = glob.glob(RT + "/nvidia_libs/**/libcudart.so.12", recursive=True)
+log("  dirs: " + str(len(cuda_dirs)) + " | libcudart: " + str(len(cudart)))
+if not cudart:
+    raise RuntimeError("libcudart.so.12 NO encontrada")
 
-# 3. Symlink binario
-print("[3/6] Instalando binario...", flush=True)
+# 3. Binario
+log("[3/7] sd-server...")
 os.makedirs("/tmp/sd_bin/bin", exist_ok=True)
 shutil.copy(RT + "/sd_bin/bin/sd-server", "/tmp/sd_bin/bin/sd-server")
 os.chmod("/tmp/sd_bin/bin/sd-server", 0o755)
 
-# 4. Clonar repo (necesario para src.server)
-print("[4/6] Clonando free-aistudio...", flush=True)
+# 4. Clone + reqs
+log("[4/7] free-aistudio...")
 WORK = "/kaggle/working/free-aistudio"
 if not os.path.exists(WORK):
     subprocess.run(["git", "clone", "https://github.com/airesearch-official/free-aistudio.git", WORK], check=True)
 sys.path.append(WORK)
 subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-r", WORK + "/requirements.txt"], check=True)
 
-# 5. Descargar modelos Q3 (no cacheados, ~7s a 300MB/s)
-print("[5/6] Descargando modelos Q3...", flush=True)
+# 5. Modelos
+log("[5/7] Modelos Q3...")
 from src.downloader import download_models
 download_models(preset="LTX-Video-2.3-Q3")
 
-# 6. Arrancar servidor
-print("[6/6] Arrancando servidor...", flush=True)
-from src.server import start_server, tail_logs
+# 6. Server
+log("[6/7] Arrancando server...")
+from src.server import start_server
 server_process = start_server(load_audio_vae=True)
-print("Esperando 90s...", flush=True)
+log("  esperando 90s...")
 time.sleep(90)
 
-# Procesar cola
+# 7. Procesar cola
+log("[7/7] Procesando cola...")
 SERVER_URL = "http://127.0.0.1:1234"
 with urllib.request.urlopen(COLA_PENDIENTE_URL) as r:
     pendientes = json.loads(r.read())
-print("Pendientes:", len(pendientes), flush=True)
+log("  pendientes: " + str(len(pendientes)))
 
 import requests
 for i, item in enumerate(pendientes):
-    nombre = item["nombre"]; prompt = item["prompt"]; img_url = item["imagen_url"]
-    print("[" + str(i+1) + "/" + str(len(pendientes)) + "] " + nombre, flush=True)
+    nombre = item["nombre"]
+    prompt = item["prompt"]
+    img_url = item["imagen_url"]
+    log("[" + str(i+1) + "/" + str(len(pendientes)) + "] " + nombre)
+
     img_path = "/kaggle/working/" + nombre + "_in.png"
-    urllib.request.urlretrieve(img_url, img_path)
+    try:
+        data = requests.get(img_url, timeout=30).content
+        with open(img_path, "wb") as f:
+            f.write(data)
+        log("  img: " + str(len(data)//1024) + " KB")
+    except Exception as e:
+        log("  ERROR imagen: " + str(e))
+        continue
+
     with open(img_path, "rb") as f:
         img_uri = "data:image/png;base64," + base64.b64encode(f.read()).decode()
 
@@ -130,44 +119,82 @@ for i, item in enumerate(pendientes):
         "prompt": prompt,
         "negative_prompt": "worst quality, inconsistent motion, blurry, jittery, text, letters, words, writing, subtitles, watermark",
         "init_image": img_uri,
-        "video_frames": 97,
+        "vae_decode_only": False,
+        "video_frames": 25,
         "fps": 24,
-        "width": 832, "height": 480,
+        "width": 832,
+        "height": 480,
         "sample_params": {"sample_steps": 20, "cfg_scale": 3.0, "sample_method": "euler", "scheduler": "discrete"},
     }
+
     try:
         r = requests.post(SERVER_URL + "/sdcpp/v1/vid_gen", json=payload, timeout=600)
-        job = r.json(); job_id = job.get("id")
+        log("  POST: " + str(r.status_code))
+        if r.status_code not in (200, 201, 202):
+            log("  POST body: " + r.text[:300])
+            continue
+        job = r.json()
+        job_id = job.get("id") or job.get("job_id")
+        log("  job_id: " + str(job_id))
+        if not job_id:
+            log("  sin job_id: " + str(job)[:300])
+            continue
+
         deadline = time.time() + 900
         result = None
+        poll_n = 0
         while time.time() < deadline:
             time.sleep(5)
+            poll_n += 1
             jd = requests.get(SERVER_URL + "/sdcpp/v1/jobs/" + job_id, timeout=30).json()
-            if jd.get("status") in ("completed","succeeded","done"): result = jd; break
-            if jd.get("status") in ("failed","error"): break
-        if result:
-            vdata = (result.get("result") or {}).get("b64_json")
-            if vdata:
-                out = "/kaggle/working/" + nombre + ".mp4"
-                with open(out, "wb") as f: f.write(base64.b64decode(vdata))
-                print("Video:", os.path.getsize(out)//1024, "KB", flush=True)
-                # Upload
-                url = "https://api.github.com/repos/" + GITHUB_REPO + "/contents/output/videos/" + nombre + ".mp4"
-                h = {"Authorization": "token " + GITHUB_TOKEN, "Accept": "application/vnd.github.v3+json"}
-                sha = requests.get(url, headers=h).json().get("sha")
-                data = {"message": "Add " + nombre, "content": base64.b64encode(open(out,"rb").read()).decode(), "branch": "main"}
-                if sha: data["sha"] = sha
-                rr = requests.put(url, headers=h, json=data)
-                print("GitHub:", "OK" if rr.status_code in (200,201) else rr.text[:100], flush=True)
-    except Exception as e:
-        print("Error:", type(e).__name__, ":", e, flush=True)
+            st = jd.get("status", "?")
+            log("  poll " + str(poll_n) + ": " + st)
+            if st in ("completed", "succeeded", "done"):
+                result = jd
+                break
+            if st in ("failed", "error", "cancelled"):
+                log("  JOB FAILED: " + str(jd)[:400])
+                try:
+                    with open("/kaggle/working/server.log") as lf:
+                        lines = lf.readlines()[-50:]
+                    log("  --- server.log tail ---")
+                    log("".join(lines))
+                    log("  --- fin ---")
+                except Exception:
+                    pass
+                break
 
-print("=== FIN ===", flush=True)
-'''
+        if not result:
+            log("  sin resultado")
+            continue
+
+        vdata = (result.get("result") or {}).get("b64_json")
+        if not vdata:
+            log("  sin b64_json: " + str(result)[:300])
+            continue
+
+        out = "/kaggle/working/" + nombre + ".mp4"
+        with open(out, "wb") as f:
+            f.write(base64.b64decode(vdata))
+        log("  Video: " + str(os.path.getsize(out)//1024) + " KB")
+
+        url = "https://api.github.com/repos/" + GITHUB_REPO + "/contents/output/videos/" + nombre + ".mp4"
+        h = {"Authorization": "token " + GITHUB_TOKEN, "Accept": "application/vnd.github.v3+json"}
+        sha = requests.get(url, headers=h).json().get("sha")
+        data_up = {"message": "Add " + nombre, "content": base64.b64encode(open(out,"rb").read()).decode(), "branch": "main"}
+        if sha:
+            data_up["sha"] = sha
+        rr = requests.put(url, headers=h, json=data_up)
+        log("  GitHub: " + ("OK" if rr.status_code in (200,201) else rr.text[:100]))
+    except Exception as e:
+        log("  ERROR: " + type(e).__name__ + ": " + str(e))
+
+log("=== FIN ===")
+"""
 
 
 def _construir_kernel():
-    return (_KERNEL
+    return (_KERNEL_TEMPLATE
             .replace("%COLA_P%", COLA_PENDIENTE_URL)
             .replace("%COLA_C%", COLA_COMPLETADOS_URL)
             .replace("%GH%", _leer_env("GITHUB_TOKEN"))
@@ -182,6 +209,6 @@ if __name__ == "__main__":
         print("Kernel:", len(codigo), "chars")
         res = push_kernel(f"{KAGGLE_USER}/{KERNEL_SLUG}", codigo, enable_gpu=True, enable_internet=True,
                           dataset_sources=[DATASET_ID])
-        print("Push:", {k:v for k,v in (res or {}).items() if k in ("hasError","error","versionNumber")})
+        print("Push:", {k: v for k, v in (res or {}).items() if k in ("hasError","error","versionNumber")})
     elif cmd == "estado":
         print(json.dumps(estado_kernel(f"{KAGGLE_USER}/{KERNEL_SLUG}"), indent=2))
