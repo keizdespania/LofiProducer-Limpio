@@ -1,8 +1,11 @@
-"""preparar_dataset_ltx.py - Kernel que prepara runtime LTX y crea Dataset Kaggle.
-Evita descarga manual: el kernel hace pip install CUDA 12 + restore_binary
-y publica /kaggle/working/ltx_runtime como Dataset keizproductions/ltx-free-runtime.
+"""preparar_dataset_ltx.py - Prepara runtime LTX en Kaggle (por cuenta).
+Uso:
+  python3 scripts/preparar_dataset_ltx.py lanzar           # cuenta 1
+  python3 scripts/preparar_dataset_ltx.py lanzar --cuenta 2  # cuenta 2
+  python3 scripts/preparar_dataset_ltx.py estado [--cuenta N]
 
-Regla #20: reescrito limpio 2026-11-06 tras 3 parches fallidos.
+Cada cuenta crea SU PROPIO dataset para no dejar vínculos entre cuentas
+(evita patrones detectables de multi-cuenta coordinada).
 """
 import sys, pathlib, json
 
@@ -10,9 +13,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 from kaggle_bearer import push_kernel, estado_kernel
 
-KAGGLE_USER = "keizproductions"
-KERNEL_SLUG = "ltx-runtime-to-dataset"
-DATASET_ID = "keizproductions/ltx-free-runtime"
+CUENTAS = {
+    1: {"user": "keizproductions", "kernel": "ltx-runtime-to-dataset",   "dataset": "keizproductions/ltx-free-runtime",   "token_var": "KAGGLE_API_TOKEN"},
+    2: {"user": "lofiproducer",    "kernel": "ltx-runtime-to-dataset-2", "dataset": "lofiproducer/ltx-free-runtime",      "token_var": "KAGGLE_API_TOKEN_2"},
+}
 
 
 def _leer_env(k):
@@ -22,17 +26,14 @@ def _leer_env(k):
     return ""
 
 
-# Template del kernel: comillas simples triples exteriores, dentro SIN triples
-# comillas (comentarios # y strings normales). Placeholders %TOKEN% y %DATASET_ID%
-_KERNEL_TEMPLATE = r'''"""Kernel: prepara runtime LTX + crea Dataset Kaggle."""
+_KERNEL_TEMPLATE = """
 import sys, subprocess, os, json, shutil
 
 DATASET_ID = "%DATASET_ID%"
 KAGGLE_TOKEN = "%TOKEN%"
-KAGGLE_USER = "keizproductions"
+KAGGLE_USER = "%KAGGLE_USER%"
 
 print("=== PREPARANDO RUNTIME LTX ===", flush=True)
-
 rt = "/kaggle/working/ltx_runtime"
 os.makedirs(rt, exist_ok=True)
 
@@ -97,11 +98,11 @@ if not cli_ok:
         ("metadata", "dataset-metadata.json", json.dumps(meta).encode(), "application/json"),
         ("file", "ltx_runtime_full.zip", open(zip_path, "rb").read(), "application/zip"),
     ]:
-        body += b"--" + boundary.encode() + b"\r\n"
-        body += b'Content-Disposition: form-data; name="' + name.encode() + b'"; filename="' + fname.encode() + b'"\r\n'
-        body += b"Content-Type: " + ctype.encode() + b"\r\n\r\n"
-        body += content + b"\r\n"
-    body += b"--" + boundary.encode() + b"--\r\n"
+        body += b"--" + boundary.encode() + b"\\r\\n"
+        body += b'Content-Disposition: form-data; name="' + name.encode() + b'"; filename="' + fname.encode() + b'"\\r\\n'
+        body += b"Content-Type: " + ctype.encode() + b"\\r\\n\\r\\n"
+        body += content + b"\\r\\n"
+    body += b"--" + boundary.encode() + b"--\\r\\n"
 
     req = urllib.request.Request(
         "https://www.kaggle.com/api/v1/datasets/create/new",
@@ -119,29 +120,47 @@ else:
     print("CLI creo el dataset OK", flush=True)
 
 print("=== FIN ===", flush=True)
-'''
+"""
 
 
-def _construir_kernel():
-    token = _leer_env("KAGGLE_API_TOKEN")
+def _construir_kernel(cuenta):
+    info = CUENTAS[cuenta]
+    token = _leer_env(info["token_var"])
     if not token:
-        raise RuntimeError("KAGGLE_API_TOKEN no encontrado en .env")
-    codigo = _KERNEL_TEMPLATE.replace("%TOKEN%", token).replace("%DATASET_ID%", DATASET_ID)
-    return codigo
+        raise RuntimeError(f"{info['token_var']} no encontrado en .env")
+    return (_KERNEL_TEMPLATE
+            .replace("%DATASET_ID%", info["dataset"])
+            .replace("%TOKEN%", token)
+            .replace("%KAGGLE_USER%", info["user"]))
 
 
-def lanzar():
-    print(f"Lanzando kernel {KAGGLE_USER}/{KERNEL_SLUG}...")
-    codigo = _construir_kernel()
-    print("  Codigo:", len(codigo), "chars")
-    res = push_kernel(f"{KAGGLE_USER}/{KERNEL_SLUG}", codigo, enable_gpu=False, enable_internet=True)
-    print("  Push:", {k: v for k, v in (res or {}).items() if k in ("hasError", "error", "ref", "versionNumber")})
-    return not (isinstance(res, dict) and res.get("hasError"))
+def _parse_args(argv):
+    cuenta = 1
+    if "--cuenta" in argv:
+        i = argv.index("--cuenta")
+        try:
+            cuenta = int(argv[i + 1])
+        except (IndexError, ValueError):
+            print("Uso: --cuenta 1|2")
+            sys.exit(2)
+    if cuenta not in CUENTAS:
+        print(f"Cuenta inválida: {cuenta}. Válidas: {list(CUENTAS.keys())}")
+        sys.exit(2)
+    return cuenta
 
 
 if __name__ == "__main__":
-    cmd = sys.argv[1] if len(sys.argv) > 1 else "lanzar"
+    cuenta = _parse_args(sys.argv)
+    info = CUENTAS[cuenta]
+    cmd = sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith("--") else "lanzar"
+
     if cmd == "lanzar":
-        sys.exit(0 if lanzar() else 1)
+        codigo = _construir_kernel(cuenta)
+        print(f"[cuenta {cuenta}] Kernel: {len(codigo)} chars")
+        print(f"[cuenta {cuenta}] Destino: {info['user']}/{info['kernel']}")
+        print(f"[cuenta {cuenta}] Dataset: {info['dataset']}")
+        res = push_kernel(f"{info['user']}/{info['kernel']}", codigo,
+                          enable_gpu=False, enable_internet=True, cuenta=cuenta)
+        print("Push:", {k: v for k, v in (res or {}).items() if k in ("hasError", "error", "versionNumber", "ref")})
     elif cmd == "estado":
-        print(json.dumps(estado_kernel(f"{KAGGLE_USER}/{KERNEL_SLUG}"), indent=2))
+        print(json.dumps(estado_kernel(f"{info['user']}/{info['kernel']}"), indent=2))

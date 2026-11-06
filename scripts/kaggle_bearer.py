@@ -58,12 +58,15 @@ def listar_kernels(usuario=""):
     """Lista los kernels del usuario."""
     return _req(f"/kernels/list?user={usuario}&page=1")
 
-def estado_kernel(slug):
-    """Consulta el estado en cuenta 1; si da 404, prueba cuenta 2."""
+def estado_kernel(slug, cuenta=None):
+    """Consulta estado. Si cuenta=None, prueba 1 y 2. Si cuenta=N, solo esa."""
     partes = slug.split("/")
     if len(partes) != 2:
         return {"error": "Slug invalido. Debe ser 'usuario/nombre'"}
     user, kernel = partes
+    if cuenta is not None:
+        return _req(f"/kernels/status?userName={user}&kernelSlug={kernel}", cuenta=cuenta)
+
     
     # Intento Cuenta 1
     r1 = _req(f"/kernels/status?userName={user}&kernelSlug={kernel}", cuenta=1)
@@ -78,8 +81,8 @@ def estado_kernel(slug):
     # Si ambas fallan, devolvemos el error de la cuenta 1
     return r1
 
-def push_kernel(slug, codigo, enable_gpu=True, enable_internet=True, dataset_sources=None):
-    """Intenta subir a la cuenta 1. Si esta llena (max 2 GPUs), usa la cuenta 2."""
+def push_kernel(slug, codigo, enable_gpu=True, enable_internet=True, dataset_sources=None, cuenta=None):
+    """Sube un kernel. Si cuenta=None, rotator. Si cuenta=N, fuerza esa."""
     payload = {
         "slug": slug, "newTitle": slug.split("/")[-1].replace("-", " ").title(),
         "text": codigo, "language": "python", "kernelType": "script",
@@ -88,6 +91,10 @@ def push_kernel(slug, codigo, enable_gpu=True, enable_internet=True, dataset_sou
         "competitionDataSources": [], "kernelDataSources": [],
     }
     
+    if cuenta is not None:
+        print(f"[Forzando cuenta {cuenta}] para {slug}...")
+        return _req("/kernels/push", method="POST", data=payload, cuenta=cuenta)
+
     # Intentar cuenta 1
     print(f"[Rotator] Intentando cuenta 1 para {slug}...")
     res = _req("/kernels/push", method="POST", data=payload, cuenta=1)
