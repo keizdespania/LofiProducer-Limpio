@@ -5,17 +5,44 @@ hide:
 
 <div class="holo-hero">
   <h1>El Archivo del Anti-Medio</h1>
-  <p>Todo nuestro arsenal. 39 análisis publicados. Sin filtros, con enlaces verificables.</p>
+  <p>Todo nuestro arsenal. 42 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (39)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (6)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (9)</button>
-  <button class="holo-filter-btn" data-filter="mediano">Medianos (5)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (42)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (7)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (10)</button>
+  <button class="holo-filter-btn" data-filter="mediano">Medianos (6)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-06-mediano-medio_analizado/'" data-category="mediano">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    
+    <h3>Onda Cero: la tecnica del uso de la metáfora de 'resaca' para sugerir un golpe económico negativo</h3>
+    <p>Analisis medio_analizado: Onda Cero: la tecnica del uso de la metáfora de 'resaca' para sugerir un golpe económico negativo</p>
+    <div class="holo-meta"><span>📅 2026-11-06</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-06-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    
+    <h3>El Encuadre: Una nueva oleada de falsas amenazas de bomba af</h3>
+    <p>Analisis largo: El Encuadre: Una nueva oleada de falsas amenazas de bomba af</p>
+    <div class="holo-meta"><span>📅 2026-11-06</span></div>
+    
+    <a href="https://www.elmundo.es/espana/2026/11/05/6aecd37921efa0f6278b4575.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elmundo.es</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-06-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier del día: El Encuadre: Una nueva oleada de falsas amenazas de bomba af</h3>
+    <p>Dossier ejecutivo: El Encuadre: Una nueva oleada de falsas amenazas de bomba afecta al menos a 27 a</p>
+    <div class="holo-meta"><span>📅 2026-11-06</span></div>
+    
+    <a href="https://www.elmundo.es/espana/2026/11/05/6aecd37921efa0f6278b4575.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elmundo.es</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-05-mediano-cita/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     
