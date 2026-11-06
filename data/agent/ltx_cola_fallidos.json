@@ -13,5 +13,11 @@
     "nombre": "test_hook_4s_832",
     "config": "832x480x97",
     "razon_fallo": "OOM en offload diffusion model 10.9GB. NO es por compute buffer (3.5GB). El server intenta cargar modelo completo cuando video_frames>25."
+  },
+  {
+    "nombre": "test_hook_3s_832",
+    "config": "832x480x73",
+    "razon_fallo": "Sampling OK 455s, audio OK, VAE decode OOM 16.5GB. Necesita <13GB decode.",
+    "hallazgo": "El limite real esta en VAE decode, no en sampling."
   }
 ]

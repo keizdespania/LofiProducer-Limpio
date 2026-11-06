@@ -1,9 +1,9 @@
 [
   {
-    "nombre": "test_hook_3s_832",
+    "nombre": "test_hook_2s_832",
     "imagen_url": "https://raw.githubusercontent.com/keizdespania/LofiProducer-Limpio/main/assets/wan_inputs/capibara_1.png",
     "prompt": "Capybara in hot spring, steam rising slowly, gentle camera push in, soft golden hour lighting",
-    "video_frames": 73,
+    "video_frames": 49,
     "width": 832,
     "height": 480,
     "completado": false

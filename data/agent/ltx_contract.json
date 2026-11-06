@@ -198,6 +198,22 @@
         "Aceptar hook de 1s (25 frames) escalado con FFmpeg"
       ],
       "decision_pendiente": "Proximo test: 832x480x73. Si funciona -> hook 3s. Si falla -> hook 1s x2 concatenados."
+    },
+    "oom_vae_decode": {
+      "fecha": "2026-11-06 04:30",
+      "causa": "VAE decode final atomico. Sampling OK por chunks pero decode NO.",
+      "patron": {
+        "25_frames": "decode ~6.6GB OK",
+        "49_frames": "decode ~11.5GB probable OK",
+        "73_frames": "decode 16.5GB OOM CONFIRMADO",
+        "97_frames": "decode 22GB imposible"
+      },
+      "limite_probable": "49-60 frames (2-2.5s a 24fps)",
+      "workarounds_largos": [
+        "Concatenar clips de 2s con FFmpeg crossfade",
+        "Forkear free-aistudio para exponer --vae-tile-size menor",
+        "Vae tiling forzado con tiles 512x512"
+      ]
     }
   },
   "historial_test": {
