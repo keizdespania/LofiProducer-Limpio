@@ -102,7 +102,16 @@
         ],
         "creado": "2026-11-06",
         "kernel_creador": "scripts/preparar_dataset_ltx.py",
-        "ahorro_arranque_seg": "412 -> ~81 (5x)"
+        "ahorro_arranque_seg": "412 -> ~81 (5x)",
+        "verificado_v6_1": {
+          "fecha": "2026-11-06 02:30",
+          "kernel": "keizproductions/ltx-free-t4-v6",
+          "tiempo_total_seg": 1031,
+          "tiempo_por_video_seg": 515,
+          "capibara_4_kb": 3772,
+          "capibara_5_kb": "verificar log completo",
+          "nota": "sample_steps:20 + video_frames:25 → ~7min/video. Bajar a steps:10-15 puede doblar throughput."
+        }
       },
       "kernel_productor_v6": "scripts/agente_ltx_kaggle_v6.py"
     }
