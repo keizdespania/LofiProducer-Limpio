@@ -181,6 +181,23 @@
         "1344x768x121": "5s, OOM CONFIRMADO"
       },
       "recomendacion": "Hook: 832x480x97 (4s). Escalar a 1080p con FFmpeg en render_robusto.py"
+    },
+    "oom_t4_v2": {
+      "fecha": "2026-11-06 04:15",
+      "causa_real": "OOM al offloadeal diffusion_model 10.9GB a VRAM durante sampling. NO es por pixel-frames.",
+      "patron": {
+        "25_frames": "OK — procesa por chunks, compute buffer ~2-11GB",
+        "97_frames": "OOM — server intenta cargar modelo completo 10.9GB + buffer 3.5GB + text_encoder 8.8GB = 23GB"
+      },
+      "limite_practico": "entre 25 y 73 frames. Test 73 pendiente.",
+      "posibles_workarounds": [
+        "832x480x73 (3s) — probar mañana",
+        "640x384x97 (2s) — menor resolucion",
+        "Concatenar 2 clips de 1s para hook de 2s",
+        "Cambiar modelo Q3 por FP8 (menor VRAM)",
+        "Aceptar hook de 1s (25 frames) escalado con FFmpeg"
+      ],
+      "decision_pendiente": "Proximo test: 832x480x73. Si funciona -> hook 3s. Si falla -> hook 1s x2 concatenados."
     }
   },
   "historial_test": {

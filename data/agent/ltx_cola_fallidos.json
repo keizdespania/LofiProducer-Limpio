@@ -8,5 +8,10 @@
     "height": 768,
     "completado": false,
     "razon_fallo": "OOM T4: buffer 10.9GB > disponible. Limite ~35M pixel-frames."
+  },
+  {
+    "nombre": "test_hook_4s_832",
+    "config": "832x480x97",
+    "razon_fallo": "OOM en offload diffusion model 10.9GB. NO es por compute buffer (3.5GB). El server intenta cargar modelo completo cuando video_frames>25."
   }
 ]
