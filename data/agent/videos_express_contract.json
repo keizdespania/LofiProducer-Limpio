@@ -1,0 +1,63 @@
+{
+  "nombre": "Contrato Vídeos Express - El Encuadre",
+  "version": "0.1",
+  "fecha": "2026-11-06",
+  "estado": "DISEÑO",
+  "proposito": "Vídeos 3-5 min por remontaje aleatorio del banco de clips. Coste casi cero por vídeo tras generar el banco.",
+  "principio": "1 banco de clips + N combinaciones aleatorias = M vídeos únicos sin regenerar nada.",
+
+  "banco_clips": {
+    "ubicacion": "output/videos/banco/{categoria}/*.mp4",
+    "categorias": ["hacker_frente", "hacker_lateral", "hacker_cenital", "hacker_movil", "hacker_meditando", "hacker_teclado", "pantalla_codigo", "pantalla_noticias", "pantalla_datos"],
+    "duracion_clip_seg": 2,
+    "resolucion": "832x480",
+    "fps": 24,
+    "generacion": "Batch Kaggle T4 via_c LTX. ~60 clips = 3 kernels. One-time.",
+    "minimo_viable": 15
+  },
+
+  "render_express": {
+    "script_propuesto": "scripts/render_express.py",
+    "logica": [
+      "1. N clips = (duracion - intro - outro) / 2s",
+      "2. Seleccion aleatoria del banco (sin repetir, sin 3 seguidos de misma categoria)",
+      "3. Cortes al beat (multiplos de 60/bpm)",
+      "4. Micro-zoom zoompan 1.0->1.05 por clip",
+      "5. Overlay 2-3 pantallas en esquinas aleatorias",
+      "6. Concat -c copy (clips homogeneos) o libx264 (mezcla)",
+      "7. Musica CC con fade in/out",
+      "8. Voz + subtitulos desde pipeline guion",
+      "9. Export a output/videos/express/"
+    ],
+    "coste_local": "~3-8 min en Termux por video (FFmpeg sin GPU)",
+    "kaggle_solo_si": "mezcla resoluciones o xfade complejo"
+  },
+
+  "reglas_oro": [
+    "Nunca 2 videos con misma secuencia de clips",
+    "Siempre intro_logo + outro_logo",
+    "Nunca 3 clips seguidos de misma categoria",
+    "Cortes al beat: fallback 4s si BPM no detecta",
+    "Clips homogeneos (mismo codec/res) para concat sin reencode"
+  ],
+
+  "defensa_youtube": {
+    "politica": "Contenido reutilizado penalizado si NO transforma sustancialmente",
+    "defensa": ["voz original", "guion unico", "musica CC distinta", "subtitulos unicos", "orden aleatorio", "micro-zoom + overlays", "titulo y thumbnail unicos"],
+    "penalizan": ["subir mismo MP4 2 veces", "voz robotica sin procesar", "musica copyrighted", "clips terceros sin transformacion"]
+  },
+
+  "estado": {
+    "banco_clips": "0 clips (poblar primero)",
+    "render_express": "no implementado",
+    "prioridad": "Baja (cerrar pipeline principal primero)"
+  },
+
+  "siguiente_paso": [
+    "1. Poblar banco con 15 clips (1 kernel ~2.5h)",
+    "2. Implementar render_express.py v0.1",
+    "3. Test 1 video 3min",
+    "4. Anadir overlays y cortes al beat",
+    "5. Integrar con pipeline guion"
+  ]
+}
