@@ -34,5 +34,11 @@
     "imagen_url": "https://raw.githubusercontent.com/keizdespania/LofiProducer-Limpio/main/assets/wan_inputs/capibara_5.png",
     "prompt": "The capybara DJ bobs its head to the music, neon lights pulsing, cinematic",
     "completado": true
+  },
+  {
+    "nombre": "test_steps12_a",
+    "imagen_url": "https://raw.githubusercontent.com/keizdespania/LofiProducer-Limpio/main/assets/wan_inputs/capibara_1.png",
+    "prompt": "Test steps12: capybara slowly blinks, steam rises, cinematic",
+    "completado": true
   }
 ]
