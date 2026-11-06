@@ -1074,3 +1074,29 @@ DRY_RUN=1 python3 scripts/pipeline_encuadre.py 2>&1 | tee data/logs/test_$(date 
 - data/agent/ltx_contract.json v2.0.
 - data/agent/ltx_cola_pendiente.json.
 - data/agent/ltx_cola_completados.json.
+
+## 🎬 SESIÓN 2026-11-06 (LTX VIA_C OPERATIVA)
+
+### HECHO
+- via_c LTX 2.3 OPERATIVA en Kaggle T4 (free-aistudio + binario C++ Q3).
+- Fix CUDA: pip --target /tmp/cuda12_libs + LD_LIBRARY_PATH global (Kaggle tiene CUDA 13, binario busca 12).
+- Fix payload: sample_params ANIDADO + vae_decode_only:False + video_frames:25 + init_image base64.
+- Fix endpoint: POST /sdcpp/v1/vid_gen + polling /sdcpp/v1/jobs/{id}.
+- Dataset runtime: keizproductions/ltx-free-runtime v1 (1.89GB). Arranque 412s→81s.
+- Cuenta 2 aislada: lofiproducer/ltx-free-runtime (sin productor, solo reserva).
+- 5 capibaras totales (3 HF + 2 Kaggle v6.1).
+- Kernel v6.1 verificado: 1031s, 515s/vídeo, GitHub OK.
+
+### REGLAS #67-#71
+- #67: push_kernel(cuenta=N) bypass rotator.
+- #68: Cada cuenta Kaggle SU PROPIO dataset. Cero sharing.
+- #69: _KERNEL_TEMPLATE con """ triple, NUNCA ''' anidados.
+- #70: sample_params ANIDADO en payload LTX.
+- #71: video_frames = 8n+1. >97 OOM T4.
+
+### PENDIENTE
+1. Tuning sample_steps 20→12 (¿~4min/vídeo?)
+2. Fix estructural: mover item a completados tras GitHub OK
+3. Hook animado en pipeline 06:00
+4. Doblaje XTTS v2 (alta prioridad)
+5. LoRA El Encuadre (media)
