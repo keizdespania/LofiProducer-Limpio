@@ -5,17 +5,44 @@ hide:
 
 <div class="holo-hero">
   <h1>El Archivo del Anti-Medio</h1>
-  <p>Todo nuestro arsenal. 42 análisis publicados. Sin filtros, con enlaces verificables.</p>
+  <p>Todo nuestro arsenal. 45 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (42)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (7)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (10)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (45)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (8)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (12)</button>
   <button class="holo-filter-btn" data-filter="mediano">Medianos (6)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-07-mediano-dossier/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier completo del dia</h3>
+    <p>Analisis dossier: Dossier completo del dia</p>
+    <div class="holo-meta"><span>📅 2026-11-07</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-07-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    
+    <h3>El Encuadre: Adif blindó el bonus a su cúpula horas antes de</h3>
+    <p>Analisis largo: El Encuadre: Adif blindó el bonus a su cúpula horas antes de</p>
+    <div class="holo-meta"><span>📅 2026-11-07</span></div>
+    
+    <a href="https://www.elespanol.com/espana/20261107/ceuta-macroceti-dias-invasion-gobierno-no-capaz-finalizar-expediente-repatriacion/1003744445233_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-07-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier del día: El Encuadre: Adif blindó el bonus a su cúpula horas antes de</h3>
+    <p>Dossier ejecutivo: El Encuadre: Adif blindó el bonus a su cúpula horas antes de dimitir su presiden</p>
+    <div class="holo-meta"><span>📅 2026-11-07</span></div>
+    
+    <a href="https://www.elespanol.com/espana/20261107/ceuta-macroceti-dias-invasion-gobierno-no-capaz-finalizar-expediente-repatriacion/1003744445233_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-06-mediano-medio_analizado/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     
