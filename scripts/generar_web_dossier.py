@@ -204,9 +204,24 @@ Devuelve SOLO el HTML."""
     
     html_final = html + "\n\n" + fuentes_html + "\n\n" + descargo
     
-    # Guardar
-    img = _imagen()
-    hero = f'<figure><img src="{img}" alt="Dossier del día" style="width:100%;border-radius:8px;" loading="lazy"></figure>' if img else ""
+    # Guardar (3 imágenes dinámicas)
+    hero_blocks = []
+    img_map_path = ROOT / "web" / "media" / "imagenes" / f"web_urls_{fecha}.json"
+    if img_map_path.exists():
+        try:
+            img_map = json.loads(img_map_path.read_text())
+            # Usamos las del dossier si existen, o las del largo/mediano
+            imgs = img_map.get("dossier", img_map.get("largo", []))
+            for i, img_name in enumerate(imgs[:3]):
+                if i == 0:
+                    # La primera imagen como portada
+                    hero_blocks.append(f'<figure><img src="../../media/imagenes/{img_name}" alt="Dossier del día" style="width:100%;border-radius:8px;" loading="lazy"></figure>')
+                else:
+                    # Las demás repartidas, o al final del post. Aquí las ponemos en el encabezado
+                    hero_blocks.append(f'<figure><img src="../../media/imagenes/{img_name}" alt="Análisis" style="width:100%;border-radius:8px;margin-top:1em;" loading="lazy"></figure>')
+        except Exception as e:
+            print(f'   Error leyendo imágenes: {e}')
+    hero = "\n".join(hero_blocks)
     
     contenido = f"""---
 title: "Dossier del día: {tema[:60]}"
