@@ -1,0 +1,30 @@
+{
+  "fecha": "2026-11-07",
+  "largo": {
+    "titulo": "InfoLibre: Sánchez en Valencia y Feijóo en Valladolid: la campaña ",
+    "video_id": "O4rkKRNm0VM",
+    "tipo": "video_largo"
+  },
+  "shorts": [
+    {
+      "titulo": "🟠 ¿Alguna vez te has preguntado por qué el precio de la...",
+      "video_id": "0GANh7fbn8g",
+      "tipo": "short"
+    },
+    {
+      "titulo": "🎬 ¿Quién decide qué historia es verdad? InfoLibre pinta...",
+      "video_id": "s1AqKz1f4hg",
+      "tipo": "short"
+    },
+    {
+      "titulo": "🔮 ¿Te has fijado cómo InfoLibre muestra a Sánchez en...",
+      "video_id": "9WrhAQAHU1w",
+      "tipo": "short"
+    },
+    {
+      "titulo": "🎯 ¿Alguna vez te has preguntado cómo un titular cambia...",
+      "video_id": "LAFr9bTDhwI",
+      "tipo": "short"
+    }
+  ]
+}

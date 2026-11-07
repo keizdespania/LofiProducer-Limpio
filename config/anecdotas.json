@@ -232,8 +232,8 @@
       "id": 30,
       "categoria": "supermercado",
       "texto": "La madre de la familia, en la cola, me preguntó: \"¿Crees que el precio es justo?\" Yo le respondí: \"Si el precio es la historia que venden.\" La justicia se compra con la factura del ego.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-07T06:06:35.357955"
     },
     {
       "id": 31,

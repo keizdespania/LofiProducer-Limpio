@@ -28,7 +28,9 @@ data/musica_libre/*.mp3
 data/musica_libre/*/*.mp3
 
 # === WEB: build estático (se regenera con mkdocs) ===
-web/media/imagenes/
+# web/media/imagenes/ (desbloqueado para posts web)
+web/media/imagenes/short_*
+web/media/imagenes/web_*
 web/web/
 
 # === PODCASTS: SÍ van a git (para RSS Spotify, 30 días) ===
