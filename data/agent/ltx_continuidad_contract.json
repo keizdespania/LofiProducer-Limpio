@@ -1,148 +1,76 @@
 {
-  "nombre": "Contrato LTX Continuidad - El Encuadre",
-  "version": "1.1",
-  "fecha": "2026-11-06",
-  "estado": "EN_VALIDACION",
+  "nombre": "Contrato LTX Continuidad y Biblioteca - El Encuadre",
+  "version": "2.0",
+  "fecha": "2026-11-08",
+  "estado": "OPERATIVO",
   "lectura_obligatoria": {
     "antes_de_tocar": [
-      "Leer este contrato completo",
-      "Leer data/agent/ltx_contract.json (contrato raíz)",
-      "Leer data/agent/ltx_continuidad/kernel_continuidad.py (código funcional)",
-      "NO improvisar runtime. Copiar kernel_continuidad.py tal cual."
-    ],
-    "si_dudas": "Si algo no está en este contrato, NO lo hagas. Pregunta al usuario."
+      "Leer este contrato COMPLETO.",
+      "Leer data/agent/ltx_contract.json (contrato raíz de LTX).",
+      "NO improvisar el runtime. Usar los kernels oficiales.",
+      "NUNCA hardcodear tokens (GitHub bloquea el push). Usar os.environ.get('GITHUB_TOKEN')."
+    ]
   },
-  "proposito": "Encadenar N segmentos de 2s de LTX para crear clips largos sin OOM. Permite shorts 30s y hooks 8s (intro/outro).",
-  "viable_si": "El corte entre segmentos se ve suave al reproducir el MP4 concatenado. Si hay salto -> crossfade FFmpeg.",
-  "base_tecnica": "Reutiliza kernel v6.2 (dataset runtime + LD_LIBRARY_PATH + sd-server). Solo añade: extracción último frame + concat FFmpeg.",
-  "requisitos_kaggle": {
-    "dataset_sources": [
-      "keizproductions/ltx-free-runtime"
-    ],
-    "dataset_version": 1,
-    "dataset_size_gb": 1.89,
-    "dataset_mount_path": "/kaggle/input/datasets/keizproductions/ltx-free-runtime (o buscar con os.walk(\"/kaggle/input\"))",
-    "dataset_contiene": [
-      "nvidia_libs/",
-      "sd_bin/"
-    ],
-    "enable_gpu": true,
-    "enable_internet": true,
-    "runtime_esperado": "GPU T4 x2",
-    "llamada_push_kernel_exacta": "push_kernel('keizproductions/ltx-test-continuidad-v1', codigo, enable_gpu=True, enable_internet=True, dataset_sources=['keizproductions/ltx-free-runtime'])",
-    "si_falta_dataset": "RuntimeError('Dataset runtime NO encontrado') en paso [1/8]. NUNCA hacer pip install ni git clone de binarios como fallback."
+  "proposito": "Encadenar N segmentos de 2s de LTX (49 frames) para crear clips de 6s, 8s o 30s sin OOM. Incluye generación masiva desde la biblioteca de imágenes.",
+  "reglas_de_oro": {
+    "frames_maximos": 49,
+    "razon_frames": "VAE decode es atómico. 49f = ~11.5GB (OK). 73f = 16.5GB (OOM en T4 15GB).",
+    "formato_init_image": "SIEMPRE data URI base64 ('data:image/png;base64,...'). NUNCA un path local.",
+    "sample_params": "SIEMPRE anidado. NUNCA plano.",
+    "extraer_frame": "SIEMPRE usar ffmpeg -y -sseof -0.1 -i video.mp4 -vframes 1 frame.png (NUNCA -sseof 0).",
+    "endpoint": "POST http://127.0.0.1:1234/sdcpp/v1/vid_gen (NUNCA puerto 8080)."
+  },
+  "infraestructura_kaggle": {
+    "dataset_runtime": "keizproductions/ltx-free-runtime",
+    "mount_path": "/kaggle/input/ (usar os.walk para encontrarlo, la ruta exacta cambia)",
+    "requisito_push_kernel": "dataset_sources=['keizproductions/ltx-free-runtime']",
+    "hardware": "GPU T4 x2 (15GB VRAM)"
   },
   "codigo_funcional": {
+    "orquestador_biblioteca": "scripts/agente_ltx_biblioteca.py",
     "kernel_continuidad_test": "scripts/kernel_ltx_continuidad.py",
-    "orquestador_continuidad": "lanzado via $/tmp/lanzar_cont.py o manual",
-    "biblioteca_orquestador": "scripts/agente_ltx_biblioteca.py",
-    "nota": "El codigo esta en scripts/. Ya no se usa data/agent/ltx_continuidad/."
+    "nota": "El código se inyecta como string en el orquestador. Ojo con las variables del template."
   },
-  "patron_de_ejecucion": [
-    "PASO 1-6: Montar runtime + start_server + sleep(90)",
-    "PASO 7: Job1 PROMPT_1, 49f, 832x480 -> seg1.mp4",
-    "PASO 8: ffmpeg -y -sseof -0.1 -i seg1.mp4 -vframes 1 seg1_last.png",
-    "PASO 9: Job2 PROMPT_2, init=seg1_last.png -> seg2.mp4",
-    "PASO 10: ffmpeg -y -sseof -0.1 -i seg2.mp4 -vframes 1 seg2_last.png",
-    "PASO 11: Job3 PROMPT_3, init=seg2_last.png -> seg3.mp4",
-    "PASO 12: ffmpeg xfade (crossfade 0.4s) + eq (color grading) + noise (film grain)",
-    "PASO 13: Upload a output/videos/test_continuidad/"
-  ],
-  "comandos_exactos": {
-    "extraer_ultimo_frame": "ffmpeg -y -sseof -0.1 -i video.mp4 -vframes 1 frame.png",
-    "concatenar_lista_txt": "Fichero lista.txt con líneas 'file /ruta/video.mp4' (una por vídeo)",
-    "concatenar_ejecutar": "ffmpeg -y -f concat -safe 0 -i lista.txt -c copy out.mp4",
-    "payload_vid_gen": {
-      "endpoint": "POST http://127.0.0.1:1234/sdcpp/v1/vid_gen",
-      "body": {
-        "prompt": "descripción movimiento (no estático)",
-        "negative_prompt": "worst quality, inconsistent motion, blurry, jittery, text, letters, words, writing, subtitles, watermark",
-        "init_image": "data:image/png;base64,<base64>",
-        "vae_decode_only": false,
-        "video_frames": 49,
-        "fps": 24,
-        "width": 832,
-        "height": 480,
-        "sample_params": {
-          "sample_steps": 16,
-          "cfg_scale": 3.5,
-          "sample_method": "euler",
-          "scheduler": "discrete"
-        }
+  "payload_vid_gen": {
+    "endpoint": "http://127.0.0.1:1234/sdcpp/v1/vid_gen",
+    "body": {
+      "prompt": "Descripción de movimiento (inglés da mejor calidad que español)",
+      "negative_prompt": "worst quality, inconsistent motion, blurry, jittery, text, letters, words, writing, subtitles, watermark, cartoon, anime, distorted",
+      "init_image": "data:image/png;base64,<base64>",
+      "vae_decode_only": false,
+      "video_frames": 49,
+      "fps": 24,
+      "width": 832,
+      "height": 480,
+      "sample_params": {
+        "sample_steps": 16,
+        "cfg_scale": 3.5,
+        "sample_method": "euler",
+        "scheduler": "discrete"
       }
-    },
-    "polling": {
-      "endpoint": "GET http://127.0.0.1:1234/sdcpp/v1/jobs/{job_id}",
-      "intervalo_seg": 5,
-      "timeout_seg": 900,
-      "estados_ok": [
-        "completed",
-        "succeeded",
-        "done"
-      ],
-      "estados_fail": [
-        "failed",
-        "error",
-        "cancelled"
-      ]
     }
   },
-  "coste_estimado": {
-    "3_segmentos": "~25 min (carga + 3 jobs + concat + upload)",
-    "hook_8s": "~13 min (4 segmentos)",
-    "short_30s": "~100 min (15 segmentos en 2 kernels de 55min, 7-8 segmentos c/u)"
+  "post_processing_top1": {
+    "crossfade": "xfade=transition=fade:duration=0.4",
+    "color_grading": "eq=contrast=1.08:saturation=1.15:brightness=-0.02,curves=preset=medium_contrast",
+    "film_grain": "noise=alls=5:allf=t+u",
+    "encoding": "libx264 -preset slow -crf 18 -pix_fmt yuv420p -r 24"
   },
-  "modo_aislado": {
-    "no_toca_colas": true,
-    "no_toca_cola_pendiente": "data/agent/ltx_cola_pendiente.json",
-    "no_toca_cola_completados": "data/agent/ltx_cola_completados.json",
-    "resultado_va_a": "output/videos/test_continuidad/"
+  "gestion_de_colas": {
+    "lotes": "20 imágenes por lote (lote1=1-20, lote2=21-40, etc.)",
+    "estados": "Kaggle pone 'queued' si no hay GPU libre. Es normal. Esperar.",
+    "evitar_duplicados": "SIEMPRE consultar estado_kernel antes de relanzar un lote."
   },
-  "nunca_hacer": [
-    "NUNCA hacer 'pip install --target /tmp/cuda12_libs' (dataset ya trae las libs)",
-    "NUNCA usar patchelf, ldconfig, ni copy2 a /usr/local/lib",
-    "NUNCA hardcodear puerto 8080 (es 1234)",
-    "NUNCA usar '-sseof 0' (saca frame inicial). Usar '-sseof -0.1'",
-    "NUNCA usar sample_params plano (debe ir anidado)",
-    "NUNCA usar init_image como path (debe ser data URI base64)",
-    "NUNCA encadenar >4 segmentos sin validar el corte primero",
-    "NUNCA meter 73f (3s) hasta validar 49f (2s) con corte suave",
-    "NUNCA tocar colas en modo aislado",
-    "NUNCA hacer git clone de free-aistudio si ya existe en /kaggle/working/",
-    "NUNCA saltarse start_server + sleep(90) — el server tarda en cargar modelo",
-    "NUNCA usar 'video_frames' > 49 en T4 15GB (VAE decode OOM confirmado a 73f)"
-  ],
-  "errores_vistos_y_su_fix": {
-    "Dataset_runtime_NO_encontrado": "Falta dataset_sources=['keizproductions/ltx-free-runtime'] en push_kernel",
-    "libcudart.so.12_cannot_open": "Dataset no montado o LD_LIBRARY_PATH mal. NO instalar pip. Revisar glob de nvidia/*/lib",
-    "NameError_WORK": "WORK debe definirse dentro del kernel string, no en el orquestador",
-    "generate_video_returned_no_results": "sample_params plano. Debe ir anidado (steps/cfg/method/scheduler)",
-    "POST_404": "Puerto incorrecto. Server está en 1234, no 8080",
-    "frame_negro_al_concatenar": "Último frame extraído con '-sseof 0'. Usar '-sseof -0.1'",
-    "OOM_a_73f": "VAE decode atómico. 73f=16.5GB > 15GB T4. Usar 49f (2s) y concatenar",
-    "NameError_IMGS": "Falta IMGS = __IMGS__ en el template string de agente_ltx_biblioteca.py",
-    "github_secret_detection": "GitHub bloquea push si el GITHUB_TOKEN va hardcodeado. Usar os.environ."
+  "errores_catastroficos_y_fix": {
+    "NameError_IMGS": "Falta 'IMGS = __IMGS__' en el template string del kernel. Inyectarlo siempre.",
+    "Secret_Scanning_GitHub": "GitHub rechaza el push si detecta 'github_pat_'. Usar env var.",
+    "Termux_Silent_Fail": "Comandos como 'python3 script.py | tee log' silencian el stdout en Termux. Usar 'python3 -u'.",
+    "OOM_73f": "Reducir a 49f.",
+    "OOM_1344x768": "Reducir a 832x480.",
+    "libcudart_error": "No hacer pip install. Montar el dataset y setear LD_LIBRARY_PATH."
   },
-  "pendiente_validar": [
-    "Corte entre segmentos suave en test_continuidad_6s.mp4",
-    "LTX acepta el último frame sin artefactos visibles",
-    "Coste real ~25 min para 3 segmentos",
-    "Viabilidad para short completo 30s (15 segmentos en 2 kernels)"
-  ],
-  "referencia_v6_2": {
-    "kernel_productor": "scripts/agente_ltx_kaggle_v6.py",
-    "dataset_id": "keizproductions/ltx-free-runtime",
-    "dataset_version": 1,
-    "dataset_size_gb": 1.89,
-    "endpoint_local": "http://127.0.0.1:1234/sdcpp/v1/vid_gen",
-    "resolucion_segura": "832x480 con 49 frames",
-    "resolucion_riesgo": ">=73 frames OOM por VAE decode",
-    "sample_params_validados": {
-      "sample_steps": 12,
-      "cfg_scale": 3.0,
-      "sample_method": "euler",
-      "scheduler": "discrete"
-    }
-  },
-  "fecha_actualizacion": "2026-11-08"
+  "comandos_verificacion": {
+    "estado_kernel": "python3 -c \"import sys; sys.path.insert(0,'scripts'); import kaggle_bearer as kb; print(kb.estado_kernel('keizproductions/ltx-biblioteca-v1-lote4'))\"",
+    "ver_ultimo_log": "python3 -c \"import sys,json; sys.path.insert(0,'scripts'); import kaggle_bearer as kb; r=kb.salida_kernel('...'); [print(e.get('data')) for e in json.loads(r.get('logNullable', '[]'))[-10:]]\""
+  }
 }
