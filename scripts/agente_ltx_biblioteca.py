@@ -62,7 +62,7 @@ SERVER = "http://127.0.0.1:1234"
 def _gen_seg(init_path, tag):
     with open(init_path, "rb") as f: b64 = base64.b64encode(f.read()).decode()
     payload = {"prompt": PROMPT, "negative_prompt": NEG, "init_image": "data:image/jpeg;base64," + b64,
-        "vae_decode_only": False, "video_frames": 49, "fps": 24, "width": 832, "height": 480,
+        "vae_decode_only": False, "video_frames": 49, "fps": 24, "width": (480 if "9x16" in img_name else 832), "height": (832 if "9x16" in img_name else 480),
         "sample_params": {"sample_steps": 12, "cfg_scale": 3.0, "sample_method": "euler", "scheduler": "discrete"}}
     r = requests.post(SERVER + "/sdcpp/v1/vid_gen", json=payload, timeout=600)
     if r.status_code not in (200, 201, 202): return None
@@ -96,6 +96,7 @@ def gh_upload(local, remote):
     if sha: data["sha"] = sha
     return requests.put(url, headers=h, json=data, timeout=120).status_code in (200, 201)
 
+IMGS = __IMGS__
 IMGDIR = "/kaggle/working/imgs"; os.makedirs(IMGDIR, exist_ok=True)
 for i, img_name in enumerate(IMGS, 1):
     log(f"[{i}/{len(IMGS)}] {img_name}")
@@ -120,11 +121,11 @@ for i, img_name in enumerate(IMGS, 1):
         if not s1_local: continue
 
     log("  Generando Seg2...")
-    s2 = _gen_seg(_last_frame(s1_local), img_name.replace(".jpg", "_s2"))
+    s2 = _gen_seg(_last_frame(s1_local), img_name.replace(".jpg", "_s2"), PROMPT_2)
     if not s2: continue
 
     log("  Generando Seg3...")
-    s3 = _gen_seg(_last_frame(s2), img_name.replace(".jpg", "_s3"))
+    s3 = _gen_seg(_last_frame(s2), img_name.replace(".jpg", "_s3"), PROMPT_3)
     if not s3: continue
 
     lista = f"{OUT}/lista_{i}.txt"
