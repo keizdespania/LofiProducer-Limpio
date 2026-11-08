@@ -1888,6 +1888,16 @@ def api_ensamblar_largo():
     threading.Thread(target=_run, daemon=True).start()
     return jsonify({"status":"ok","mensaje":f"Ensamblaje '{nicho}' en marcha","receta":str(receta_path.relative_to(ROOT))})
 
+
+# 2026-11-08: Cloudflare Web Analytics
+@app.route('/api/cloudflare/stats')
+def api_cloudflare_stats():
+    from scripts.cloudflare_stats import resumen
+    try:
+        return jsonify(resumen(7))
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == "__main__":
     port = 8001
     print(f"✨ KeiZ Command Center (Flask) iniciado en: http://127.0.0.1:{port}")
