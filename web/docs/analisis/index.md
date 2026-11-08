@@ -5,17 +5,44 @@ hide:
 
 <div class="holo-hero">
   <h1>El Archivo del Anti-Medio</h1>
-  <p>Todo nuestro arsenal. 45 análisis publicados. Sin filtros, con enlaces verificables.</p>
+  <p>Todo nuestro arsenal. 48 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (45)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (8)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (12)</button>
-  <button class="holo-filter-btn" data-filter="mediano">Medianos (6)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (48)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (9)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (13)</button>
+  <button class="holo-filter-btn" data-filter="mediano">Medianos (7)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-mediano-medio_crudo/'" data-category="mediano">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    
+    <h3>Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la ilusión de dinamismo y inevitabilidad</h3>
+    <p>Analisis medio_crudo: Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la i</p>
+    <div class="holo-meta"><span>📅 2026-11-08</span></div>
+    
+    <a href="https://www.lemonde.fr/politique/article/2026/11/08/presidentielle-2027-en-meeting-au-bourget-jean-luc-melenchon-s-attelle-a-mobiliser-sa-base-tout-en-elargissant-son-electorat_6808387_823448.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · lemonde.fr</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    
+    <h3>El Encuadre: El presidente de Israel encarga formar gobierno</h3>
+    <p>Analisis largo: El Encuadre: El presidente de Israel encarga formar gobierno</p>
+    <div class="holo-meta"><span>📅 2026-11-08</span></div>
+    
+    <a href="https://www.elespanol.com/espana/política/20261108/ayuso-mafia-sindical-haciendo-campana-amo-sanchez-secuestra-servicios-publicos/1003744449012_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier del día: El Encuadre: El presidente de Israel encarga formar gobierno</h3>
+    <p>Dossier ejecutivo: El Encuadre: El presidente de Israel encarga formar gobierno al opositor Eisenko</p>
+    <div class="holo-meta"><span>📅 2026-11-08</span></div>
+    
+    <a href="https://www.elespanol.com/espana/política/20261108/ayuso-mafia-sindical-haciendo-campana-amo-sanchez-secuestra-servicios-publicos/1003744449012_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-07-mediano-dossier/'" data-category="dossier">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
     

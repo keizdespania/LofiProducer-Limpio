@@ -37,6 +37,9 @@ nav:
   - Inicio: index.md
   - Análisis:
     - Índice: analisis/index.md
+    - "Dossier V2": analisis/2026-11-08-dossier-v2.md
+    - "Mediano Medio_Crudo": analisis/2026-11-08-mediano-medio_crudo.md
+    - "Largo": analisis/2026-11-08-largo.md
     - "Dossier V2": analisis/2026-11-07-dossier-v2.md
     - "Mediano Dossier": analisis/2026-11-07-mediano-dossier.md
     - "Largo": analisis/2026-11-07-largo.md
