@@ -1,6 +1,6 @@
 {
   "nombre": "Contrato LTX Continuidad - El Encuadre",
-  "version": "1.0",
+  "version": "1.1",
   "fecha": "2026-11-06",
   "estado": "EN_VALIDACION",
   "lectura_obligatoria": {
@@ -21,7 +21,7 @@
     ],
     "dataset_version": 1,
     "dataset_size_gb": 1.89,
-    "dataset_mount_path": "/kaggle/input/ltx-free-runtime/",
+    "dataset_mount_path": "/kaggle/input/datasets/keizproductions/ltx-free-runtime (o buscar con os.walk(\"/kaggle/input\"))",
     "dataset_contiene": [
       "nvidia_libs/",
       "sd_bin/"
@@ -33,25 +33,20 @@
     "si_falta_dataset": "RuntimeError('Dataset runtime NO encontrado') en paso [1/8]. NUNCA hacer pip install ni git clone de binarios como fallback."
   },
   "codigo_funcional": {
-    "kernel_base_v6_2": "data/agent/ltx_continuidad/kernel_v6_2_funcional.py",
-    "kernel_continuidad": "data/agent/ltx_continuidad/kernel_continuidad.py",
-    "script_orquestador": "scripts/agente_ltx_continuidad.py",
-    "nota": "kernel_continuidad.py es copia-pega. NO reescribir la sección RUNTIME. Solo adaptar la sección LÓGICA CONTINUIDAD si hace falta."
+    "kernel_continuidad_test": "scripts/kernel_ltx_continuidad.py",
+    "orquestador_continuidad": "lanzado via $/tmp/lanzar_cont.py o manual",
+    "biblioteca_orquestador": "scripts/agente_ltx_biblioteca.py",
+    "nota": "El codigo esta en scripts/. Ya no se usa data/agent/ltx_continuidad/."
   },
   "patron_de_ejecucion": [
-    "PASO 1: Montar dataset runtime -> /kaggle/working/rt/",
-    "PASO 2: LD_LIBRARY_PATH con glob RT/nvidia_libs/nvidia/*/lib",
-    "PASO 3: Copiar sd_bin/bin/sd-server -> /tmp/sd_bin/bin/sd-server + chmod 755",
-    "PASO 4: git clone free-aistudio + pip install -r requirements.txt",
-    "PASO 5: download_models(preset='LTX-Video-2.3-Q3')",
-    "PASO 6: start_server(load_audio_vae=True) + sleep(90)",
-    "PASO 7: Job1 init=hacker_base_832x480.jpg, 49f, 832x480 -> seg1.mp4",
+    "PASO 1-6: Montar runtime + start_server + sleep(90)",
+    "PASO 7: Job1 PROMPT_1, 49f, 832x480 -> seg1.mp4",
     "PASO 8: ffmpeg -y -sseof -0.1 -i seg1.mp4 -vframes 1 seg1_last.png",
-    "PASO 9: Job2 init=seg1_last.png, 49f -> seg2.mp4",
+    "PASO 9: Job2 PROMPT_2, init=seg1_last.png -> seg2.mp4",
     "PASO 10: ffmpeg -y -sseof -0.1 -i seg2.mp4 -vframes 1 seg2_last.png",
-    "PASO 11: Job3 init=seg2_last.png, 49f -> seg3.mp4",
-    "PASO 12: ffmpeg -f concat -safe 0 -i lista.txt -c copy test_continuidad_6s.mp4",
-    "PASO 13: Upload 4 MP4s a output/videos/test_continuidad/"
+    "PASO 11: Job3 PROMPT_3, init=seg2_last.png -> seg3.mp4",
+    "PASO 12: ffmpeg xfade (crossfade 0.4s) + eq (color grading) + noise (film grain)",
+    "PASO 13: Upload a output/videos/test_continuidad/"
   ],
   "comandos_exactos": {
     "extraer_ultimo_frame": "ffmpeg -y -sseof -0.1 -i video.mp4 -vframes 1 frame.png",
@@ -69,8 +64,8 @@
         "width": 832,
         "height": 480,
         "sample_params": {
-          "sample_steps": 12,
-          "cfg_scale": 3.0,
+          "sample_steps": 16,
+          "cfg_scale": 3.5,
           "sample_method": "euler",
           "scheduler": "discrete"
         }
@@ -124,7 +119,9 @@
     "generate_video_returned_no_results": "sample_params plano. Debe ir anidado (steps/cfg/method/scheduler)",
     "POST_404": "Puerto incorrecto. Server está en 1234, no 8080",
     "frame_negro_al_concatenar": "Último frame extraído con '-sseof 0'. Usar '-sseof -0.1'",
-    "OOM_a_73f": "VAE decode atómico. 73f=16.5GB > 15GB T4. Usar 49f (2s) y concatenar"
+    "OOM_a_73f": "VAE decode atómico. 73f=16.5GB > 15GB T4. Usar 49f (2s) y concatenar",
+    "NameError_IMGS": "Falta IMGS = __IMGS__ en el template string de agente_ltx_biblioteca.py",
+    "github_secret_detection": "GitHub bloquea push si el GITHUB_TOKEN va hardcodeado. Usar os.environ."
   },
   "pendiente_validar": [
     "Corte entre segmentos suave en test_continuidad_6s.mp4",
@@ -146,5 +143,6 @@
       "sample_method": "euler",
       "scheduler": "discrete"
     }
-  }
+  },
+  "fecha_actualizacion": "2026-11-08"
 }
