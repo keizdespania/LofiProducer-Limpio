@@ -9,7 +9,8 @@
     "licencia": "creativeCommon",
     "mood": "electronico",
     "score": 100,
-    "fecha_cazado": "2026-11-02T18:14:37.761310"
+    "fecha_cazado": "2026-11-02T18:14:37.761310",
+    "activo": true
   },
   {
     "id": "9bgiyHJfo0c",
@@ -21,7 +22,8 @@
     "licencia": "creativeCommon",
     "mood": "electronico",
     "score": 100,
-    "fecha_cazado": "2026-11-02T18:14:37.761421"
+    "fecha_cazado": "2026-11-02T18:14:37.761421",
+    "activo": true
   },
   {
     "id": "NjTxOwMRDco",
@@ -33,7 +35,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 99,
-    "fecha_cazado": "2026-11-02T18:14:27.149905"
+    "fecha_cazado": "2026-11-02T18:14:27.149905",
+    "activo": true
   },
   {
     "id": "LKeT1stMJJw",
@@ -45,7 +48,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 99,
-    "fecha_cazado": "2026-11-02T18:14:27.149927"
+    "fecha_cazado": "2026-11-02T18:14:27.149927",
+    "activo": true
   },
   {
     "id": "vLp4WP_-tfk",
@@ -57,7 +61,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 99,
-    "fecha_cazado": "2026-11-02T18:14:27.149941"
+    "fecha_cazado": "2026-11-02T18:14:27.149941",
+    "activo": true
   },
   {
     "id": "KnS9s9Pb97A",
@@ -69,7 +74,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 99,
-    "fecha_cazado": "2026-11-02T18:14:27.149974"
+    "fecha_cazado": "2026-11-02T18:14:27.149974",
+    "activo": true
   },
   {
     "id": "8TKy9bzrk24",
@@ -81,7 +87,8 @@
     "licencia": "creativeCommon",
     "mood": "misterio",
     "score": 98,
-    "fecha_cazado": "2026-11-02T18:14:40.650010"
+    "fecha_cazado": "2026-11-02T18:14:40.650010",
+    "activo": true
   },
   {
     "id": "sN2Eadj7pag",
@@ -93,7 +100,8 @@
     "licencia": "creativeCommon",
     "mood": "misterio",
     "score": 96,
-    "fecha_cazado": "2026-11-02T18:14:40.649539"
+    "fecha_cazado": "2026-11-02T18:14:40.649539",
+    "activo": true
   },
   {
     "id": "F_muWc2rCOU",
@@ -105,7 +113,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 95,
-    "fecha_cazado": "2026-11-02T18:14:32.013328"
+    "fecha_cazado": "2026-11-02T18:14:32.013328",
+    "activo": true
   },
   {
     "id": "bVuzkVGaN-I",
@@ -117,7 +126,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 94,
-    "fecha_cazado": "2026-11-02T18:14:27.149849"
+    "fecha_cazado": "2026-11-02T18:14:27.149849",
+    "activo": true
   },
   {
     "id": "ym1N_7dqEVE",
@@ -129,7 +139,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 94,
-    "fecha_cazado": "2026-11-02T18:14:27.149894"
+    "fecha_cazado": "2026-11-02T18:14:27.149894",
+    "activo": true
   },
   {
     "id": "2WfqvO2_uVg",
@@ -141,7 +152,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 94,
-    "fecha_cazado": "2026-11-02T18:14:27.149913"
+    "fecha_cazado": "2026-11-02T18:14:27.149913",
+    "activo": false
   },
   {
     "id": "12Rz1cOcIKA",
@@ -153,7 +165,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 94,
-    "fecha_cazado": "2026-11-02T18:14:27.149920"
+    "fecha_cazado": "2026-11-02T18:14:27.149920",
+    "activo": false
   },
   {
     "id": "TL_SkPNwVcE",
@@ -165,7 +178,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 94,
-    "fecha_cazado": "2026-11-02T18:14:27.149934"
+    "fecha_cazado": "2026-11-02T18:14:27.149934",
+    "activo": true
   },
   {
     "id": "qsrG9SadZxQ",
@@ -177,7 +191,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 94,
-    "fecha_cazado": "2026-11-02T18:14:27.149948"
+    "fecha_cazado": "2026-11-02T18:14:27.149948",
+    "activo": true
   },
   {
     "id": "1bxfSwOQl8U",
@@ -189,7 +204,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 94,
-    "fecha_cazado": "2026-11-02T18:14:27.149954"
+    "fecha_cazado": "2026-11-02T18:14:27.149954",
+    "activo": true
   },
   {
     "id": "ZKTlkBr1FPc",
@@ -201,7 +217,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 94,
-    "fecha_cazado": "2026-11-02T18:14:27.149961"
+    "fecha_cazado": "2026-11-02T18:14:27.149961",
+    "activo": true
   },
   {
     "id": "5RQH05tlgPQ",
@@ -213,7 +230,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 94,
-    "fecha_cazado": "2026-11-02T18:14:27.149967"
+    "fecha_cazado": "2026-11-02T18:14:27.149967",
+    "activo": true
   },
   {
     "id": "knRAM6AHcKI",
@@ -225,7 +243,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 93,
-    "fecha_cazado": "2026-11-02T18:14:32.013358"
+    "fecha_cazado": "2026-11-02T18:14:32.013358",
+    "activo": true
   },
   {
     "id": "aHn_PTt-pWM",
@@ -237,7 +256,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 93,
-    "fecha_cazado": "2026-11-02T18:14:32.013447"
+    "fecha_cazado": "2026-11-02T18:14:32.013447",
+    "activo": true
   },
   {
     "id": "msy698iViZQ",
@@ -249,7 +269,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 93,
-    "fecha_cazado": "2026-11-02T18:14:32.013476"
+    "fecha_cazado": "2026-11-02T18:14:32.013476",
+    "activo": false
   },
   {
     "id": "Z8T-OObY5js",
@@ -261,7 +282,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 93,
-    "fecha_cazado": "2026-11-02T18:14:32.013580"
+    "fecha_cazado": "2026-11-02T18:14:32.013580",
+    "activo": false
   },
   {
     "id": "iOjR12juog0",
@@ -273,7 +295,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 93,
-    "fecha_cazado": "2026-11-02T18:14:32.013652"
+    "fecha_cazado": "2026-11-02T18:14:32.013652",
+    "activo": true
   },
   {
     "id": "GDTDqsmTyIQ",
@@ -285,7 +308,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 93,
-    "fecha_cazado": "2026-11-02T18:14:32.013740"
+    "fecha_cazado": "2026-11-02T18:14:32.013740",
+    "activo": true
   },
   {
     "id": "q2Y7zw8cjUM",
@@ -297,7 +321,8 @@
     "licencia": "creativeCommon",
     "mood": "electronico",
     "score": 93,
-    "fecha_cazado": "2026-11-02T18:14:37.761271"
+    "fecha_cazado": "2026-11-02T18:14:37.761271",
+    "activo": true
   },
   {
     "id": "WzUOZyzpQ1M",
@@ -309,7 +334,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 91,
-    "fecha_cazado": "2026-11-02T18:14:32.013515"
+    "fecha_cazado": "2026-11-02T18:14:32.013515",
+    "activo": true
   },
   {
     "id": "s2myslD3fXk",
@@ -321,7 +347,8 @@
     "licencia": "creativeCommon",
     "mood": "relax",
     "score": 91,
-    "fecha_cazado": "2026-11-02T18:14:35.208783"
+    "fecha_cazado": "2026-11-02T18:14:35.208783",
+    "activo": true
   },
   {
     "id": "TSGaQpmik7c",
@@ -333,7 +360,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 91,
-    "fecha_cazado": "2026-11-02T18:14:43.931657"
+    "fecha_cazado": "2026-11-02T18:14:43.931657",
+    "activo": true
   },
   {
     "id": "c-XpTMGPQvI",
@@ -345,7 +373,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 90,
-    "fecha_cazado": "2026-11-02T18:14:32.013098"
+    "fecha_cazado": "2026-11-02T18:14:32.013098",
+    "activo": true
   },
   {
     "id": "RB5UtRZBihc",
@@ -357,7 +386,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 90,
-    "fecha_cazado": "2026-11-02T18:14:32.013551"
+    "fecha_cazado": "2026-11-02T18:14:32.013551",
+    "activo": true
   },
   {
     "id": "79l-UohX9Jc",
@@ -369,7 +399,8 @@
     "licencia": "creativeCommon",
     "mood": "tension",
     "score": 89,
-    "fecha_cazado": "2026-11-02T18:14:27.149980"
+    "fecha_cazado": "2026-11-02T18:14:27.149980",
+    "activo": true
   },
   {
     "id": "T3DwEkFj1lI",
@@ -381,7 +412,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 88,
-    "fecha_cazado": "2026-11-02T18:14:32.013227"
+    "fecha_cazado": "2026-11-02T18:14:32.013227",
+    "activo": true
   },
   {
     "id": "78_8v6JqGro",
@@ -393,7 +425,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 88,
-    "fecha_cazado": "2026-11-02T18:14:32.013262"
+    "fecha_cazado": "2026-11-02T18:14:32.013262",
+    "activo": true
   },
   {
     "id": "wr0iJf0ASH0",
@@ -405,7 +438,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 88,
-    "fecha_cazado": "2026-11-02T18:14:32.013389"
+    "fecha_cazado": "2026-11-02T18:14:32.013389",
+    "activo": true
   },
   {
     "id": "BXC6bvYjbbA",
@@ -417,7 +451,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 88,
-    "fecha_cazado": "2026-11-02T18:14:32.013418"
+    "fecha_cazado": "2026-11-02T18:14:32.013418",
+    "activo": true
   },
   {
     "id": "H8DGamlmkwc",
@@ -429,7 +464,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 88,
-    "fecha_cazado": "2026-11-02T18:14:32.013615"
+    "fecha_cazado": "2026-11-02T18:14:32.013615",
+    "activo": true
   },
   {
     "id": "CE12FMMSF1Y",
@@ -441,7 +477,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 88,
-    "fecha_cazado": "2026-11-02T18:14:32.013682"
+    "fecha_cazado": "2026-11-02T18:14:32.013682",
+    "activo": true
   },
   {
     "id": "upPlAR5D5d4",
@@ -453,7 +490,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 88,
-    "fecha_cazado": "2026-11-02T18:14:32.013712"
+    "fecha_cazado": "2026-11-02T18:14:32.013712",
+    "activo": true
   },
   {
     "id": "JMk3zV5WlMY",
@@ -465,7 +503,8 @@
     "licencia": "creativeCommon",
     "mood": "relax",
     "score": 86,
-    "fecha_cazado": "2026-11-02T18:14:35.208687"
+    "fecha_cazado": "2026-11-02T18:14:35.208687",
+    "activo": true
   },
   {
     "id": "BBSFUTlgr8Y",
@@ -477,7 +516,8 @@
     "licencia": "creativeCommon",
     "mood": "misterio",
     "score": 86,
-    "fecha_cazado": "2026-11-02T18:14:40.649633"
+    "fecha_cazado": "2026-11-02T18:14:40.649633",
+    "activo": true
   },
   {
     "id": "ASDn8hV0Slw",
@@ -489,7 +529,8 @@
     "licencia": "creativeCommon",
     "mood": "misterio",
     "score": 86,
-    "fecha_cazado": "2026-11-02T18:14:40.649756"
+    "fecha_cazado": "2026-11-02T18:14:40.649756",
+    "activo": false
   },
   {
     "id": "_zSZXBdYOjc",
@@ -501,7 +542,8 @@
     "licencia": "creativeCommon",
     "mood": "electronico",
     "score": 85,
-    "fecha_cazado": "2026-11-02T18:14:37.761457"
+    "fecha_cazado": "2026-11-02T18:14:37.761457",
+    "activo": true
   },
   {
     "id": "Ju_DO4qYHqw",
@@ -513,7 +555,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 85,
-    "fecha_cazado": "2026-11-02T18:14:43.931146"
+    "fecha_cazado": "2026-11-02T18:14:43.931146",
+    "activo": true
   },
   {
     "id": "EuzOJ0wT99U",
@@ -525,7 +568,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 85,
-    "fecha_cazado": "2026-11-02T18:14:43.931257"
+    "fecha_cazado": "2026-11-02T18:14:43.931257",
+    "activo": true
   },
   {
     "id": "4q0pXCUcgeg",
@@ -537,7 +581,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 83,
-    "fecha_cazado": "2026-11-02T18:14:43.931401"
+    "fecha_cazado": "2026-11-02T18:14:43.931401",
+    "activo": false
   },
   {
     "id": "0m3z8Jd937A",
@@ -549,7 +594,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 80,
-    "fecha_cazado": "2026-11-02T18:14:32.013294"
+    "fecha_cazado": "2026-11-02T18:14:32.013294",
+    "activo": true
   },
   {
     "id": "iw4NobfELVU",
@@ -561,7 +607,8 @@
     "licencia": "creativeCommon",
     "mood": "electronico",
     "score": 80,
-    "fecha_cazado": "2026-11-02T18:14:37.761217"
+    "fecha_cazado": "2026-11-02T18:14:37.761217",
+    "activo": true
   },
   {
     "id": "pPvd8UxmSbQ",
@@ -573,7 +620,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 80,
-    "fecha_cazado": "2026-11-02T18:14:43.930669"
+    "fecha_cazado": "2026-11-02T18:14:43.930669",
+    "activo": false
   },
   {
     "id": "P2vWLHANPeM",
@@ -585,7 +633,8 @@
     "licencia": "creativeCommon",
     "mood": "relax",
     "score": 78,
-    "fecha_cazado": "2026-11-02T18:14:35.208897"
+    "fecha_cazado": "2026-11-02T18:14:35.208897",
+    "activo": false
   },
   {
     "id": "Yau99pzFg-I",
@@ -597,7 +646,8 @@
     "licencia": "creativeCommon",
     "mood": "relax",
     "score": 78,
-    "fecha_cazado": "2026-11-02T18:14:35.208947"
+    "fecha_cazado": "2026-11-02T18:14:35.208947",
+    "activo": false
   },
   {
     "id": "0k0AnApMhRw",
@@ -609,7 +659,8 @@
     "licencia": "creativeCommon",
     "mood": "relax",
     "score": 78,
-    "fecha_cazado": "2026-11-02T18:14:35.208995"
+    "fecha_cazado": "2026-11-02T18:14:35.208995",
+    "activo": true
   },
   {
     "id": "WYrpFrhj3zg",
@@ -621,7 +672,8 @@
     "licencia": "creativeCommon",
     "mood": "relax",
     "score": 78,
-    "fecha_cazado": "2026-11-02T18:14:35.209043"
+    "fecha_cazado": "2026-11-02T18:14:35.209043",
+    "activo": true
   },
   {
     "id": "10ErrsniRzk",
@@ -633,7 +685,8 @@
     "licencia": "creativeCommon",
     "mood": "relax",
     "score": 78,
-    "fecha_cazado": "2026-11-02T18:14:35.209090"
+    "fecha_cazado": "2026-11-02T18:14:35.209090",
+    "activo": true
   },
   {
     "id": "2B5ho_6yIms",
@@ -645,7 +698,8 @@
     "licencia": "creativeCommon",
     "mood": "misterio",
     "score": 78,
-    "fecha_cazado": "2026-11-02T18:14:40.649692"
+    "fecha_cazado": "2026-11-02T18:14:40.649692",
+    "activo": true
   },
   {
     "id": "HdkkgBQmPOw",
@@ -657,7 +711,8 @@
     "licencia": "creativeCommon",
     "mood": "misterio",
     "score": 78,
-    "fecha_cazado": "2026-11-02T18:14:40.649813"
+    "fecha_cazado": "2026-11-02T18:14:40.649813",
+    "activo": true
   },
   {
     "id": "_kQE1S4uG8A",
@@ -669,7 +724,8 @@
     "licencia": "creativeCommon",
     "mood": "misterio",
     "score": 78,
-    "fecha_cazado": "2026-11-02T18:14:40.649873"
+    "fecha_cazado": "2026-11-02T18:14:40.649873",
+    "activo": true
   },
   {
     "id": "vTIO5erqhVQ",
@@ -681,7 +737,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 78,
-    "fecha_cazado": "2026-11-02T18:14:43.930950"
+    "fecha_cazado": "2026-11-02T18:14:43.930950",
+    "activo": false
   },
   {
     "id": "pEplvmcY77A",
@@ -693,7 +750,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 75,
-    "fecha_cazado": "2026-11-02T18:14:43.931081"
+    "fecha_cazado": "2026-11-02T18:14:43.931081",
+    "activo": false
   },
   {
     "id": "PllyH7bw6TU",
@@ -705,7 +763,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 75,
-    "fecha_cazado": "2026-11-02T18:14:43.931600"
+    "fecha_cazado": "2026-11-02T18:14:43.931600",
+    "activo": true
   },
   {
     "id": "P5aDj2Q6Fy0",
@@ -717,7 +776,8 @@
     "licencia": "creativeCommon",
     "mood": "electronico",
     "score": 73,
-    "fecha_cazado": "2026-11-02T18:14:37.761139"
+    "fecha_cazado": "2026-11-02T18:14:37.761139",
+    "activo": true
   },
   {
     "id": "uBADJKnCtVY",
@@ -729,7 +789,8 @@
     "licencia": "creativeCommon",
     "mood": "misterio",
     "score": 73,
-    "fecha_cazado": "2026-11-02T18:14:40.649928"
+    "fecha_cazado": "2026-11-02T18:14:40.649928",
+    "activo": true
   },
   {
     "id": "rQPsEfE5Pp8",
@@ -741,7 +802,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 73,
-    "fecha_cazado": "2026-11-02T18:14:43.931342"
+    "fecha_cazado": "2026-11-02T18:14:43.931342",
+    "activo": true
   },
   {
     "id": "3-BOlNY1NmA",
@@ -753,7 +815,8 @@
     "licencia": "creativeCommon",
     "mood": "epico",
     "score": 70,
-    "fecha_cazado": "2026-11-02T18:14:32.013159"
+    "fecha_cazado": "2026-11-02T18:14:32.013159",
+    "activo": false
   },
   {
     "id": "kGd87nRphaQ",
@@ -765,7 +828,8 @@
     "licencia": "creativeCommon",
     "mood": "electronico",
     "score": 70,
-    "fecha_cazado": "2026-11-02T18:14:37.761347"
+    "fecha_cazado": "2026-11-02T18:14:37.761347",
+    "activo": false
   },
   {
     "id": "pVAs5Okn62A",
@@ -777,7 +841,8 @@
     "licencia": "creativeCommon",
     "mood": "electronico",
     "score": 70,
-    "fecha_cazado": "2026-11-02T18:14:37.761383"
+    "fecha_cazado": "2026-11-02T18:14:37.761383",
+    "activo": false
   },
   {
     "id": "RkZbTmQmMVo",
@@ -789,7 +854,8 @@
     "licencia": "creativeCommon",
     "mood": "misterio",
     "score": 68,
-    "fecha_cazado": "2026-11-02T18:14:40.649445"
+    "fecha_cazado": "2026-11-02T18:14:40.649445",
+    "activo": false
   },
   {
     "id": "3FICnmRJ5Zw",
@@ -801,7 +867,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 68,
-    "fecha_cazado": "2026-11-02T18:14:43.930762"
+    "fecha_cazado": "2026-11-02T18:14:43.930762",
+    "activo": false
   },
   {
     "id": "S4ZlzH86Wv8",
@@ -813,7 +880,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 68,
-    "fecha_cazado": "2026-11-02T18:14:43.930828"
+    "fecha_cazado": "2026-11-02T18:14:43.930828",
+    "activo": true
   },
   {
     "id": "3zkhQ9Gihb0",
@@ -825,7 +893,8 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 68,
-    "fecha_cazado": "2026-11-02T18:14:43.931544"
+    "fecha_cazado": "2026-11-02T18:14:43.931544",
+    "activo": true
   },
   {
     "id": "G3aBbQwhpQM",
@@ -837,7 +906,8 @@
     "licencia": "creativeCommon",
     "mood": "relax",
     "score": 65,
-    "fecha_cazado": "2026-11-02T18:14:35.208844"
+    "fecha_cazado": "2026-11-02T18:14:35.208844",
+    "activo": true
   },
   {
     "id": "AmH-LXX37CE",
@@ -849,7 +919,8 @@
     "licencia": "creativeCommon",
     "mood": "misterio",
     "score": 65,
-    "fecha_cazado": "2026-11-02T18:14:40.650069"
+    "fecha_cazado": "2026-11-02T18:14:40.650069",
+    "activo": true
   },
   {
     "id": "jVPkrhj0MuQ",
@@ -861,6 +932,7 @@
     "licencia": "creativeCommon",
     "mood": "inspirador",
     "score": 65,
-    "fecha_cazado": "2026-11-02T18:14:43.931486"
+    "fecha_cazado": "2026-11-02T18:14:43.931486",
+    "activo": false
   }
 ]

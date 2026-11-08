@@ -10,7 +10,7 @@
     "mood": "jazzhop",
     "score": 83,
     "fecha_cazado": "2026-11-02T19:04:16.481971",
-    "activo": true
+    "activo": false
   },
   {
     "id": "JqFJ0ikKevM",
@@ -23,7 +23,7 @@
     "mood": "jazzhop",
     "score": 71,
     "fecha_cazado": "2026-11-02T19:04:16.482076",
-    "activo": true
+    "activo": false
   },
   {
     "id": "ELmsRg9GDj0",
@@ -36,7 +36,7 @@
     "mood": "jazzhop",
     "score": 83,
     "fecha_cazado": "2026-11-02T19:04:16.482120",
-    "activo": true
+    "activo": false
   },
   {
     "id": "3M_w_2JfMjw",
@@ -140,7 +140,7 @@
     "mood": "study",
     "score": 77,
     "fecha_cazado": "2026-11-02T19:04:23.224166",
-    "activo": true
+    "activo": false
   },
   {
     "id": "JrSOwge56-g",
@@ -153,7 +153,7 @@
     "mood": "study",
     "score": 83,
     "fecha_cazado": "2026-11-02T19:04:23.224210",
-    "activo": true
+    "activo": false
   },
   {
     "id": "niScEPNvi2o",
@@ -166,7 +166,7 @@
     "mood": "sleep",
     "score": 82,
     "fecha_cazado": "2026-11-02T19:04:30.163550",
-    "activo": true
+    "activo": false
   },
   {
     "id": "rrdF43SM3xQ",
@@ -179,7 +179,7 @@
     "mood": "ambient",
     "score": 96,
     "fecha_cazado": "2026-11-02T19:04:36.914233",
-    "activo": true
+    "activo": false
   },
   {
     "id": "X8RojetmWL4",
@@ -192,7 +192,7 @@
     "mood": "ambient",
     "score": 65,
     "fecha_cazado": "2026-11-02T19:04:36.914287",
-    "activo": true
+    "activo": false
   },
   {
     "id": "bAmml_Fz9MU",
@@ -205,6 +205,136 @@
     "mood": "ambient",
     "score": 77,
     "fecha_cazado": "2026-11-02T19:04:36.914324",
+    "activo": false
+  },
+  {
+    "id": "wVOf37ZtaFw",
+    "titulo": "1 Hour Lofi Hip Hop Mix ✨ Best Indian Chill Beats to Study / Relax / Work (2026)",
+    "canal": "Feel the Vibe",
+    "duracion": 3597,
+    "vistas": 1,
+    "url": "https://www.youtube.com/watch?v=wVOf37ZtaFw",
+    "licencia": "creativeCommon",
+    "mood": "lofi",
+    "score": 60,
+    "fecha_cazado": "2026-11-08T04:04:03.650842",
+    "activo": true
+  },
+  {
+    "id": "N5QlDDyARxg",
+    "titulo": "Lofi Mix 16 Lofi Music Creative Commons Free For Profit Use",
+    "canal": "Music For Everyone",
+    "duracion": 1849,
+    "vistas": 11,
+    "url": "https://www.youtube.com/watch?v=N5QlDDyARxg",
+    "licencia": "creativeCommon",
+    "mood": "chillhop",
+    "score": 71,
+    "fecha_cazado": "2026-11-08T04:04:10.465152",
+    "activo": true
+  },
+  {
+    "id": "H0EGrEIb2fE",
+    "titulo": "Lofi and Chill Jazzhop Holiday Piano Chillhop Mix Creative Commons Free 247 Vibe",
+    "canal": "Lofi and Chill",
+    "duracion": 2070,
+    "vistas": 10,
+    "url": "https://www.youtube.com/watch?v=H0EGrEIb2fE",
+    "licencia": "creativeCommon",
+    "mood": "chillhop",
+    "score": 77,
+    "fecha_cazado": "2026-11-08T04:04:10.465219",
+    "activo": true
+  },
+  {
+    "id": "-HY4uk1n2bs",
+    "titulo": "30 MIN LOFI BEATS 🎧 No Copyright Background Music for Study & Work",
+    "canal": "No Copy Right NCP Music",
+    "duracion": 1809,
+    "vistas": 15,
+    "url": "https://www.youtube.com/watch?v=-HY4uk1n2bs",
+    "licencia": "creativeCommon",
+    "mood": "study",
+    "score": 77,
+    "fecha_cazado": "2026-11-08T04:04:24.944082",
+    "activo": true
+  },
+  {
+    "id": "y-qEXNd0h8U",
+    "titulo": "30 MIN LOFI BEATS 🎧 No Copyright Background Music for Study & Work",
+    "canal": "No Copy Right NCP Music",
+    "duracion": 1866,
+    "vistas": 9,
+    "url": "https://www.youtube.com/watch?v=y-qEXNd0h8U",
+    "licencia": "creativeCommon",
+    "mood": "study",
+    "score": 77,
+    "fecha_cazado": "2026-11-08T04:04:24.944211",
+    "activo": true
+  },
+  {
+    "id": "OU9cEDdKKTg",
+    "titulo": "30 MIN LOFI BEATS 🎧 No Copyright Background Music for Study & Work",
+    "canal": "No Copy Right NCP Music",
+    "duracion": 1898,
+    "vistas": 5,
+    "url": "https://www.youtube.com/watch?v=OU9cEDdKKTg",
+    "licencia": "creativeCommon",
+    "mood": "study",
+    "score": 77,
+    "fecha_cazado": "2026-11-08T04:04:24.944250",
+    "activo": true
+  },
+  {
+    "id": "s-28yExJog0",
+    "titulo": "Chill Lofi music for sleep and study | Chill beats",
+    "canal": "Midnight Records",
+    "duracion": 2215,
+    "vistas": 18674,
+    "url": "https://www.youtube.com/watch?v=s-28yExJog0",
+    "licencia": "creativeCommon",
+    "mood": "sleep",
+    "score": 82,
+    "fecha_cazado": "2026-11-08T04:04:32.131106",
+    "activo": true
+  },
+  {
+    "id": "W2EV4NNRb7o",
+    "titulo": "Lofi chill beats to study,chill 🍃 Sleep, Relax🎶 Deep Focus, Relax, Lofi hip hop mix",
+    "canal": "lofi space",
+    "duracion": 1596,
+    "vistas": 10858,
+    "url": "https://www.youtube.com/watch?v=W2EV4NNRb7o",
+    "licencia": "creativeCommon",
+    "mood": "sleep",
+    "score": 94,
+    "fecha_cazado": "2026-11-08T04:04:32.131182",
+    "activo": true
+  },
+  {
+    "id": "1zEBj83Y_vk",
+    "titulo": "30 MIN LOFI BEATS 🎧 No Copyright Background Music for Study & Work",
+    "canal": "No Copy Right NCP Music",
+    "duracion": 1869,
+    "vistas": 36,
+    "url": "https://www.youtube.com/watch?v=1zEBj83Y_vk",
+    "licencia": "creativeCommon",
+    "mood": "ambient",
+    "score": 77,
+    "fecha_cazado": "2026-11-08T04:04:39.253885",
+    "activo": true
+  },
+  {
+    "id": "ny9NAEEvvak",
+    "titulo": "Sleep Easy 🌧️ Gentle Ambient Lofi for Rest",
+    "canal": "Cozy Drift Radio | Lofi Hip Hop",
+    "duracion": 1192,
+    "vistas": 3,
+    "url": "https://www.youtube.com/watch?v=ny9NAEEvvak",
+    "licencia": "creativeCommon",
+    "mood": "ambient",
+    "score": 75,
+    "fecha_cazado": "2026-11-08T04:04:39.253920",
     "activo": true
   }
 ]

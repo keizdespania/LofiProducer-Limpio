@@ -9,6 +9,14 @@
     <itunes:category text="News"></itunes:category>
     <itunes:explicit>false</itunes:explicit>
   <item>
+    <title>El Encuadre - 2026-11-08</title>
+    <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>
+    <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-08.mp3" type="audio/mpeg" length="10449145"/>
+    <pubDate>Sun, 08 Nov 2026 07:00:00 +0000</pubDate>
+    <guid isPermaLink="false">2026-11-08</guid>
+    <itunes:duration>653</itunes:duration>
+  </item>
+  <item>
     <title>El Encuadre - 2026-11-07</title>
     <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>
     <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-07.mp3" type="audio/mpeg" length="11553393"/>

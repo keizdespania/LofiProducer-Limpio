@@ -1,0 +1,29 @@
+{
+  "texto": "Los medios no te cuentan esto. El gobierno acaba de aprobar una ley que cambia todo. Pero las imágenes muestran otra realidad. Entra en somoselencuadre.com",
+  "beats": [
+    {
+      "categoria": "bunker_operativo",
+      "duracion": 3
+    },
+    {
+      "categoria": "monitor_amenaza",
+      "duracion": 4
+    },
+    {
+      "categoria": "callejon_lluvia",
+      "duracion": 3
+    },
+    {
+      "categoria": "hacker_movil",
+      "duracion": 3
+    },
+    {
+      "categoria": "outro_logo",
+      "duracion": 3
+    }
+  ],
+  "seo": {
+    "titulo": "🚨 Lo que NO te cuentan los medios #ElEncuadre",
+    "desc": "Análisis independiente en somoselencuadre.com"
+  }
+}

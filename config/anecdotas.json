@@ -239,8 +239,8 @@
       "id": 31,
       "categoria": "medico",
       "texto": "En la sala de espera de la clínica, la vecina Marta me susurró: '¿No crees que la lista de espera es una lista de espera real?'. Yo le respondí: 'Pues sí, y el anuncio de la tele me hizo pensar que la lista era un programa'. La espera es el mejor programa de ficción.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-08T06:04:09.424595"
     },
     {
       "id": 32,

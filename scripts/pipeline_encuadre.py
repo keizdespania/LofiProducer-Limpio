@@ -175,7 +175,6 @@ def main():
         ("scrapear_medios_completo.py", [fecha], 300, False),
         ("fase2_produccion.py", ["--modo", "monologo", fecha], 1800, False),  # monologo (2026-11-04)
         ("generar_imagenes_web.py", [fecha], 600, False),
-        ("generar_imagenes_shorts.py", [fecha], 600, False),
         ("voz_edge.py", None, 600, False),
         ("director_arte.py", [fecha], 2400, False),  # 2026-11-04: fusionado (72 imgs + timeline)
         ("render_robusto.py", [fecha], 1800, False),
@@ -244,11 +243,39 @@ def main():
     prod_file = OUT / f"produccion_{fecha}.json"
     datos = json.loads(prod_file.read_text()) if prod_file.exists() else {}
     shorts = datos.get("shorts_finales", [])[:4]
+    # 2026-11-08: factory shorts primario, render antiguo fallback
+    _factory_marker = OUT / f"factory_done_{fecha}.txt"
+    _factory_ok = _factory_marker.exists()
+    if not _factory_ok:
+        print(f"   [shorts] Ejecutando factory_shorts.py {fecha}...", flush=True)
+        try:
+            import subprocess as _sp_fact
+            _sp_fact.run([sys.executable, str(ROOT / "scripts" / "factory_shorts.py"), fecha], cwd=str(ROOT), timeout=2400)
+            _factory_ok = _factory_marker.exists()
+        except Exception as _e_fact:
+            print(f"   ⚠️ Factory error: {_e_fact}", flush=True)
+        if prod_file.exists():
+            try:
+                datos = json.loads(prod_file.read_text())
+                shorts = datos.get("shorts_finales", [])[:4]
+            except Exception:
+                pass
+    if _factory_ok:
+        print(f"   ✅ Factory OK ({len(shorts)} shorts)", flush=True)
+    else:
+        print(f"   ⚠️ Factory falló, render antiguo", flush=True)
+        # 2026-11-09: imágenes solo si factory falla (fallback al render antiguo)
+        print(f"   [shorts fallback] Generando 12 imágenes...", flush=True)
+        try:
+            import subprocess as _sp_img
+            _sp_img.run([sys.executable, str(ROOT / "scripts" / "generar_imagenes_shorts.py"), fecha], cwd=str(ROOT), timeout=600)
+        except Exception as _e_img:
+            print(f"   ⚠️ generar_imagenes_shorts: {_e_img}", flush=True)
 
     # Cargar mapa de 12 imagenes (3 por short) de generar_imagenes_shorts.py
     mapa_imgs = {}
     mapa_path = ROOT / "web" / "media" / "imagenes" / f"short_urls_{fecha}.json"
-    if mapa_path.exists():
+    if mapa_path.exists() and not _factory_ok:
         try:
             mapa_imgs = json.loads(mapa_path.read_text())
             print(f"   [shorts] Mapa de imagenes cargado: {sum(len(v) for v in mapa_imgs.values())} imagenes", flush=True)
@@ -280,6 +307,8 @@ def main():
         print(f"   ⚠️ musica_short_del_dia: {_e}", flush=True)
 
     for i, short in enumerate(shorts):
+        if _factory_ok:
+            break
         num = i + 1
         tipo = _normalizar(short.get("tipo", "dato"))
         texto = _limpiar_texto_voz(short.get("guion") or short.get("hook", ""))
@@ -397,7 +426,8 @@ def main():
 
     for i, short in enumerate(shorts):
         num = i+1
-        s_path = OUT / f"short_{num}_{fecha}.mp4"
+        _archivo = short.get("archivo") if isinstance(short, dict) else None
+        s_path = (OUT / _archivo) if _archivo else (OUT / f"short_{num}_{fecha}.mp4")
         if s_path.exists():
             # Horarios óptimos: shorts 18:30, 19:00, 19:30, 20:00 ES del día
             _horas_short = [18, 19, 19, 20]
@@ -449,8 +479,8 @@ def main():
     try:
         _yt_data = {
             "fecha": fecha,
-            "largo": _VIDEOS_SUBIDOS[0] if len(_VIDEOS_SUBIDOS) > 0 else "",
-            "shorts": _VIDEOS_SUBIDOS[1:5] if len(_VIDEOS_SUBIDOS) > 1 else [],
+            "largo": next((v for v in _VIDEOS_SUBIDOS if v.get("tipo") in ("video_largo", "largo")), None),
+            "shorts": [v for v in _VIDEOS_SUBIDOS if v.get("tipo") not in ("video_largo", "largo")][:4],
         }
         _yt_file = ROOT / "data" / "agent" / f"youtube_urls_{fecha}.json"
         _yt_file.parent.mkdir(parents=True, exist_ok=True)

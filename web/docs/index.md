@@ -13,32 +13,32 @@ hide:
 <h2 class="holo-section-title">Últimos Análisis</h2>
 
 <div class="holo-grid">
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-07-mediano-dossier/'">
-    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-mediano-medio_crudo/'">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     
-    <h3>Dossier completo del dia</h3>
-    <p>Analisis dossier: Dossier completo del dia</p>
-    <div class="holo-meta"><span>📅 2026-11-07</span></div>
+    <h3>Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la ilusión de dinamismo y inevitabilidad</h3>
+    <p>Analisis medio_crudo: Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la i</p>
+    <div class="holo-meta"><span>📅 2026-11-08</span></div>
     
-    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+    <a href="https://www.lemonde.fr/politique/article/2026/11/08/presidentielle-2027-en-meeting-au-bourget-jean-luc-melenchon-s-attelle-a-mobiliser-sa-base-tout-en-elargissant-son-electorat_6808387_823448.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · lemonde.fr</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-07-largo/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-largo/'">
     <div class="holo-badge badge-new">🔥 Análisis Diario</div>
     
-    <h3>El Encuadre: Adif blindó el bonus a su cúpula horas antes de</h3>
-    <p>Analisis largo: El Encuadre: Adif blindó el bonus a su cúpula horas antes de</p>
-    <div class="holo-meta"><span>📅 2026-11-07</span></div>
+    <h3>El Encuadre: El presidente de Israel encarga formar gobierno</h3>
+    <p>Analisis largo: El Encuadre: El presidente de Israel encarga formar gobierno</p>
+    <div class="holo-meta"><span>📅 2026-11-08</span></div>
     
-    <a href="https://www.elespanol.com/espana/20261107/ceuta-macroceti-dias-invasion-gobierno-no-capaz-finalizar-expediente-repatriacion/1003744445233_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
+    <a href="https://www.elespanol.com/espana/política/20261108/ayuso-mafia-sindical-haciendo-campana-amo-sanchez-secuestra-servicios-publicos/1003744449012_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-07-dossier-v2/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-dossier-v2/'">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
     
-    <h3>Dossier del día: El Encuadre: Adif blindó el bonus a su cúpula horas antes de</h3>
-    <p>Dossier ejecutivo: El Encuadre: Adif blindó el bonus a su cúpula horas antes de dimitir su presiden</p>
-    <div class="holo-meta"><span>📅 2026-11-07</span></div>
+    <h3>Dossier del día: El Encuadre: El presidente de Israel encarga formar gobierno</h3>
+    <p>Dossier ejecutivo: El Encuadre: El presidente de Israel encarga formar gobierno al opositor Eisenko</p>
+    <div class="holo-meta"><span>📅 2026-11-08</span></div>
     
-    <a href="https://www.elespanol.com/espana/20261107/ceuta-macroceti-dias-invasion-gobierno-no-capaz-finalizar-expediente-repatriacion/1003744445233_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
+    <a href="https://www.elespanol.com/espana/política/20261108/ayuso-mafia-sindical-haciendo-campana-amo-sanchez-secuestra-servicios-publicos/1003744449012_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
   </div>
   <a href="glosario/" class="holo-card">
     <div class="holo-badge badge-guide">📚 Guía Definitiva</div>

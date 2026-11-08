@@ -1,0 +1,110 @@
+{
+  "texto_completo": "Adif no dimitió. Blindó su bonus. Horas antes, la cúpula se embolsó millones. ¿Casualidad? Imposible. La Fiscalía Europea ya huele fraude en el AVE. El PP cierra filas contra la Abogacía. No es política. Es saqueo. Mienten con titulares blandos. Tú despierta. El dinero vuela. El pueblo paga. Verdad ahora.",
+  "beats": [
+    {
+      "texto": "Adif no dimitió.",
+      "categoria": "oficina_corp",
+      "duracion": 2
+    },
+    {
+      "texto": "Blindó su bonus.",
+      "categoria": "pantalla_datos",
+      "duracion": 2
+    },
+    {
+      "texto": "Horas antes,",
+      "categoria": "monitor_amenaza",
+      "duracion": 2
+    },
+    {
+      "texto": "la cúpula",
+      "categoria": "oficina_corp",
+      "duracion": 2
+    },
+    {
+      "texto": "se embolsó millones.",
+      "categoria": "pantalla_datos",
+      "duracion": 2
+    },
+    {
+      "texto": "¿Casualidad?",
+      "categoria": "zoom_codigo",
+      "duracion": 2
+    },
+    {
+      "texto": "Imposible.",
+      "categoria": "zoom_codigo",
+      "duracion": 1
+    },
+    {
+      "texto": "La Fiscalía Europea",
+      "categoria": "investigacion_forense",
+      "duracion": 2
+    },
+    {
+      "texto": "ya huele fraude",
+      "categoria": "monitor_amenaza",
+      "duracion": 2
+    },
+    {
+      "texto": "en el AVE.",
+      "categoria": "callejon_lluvia",
+      "duracion": 2
+    },
+    {
+      "texto": "El PP",
+      "categoria": "oficina_corp",
+      "duracion": 1
+    },
+    {
+      "texto": "cierra filas",
+      "categoria": "servidores",
+      "duracion": 2
+    },
+    {
+      "texto": "contra la Abogacía.",
+      "categoria": "periodico_fisico",
+      "duracion": 2
+    },
+    {
+      "texto": "No es política.",
+      "categoria": "hacker_frente",
+      "duracion": 2
+    },
+    {
+      "texto": "Es saqueo.",
+      "categoria": "hacker_frente",
+      "duracion": 1
+    },
+    {
+      "texto": "Mienten con titulares",
+      "categoria": "periodico_fisico",
+      "duracion": 2
+    },
+    {
+      "texto": "blandos.",
+      "categoria": "periodico_fisico",
+      "duracion": 1
+    },
+    {
+      "texto": "Tú despierta.",
+      "categoria": "hacker_movil",
+      "duracion": 2
+    },
+    {
+      "texto": "El dinero vuela.",
+      "categoria": "pantalla_codigo",
+      "duracion": 2
+    },
+    {
+      "texto": "El pueblo paga.",
+      "categoria": "callejon_lluvia",
+      "duracion": 2
+    },
+    {
+      "texto": "Verdad ahora.",
+      "categoria": "zoom_codigo",
+      "duracion": 2
+    }
+  ]
+}
