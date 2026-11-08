@@ -1100,3 +1100,28 @@ DRY_RUN=1 python3 scripts/pipeline_encuadre.py 2>&1 | tee data/logs/test_$(date 
 3. Hook animado en pipeline 06:00
 4. Doblaje XTTS v2 (alta prioridad)
 5. LoRA El Encuadre (media)
+
+## 🎬 SESIÓN 2026-11-08 (LTX TOP-1 + BIBLIOTECA MASIVA)
+
+### ✅ LO HECHO
+- **Calidad Top-1 validada**: Clips de 6s = 3 segmentos de 49f (2s) + crossfade (`xfade`) + color grading (`eq`, `curves`) + film grain (`noise`).
+- **Contrato v3.0 blindado**: `data/agent/ltx_continuidad_contract.json` contiene el código canónico end-to-end y reglas estrictas de modificación.
+- **Biblioteca masiva**: `agente_ltx_biblioteca.py` genera 20 clips de 6s por lote. Usa el código canónico.
+- **Lotes lanzados**: Lote 3 (queued), Lote 4 (running) en Kaggle.
+
+### 🚨 REGLAS NUEVAS
+- **#74**: Para generar vídeo LTX >2s, usar bucle de 3 segmentos con `xfade`. NUNCA >49 frames.
+- **#75**: Las IAs DEBEN leer `AGENT_ONBOARDING.md` antes de tocar código.
+- **#76**: GitHub rechaza push con `github_pat_` en el código. Usar env vars.
+- **#77**: `python3 -u` en Termux para evitar outputs silenciados.
+
+### 🔴 PENDIENTE
+1. Verificar los 40 clips (Lote 3 + Lote 4) cuando Kaggle termine.
+2. Integrar clips de 6s en el pipeline de shorts (30s = 5 bloques concatenados).
+3. Aplicar el estándar Top-1 a los hooks de intro (8s = 4 segmentos).
+
+## SESION 2026-11-08
+- Top-1 Cinematic validado: 3 seg 49f + xfade + eq + noise = 6s.
+- Contrato v3.0 con codigo canonico.
+- Lote3 queued, Lote4 running en Kaggle.
+- Reglas #74-#77 en AGENT_ONBOARDING.md.

@@ -1,23 +1,17 @@
-# HANDOFF PRÓXIMA IA (2026-11-06)
+# HANDOFF 2026-11-08
+## LEER PRIMERO
+1. AGENT_ONBOARDING.md
+2. data/agent/ltx_continuidad_contract.json (v3.0)
+3. scripts/agente_ltx_biblioteca.py
 
-## LEE PRIMERO
-1. BOOT_PROMPT.md → bloque "SESIÓN 2026-11-06"
-2. data/agent/ltx_contract.json v2.1
-3. scripts/agente_ltx_kaggle_v6.py
-4. scripts/preparar_dataset_ltx.py
-
-## ESTADO
-via_c LTX OPERATIVA. Runtime cacheado 1.89GB. ~7min/vídeo. Cuenta 2 preparada sin productor. Pipeline 06:00 intacto.
+## DIAGNOSTICO
+python3 -c "import sys; sys.path.insert(0,'scripts'); import kaggle_bearer as kb; print(kb.estado_kernel('keizproductions/ltx-biblioteca-v1-lote4').get('status'))"
 
 ## TAREAS
-1. Tuning steps 20→12
-2. Cola automática tras éxito
-3. Hook animado pipeline nacional
-4. Doblaje XTTS (alta prioridad usuario)
-5. LoRA El Encuadre
+1. Verificar 40 MP4s en output/videos/biblioteca/.
+2. Integrar shorts 30s (5 clips de 6s).
+3. Hooks 8s (4 segmentos).
+4. XTTS multi-idioma.
 
-## NO FUNCIONÓ (no reintentar)
-- kaggle kernels output con KGAT → usar /kaggle/input mount
-- kernels/output/{slug} path → query params
-- cfg_scale top-level LTX → dentro sample_params
-- init_image path → data URI base64
+## NO ROMPER
+pipeline_encuadre.py | ltx_continuidad_contract.json | tokens (env vars)
