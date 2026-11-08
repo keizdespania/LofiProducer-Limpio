@@ -56,3 +56,7 @@ data/cache_voz/
 
 # build artifact (copy_media hook)
 web/docs/media/
+web/site/media/
+
+# 2026-11-08: pool histórico por fecha
+web/media/imagenes/seg_*

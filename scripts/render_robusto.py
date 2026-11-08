@@ -58,7 +58,8 @@ def main():
         for i, it in enumerate(tl):
             n = it["id"]; dur = round(it["fin"] - it["inicio"], 2)
             tipo = it.get("tipo_escena", "default")
-            img = MEDIA / f"seg_{n:03d}.png"
+            img = MEDIA / f"seg_{n:03d}_{FECHA}.png"
+            if not img.exists(): img = MEDIA / f"seg_{n:03d}.png"
             if not img.exists(): img = MEDIA / f"escena_{n:02d}.png"
             clip = CLIPS / f"clip_{n:03d}.mp4"
             if clip.exists() and _dur(clip) > 0.5: continue

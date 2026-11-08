@@ -81,6 +81,15 @@ def generar(prompt, ancho=1024, alto=1024, preset=None, aspect=None,
     }
     if seed >= 0: payload["seed"] = int(seed)
     
+    # 2026-11-08: filtro refusals
+    _REFUSALS = ("i'm sorry", "i am sorry", "lo siento, pero no", "lo siento, no puedo",
+                 "no puedo ayudar", "no puedo cumplir", "i cannot help", "i can't help",
+                 "cannot fulfill", "as an ai")
+    _pl = prompt.lower()
+    for _mk in _REFUSALS:
+        if _mk in _pl:
+            return f"SKIP_REFUSAL: '{_mk}'"
+
     print(f"Generando imagen con Cloudflare SDXL...", flush=True)
     print(f"Preset: {preset or 'custom'} | Aspect: {aspect or 'custom'} | Size: {ancho}x{alto} | Steps: {num_steps}", flush=True)
     print(f"Prompt: {prompt[:120]}", flush=True)

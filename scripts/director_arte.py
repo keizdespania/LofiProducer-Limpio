@@ -109,14 +109,14 @@ def _fusionar_a_segmentos(frases, duracion_audio, cada_seg=8.5):
     return segmentos
 
 
-def _generar_conceptos_visuales(segmentos):
+def _generar_conceptos_visuales(segmentos, fecha="hoy"):
     """Genera prompts visuales usando el módulo central (Groq 4 sin filtros)."""
     from director_fotografia import generar_prompt_visual
     print(f"[arte] {len(segmentos)} segmentos → conceptos visuales (Director de Fotografía)...", flush=True)
 
     for i, s in enumerate(segmentos):
         # Usamos el texto completo del segmento para que el director de foto se inspire
-        s["concepto_visual"] = generar_prompt_visual(s["texto"], vertical=False)
+        s["concepto_visual"] = generar_prompt_visual(s["texto"], vertical=False, idx=i, fecha=fecha)
         
         if i % 10 == 0:
             print(f"  [{i+1}/{len(segmentos)}] {s['concepto_visual'][:70]}", flush=True)
@@ -142,33 +142,39 @@ def _insertar_pattern_interrupts(segmentos, cada_n=15):
     return nuevos
 
 
-def _limpiar_imagenes_antiguas():
-    """Borra escena_*.png y seg_*.png del día anterior antes de regenerar."""
+def _limpiar_imagenes_antiguas(dias=7):
+    """Borra seg_*.png / escena_*.png de más de N días. Conserva histórico reciente."""
+    import time as _t
+    corte = _t.time() - (dias * 86400)
     borradas = 0
-    for pattern in ("escena_*.png", "seg_*.png"):
+    for pattern in ("seg_*.png", "escena_*.png"):
         for f in MEDIA.glob(pattern):
             try:
-                f.unlink()
-                borradas += 1
+                if f.stat().st_mtime < corte:
+                    f.unlink(); borradas += 1
             except Exception:
                 pass
     if borradas:
-        print(f"[arte] 🗑️ Borradas {borradas} imágenes viejas", flush=True)
+        print(f"[arte] Borradas {borradas} imagenes >{dias}d", flush=True)
 
 
-def _generar_imagenes(segmentos):
+def _generar_imagenes(segmentos, fecha="hoy"):
     """Genera seg_NNN.png (16:9) con SDXL a partir del concepto_visual."""
     from generar_imagen import generar
     for i, s in enumerate(segmentos):
         n = i + 1
-        destino = MEDIA / f"seg_{n:03d}.png"
+        destino = MEDIA / f"seg_{n:03d}_{fecha}.png"
+        destino_legacy = MEDIA / f"seg_{n:03d}.png"
         if destino.exists() and destino.stat().st_size > 50000:
-            s["imagen"] = str(destino)
-            continue
+            s["imagen"] = str(destino); continue
+        if destino_legacy.exists() and destino_legacy.stat().st_size > 50000:
+            s["imagen"] = str(destino_legacy); continue
         try:
+            seed = (hash(str(fecha)) ^ (n * 2654435761)) & 0xFFFFFFFF
             r = generar(
-                s["concepto_visual"] + ", cinematic, no text, high detail",
-                preset="cinematic", aspect="16:9", canal="encuadre"
+                s["concepto_visual"],
+                preset="cinematic", aspect="16:9", canal="encuadre",
+                seed=seed
             )
             if "OK: " in r:
                 ruta = r.split("OK: ")[1].split(" ")[0]
@@ -224,10 +230,10 @@ def preparar(fecha=None):
     print(f"[arte] {len(segmentos)} segmentos finales (con pattern interrupts)")
 
     # 8. Conceptos visuales con LLM
-    segmentos = _generar_conceptos_visuales(segmentos)
+    segmentos = _generar_conceptos_visuales(segmentos, fecha)
 
     # 9. Generar imágenes SDXL
-    segmentos = _generar_imagenes(segmentos)
+    segmentos = _generar_imagenes(segmentos, fecha)
 
     # 10. Timeline final
     timeline = []

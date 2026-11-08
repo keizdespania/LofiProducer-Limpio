@@ -1,6 +1,6 @@
 {
-  "version": "2.1",
-  "actualizado": "2026-11-02",
+  "version": "3.0",
+  "actualizado": "2026-11-08",
   "motor": "FFmpeg directo (render_robusto.py v4)",
   "nombre": "Vídeo largo 16:9 (~11 min) con lofi CC de fondo",
   "arquitectura": {
@@ -9,7 +9,7 @@
       "2. Análisis: 15 agentes IA (analista_fase1.py)",
       "3. Guion: 18 escenas con arquitecto + redactor (fase2_produccion.py)",
       "4. Lofi largo del día: descarga 1 link CC del pool (lofi_largo_del_dia.py)",
-      "5. Imágenes: 72 escenas 16:9 con SDXL Lightning (segmentar_imagenes.py + director_arte.py)",
+      "5. Imágenes: ~80 segmentos 16:9 con SDXL Lightning (director_arte.py, 8 estilos rotativos + seed determinista)",
       "6. Voz: edge_tts es-ES-AlvaroNeural rate=-5% (voz_edge.py)",
       "7. Render: ffmpeg con zoompan (Ken Burns 1920x1080) + voz + lofi (render_robusto.py)",
       "8. Fallback: descargar_lofi.py si el pool falla",
@@ -22,7 +22,7 @@
     "bitrate_video": "10M",
     "bitrate_audio": "192k"
   },
-  "imagenes": "72 imagenes generadas por director_arte.py (16:9)",
+  "imagenes": "~80 segmentos/día con 8 estilos visuales rotativos (seed determinista por fecha+idx); pool 7d conservado",
   "musica": {
     "fuente": "YouTube con filtro license=creativeCommon",
     "pool": "config/lofi_largo_pool.json (16 links actuales)",
@@ -136,5 +136,12 @@
     "tamano_max_mb": 2048,
     "requiere_audio": true,
     "script": "scripts/validar_video.py"
-  }
+  },
+  "novedades_v3": [
+    "8 estilos visuales rotativos (fin de monotonía)",
+    "10 pattern interrupts variados",
+    "Seed determinista por (fecha, idx)",
+    "Pool histórico 7 días (seg_NNN_YYYY-MM-DD.png)",
+    "Filtro refusals (lo siento, no puedo)"
+  ]
 }

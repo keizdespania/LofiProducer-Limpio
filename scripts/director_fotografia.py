@@ -40,6 +40,42 @@ DICCIONARIO_FALLBACK = {
     "mentira": "A cracked mirror in a dark room, cinematic, 16:9, no text",
 }
 
+# 2026-11-08: 8 estilos visuales rotativos (anti-monotonía)
+ESTILOS_VISUALES = [
+    "cinematic noir, high contrast, wet streets at night, 16:9, no text",
+    "documentary photojournalism, natural light, subtle grain, 16:9, no text",
+    "editorial illustration, muted palette, cross-hatching, 16:9, no text",
+    "70s film archive, faded warm colors, dust specks, 16:9, no text",
+    "neon cyberpunk, magenta and cyan, shallow depth, 16:9, no text",
+    "minimalist product shot, dramatic single shadow, 16:9, no text",
+    "macro detail close-up, extreme shallow depth of field, 16:9, no text",
+    "wide landscape golden hour, backlit silhouette, 16:9, no text",
+]
+
+PATTERN_INTERRUPTS = [
+    "broken mirror reflecting distorted faces, dark room, red light, 16:9, no text",
+    "hourglass draining sand, dramatic single beam, 16:9, no text",
+    "red thread connecting pins on a world map, 16:9, no text",
+    "single match igniting in darkness, macro, 16:9, no text",
+    "ripple expanding in black water, top-down, 16:9, no text",
+    "static TV noise with faint silhouette, 16:9, no text",
+    "macro human eye reflecting chaos, 16:9, no text",
+    "shattered glass spiral frozen mid-air, 16:9, no text",
+    "clock with no hands, empty room, 16:9, no text",
+    "chalk outline on dark floor, single spotlight, 16:9, no text",
+]
+
+def _elegir_estilo(fecha, idx):
+    import random as _r
+    seed = (hash(str(fecha)) ^ (int(idx) * 2654435761)) & 0xFFFFFFFF
+    return ESTILOS_VISUALES[_r.Random(seed).randint(0, len(ESTILOS_VISUALES)-1)]
+
+def _elegir_pattern(fecha, idx):
+    import random as _r
+    seed = (hash(str(fecha)) ^ (int(idx) * 7919)) & 0xFFFFFFFF
+    return PATTERN_INTERRUPTS[_r.Random(seed).randint(0, len(PATTERN_INTERRUPTS)-1)]
+
+
 def _leer_groq_keys():
     keys = []
     env_path = ROOT / ".env"
@@ -70,43 +106,42 @@ def _llamar_groq(prompt, key):
         out = json.loads(r.read())
         return out["choices"][0]["message"]["content"].strip()
 
-def generar_prompt_visual(texto, vertical=False):
-    """Convierte un texto en un prompt en inglés usando la cascada de Groq."""
+def generar_prompt_visual(texto, vertical=False, idx=0, fecha=""):
+    """Convierte texto en prompt en inglés. Rota 8 estilos visuales por (fecha, idx)."""
+    _f = str(fecha) or "hoy"
     if not texto or len(texto.strip()) < 10:
-        return "cinematic abstract scene, 16:9, no text"
-        
+        p = _elegir_estilo(_f, idx)
+        return p.replace("16:9", "9:16 vertical") if vertical else p
+
     if "[PATTERN INTERRUPT]" in texto:
-        return "abstract glowing question mark in a dark room, red lighting, cinematic, 16:9, no text"
+        p = _elegir_pattern(_f, idx)
+        return p.replace("16:9", "9:16 vertical") if vertical else p
 
     prompt_final = PROMPT_MAESTRO.replace("{TEXTO}", texto[:300])
     keys = _leer_groq_keys()
+    estilo = _elegir_estilo(_f, idx)
 
-    # Cascada por si alguna key está agotada
     for key in keys:
         try:
             r = _llamar_groq(prompt_final, key)
-            r = r.strip().strip('"').strip("'").split('\n')[-1]
-            # Verificar que es inglés (sin tildes ni ñ)
+            r = r.strip().strip('"').strip("'").split("\n")[-1]
             if len(r) > 15 and not re.search(r'[ñáéíóú]', r.lower()):
-                # Si es vertical, lo adaptamos para el short
+                r_clean = re.sub(r',\s*16:9[^,]*$', '', r).strip().rstrip(',').strip()
                 if vertical:
-                    return f"{r.replace('16:9', '9:16 vertical')}, cinematic, no text"
-                return r
+                    return f"{r_clean}, 9:16 vertical, no text"
+                sufijo = estilo.split(', ', 1)[1] if ', ' in estilo else 'cinematic, 16:9, no text'
+                return f"{r_clean}, {sufijo}"
         except Exception:
-            continue # Si falla esta key, pasamos a la siguiente de la cascada
+            continue
 
-    # Fallback (si todas las IAs han fallado)
     texto_lower = texto.lower()
     for kw, prompt in DICCIONARIO_FALLBACK.items():
         if kw in texto_lower:
-            if vertical:
-                return prompt.replace("16:9", "9:16 vertical")
-            return prompt
+            return prompt.replace("16:9", "9:16 vertical") if vertical else prompt
 
-    # Fallback final
-    if vertical:
-        return "cinematic abstract scene about media analysis, 9:16 vertical, no text"
-    return "cinematic abstract scene about media analysis, 16:9, no text"
+    p = _elegir_estilo(_f, idx)
+    return p.replace("16:9", "9:16 vertical") if vertical else p
+
 
 if __name__ == "__main__":
     # Test rápido si se ejecuta directo
