@@ -92,6 +92,9 @@ markdown_extensions:
   - toc:
       permalink: true
 
+hooks:
+  - hooks/copy_media.py
+
 plugins:
   - search:
       lang: es

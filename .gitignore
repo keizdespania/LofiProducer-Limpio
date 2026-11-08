@@ -53,3 +53,6 @@ __pycache__/
 
 # 2026-11-04: cache TTS (no aporta, se regenera)
 data/cache_voz/
+
+# build artifact (copy_media hook)
+web/docs/media/
