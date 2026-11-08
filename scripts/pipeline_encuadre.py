@@ -133,7 +133,7 @@ def _publicar_web(fecha):
     # Git add + commit + push (solo ficheros web)
     try:
         import subprocess as _sp
-        _sp.run(["git", "add", "web/docs/analisis/", "web/mkdocs.yml"], cwd=str(ROOT), timeout=30)
+        _sp.run(["git", "add", "web/docs/analisis/", "web/mkdocs.yml", "web/media/imagenes/"], cwd=str(ROOT), timeout=60)
         rc_commit = _sp.run(["git", "commit", "-m", f"content: posts web {fecha} (largo + dossier + mediano)"], cwd=str(ROOT), timeout=30, capture_output=True)
         # Rebase silencioso si remote avanzó (kernel LTX pushea clips por la noche)
         rc_pull = _sp.run(["git", "pull", "--rebase", "--autostash"], cwd=str(ROOT), timeout=60, capture_output=True, text=True)
