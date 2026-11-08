@@ -69,9 +69,22 @@ def _todos_los_posts():
     return posts
 
 def _card(post, con_data_cat=False, con_imagen=False):
+    import pathlib as _pl
+    _root = _pl.Path(__file__).resolve().parent.parent
     img = ""
-    if con_imagen and post["cat"] == "largo":
-        img = "<img src=\"https://files.catbox.moe/ofpbyw.png\" alt=\"Hero\" loading=\"lazy\">"
+    if con_imagen:
+        _fecha = post.get("fecha", "")
+        _cand = None
+        for _cat in (post.get("cat", ""), "largo", "dossier", "mediano"):
+            if not _cat:
+                continue
+            _p = _root / "web" / "media" / "imagenes" / f"post_{_fecha}_{_cat}_1.png"
+            if _p.exists():
+                _cand = _p
+                break
+        if _cand:
+            img = (f'<img src="/media/imagenes/{_cand.name}" alt="Hero" loading="lazy" '
+                   f'style="width:100%;border-radius:6px;margin-bottom:0.5em;">')
     dc = f" data-category=\"{post['cat']}\"" if con_data_cat else ""
     fuente = post.get("fuente_url", "")
     fuente_html = ""

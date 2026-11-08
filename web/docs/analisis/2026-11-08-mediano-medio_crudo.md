@@ -10,12 +10,14 @@ tags:
   - 2026-11-08
 ---
 
-<figure><img src="https://files.catbox.moe/ofpbyw.png" alt="Analisis deldía" style="width:100%;border-radius:8px;" loading="lazy"></figure>
+<figure style="margin:1.5em 0;"><img src="../../media/imagenes/post_2026-11-08_mediano_1.png" alt="Le Monde: la tecnica del marco de agenda que enfatiza la mov" width="832" height="480" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;" loading="eager" fetchpriority="high" decoding="async"><figcaption style="font-size:0.85em;color:#888;text-align:center;margin-top:0.5em;font-style:italic;">Le Monde: la tecnica del marco de agenda que enfatiza la mov</figcaption></figure>
 <h1>Le Monde – Técnica de agenda: movilización y expansión</h1>
 
 <p>El periódico francés, ese viejo guardián de la prensa que se rehúsa a ceder el pulso del debate a la corriente de la opinión popular, ha vuelto a lanzar su arma de doble filo: el <strong>marco de agenda</strong> que convierte cada acontecimiento en una pieza de teatro político. El título que hoy se nos presenta, “<em>Présidentielle 2027: en meeting au Bourget, Jean‑Luc Mélenchon mobilise sa base tout en s’attelant à élargir son électorat</em>”, es un claro ejemplo de la estrategia de la publicación: enfatizar la movilización y la expansión para crear la ilusión de dinamismo y inevitabilidad. A falta de contenido visible, el análisis se basa en la propia estructura del título y en la teoría de la agenda, sin añadir especulaciones ajenas al texto.</p>
 
 <h2>Qué dijo</h2>
+<figure style="margin:1.5em 0;"><img src="../../media/imagenes/post_2026-11-08_mediano_2.png" alt="Qué dijo" width="832" height="480" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;" loading="lazy" decoding="async"><figcaption style="font-size:0.85em;color:#888;text-align:center;margin-top:0.5em;font-style:italic;">Qué dijo</figcaption></figure>
+
 
 <p>El título, en sí mismo, es una declaración de intenciones. La frase “Jean‑Luc Mélenchon mobilise sa base” sugiere una acción de convocatoria y de refuerzo de su núcleo de simpatizantes, mientras que “s’attelant à élargir son électorat” indica una estrategia de expansión de su base electoral. La elección de los verbos en francés—“mobilise” y “s’attelant”—construye una imagen de un líder activo y decidido. El uso de la preposición “au” en “meeting au Bourget” localiza el evento en un lugar que evoca tradición y seriedad, reforzando la percepción de un acto de alta relevancia política. En conjunto, el título presenta a Mélenchon como un actor central que, con energía y visión, está forjando su futuro electoral.</p>
 
@@ -31,6 +33,7 @@ tags:
 
 <p>Para identificar el uso de la técnica de agenda en este caso, basta con observar la estructura del título y su enfoque temático. La palabra “mobilise” y la expresión “s’attelant à élargir” son indicadores claros de que el medio está construyendo una narrativa de dinamismo. Además, el hecho de que el artículo no esté disponible (JavaScript deshabilitado) impide la verificación de la información, lo que en sí mismo puede ser una señal de que el contenido se ha diseñado para ser consumido sin cuestionamientos profundos. La ausencia de citas, la falta de datos cuantitativos y la ausencia de voces contrastantes son rasgos típicos de la agenda framing que busca presentar una visión unilateral.</p>
 
+<figure style="margin:1.5em 0;"><img src="../../media/imagenes/post_2026-11-08_mediano_3.png" alt="Cierre" width="832" height="480" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;" loading="lazy" decoding="async"><figcaption style="font-size:0.85em;color:#888;text-align:center;margin-top:0.5em;font-style:italic;">Cierre</figcaption></figure>
 <h2>Cierre</h2>
 
 <p>Le Monde, con su tradicional rigor periodístico, ha optado en esta ocasión por un enfoque que, aunque no explícitamente polémico, se centra en la construcción de una narrativa de inevitabilidad. El título, con su mezcla de movilización y expansión, sugiere una estrategia de campaña que se presenta como un proceso natural y sin obstáculos. La ausencia de citas y de datos concretos refuerza la idea de que la historia está ya escrita, y el lector se queda con la impresión de que Mélenchon está a punto de escribir un nuevo capítulo en la política francesa. En el mundo del periodismo, donde la palabra es a veces la única arma, la forma en que se enmarca la información puede ser tan poderosa como el contenido mismo. Y en este caso, la agenda de Le Monde parece haber elegido la ruta de la movilización y la expansión, sin dejar espacio a la duda o al contraste.</p>

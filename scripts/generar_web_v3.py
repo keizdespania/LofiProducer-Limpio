@@ -357,8 +357,10 @@ REGLAS: SOLO HTML (sin markdown, sin <html>, sin <body>). Tono mordaz tipo Gabil
     return html_final, titulo, tipo
 
 def _guardar(slug, titulo, html, fecha, tipo):
-    img = _imagen()
-    hero = f'<figure><img src="{img}" alt="Analisis del dia" style="width:100%;border-radius:8px;" loading="lazy"></figure>' if img else ""
+    from _figuras_helper import cargar_imgs, construir_hero_e_inline
+    _tipo_img = "largo" if tipo == "largo" else "mediano"
+    _imgs = cargar_imgs(fecha, _tipo_img)
+    hero, html = construir_hero_e_inline(html, _imgs, titulo)
     contenido = f"""---
 title: "{titulo}"
 date: {fecha}
