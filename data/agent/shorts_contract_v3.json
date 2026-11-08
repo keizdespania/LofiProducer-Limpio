@@ -1,0 +1,69 @@
+{
+  "nombre": "Contrato de Shorts Verticales v3.0 - Somos El Encuadre",
+  "version": "3.0",
+  "fecha": "2026-11-08",
+  "estado": "DISEÑO",
+  "proposito": "Pipeline de shorts basado en el banco de clips de 6s (LTX) en lugar de imagenes estaticas.",
+  "motor_video": "FFmpeg directo (concat de clips + subtitulos quemados)",
+  "duracion_objetivo": "30-60s",
+  "resolucion": "1080x1920 (9:16)",
+  "fps": 30,
+
+  "diferencia_con_v2": {
+    "v2": "3 imagenes estaticas (SDXL) + blur de fondo. Lento y repetitivo.",
+    "v3": "N clips de video de 6s (LTX) concatenados. Mas dinamico, sin blur."
+  },
+
+  "reglas_de_oro": [
+    "USAR SOLO CLIPS CON '_9x16' EN EL NOMBRE (verticales nativos)",
+    "NUNCA usar blur si el clip es vertical nativo",
+    "NO repetir el mismo clip en los proximos 10 shorts (historico)",
+    "El video SIEMPRE debe durar mas que la voz (outro de 3s con logo)",
+    "Cortes secos entre clips (estilo TikTok), sin transiciones",
+    "Subtitulos .ass con palabra activa en amarillo neón, MarginV=450 (no tapar cara)",
+    "Musica del pool CC (cazar_links_musica.py), no ACE-Step",
+    "Ducking de musica: bajar a 0.15 cuando habla la voz"
+  ],
+
+  "flujo_del_pipeline": [
+    "1. agente_short_storyboard.py: Lee dossier -> escribe guion (30s) -> crea JSON de beats (texto, categoria, duracion).",
+    "2. voice_studio.py: Genera voz.mp3 (Davefx) y timestamps.json.",
+    "3. musica_short_del_dia.py: Descarga musica CC del pool segun mood.",
+    "4. render_short_video.py: Descarga clips _9x16 del JSON, los concatena, aplica voz+musica+subs.",
+    "5. generar_subtitulos_pro.py: Crea .ass con palabra activa en amarillo.",
+    "6. publicar_short_youtube.py: Sube con SEO extremo y programado."
+  ],
+
+  "estructura_storyboard_json": {
+    "texto": "Texto completo del guion para la voz",
+    "beats": [
+      {"texto": "Frase 1", "categoria": "bunker_operativo", "duracion": 3},
+      {"texto": "Frase 2", "categoria": "monitor_amenaza", "duracion": 4}
+    ],
+    "outro": {"duracion": 3, "texto": "Visita somoselencuadre.com"},
+    "seo": {
+      "titulo": "Titulo con hook y #ElEncuadre",
+      "descripcion": "Descripcion con CTA y enlaces",
+      "tags": ["manipulacion mediatica", "sesgo", "framing"]
+    }
+  },
+
+  "anti_repeticion": {
+    "archivo": "data/agent/shorts/historico_videos.json",
+    "logica": "Guardar los ultimos 10 shorts con los clips usados. El agente no puede elegir un clip que este en esa lista."
+  },
+
+  "reglas_visuales": {
+    "cortes": "Secos, sin transiciones (xfade no, concat si)",
+    "escala": "Los clips verticales nativos se escalan a 1080x1920",
+    "outro": "Ultimo clip con logo del canal + texto CTA",
+    "prohibido": "Blur, texto legible generado por IA, imagenes estaticas"
+  },
+
+  "seo_extremo": {
+    "titulo": "Hook + categoria + #ElEncuadre (max 100 chars)",
+    "descripcion": "Texto con CTA a somoselencuadre.com + hashtags",
+    "tags": "13 keywords top de YouTube (manipulacion, sesgo, framing, etc.)",
+    "horario_publicacion": "18:30 UTC (escalonado con otros shorts)"
+  }
+}

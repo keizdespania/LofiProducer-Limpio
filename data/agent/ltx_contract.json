@@ -1,6 +1,6 @@
 {
   "nombre": "Contrato LTX-Video 2.3 - El Encuadre",
-  "version": "2.0",
+  "version": "3.0",
   "fecha": "2026-11-05",
   "motor": "LTX-Video 2.3 (Distilled)",
   "modelo_hf": "Lightricks/ltx-video-distilled",
@@ -224,6 +224,12 @@
       "sintoma": "libcudart.so.12 cannot open shared object file",
       "causa": "LD_LIBRARY_PATH no incluye RT/nvidia_libs/nvidia/*/lib",
       "fix": "glob(RT + '/nvidia_libs/nvidia/*/lib') y unir con ':' en LD_LIBRARY_PATH ANTES de start_server()"
+    },
+    "aspect_ratio_forzado": {
+      "fecha": "2026-11-08",
+      "sintoma": "Todos los clips salen 832x480 aunque la imagen original sea 9:16",
+      "causa": "El kernel pasa width=832, height=480 fijos, ignorando el nombre del archivo",
+      "fix": "Usar width=480, height=832 si el nombre contiene \"_9x16\""
     }
   },
   "historial_test": {
@@ -264,5 +270,18 @@
         "73f en T4 -> OOM VAE decode (usar 49f)"
       ]
     }
-  }
+  },
+  "fecha_actualizacion": "2026-11-08",
+  "resolucion_segura": "832x480 (16:9) o 480x832 (9:16)",
+  "regla_6_segundos": {
+    "concepto": "Para clips de 6s, concatenar 3 segmentos de 2s (49 frames)",
+    "proceso": "Job1 -> seg1. Job2 (desde ultimo frame seg1) -> seg2. Job3 (desde ultimo frame seg2) -> seg3. Concat seg1+seg2+seg3.",
+    "tiempo_por_clip": "19 min si se generan 3. 13 min si se recicla el seg1."
+  },
+  "reglas_pipeline": [
+    "Usar nohup python3 -u script.py > log 2>&1 & para background.",
+    "NUNCA usar && y & mezclados. Un paso por cajon.",
+    "El script del agente debe tener if __name__ == \"__main__\": para no ejecutarse al importar.",
+    "El pipeline debe leer cancelRequested como exito."
+  ]
 }
