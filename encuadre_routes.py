@@ -293,14 +293,17 @@ window.addEventListener('unhandledrejection', function(e) {
     __showError('Promise: ' + (e.reason && e.reason.message ? e.reason.message : String(e.reason)), '', 0);
 });
 </script>
-<script>alert("JS VIVO 2026");
-let fechaActual = "";
+<script>let fechaActual = "";
 
 function $safe(id, prop, val) { var el = document.getElementById(id); if (el) { try { el[prop] = val; } catch(e){} } }
 function $safeStyle(id, prop, val) { var el = document.getElementById(id); if (el) { try { el.style[prop] = val; } catch(e){} } }
 function $safeClass(id, action, cls) { var el = document.getElementById(id); if (el) { try { el.classList[action](cls); } catch(e){} } }        let datosGlobales = null;
 
-        window.addEventListener('DOMContentLoaded', () => {
+        function __init_factory() {
+    var _st = document.getElementById('__init_status');
+    if (_st) _st.textContent = 'init: corriendo...';
+    console.log('[factory] init corriendo');
+    try {
             fetch('/api/encuadre/fechas').then(r => r.json()).then(data => {
                 const sel = document.getElementById('dateSelector');
                 if (!data.fechas || data.fechas.length === 0) { sel.innerHTML = '<option value="">Sin producciones</option>'; return; }
@@ -309,7 +312,20 @@ function $safeClass(id, action, cls) { var el = document.getElementById(id); if 
                 cargarDatos(data.fechas[0]);
             });
             document.getElementById('dateSelector').addEventListener('change', (e) => cargarDatos(e.target.value));
-        });
+        _st = document.getElementById('__init_status');
+        if (_st) _st.textContent = 'init: OK';
+        console.log('[factory] init OK');
+    } catch(e) {
+        var _st2 = document.getElementById('__init_status');
+        if (_st2) { _st2.textContent = 'INIT ERROR: ' + e.message; _st2.style.background = '#7f1d1d'; }
+        console.error('[factory] INIT ERROR:', e);
+    }
+}
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', __init_factory);
+} else {
+    __init_factory();
+}
 
         function cargarDatos(fecha) {
             if (!fecha) return;
@@ -859,6 +875,7 @@ function $safeClass(id, action, cls) { var el = document.getElementById(id); if 
             <button onclick="diosEnviar()" style="background:#e63946;border:none;color:#fff;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">Enviar</button>
         </div>
     </div>
+<div id="__init_status" style="position:fixed;bottom:4px;right:4px;background:#1a1a24;color:#888;padding:2px 6px;font-size:9px;font-family:monospace;z-index:99998;border-radius:3px;opacity:0.7;">init: pendiente</div>
 </body>
 </html>"""
 
