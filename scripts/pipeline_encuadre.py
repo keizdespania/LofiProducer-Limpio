@@ -226,6 +226,7 @@ def main():
         ("director_arte.py", [fecha], 2400, False),  # 2026-11-04: fusionado (72 imgs + timeline)
         ("render_robusto.py", [fecha], 1800, False),
         ("generar_podcast.py", [fecha], 600, True),  # podcast (2026-11-04)
+        ("sincronizar_podcasts.py", [], 120, True),  # 2026-11-09: feed+index+copy robusto
     ]
 
     for script, args, t, opcional in pasos:
