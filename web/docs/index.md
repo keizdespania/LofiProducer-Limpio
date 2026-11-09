@@ -40,6 +40,24 @@ hide:
     
     <a href="https://www.elespanol.com/espana/política/20261108/ayuso-mafia-sindical-haciendo-campana-amo-sanchez-secuestra-servicios-publicos/1003744449012_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
   </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-07-mediano-dossier/'">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier completo del dia</h3>
+    <p>Analisis dossier: Dossier completo del dia</p>
+    <div class="holo-meta"><span>📅 2026-11-07</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-07-largo/'">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    
+    <h3>El Encuadre: Adif blindó el bonus a su cúpula horas antes de</h3>
+    <p>Analisis largo: El Encuadre: Adif blindó el bonus a su cúpula horas antes de</p>
+    <div class="holo-meta"><span>📅 2026-11-07</span></div>
+    
+    <a href="https://www.elespanol.com/espana/20261107/ceuta-macroceti-dias-invasion-gobierno-no-capaz-finalizar-expediente-repatriacion/1003744445233_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
+  </div>
   <a href="glosario/" class="holo-card">
     <div class="holo-badge badge-guide">📚 Guía Definitiva</div>
     <h3>Las 51 técnicas de manipulación y sesgos cognitivos</h3>
