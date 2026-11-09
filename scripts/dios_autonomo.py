@@ -241,8 +241,8 @@ def r16_sin_comentarios_youtube():
         vids = [d.get("largo")] + (d.get("shorts") or [])
         out.append({"regla": "r16_sin_comentarios_youtube", "categoria": "youtube", "prioridad": 0.55,
             "titulo": f"Vídeos {ayer} sin interacción",
-            "mensaje": "Lanza comentario fijado en cada vídeo para arrancar el algoritmo.",
-            "payload": {}, "accion_tool": ""})
+            "mensaje": "Lanza comentario SEO fijado (CTA + links) en cada vídeo para arrancar el algoritmo y tráfico cruzado.",
+            "payload": {"fecha": ayer}, "accion_tool": "publicar_comentario_youtube"})
     except: pass
     return out
 
@@ -257,8 +257,8 @@ def r17_short_viral_secuela():
                 # No hay métricas aquí, pero el botón de "secuela" es útil
                 out.append({"regla": "r17_short_viral_secuela", "categoria": "estrategia", "prioridad": 0.5,
                     "titulo": f"Analizar short {s.get('video_id')} de {fecha}",
-                    "mensaje": f"Short de {fecha}: {s.get('titulo','')[:80]}\n\nPropongo: revisar métricas y hacer secuela si funciona.",
-                    "payload": {"video_id": s.get("video_id")}, "accion_tool": ""})
+                    "mensaje": f"Short de {fecha}: {s.get('titulo','')[:80]}\n\nPropongo: analizar métricas reales y ver si vale secuela/cross-post.",
+                    "payload": {"video_id": s.get("video_id"), "fecha": fecha}, "accion_tool": "analizar_short_viral"})
                 break
         except: pass
     return out
@@ -279,8 +279,8 @@ def r18_nicho_sin_contenido():
                 if dias >= 7:
                     out.append({"regla": "r18_nicho_sin_contenido", "categoria": "estrategia", "prioridad": 0.6,
                         "titulo": f"Nicho '{c.parent.name}' parado {dias}d",
-                        "mensaje": f"Nicho sin contenido {dias} días.\n\nPropongo: pipeline custom para reactivar.",
-                        "payload": {"nicho": c.parent.name}, "accion_tool": "pipeline_custom"})
+                        "mensaje": f"Nicho sin contenido {dias} días.\n\nPropongo: pipeline custom con formato largo+shorts para reactivar.",
+                        "payload": {"nicho": c.parent.name, "formatos": ["largo", "shorts"], "num_shorts": 2}, "accion_tool": "pipeline_custom"})
         except: pass
     return out
 
@@ -310,8 +310,8 @@ def r20_falta_thumbnail():
     if video.exists() and not thumb.exists():
         out.append({"regla": "r20_falta_thumbnail", "categoria": "youtube", "prioridad": 0.65,
             "titulo": "Vídeo sin thumbnail custom",
-            "mensaje": f"Video de hoy sin thumbnail específica.\n\nPropongo: generar thumbnail con SDXL basada en titular.",
-            "payload": {}, "accion_tool": ""})
+            "mensaje": f"Video de hoy sin thumbnail específica.\n\nPropongo: generar thumbnail impactante (nano-banana o SDXL cinematic) y subir a YouTube.",
+            "payload": {"fecha": f}, "accion_tool": "generar_thumbnail_video"})
     return out
 
 # ═══════════════ V2 - OPERACIONAL AVANZADO ═══════════════
