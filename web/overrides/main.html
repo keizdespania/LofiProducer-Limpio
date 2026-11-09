@@ -10,4 +10,44 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@elencuadre">
 <meta name="theme-color" content="#0a0a0f">
+{% if config.extra.monetizacion_activa and config.extra.adsense_client %}
+<link rel="preconnect" href="https://pagead2.googlesyndication.com">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ config.extra.adsense_client }}" crossorigin="anonymous"></script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+{% if config.extra.telegram_mostrar_banner and config.extra.telegram_url %}
+<div id="tg-banner" class="tg-banner" role="complementary" aria-label="Canal Telegram">
+  <div class="tg-banner__text">
+    <strong>📡 ¿Te sirve este análisis?</strong>
+    <span>Recibe el dossier diario en Telegram. Gratis, sin spam.</span>
+  </div>
+  <div class="tg-banner__actions">
+    <a href="{{ config.extra.telegram_url }}" target="_blank" rel="noopener" class="tg-banner__cta" onclick="return tgCerrarBanner()">
+      {{ config.extra.telegram_label }}
+    </a>
+    <button class="tg-banner__close" onclick="tgCerrarBanner()" aria-label="Cerrar">×</button>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+(function(){
+  var CERRADO = localStorage.getItem('tg_banner_closed_v1');
+  if (CERRADO && Date.now() - parseInt(CERRADO) < 30*24*60*60*1000) {
+    var b = document.getElementById('tg-banner');
+    if (b) b.classList.add('tg-banner--hidden');
+  }
+  window.tgCerrarBanner = function(){
+    var b = document.getElementById('tg-banner');
+    if (b) { b.classList.add('tg-banner--hidden'); localStorage.setItem('tg_banner_closed_v1', Date.now()); }
+    return true;
+  };
+})();
+</script>
 {% endblock %}
