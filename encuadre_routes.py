@@ -836,6 +836,41 @@ LOGS_DIR = ROOT / "data" / "logs"
 
 
 
+
+@encuadre_bp.route("/api/encuadre/buscar")
+def api_buscar():
+    from flask import request as _rq
+    import sqlite3, re as _re
+    q = _rq.args.get("q", "").strip()
+    if not q or len(q) < 2:
+        return jsonify({"q": q, "results": []})
+    db = ROOT / "data" / "agent" / "busqueda_fts.db"
+    if not db.exists():
+        return jsonify({"q": q, "results": [], "error": "indice no construido"})
+    try:
+        con = sqlite3.connect(str(db))
+        con.row_factory = sqlite3.Row
+        cur = con.execute(
+            "SELECT tipo, fecha, titulo, path, snippet(docs, 3, '<b>', '</b>', '...', 25) as snip "
+            "FROM docs WHERE docs MATCH ? ORDER BY rank LIMIT 20",
+            (q,))
+        results = [dict(r) for r in cur.fetchall()]
+        con.close()
+        return jsonify({"q": q, "results": results, "total": len(results)})
+    except Exception as e:
+        return jsonify({"q": q, "results": [], "error": str(e)}), 500
+
+
+@encuadre_bp.route("/api/encuadre/buscar/reindex", methods=["POST"])
+def api_buscar_reindex():
+    import subprocess as _sp
+    try:
+        r = _sp.run(["python3", "scripts/indexar_busqueda.py"], cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+        return jsonify({"ok": r.returncode == 0, "output": (r.stdout or r.stderr)[-300:]})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
 @encuadre_bp.route("/api/encuadre/rollback/list")
 def api_rollback_list():
     import subprocess as _sp
