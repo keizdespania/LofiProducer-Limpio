@@ -418,11 +418,18 @@ function copiarTexto(id) {
   }
 }
 
+function _img_from_video(vp) {
+  var m = vp.match(/video_largo_([\d-]+)\.mp4/);
+  if (m) return '/output/encuadre/social/' + m[1] + '_largo.png';
+  m = vp.match(/short_(\d+)_([\d-]+)\.mp4/);
+  if (m) return '/output/encuadre/social/' + m[2] + '_short_' + m[1] + '.png';
+  return '';
+}
 function abrirRed(red, textareaId, videoPath) {
   var el = document.getElementById(textareaId);
   var texto = el ? el.value : '';
   mostrarToast('⏳ Abriendo...', 'bg-blue-600');
-  fetch('/api/encuadre/abrir_app', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({red: red, texto: texto, video_path: videoPath || ''})})
+  fetch('/api/encuadre/abrir_app', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({red: red, texto: texto, video_path: videoPath || '', imagen_path: _img_from_video(videoPath)})})
     .then(function(r){ return r.json(); }).then(function(d){
       if (d.ok) mostrarToast(d.accion === 'share_sheet' ? '📋 Texto copiado + share sheet' : '🚀 ' + red, 'bg-green-600');
       else mostrarToast('❌ ' + (d.error || ''), 'bg-red-600');
@@ -1015,6 +1022,7 @@ def api_abrir_app():
     red = (data.get('red') or '').lower()
     texto = (data.get('texto') or '').strip()
     video_path = (data.get('video_path') or '').strip()
+    imagen_path = (data.get('imagen_path') or '').strip()
 
     # 1. Clipboard siempre
     clip = False
@@ -1051,6 +1059,14 @@ def api_abrir_app():
             return jsonify({'ok': True, 'accion': 'browser_redirect', 'red': red, 'clipboard': clip})
 
     # 4. Share sheet video (TikTok/IG cuando hay vídeo)
+    if imagen_path and red in ('tiktok', 'instagram'):
+        ip = ROOT / imagen_path.lstrip('/')
+        if ip.exists():
+            try:
+                _sp.Popen(['termux-share', '-a', 'send', '-c', 'image/png', str(ip)], stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
+                return jsonify({'ok': True, 'accion': 'share_image', 'imagen': imagen_path, 'clipboard': clip})
+            except: pass
+
     if video_path and red in ('tiktok', 'instagram', 'video'):
         vp = ROOT / video_path.lstrip('/')
         if vp.exists():
