@@ -52,10 +52,10 @@ def subir(video, titulo, descripcion="", tags=None, privacidad=None, publish_at=
     mime = mimetypes.guess_type(video)[0] or "video/mp4"
 
     # 1. Iniciar sesión de subida
+    # 2026-11-09: FIX - NO pasar publishAt en insert (YouTube lo ignora). 2 pasos.
     metadata = {"snippet": {"title": titulo, "description": descripcion, "tags": tags or [], "categoryId": "22"},
                 "status": {"privacyStatus": "private" if publish_at else privacidad}}
-    if publish_at:
-        metadata["status"]["publishAt"] = publish_at
+    # NOTA: publishAt se programa DESPUÉS con actualizar_video(), no aquí
     req = urllib.request.Request(
         "https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status",
         data=json.dumps(metadata).encode(),
@@ -70,6 +70,15 @@ def subir(video, titulo, descripcion="", tags=None, privacidad=None, publish_at=
     req2 = urllib.request.Request(session, data=cuerpo, method="PUT",
         headers={"Content-Type": mime, "Content-Length": str(size)})
     r = json.loads(urllib.request.urlopen(req2, timeout=600).read())
+    # 2026-11-09: PASO 3 - programar publishAt si aplica
+    if publish_at and r.get("id"):
+        try:
+            import time as _t
+            _t.sleep(3)  # YouTube necesita procesar antes de aceptar publishAt
+            print(f"  ⏰ Programando publishAt: {publish_at}")
+            actualizar_video(r["id"], publish_at=publish_at, token_file=token_file)
+        except Exception as _e:
+            print(f"  ⚠️ publishAt falló: {_e}")
     return r
 
 def actualizar_video(video_id, publish_at=None, titulo=None, descripcion=None, tags=None, token_file=None):
@@ -79,7 +88,7 @@ def actualizar_video(video_id, publish_at=None, titulo=None, descripcion=None, t
     body = {"id": video_id}
     part = []
     if publish_at:
-        body["status"] = {"privacyStatus": "private", "publishAt": publish_at}
+        body["status"] = {"privacyStatus": "private", "publishAt": publish_at, "embeddable": True, "publicStatsViewable": True, "selfDeclaredMadeForKids": False}
         part.append("status")
     if titulo or descripcion or tags:
         body["snippet"] = {"categoryId": "25"}  # 25 = News & Politics (ideal para El Encuadre)
