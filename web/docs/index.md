@@ -13,6 +13,33 @@ hide:
 <h2 class="holo-section-title">Últimos Análisis</h2>
 
 <div class="holo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-09-mediano-quirurgico/'">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    <img src="/media/imagenes/post_2026-11-09_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El ángulo que nadie cuenta: ¿Te cuesta encontrar casa?</h3>
+    <p>Analisis quirurgico: El ángulo que nadie cuenta: ¿Te cuesta encontrar casa?</p>
+    <div class="holo-meta"><span>📅 2026-11-09</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-09-largo/'">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    <img src="/media/imagenes/post_2026-11-09_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El Encuadre: Nvidia abre una investigación a su consejero de</h3>
+    <p>Analisis largo: El Encuadre: Nvidia abre una investigación a su consejero de</p>
+    <div class="holo-meta"><span>📅 2026-11-09</span></div>
+    
+    <a href="https://www.lavanguardia.com/política/20261108/11679248/sanchez-advierte-pp-vox-gobiernan-plegaran-trump-tragan.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · lavanguardia.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-09-dossier-v2/'">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    <img src="/media/imagenes/post_2026-11-09_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Dossier del día: El Encuadre: Nvidia abre una investigación a su consejero de</h3>
+    <p>Dossier ejecutivo: El Encuadre: Nvidia abre una investigación a su consejero delegado sobre su rela</p>
+    <div class="holo-meta"><span>📅 2026-11-09</span></div>
+    
+    <a href="https://www.lavanguardia.com/política/20261108/11679248/sanchez-advierte-pp-vox-gobiernan-plegaran-trump-tragan.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · lavanguardia.com</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-08-mediano-medio_crudo/'">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     <img src="/media/imagenes/post_2026-11-08_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
@@ -30,33 +57,6 @@ hide:
     <div class="holo-meta"><span>📅 2026-11-08</span></div>
     
     <a href="https://www.elespanol.com/espana/política/20261108/ayuso-mafia-sindical-haciendo-campana-amo-sanchez-secuestra-servicios-publicos/1003744449012_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
-  </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-08-dossier-v2/'">
-    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="/media/imagenes/post_2026-11-08_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
-    <h3>Dossier del día: El Encuadre: El presidente de Israel encarga formar gobierno</h3>
-    <p>Dossier ejecutivo: El Encuadre: El presidente de Israel encarga formar gobierno al opositor Eisenko</p>
-    <div class="holo-meta"><span>📅 2026-11-08</span></div>
-    
-    <a href="https://www.elespanol.com/espana/política/20261108/ayuso-mafia-sindical-haciendo-campana-amo-sanchez-secuestra-servicios-publicos/1003744449012_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
-  </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-07-mediano-dossier/'">
-    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    
-    <h3>Dossier completo del dia</h3>
-    <p>Analisis dossier: Dossier completo del dia</p>
-    <div class="holo-meta"><span>📅 2026-11-07</span></div>
-    
-    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
-  </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-07-largo/'">
-    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
-    
-    <h3>El Encuadre: Adif blindó el bonus a su cúpula horas antes de</h3>
-    <p>Analisis largo: El Encuadre: Adif blindó el bonus a su cúpula horas antes de</p>
-    <div class="holo-meta"><span>📅 2026-11-07</span></div>
-    
-    <a href="https://www.elespanol.com/espana/20261107/ceuta-macroceti-dias-invasion-gobierno-no-capaz-finalizar-expediente-repatriacion/1003744445233_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
   </div>
   <a href="glosario/" class="holo-card">
     <div class="holo-badge badge-guide">📚 Guía Definitiva</div>

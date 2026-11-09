@@ -246,8 +246,8 @@
       "id": 32,
       "categoria": "medico",
       "texto": "El becario Luis me miró y dijo: '¿Te has dado cuenta de que el reloj se mueve más rápido cuando el anuncio llega?'. 'Sí, y el anuncio me dice que la espera es un minuto de eternidad'. La espera es el mejor programa de ficción.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-09T06:06:52.272264"
     },
     {
       "id": 33,

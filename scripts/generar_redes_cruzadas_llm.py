@@ -136,8 +136,8 @@ def _extraer_todos(d, titular):
     # ═══ Artículo (largo) ═══
     print("     → fragmento para X...")
     out["HOOK_X"] = _extraer_frase(md_largo,
-        "Elige 1 frase del artículo que sea un TUIT PERIODÍSTICO con tono CRÍTICO e IRÓNICO. Nombra el medio o político (El Español, Ayuso, Sánchez). Usa ironía fina, no insultos. Sin 'me deja', 'siento', 'creo'. Ej: 'El Español llama mafia a los sindicatos mientras su CEO cobra del Estado. Circo periodístico.'",
-        max_tokens=300)
+        "Elige 1 frase del artículo que sea un TUIT PERIODÍSTICO con tono CRÍTICO e IRÓNICO (OBLIGATORIO 150-280 caracteres). Nombra el medio o político (El Español, Ayuso, Sánchez). Usa ironía fina, no insultos. Sin 'me deja', 'siento', 'creo'. Ej: 'El Español llama mafia a los sindicatos mientras su CEO cobra del Estado. Circo periodístico.'",
+        max_tokens=400)
 
     print("     → fragmento para Threads...")
     out["ANALISIS_THREADS"] = _extraer_frase(md_largo,
