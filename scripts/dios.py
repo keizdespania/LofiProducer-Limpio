@@ -556,6 +556,7 @@ TOOLS = [
     {"type": "function", "function": {"name": "ver_costes_hoy", "description": "Costes de hoy.", "parameters": {"type": "object", "properties": {}, "required": []}}},
     {"type": "function", "function": {"name": "auto_regenerar_manual", "description": "Regenera docs/MANUAL_ECOSISTEMA.md desde el estado actual de TOOLS. Usalo tras crear tools nuevas.", "parameters": {"type": "object", "properties": {}, "required": []}}},
     {"type": "function", "function": {"name": "crear_nueva_tool", "description": "Crea una tool nueva persistente. Recibe nombre (snake_case), descripcion, codigo_funcion (def _tool_NOMBRE(args): ...) y parametros_json (dict de propiedades). Valida, persiste, regenera manual. Disponible proximo arranque.", "parameters": {"type": "object", "properties": {"nombre": {"type": "string"}, "descripcion": {"type": "string"}, "codigo_funcion": {"type": "string"}, "parametros_json": {"type": "object"}}, "required": ["nombre", "descripcion", "codigo_funcion"]}}},
+    {"type": "function", "function": {"name": "ejecutar_limpieza", "description": "Ejecuta scripts/limpieza_pipeline.py (reset diario: borra <ayer + temporales). Con dry_run=True solo simula sin borrar.", "parameters": {"type": "object", "properties": {"dry_run": {"type": "boolean"}}, "required": []}}},
 ]
 
 
@@ -1562,7 +1563,20 @@ def _tool_crear_nueva_tool(args):
     return f"OK {msg}"
 
 
+
+def _tool_ejecutar_limpieza(args):
+    import subprocess as _sp
+    cmd = ["python3", "scripts/limpieza_pipeline.py"]
+    if args.get("dry_run"): cmd.append("--dry-run")
+    try:
+        r = _sp.run(cmd, cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+        return (r.stdout or r.stderr or "")[-800:]
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
 TOOL_FNS = {
+    "ejecutar_limpieza": _tool_ejecutar_limpieza,
     "auto_regenerar_manual": _tool_auto_regenerar_manual,
     "crear_nueva_tool": _tool_crear_nueva_tool,
     "ver_costes_hoy": _tool_ver_costes_hoy,

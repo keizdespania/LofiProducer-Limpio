@@ -2,7 +2,7 @@
 > Autogenerado desde `dios.TOOLS`. No editar a mano. Actualizado 2026-11-09.
 
 ## 1. ARQUITECTURA
-- Cerebro: `scripts/dios.py` (51 tools, ReAct, memoria SQLite)
+- Cerebro: `scripts/dios.py` (52 tools, ReAct, memoria SQLite)
 - Memoria: `brain/dios_memoria.py` (workspace + episodios + costes + fallos)
 - Manual: `docs/MANUAL_ECOSISTEMA.md` (este fichero)
 - Motor LLM: Groq (gpt-oss-120b) → Gemini 3.8 (cascada 8 modelos)
@@ -13,7 +13,7 @@
 ## 2. PIPELINE DIARIO (cron 06:00)
 `recolector` → `transcribir_groq` → `analista_fase1` → `sintetizador` → `fase2_produccion` → `voz_edge` → `director_arte` (80 seg, 8 estilos) → `render_robusto` → `factory_shorts` → `generar_web_v3` + `dossier` → `mkdocs build` → `git push` → YouTube 20:00.
 
-## 3. TODAS TUS TOOLS (51)
+## 3. TODAS TUS TOOLS (52)
 > Usa `listar_mis_tools` en cualquier momento para ver la lista viva.
 
 ### FS / Shell (5)
@@ -87,9 +87,10 @@
 - **delegar_tareas_paralelas**: Delega múltiples tareas de investigación o análisis a OmniRoute en paralelo para ahorrar tiempo. Úsala cuando necesites leer varios archivos
 - **pedir_a_especialista**: Delegar tarea a un sub-agente especializado. Roles: guionista, seo, auditor, traductor, musico.
 
-### Otros (2)
+### Otros (3)
 - **auto_regenerar_manual**: Regenera docs/MANUAL_ECOSISTEMA.md desde el estado actual de TOOLS. Usalo tras crear tools nuevas.
 - **crear_nueva_tool**: Crea una tool nueva persistente. Recibe nombre (snake_case), descripcion, codigo_funcion (def _tool_NOMBRE(args): ...) y parametros_json (di
+- **ejecutar_limpieza**: Ejecuta scripts/limpieza_pipeline.py (reset diario: borra <ayer + temporales). Con dry_run=True solo simula sin borrar.
 
 ## 4. MEMORIA (SQLite en data/agent/)
 | Fichero | Qué guarda | Tool para consultarlo |
