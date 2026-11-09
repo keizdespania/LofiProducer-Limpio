@@ -45,6 +45,26 @@ for patron in ["web/media/imagenes/seg_*.png", "web/media/imagenes/short_*.png"]
     total_n += n; total_b += b
     if n: print(f"  {patron.split('/')[-1]}: {n} ({b//1024//1024}MB)")
 
+# 2b. render_work + clips (siempre, son temporales del render)
+for d in ["output/encuadre/render_work", "output/encuadre/clips"]:
+    p2 = ROOT / d
+    if p2.exists():
+        s = sum(f.stat().st_size for f in p2.rglob("*") if f.is_file())
+        shutil.rmtree(p2, ignore_errors=True)
+        total_b += s
+        print(f"  {d}: {s//1024//1024}MB")
+
+# 2c. test_*.mp4/mp3 viejos (>3d, sin fecha en nombre)
+corte_test = time.time() - 3 * 86400
+n = b = 0
+for pat in ["output/encuadre/test_*.mp4", "output/encuadre/test_*.mp3"]:
+    for f in ROOT.glob(pat):
+        if f.is_file() and f.stat().st_mtime < corte_test:
+            try: b += f.stat().st_size; f.unlink(); n += 1
+            except: pass
+total_n += n; total_b += b
+if n: print(f"  test_* (>3d): {n} ({b//1024//1024}MB)")
+
 # 3. Build artefacts (siempre)
 for d in ["web/site", "web/web"]:
     p = ROOT / d
