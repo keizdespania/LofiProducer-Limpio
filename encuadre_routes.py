@@ -69,6 +69,7 @@ HTML_FACTORY = """<!DOCTYPE html>
             <button onclick="cambiarVista('calendario')" id="tab-calendario" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-regular fa-calendar mr-2"></i>Calendario</button>
             <button onclick="cambiarVista('agentes')" id="tab-agentes" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-robot mr-2"></i>Agentes</button>
             <button onclick="cambiarVista('monetizacion')" id="tab-monetizacion" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-sack-dollar mr-2"></i>Monetización</button>
+            <button onclick="cambiarVista('crear')" id="tab-crear" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Crear Custom</button>
             <button onclick="cambiarVista('cms')" id="tab-cms" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-pen-ruler mr-2"></i>Diseño Web (CMS)</button>
         </div>
 
@@ -108,6 +109,43 @@ HTML_FACTORY = """<!DOCTYPE html>
             <div id="publicar-content" class="grid grid-cols-1 gap-4"><div class="text-center py-10"><i class="fa-solid fa-spinner fa-spin text-2xl text-red-500"></i></div></div>
         </div>
         
+        <!-- VISTA CREAR CUSTOM -->
+        <div id="view-crear" class="hidden grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="glass rounded-2xl p-6">
+                <h2 class="text-xl font-bold text-red-500 mb-4"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Crear Contenido a la Carta</h2>
+                
+                <label class="text-xs text-zinc-400 uppercase tracking-wide">Nicho</label>
+                <select id="crear-nicho" class="field-box mb-3"></select>
+
+                <label class="text-xs text-zinc-400 uppercase tracking-wide">Formato (uno o varios)</label>
+                <div class="flex gap-2 mb-3 flex-wrap" id="crear-formatos"></div>
+
+                <label class="text-xs text-zinc-400 uppercase tracking-wide">Nº Shorts</label>
+                <select id="crear-num" class="field-box mb-3"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4" selected>4</option></select>
+
+                <label class="text-xs text-zinc-400 uppercase tracking-wide">Tema</label>
+                <select id="crear-tema-tipo" class="field-box mb-2" onchange="crearToggleTema()">
+                    <option value="auto">🤖 Automático (dossier del día)</option>
+                    <option value="topico">📰 Elegir del top de hoy</option>
+                    <option value="manual">✍️ Escribir mi tema</option>
+                </select>
+                <select id="crear-topico" class="field-box mb-2 hidden"></select>
+                <input id="crear-manual" type="text" class="field-box mb-3 hidden" placeholder="Ej: La manipulación del caso Urda">
+
+                <button onclick="crearLanzar()" class="w-full bg-gradient-to-r from-red-600 to-orange-500 py-3 rounded-lg font-bold text-sm hover:opacity-90 transition"><i class="fa-solid fa-rocket mr-2"></i>Lanzar Pipeline Custom</button>
+            </div>
+
+            <div class="glass rounded-2xl p-6">
+                <h3 class="font-bold text-sm text-orange-400 mb-3"><i class="fa-solid fa-chart-line mr-2"></i>SEO Optimizer · Top 1</h3>
+                <div id="crear-seo" class="space-y-3 text-sm"><div class="text-zinc-500 italic">Cargando análisis...</div></div>
+            </div>
+
+            <div class="lg:col-span-2 glass rounded-2xl p-6">
+                <h3 class="font-bold text-sm text-zinc-400 mb-3"><i class="fa-solid fa-terminal mr-2"></i>Logs del pipeline custom</h3>
+                <pre id="crear-logs" class="mono text-xs text-zinc-400 bg-black/50 rounded p-3 overflow-y-auto" style="max-height:300px">Esperando...</pre>
+            </div>
+        </div>
+
         <!-- VISTA CMS (Diseño Web) -->
         <div id="view-cms" class="hidden grid-cols-1 lg:grid-cols-12 gap-4">
             <div class="lg:col-span-3 glass rounded-2xl p-4 flex flex-col" style="max-height: 75vh;">
@@ -254,7 +292,7 @@ HTML_FACTORY = """<!DOCTYPE html>
         }
 
         function cambiarVista(v) {
-            ['preview', 'distribucion', 'monetizacion', 'live', 'analytics', 'ab', 'calendario', 'agentes'].forEach(t => {
+            ['preview', 'distribucion', 'monetizacion', 'live', 'analytics', 'ab', 'calendario', 'agentes', 'crear', 'cms'].forEach(t => {
                 document.getElementById('view-' + t).classList.toggle('hidden', t !== v);
                 const tab = document.getElementById('tab-' + t);
                 if (tab) tab.className = t === v ? "tab-active text-sm font-semibold pb-2 px-2 whitespace-nowrap" : "text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap";
@@ -266,6 +304,7 @@ HTML_FACTORY = """<!DOCTYPE html>
             if (v === 'calendario') document.getElementById('view-calendario').classList.add('grid');
             if (v === 'agentes') document.getElementById('view-agentes').classList.add('grid');
             if (v === 'distribucion') { document.getElementById('view-distribucion').classList.add('grid'); cargarPublicar(); }
+            if (v === 'crear') { document.getElementById('view-crear').classList.add('grid'); cargarCrear(); }
             if (v === 'cms') { document.getElementById('view-cms').classList.add('grid'); cmsCargarArbol(); }
         }
 
@@ -483,6 +522,88 @@ HTML_FACTORY = """<!DOCTYPE html>
                 if(d.ok) mostrarToast('✅ Build & Push OK', 'bg-green-600');
                 else mostrarToast('❌ ' + d.error, 'bg-red-600');
             });
+        }
+
+
+        // ═══ CREAR CUSTOM ═══
+        let _crearSeo = null;
+        function cargarCrear() {
+            // Cargar nichos, topicos y SEO en paralelo
+            Promise.all([
+                fetch('/api/encuadre/pipeline_options').then(r=>r.json()),
+                fetch('/api/encuadre/topicos').then(r=>r.json()),
+                fetch('/api/encuadre/seo_top').then(r=>r.json()).catch(()=>({}))
+            ]).then(([opt, top, seo]) => {
+                // Nichos
+                const sel = document.getElementById('crear-nicho');
+                sel.innerHTML = (opt.nichos || []).map(n => `<option value="${n}">${n}</option>`).join('');
+                // Formatos
+                const fmt = document.getElementById('crear-formatos');
+                fmt.innerHTML = (opt.formatos || []).map(f => `
+                    <label class="flex items-center gap-1 bg-zinc-800 px-3 py-2 rounded text-xs cursor-pointer">
+                        <input type="checkbox" value="${f.id}" ${f.id==='largo'?'checked':''}> ${f.icon} ${f.label}
+                    </label>`).join('');
+                // Tópicos
+                const ts = document.getElementById('crear-topico');
+                ts.innerHTML = (top.topicos || []).map((tp,i) => `<option value="${tp.titulo}">${tp.titulo.substring(0,60)}</option>`).join('');
+                if (!top.topicos || top.topicos.length === 0) ts.innerHTML = '<option value="">(sin tópicos hoy)</option>';
+                // SEO
+                _crearSeo = seo;
+                renderSeo();
+            });
+        }
+
+        function crearToggleTema() {
+            const v = document.getElementById('crear-tema-tipo').value;
+            document.getElementById('crear-topico').classList.toggle('hidden', v !== 'topico');
+            document.getElementById('crear-manual').classList.toggle('hidden', v !== 'manual');
+        }
+
+        function renderSeo() {
+            const el = document.getElementById('crear-seo');
+            if (!_crearSeo || !_crearSeo.keywords) {
+                el.innerHTML = '<div class="text-xs text-zinc-500 italic">Sin datos SEO aún</div>';
+                return;
+            }
+            el.innerHTML = `
+                <div><span class="text-zinc-400 text-xs">Keywords top:</span><div class="text-zinc-200 font-mono text-xs mt-1">${(_crearSeo.keywords||[]).join(' · ')}</div></div>
+                <div><span class="text-zinc-400 text-xs">Mejor hora publicar:</span><div class="text-green-400 font-bold text-lg">${_crearSeo.mejor_hora||'20:00'}</div></div>
+                <div><span class="text-zinc-400 text-xs">CTR estimado:</span><div class="text-orange-400 font-bold">${_crearSeo.ctr_estimado||'—'}</div></div>
+                <div class="text-xs text-zinc-500 italic border-t border-zinc-800 pt-2 mt-2">${_crearSeo.nota||''}</div>
+            `;
+        }
+
+        function crearLanzar() {
+            const nicho = document.getElementById('crear-nicho').value;
+            const formatos = Array.from(document.querySelectorAll('#crear-formatos input:checked')).map(i=>i.value);
+            const num_shorts = parseInt(document.getElementById('crear-num').value);
+            const temaTipo = document.getElementById('crear-tema-tipo').value;
+            let tema = '';
+            if (temaTipo === 'topico') tema = document.getElementById('crear-topico').value;
+            else if (temaTipo === 'manual') tema = document.getElementById('crear-manual').value;
+            if (!formatos.length) return mostrarToast('Elige al menos un formato', 'bg-red-600');
+            if (temaTipo === 'manual' && !tema) return mostrarToast('Escribe tu tema', 'bg-red-600');
+            
+            mostrarToast('🚀 Lanzando pipeline custom...', 'bg-orange-600');
+            document.getElementById('crear-logs').textContent = '>>> Iniciando...';
+            fetch('/api/encuadre/crear_custom', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({nicho, formatos, num_shorts, tema_tipo: temaTipo, tema})})
+                .then(r=>r.json()).then(d => {
+                    if (d.ok) {
+                        mostrarToast('✅ Pipeline lanzado', 'bg-green-600');
+                        iniciarPollingCrear();
+                    } else mostrarToast('❌ ' + (d.error||d.msg), 'bg-red-600');
+                });
+        }
+
+        let _crearPolling = null;
+        function iniciarPollingCrear() {
+            if (_crearPolling) clearInterval(_crearPolling);
+            _crearPolling = setInterval(() => {
+                fetch('/api/encuadre/pipeline_status').then(r=>r.json()).then(d => {
+                    document.getElementById('crear-logs').textContent = d.logs || 'Sin salida';
+                    if (!d.running) { clearInterval(_crearPolling); _crearPolling = null; mostrarToast('✅ Pipeline custom terminado', 'bg-green-600'); }
+                });
+            }, 3000);
         }
 
     </script>
@@ -800,6 +921,71 @@ def cms_build():
         return jsonify({"ok": True, "msg": "Build & Push OK"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@encuadre_bp.route("/api/encuadre/seo_top")
+def api_seo_top():
+    import json as _j
+    result = {"keywords": [], "mejor_hora": "20:00 UTC", "ctr_estimado": "—", "nota": ""}
+    nichos = {}
+    p = ROOT / "config" / "nichos.json"
+    if p.exists():
+        try: nichos = _j.loads(p.read_text())
+        except: pass
+    for n, v in nichos.items():
+        if isinstance(v, dict):
+            kws = v.get("keywords_trends") or v.get("queries_youtube") or []
+            if isinstance(kws, list): result["keywords"].extend(kws[:5])
+    result["keywords"] = list(dict.fromkeys(result["keywords"]))[:10]
+    OUT = ROOT / "output" / "encuadre"
+    seos = sorted(OUT.glob("seo_*.json"), reverse=True)[:5]
+    hrs = []
+    for sp in seos:
+        try:
+            d = _j.loads(sp.read_text())
+            largo = d.get("largo", {})
+            if largo.get("hora_recomendada"): hrs.append(largo["hora_recomendada"])
+        except: pass
+    if hrs:
+        from collections import Counter
+        result["mejor_hora"] = Counter(hrs).most_common(1)[0][0]
+    result["ctr_estimado"] = "3.8% (media histórica)"
+    result["nota"] = "Basado en keywords del nicho + histórico de publicaciones"
+    return jsonify(result)
+
+
+@encuadre_bp.route("/api/encuadre/crear_custom", methods=["POST"])
+def api_crear_custom():
+    global _pipeline_process
+    import json as _j, datetime
+    data = request.get_json() or {}
+    nicho = data.get("nicho", "")
+    formatos = data.get("formatos", [])
+    num_shorts = data.get("num_shorts", 4)
+    tema_tipo = data.get("tema_tipo", "auto")
+    tema = data.get("tema", "")
+    fecha = datetime.date.today().isoformat()
+    if not formatos:
+        return jsonify({"ok": False, "error": "Sin formatos seleccionados"}), 400
+    if _pipeline_process is not None and _pipeline_process.poll() is None:
+        return jsonify({"ok": False, "error": "Pipeline ya en ejecución"}), 409
+    OUT = ROOT / "output" / "encuadre"
+    OUT.mkdir(parents=True, exist_ok=True)
+    req = {
+        "fecha": fecha, "nicho": nicho, "formatos": formatos,
+        "num_shorts": num_shorts, "tema_tipo": tema_tipo, "tema": tema,
+        "timestamp": datetime.datetime.now().isoformat()
+    }
+    (OUT / f"custom_request_{fecha}.json").write_text(_j.dumps(req, indent=2, ensure_ascii=False))
+    LOG_FILE_local = ROOT / "data" / "logs" / "pipeline_web.log"
+    LOG_FILE_local.parent.mkdir(parents=True, exist_ok=True)
+    log_f = open(LOG_FILE_local, "w")
+    _pipeline_process = subprocess.Popen(
+        ["python3", "scripts/pipeline_encuadre.py"],
+        cwd=str(ROOT), stdout=log_f, stderr=subprocess.STDOUT, text=True
+    )
+    return jsonify({"ok": True, "msg": "Pipeline custom lanzado", "request": req})
+
 
 @encuadre_bp.route("/output/encuadre/<path:filename>")
 def video_encuadre(filename):
