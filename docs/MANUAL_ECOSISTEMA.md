@@ -1,9 +1,9 @@
 # MANUAL ECOSISTEMA LOFIPRODUCER
-> Auto-generado: 2026-11-09 04:17. NO editar a mano.
+> Auto-generado: 2026-11-09 04:24. NO editar a mano.
 > Regenerar: `python3 scripts/gen_manual.py` o pedir a Dios: `# auto_regenerar_manual`
 
 ## 1. ARQUITECTURA (6 capas)
-- **Cerebro**: scripts/dios.py (53 tools, ReAct, SQLite memoria)
+- **Cerebro**: scripts/dios.py (54 tools, ReAct, SQLite memoria)
 - **Detective**: brain/investigador_redes.py (YouTube x2 + Trends + Reddit + HN)
 - **Web**: web_dashboard.py :8001 + encuadre_routes.py (Factory OS)
 - **Cola**: data/agent/cola_publicacion.db (SQLite FIFO + publish_at)
@@ -95,7 +95,7 @@
 - `memoria_db.py`: Cajon 111.A - Memoria persistente del Dios en SQLite.
 - `pruner.py`: Compresor de prompts sin dependencias externas (reemplaza tokenpruner).
 
-## 6. TOOLS (53)
+## 6. TOOLS (54)
 **FS** (5): `ejecutar_comando`, `read_file`, `write_file`, `validate_file`, `promote_file`
 **Web** (4): `buscar_en_web`, `buscar_youtube`, `leer_rss`, `buscar_repositorio`
 **Video** (8): `generar_video`, `generar_video_rapido`, `producir_video`, `producir_video_completo`, `ensamblar_video_largo`, `ensamblar_video_final`, `analizar_video_competencia`, `subir_youtube`
@@ -107,6 +107,7 @@
 **Memoria** (8): `recordar_hecho`, `consultar_hechos`, `documentar_aprendizaje`, `leer_documentacion`, `ver_mi_workspace`, `ver_ultimas_tareas`, `ver_fallos_similares`, `ver_costes_hoy`
 **Auto/Manual** (6): `consultar_manual_ecosistema`, `buscar_en_manual`, `listar_mis_tools`, `auto_regenerar_manual`, `crear_nueva_tool`, `escanear_ecosistema`
 **Delegación** (3): `delegar_tareas_paralelas`, `pedir_a_especialista`, `consultar_manual_python`
+**Otros** (1): `ver_contrato`
 
 ## 7. ENDPOINTS Factory (31)
 - `encuadre`: /api/encuadre/buscar, /api/encuadre/buscar/reindex, /api/encuadre/rollback/list, /api/encuadre/rollback/create, /api/encuadre/rollback/to, /api/encuadre/kill_pipeline, /api/encuadre/logs/list, /api/encuadre/logs/tail...
@@ -182,8 +183,25 @@ Ejecutada al inicio del pipeline + cron domingos 05:00:
 
 ## 17. INVENTARIO (auto)
 - 221 scripts · 26 brain · 40 contratos
-- 31 endpoints · 9 crons · 53 tools
-- Generado: 2026-11-09T04:17:40
+- 31 endpoints · 9 crons · 54 tools
+- Generado: 2026-11-09T04:24:36
+
+## 17b. RECIPES (tareas comunes, pasos exactos)
+- **Añadir nicho**: editar config/nichos.json + crear output/nichos/<id>/canal.json + verificar con list_canales
+- **Crear video completo**: producir_video_completo(nicho, tema) hace todo: guion+seo+voz+musica+video+YT
+- **Solo un short**: generar_video(nicho, vertical=True) → ensamblar_video_final → subir_youtube(short)
+- **Solo audio/musica**: generar_cancion_kaggle(prompt, preset) o generar_narracion(texto)
+- **Solo imagen**: generar_imagen(prompt, preset, aspect)
+- **Publicar blog**: publicar_blog_completo(tema) o crear_blog_top(tema) para quality gate >=8
+- **Regenerar SEO dia**: ejecutar_comando('python3 scripts/generar_titulo_seo.py FECHA')
+- **Subir pendientes YT**: procesar_cola_youtube() o ejecutar_comando('python3 scripts/cola_youtube_auto.py')
+- **Buscar en historico**: buscar_en_web(query) NO. Usa ejecutar_comando('python3 scripts/indexar_busqueda.py') + consultar_manual_ecosistema
+- **Rollback codigo**: ejecutar_comando('python3 scripts/rollback.py listar') → rollback <tag>
+- **Ver logs pipeline**: ejecutar_comando('tail -50 data/logs/pipeline.log')
+- **Ver estado sistema**: estado_sistema() o sanar_sistema() si hay fallos
+- **Limpiar disco**: ejecutar_limpieza(dry_run=True) primero, luego sin dry_run
+- **Cambiar home/blog**: CMS del dashboard o write_file a web/docs/index.md + promote_file
+- **Regenerar manual**: auto_regenerar_manual()
 
 ## 18. REGLAS CON USUARIO
 Pushback si dudas · leer antes de modificar · backup zona sagrada · NUNCA borrar sin OK · 3+ parches → reescribir · env vars para tokens · `python3 -u` en Termux

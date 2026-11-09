@@ -230,6 +230,29 @@ md.append(f"- {len(scripts)} scripts · {len(brain)} brain · {len(contratos)} c
 md.append(f"- {sum(len(v) for v in endpoints.values())} endpoints · {len(crons)} crons · {len(TODAS_TOOLS)} tools")
 md.append(f"- Generado: {datetime.datetime.now().isoformat()[:19]}\n")
 
+# 17b. RECIPES (tareas típicas)
+md.append("## 17b. RECIPES (tareas comunes, pasos exactos)")
+RECIPES = [
+    ("Añadir nicho", "editar config/nichos.json + crear output/nichos/<id>/canal.json + verificar con list_canales"),
+    ("Crear video completo", "producir_video_completo(nicho, tema) hace todo: guion+seo+voz+musica+video+YT"),
+    ("Solo un short", "generar_video(nicho, vertical=True) → ensamblar_video_final → subir_youtube(short)"),
+    ("Solo audio/musica", "generar_cancion_kaggle(prompt, preset) o generar_narracion(texto)"),
+    ("Solo imagen", "generar_imagen(prompt, preset, aspect)"),
+    ("Publicar blog", "publicar_blog_completo(tema) o crear_blog_top(tema) para quality gate >=8"),
+    ("Regenerar SEO dia", "ejecutar_comando('python3 scripts/generar_titulo_seo.py FECHA')"),
+    ("Subir pendientes YT", "procesar_cola_youtube() o ejecutar_comando('python3 scripts/cola_youtube_auto.py')"),
+    ("Buscar en historico", "buscar_en_web(query) NO. Usa ejecutar_comando('python3 scripts/indexar_busqueda.py') + consultar_manual_ecosistema"),
+    ("Rollback codigo", "ejecutar_comando('python3 scripts/rollback.py listar') → rollback <tag>"),
+    ("Ver logs pipeline", "ejecutar_comando('tail -50 data/logs/pipeline.log')"),
+    ("Ver estado sistema", "estado_sistema() o sanar_sistema() si hay fallos"),
+    ("Limpiar disco", "ejecutar_limpieza(dry_run=True) primero, luego sin dry_run"),
+    ("Cambiar home/blog", "CMS del dashboard o write_file a web/docs/index.md + promote_file"),
+    ("Regenerar manual", "auto_regenerar_manual()"),
+]
+for nombre, pasos in RECIPES:
+    md.append(f"- **{nombre}**: {pasos}")
+md.append("")
+
 # 18. REGLAS CON USUARIO
 md.append("## 18. REGLAS CON USUARIO")
 md.append("Pushback si dudas · leer antes de modificar · backup zona sagrada · NUNCA borrar sin OK · 3+ parches → reescribir · env vars para tokens · `python3 -u` en Termux\n")

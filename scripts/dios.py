@@ -557,6 +557,8 @@ TOOLS = [
     {"type": "function", "function": {"name": "auto_regenerar_manual", "description": "Regenera docs/MANUAL_ECOSISTEMA.md desde el estado actual de TOOLS. Usalo tras crear tools nuevas.", "parameters": {"type": "object", "properties": {}, "required": []}}},
     {"type": "function", "function": {"name": "crear_nueva_tool", "description": "Crea una tool nueva persistente. Recibe nombre (snake_case), descripcion, codigo_funcion (def _tool_NOMBRE(args): ...) y parametros_json (dict de propiedades). Valida, persiste, regenera manual. Disponible proximo arranque.", "parameters": {"type": "object", "properties": {"nombre": {"type": "string"}, "descripcion": {"type": "string"}, "codigo_funcion": {"type": "string"}, "parametros_json": {"type": "object"}}, "required": ["nombre", "descripcion", "codigo_funcion"]}}},
     {"type": "function", "function": {"name": "ejecutar_limpieza", "description": "Ejecuta scripts/limpieza_pipeline.py (reset diario: borra <ayer + temporales). Con dry_run=True solo simula sin borrar.", "parameters": {"type": "object", "properties": {"dry_run": {"type": "boolean"}}, "required": []}}},
+    {"type": "function", "function": {"name": "escanear_ecosistema", "description": "Escanea TODO el ecosistema (scripts/, brain/, endpoints Flask, contratos JSON, crons, pipelines) y devuelve inventario. Usalo cuando el usuario pregunte que existe o que ha cambiado.", "parameters": {"type": "object", "properties": {"seccion": {"type": "string", "description": "scripts|brain|endpoints|contratos|crons|todo"}}, "required": []}}},
+    {"type": "function", "function": {"name": "ver_contrato", "description": "Lee un contrato de data/agent/*.json. Devuelve JSON completo truncado a 3000 chars. Usalo cuando necesites reglas exactas (ej: video_contract, shorts_contract, ltx_continuidad_contract).", "parameters": {"type": "object", "properties": {"nombre": {"type": "string", "description": "nombre del contrato sin .json (ej: video_contract, shorts_contract)"}}, "required": ["nombre"]}}},
 ]
 
 
@@ -1575,7 +1577,72 @@ def _tool_ejecutar_limpieza(args):
         return f"ERROR: {e}"
 
 
+
+def _tool_escanear_ecosistema(args):
+    import subprocess as _sp, json as _j
+    seccion = (args.get("seccion") or "todo").lower()
+    out = []
+    if seccion in ("scripts", "todo"):
+        r = _sp.run(["ls", "-1", "scripts/"], cwd=str(ROOT), capture_output=True, text=True, timeout=10)
+        scripts = [x for x in r.stdout.splitlines() if x.endswith(".py")]
+        out.append(f"=== scripts/ ({len(scripts)} .py) ===")
+        out.append(", ".join(scripts[:60]))
+    if seccion in ("brain", "todo"):
+        r = _sp.run(["ls", "-1", "brain/"], cwd=str(ROOT), capture_output=True, text=True, timeout=10)
+        brain = [x for x in r.stdout.splitlines() if x.endswith(".py")]
+        out.append(f"\n=== brain/ ({len(brain)} .py) ===")
+        out.append(", ".join(brain))
+    if seccion in ("endpoints", "todo"):
+        try:
+            ep = (ROOT / "encuadre_routes.py").read_text()
+            import re as _re
+            eps = _re.findall(r'@encuadre_bp\.route\(["\']([^"\']+)', ep)
+            out.append(f"\n=== Endpoints Factory ({len(eps)}) ===")
+            out.append(", ".join(eps[:40]))
+        except: pass
+    if seccion in ("contratos", "todo"):
+        r = _sp.run(["ls", "-1", "data/agent/*.json"], cwd=str(ROOT), capture_output=True, text=True, timeout=10)
+        contratos = [x.split("/")[-1] for x in r.stdout.splitlines() if "contract" in x]
+        out.append(f"\n=== Contratos ({len(contratos)}) ===")
+        out.append(", ".join(contratos))
+    if seccion in ("crons", "todo"):
+        r = _sp.run(["crontab", "-l"], capture_output=True, text=True, timeout=10)
+        lines_c = [l for l in r.stdout.splitlines() if l.strip() and not l.startswith("#")]
+        out.append(f"\n=== Crons activos ({len(lines_c)}) ===")
+        out.extend(lines_c[:15])
+    return "\n".join(out)[:6000]
+
+
+
+def _tool_ver_contrato(args):
+    nombre = (args.get("nombre") or "").strip().replace(".json", "")
+    if not nombre: return "ERROR: falta nombre"
+    # Sanitizar
+    if "/" in nombre or ".." in nombre:
+        return "ERROR: nombre invalido"
+    p = ROOT / "data" / "agent" / f"{nombre}.json"
+    if not p.exists():
+        # Buscar fuzzy
+        matches = list((ROOT / "data" / "agent").glob(f"*{nombre}*.json"))
+        if matches:
+            return f"No existe {nombre}.json. Similares: " + ", ".join(m.name.replace(".json","") for m in matches[:5])
+        return f"ERROR: {nombre}.json no existe"
+    try:
+        import json as _j
+        d = _j.loads(p.read_text())
+        txt = _j.dumps(d, indent=1, ensure_ascii=False)
+        # Truncar inteligente: si >3000, mostrar keys principales
+        if len(txt) > 3000:
+            keys = list(d.keys()) if isinstance(d, dict) else []
+            return f"Contrato {nombre} ({len(txt)} chars). Keys: {keys}. Primeras 3000 chars:\n{txt[:3000]}...\n[Truncado. Usa seccion especifica si necesitas mas.]"
+        return txt
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
 TOOL_FNS = {
+    "ver_contrato": _tool_ver_contrato,
+    "escanear_ecosistema": _tool_escanear_ecosistema,
     "ejecutar_limpieza": _tool_ejecutar_limpieza,
     "auto_regenerar_manual": _tool_auto_regenerar_manual,
     "crear_nueva_tool": _tool_crear_nueva_tool,
