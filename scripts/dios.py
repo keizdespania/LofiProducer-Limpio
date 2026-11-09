@@ -598,6 +598,7 @@ TOOLS = [
     {"type": "function", "function": {"name": "publicar_comentario_youtube", "description": "Publica y fija un comentario SEO completo en un video YouTube: pregunta abierta + CTA + link cruzado al post del blog + hashtags. Usa la YouTube Data API. Necesita scope de escritura.", "parameters": {"type": "object", "properties": {"video_id": {"type": "string"}, "fecha": {"type": "string", "description": "Fecha produccion (YYYY-MM-DD o hoy)"}, "texto_extra": {"type": "string", "description": "Texto adicional al inicio (opcional)"}}, "required": ["video_id"]}}},
     {"type": "function", "function": {"name": "analizar_short_viral", "description": "Analiza metricas de un short YouTube (vistas, likes, comentarios, ratio) y compara con la media de tus ultimos 10 shorts. Devuelve diagnostico + propuesta: si va bien -> como exprimir el tiron (secuela, boost, cross-post). Si va mal -> que cambiar (titulo, hook, thumbnail).", "parameters": {"type": "object", "properties": {"video_id": {"type": "string"}, "fecha": {"type": "string"}}, "required": ["video_id"]}}},
     {"type": "function", "function": {"name": "generar_thumbnail_video", "description": "Genera miniatura para video YouTube. Intenta primero NANO BANANA (si hay token/servicio). Fallback: imagen impactante SDXL con estilo cinematic que retenga clicks. Luego la sube a YouTube via API thumbnails.set.", "parameters": {"type": "object", "properties": {"video_id": {"type": "string"}, "fecha": {"type": "string", "description": "Fecha produccion (YYYY-MM-DD o hoy)"}, "titular": {"type": "string", "description": "Titular del dia (opcional, si no lo detecta)"}}, "required": ["video_id"]}}},
+    {"type": "function", "function": {"name": "generar_thumbnails_lote", "description": "Genera miniaturas para todos los videos y shorts de una fecha (o historico completo si fecha=all). Intenta nano-banana primero, fallback SDXL cinematic. Sube a YouTube si canal verificado. Devuelve resumen por video.", "parameters": {"type": "object", "properties": {"fecha": {"type": "string", "description": "YYYY-MM-DD o all (historico completo)"}}, "required": ["fecha"]}}},
 ]
 
 
@@ -2672,7 +2673,139 @@ def _tool_generar_thumbnail_video(args):
     return f"OK thumbnail ({metodo}) → {thumb_path.relative_to(ROOT)}\n{subida}\nTamaño: {thumb_path.stat().st_size//1024}KB"
 
 
+
+def _tool_generar_thumbnails_lote(args):
+    """Genera miniaturas para largo+shorts de una fecha, o histórico completo."""
+    import requests, datetime, json as _j, pathlib, sys as _sys, shutil
+    fecha_arg = (args.get("fecha") or "hoy").strip()
+    
+    # Lista de fechas objetivo
+    yt_dir = ROOT / "data" / "agent"
+    if fecha_arg == "all":
+        fechas = sorted([p.stem.replace("youtube_urls_", "") for p in yt_dir.glob("youtube_urls_*.json")])
+    elif fecha_arg == "hoy":
+        fechas = [datetime.date.today().isoformat()]
+    else:
+        fechas = [fecha_arg]
+    
+    if not fechas:
+        return "ERROR: sin fechas con youtube_urls"
+    
+    # Token
+    try:
+        _sys.path.insert(0, str(ROOT / "scripts"))
+        from subir_youtube import token
+        access = token("data/youtube_encuadre_token.json")
+    except Exception as e:
+        return f"ERROR token: {e}"
+    
+    # Nano banana config
+    nano_url, nano_key = "", ""
+    for line in (ROOT / ".env").read_text().splitlines():
+        if line.startswith("NANO_BANANA_URL="): nano_url = line.split("=",1)[1].strip().strip('"').strip("'")
+        if line.startswith("NANO_BANANA_KEY="): nano_key = line.split("=",1)[1].strip().strip('"').strip("'")
+    
+    resultados = []
+    total_ok, total_fail = 0, 0
+    
+    for fecha in fechas:
+        yt_path = yt_dir / f"youtube_urls_{fecha}.json"
+        if not yt_path.exists(): continue
+        try:
+            d = _j.loads(yt_path.read_text())
+        except: continue
+        
+        # Cargar SEO para mejores prompts
+        seo_path = ROOT / "output" / "encuadre" / f"seo_{fecha}.json"
+        prod_path = ROOT / "output" / "encuadre" / f"produccion_{fecha}.json"
+        seo = _j.loads(seo_path.read_text()) if seo_path.exists() else {}
+        prod = _j.loads(prod_path.read_text()) if prod_path.exists() else {}
+        
+        # Lista de vídeos: largo + shorts
+        videos = []
+        largo = d.get("largo") or {}
+        if largo.get("video_id"):
+            videos.append({
+                "tipo": "largo",
+                "video_id": largo["video_id"],
+                "titulo": largo.get("titulo") or (seo.get("largo") or {}).get("titulo", "") or (prod.get("dossier") or {}).get("titular_brutal", ""),
+            })
+        for s in (d.get("shorts") or []):
+            if s.get("video_id"):
+                videos.append({
+                    "tipo": "short",
+                    "video_id": s["video_id"],
+                    "titulo": s.get("titulo", ""),
+                })
+        
+        for v in videos:
+            vid = v["video_id"]
+            titulo = v["titulo"][:120]
+            tipo = v["tipo"]
+            thumb_path = ROOT / "output" / "encuadre" / f"thumb_{fecha}_{tipo}_{vid}.png"
+            thumb_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            # Saltar si ya existe (idempotente)
+            if thumb_path.exists() and thumb_path.stat().st_size > 10000:
+                resultados.append(f"  ⏭️ {fecha}/{tipo}/{vid[:8]}: ya existe")
+                continue
+            
+            metodo = "?"
+            # Nano banana
+            if nano_url:
+                try:
+                    r = requests.post(nano_url,
+                        headers={"Authorization": f"Bearer {nano_key}"} if nano_key else {},
+                        json={"prompt": f"Thumbnail YouTube impactante sobre: {titulo}. Estilo cinematic oscuro, alto contraste, sin texto legible.", "width": 1280, "height": 720},
+                        timeout=60)
+                    if r.status_code == 200 and len(r.content) > 10000:
+                        thumb_path.write_bytes(r.content)
+                        metodo = "nano"
+                except: pass
+            
+            # Fallback SDXL
+            if metodo == "?":
+                try:
+                    _sys.path.insert(0, str(ROOT / "scripts"))
+                    from generar_imagen import generar
+                    prompt = f"Cinematic dramatic scene representing: {titulo[:100]}. Dark moody lighting, high contrast, no text, editorial photography style, 16:9"
+                    r = generar(prompt, preset="cinematic", aspect="16:9", canal="encuadre")
+                    if r.startswith("OK: "):
+                        src = pathlib.Path(r.split("OK: ")[1].split(" ")[0])
+                        if src.exists() and src.stat().st_size > 10000:
+                            shutil.copy2(src, thumb_path)
+                            metodo = "sdxl"
+                except: pass
+            
+            if not thumb_path.exists() or thumb_path.stat().st_size < 10000:
+                resultados.append(f"  ❌ {fecha}/{tipo}/{vid[:8]}: sin imagen")
+                total_fail += 1
+                continue
+            
+            # Upload a YouTube
+            upload_ok = False
+            try:
+                with open(thumb_path, "rb") as f:
+                    r = requests.post(
+                        f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={vid}",
+                        headers={"Authorization": f"Bearer {access}", "Content-Type": "image/png"},
+                        data=f.read(), timeout=60)
+                upload_ok = r.status_code in (200, 204)
+                upload_info = "✅ YT" if upload_ok else f"⚠️ HTTP {r.status_code}"
+            except Exception as e:
+                upload_info = f"⚠️ {str(e)[:50]}"
+            
+            resultados.append(f"  ✅ {fecha}/{tipo}/{vid[:8]}: {metodo} {upload_info}")
+            total_ok += 1
+    
+    resumen = f"OK miniaturas generadas: {total_ok} exitosas, {total_fail} fallidas\n\n" + "\n".join(resultados[:50])
+    if len(resultados) > 50:
+        resumen += f"\n\n... y {len(resultados)-50} más"
+    return resumen
+
+
 TOOL_FNS = {
+    "generar_thumbnails_lote": _tool_generar_thumbnails_lote,
     "generar_thumbnail_video": _tool_generar_thumbnail_video,
     "analizar_short_viral": _tool_analizar_short_viral,
     "publicar_comentario_youtube": _tool_publicar_comentario_youtube,
