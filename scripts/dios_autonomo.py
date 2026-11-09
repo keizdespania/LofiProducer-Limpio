@@ -427,7 +427,7 @@ def r27_mejor_dia_semana():
 
 def r28_evento_calendario():
     """Eventos próximos (elecciones, finales)."""
-    # Placeholder: mantener lista editable
+    out = []
     eventos = []  # Añadir manualmente: [("2026-11-20", "Elecciones")]
     hoy = datetime.date.today()
     for fecha_str, nombre in eventos:
