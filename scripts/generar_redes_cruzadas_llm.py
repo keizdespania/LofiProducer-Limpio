@@ -3,7 +3,35 @@
 import json, pathlib, sys, re, datetime
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
+sys.path.insert(0, str(pathlib.Path(__file__).parent.parent / "brain"))
+from redes_footer import footer as _footer
 BASE_URL = "https://elencuadre.pages.dev"
+
+# ═══ Links cruzados a todas las redes del canal ═══
+REDES_CANAL = {
+    "youtube": "youtube.com/@somoselencuadre.oficial",
+    "tiktok": "tiktok.com/@somoselencuadre",
+    "instagram": "instagram.com/somoselencuadre",
+    "x": "x.com/SomosElEncuadre",
+    "threads": "threads.net/@somoselencuadre",
+    "telegram": "t.me/somoselencuadre",
+    "web": "elencuadre.pages.dev",
+}
+
+# Footer adaptado por red destino (para no petar límites)
+FOOTER_POR_RED = {
+    "x": "\n\n📺 {youtube}\n📄 {web}",
+    "threads": "\n\n📺 {youtube}\n📸 {instagram}\n📩 {telegram}\n📄 {web}",
+    "instagram": "\n\n📺 {youtube}\n🎵 {tiktok}\n📩 {telegram}\n🔗 Link en bio",
+    "tiktok": "\n\n📩 Dossier diario: {telegram}\n📄 Análisis: {web}",
+    "youtube_comunidad": "\n\n📱 {tiktok}\n📸 {instagram}\n🐦 {x}\n📩 {telegram}",
+    "linkedin": "\n\n📺 {youtube}\n📄 {web}\n📩 {telegram}",
+}
+
+def _footer(red):
+    """Genera footer con links cruzados a las OTRAS redes."""
+    tmpl = FOOTER_POR_RED.get(red, "\n\n📄 {web}")
+    return tmpl.format(**REDES_CANAL)
 
 def _groq(prompt, max_tokens=600):
     import requests
@@ -91,8 +119,13 @@ def _extraer_frase(md, instruccion, max_tokens=300):
 
 Devuelve SOLO el texto de la frase elegida (sin comillas, sin introducción):"""
     txt = _groq(prompt, max_tokens)
-    if txt and len(txt.strip()) > 30:
-        return txt.strip()
+    if txt and len(txt.strip()) > 30 and not any(r in txt.lower() for r in ["sorry", "lo siento", "cannot", "no puedo", "no dispongo"]):
+        low = txt.lower().strip()
+        # Detectar rechazos del LLM
+        rechazos = ["i'm sorry", "i am sorry", "no puedo ayudar", "cannot help",
+                    "no dispongo", "lo siento", "i can't help", "unable to"]
+        if not any(r in low for r in rechazos):
+            return txt.strip()
     return candidatas[0]
 
 def _extraer_todos(d, titular):
@@ -175,10 +208,10 @@ def _build(fecha):
         "video_id": (yt.get("largo") or {}).get("video_id"),
         "link_yt": yt_largo, "link_post": post_largo, "link_dossier": post_dossier,
         "redes": {
-            "x": {"texto": frags["HOOK_X"] + f"\n\n📄 {post_largo}"},
-            "threads": {"texto": frags["ANALISIS_THREADS"] + f"\n\n📄 {post_largo}"},
-            "instagram": {"texto": frags["CIERRE_IG"] + "\n\n🔗 Link en bio"},
-            "youtube_comunidad": {"texto": frags["HOOK_X"] + f"\n\n▶️ {yt_largo}"},
+            "x": {"texto": frags["HOOK_X"] + _footer("x")},
+            "threads": {"texto": frags["ANALISIS_THREADS"] + _footer("threads")},
+            "instagram": {"texto": frags["CIERRE_IG"] + _footer("instagram")},
+            "youtube_comunidad": {"texto": frags["HOOK_X"] + _footer("youtube_comunidad")},
         }
     }
 
@@ -195,13 +228,13 @@ def _build(fecha):
             "num": i+1, "tipo": tipo, "hook": s.get("hook", ""),
             "link_yt": yt_s, "link_largo": yt_largo, "link_post": post_largo,
             "redes": {
-                "tiktok": {"texto": frag, "hashtags": f"#ElEncuadre #{tipo}"},
+                "tiktok": {"texto": frag + _footer("tiktok"), "hashtags": f"#ElEncuadre #{tipo}"},
                 "youtube": {"titulo": seo_s.get("titulo", f"Short {i+1}")[:100],
-                            "descripcion": seo_s.get("descripcion", "")[:400],
+                            "descripcion": seo_s.get("descripcion", "")[:400] + _footer("youtube_comunidad"),
                             "tags": seo_s.get("tags", [])[:10]},
-                "x": {"texto": frag + (f"\n\n📺 {yt_s}" if yt_s else "")},
-                "threads": {"texto": frag + f"\n\n📄 {post_largo}"},
-                "instagram": {"texto": frag + "\n\nAnálisis completo en bio"},
+                "x": {"texto": frag + _footer("x")},
+                "threads": {"texto": frag + _footer("threads")},
+                "instagram": {"texto": frag + _footer("instagram")},
             }
         })
 
