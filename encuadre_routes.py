@@ -266,7 +266,10 @@ HTML_FACTORY = """<!DOCTYPE html>
 
     <script>
         let fechaActual = "";
-        let datosGlobales = null;
+
+function $safe(id, prop, val) { var el = document.getElementById(id); if (el) { try { el[prop] = val; } catch(e){} } }
+function $safeStyle(id, prop, val) { var el = document.getElementById(id); if (el) { try { el.style[prop] = val; } catch(e){} } }
+function $safeClass(id, action, cls) { var el = document.getElementById(id); if (el) { try { el.classList[action](cls); } catch(e){} } }        let datosGlobales = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             fetch('/api/encuadre/fechas').then(r => r.json()).then(data => {
@@ -284,7 +287,7 @@ HTML_FACTORY = """<!DOCTYPE html>
             fechaActual = fecha;
             fetch(`/api/encuadre/datos/${fecha}`).then(r => r.json()).then(data => {
                 datosGlobales = data;
-                document.getElementById('imdScore').innerText = data.dossier?.indice_manipulacion_global || "--";
+                $safe('imdScore', 'innerText', data.dossier?.indice_manipulacion_global || "--");
                 document.getElementById('dossierResumen').innerHTML = `
                     <p><strong class="text-red-400">Tema:</strong> ${data.dossier?.tema_del_dia || 'N/A'}</p>
                     <p><strong class="text-red-400">Cita Bomba:</strong> <em>"${data.dossier?.cita_bomba || 'N/A'}"</em></p>
@@ -294,24 +297,24 @@ HTML_FACTORY = """<!DOCTYPE html>
                 const s1 = (data.shorts_finales && data.shorts_finales[0]) || {};
                 
                 // YouTube
-                document.getElementById('yt-titulo').value = s1.youtube?.titulo || "Sin título";
-                document.getElementById('yt-desc').value = s1.youtube?.descripcion || "Sin descripción";
-                document.getElementById('yt-comment').value = s1.youtube?.primer_comentario || "Sin comentario";
+                $safe('yt-titulo', 'value', s1.youtube?.titulo || "Sin título");
+                $safe('yt-desc', 'value', s1.youtube?.descripcion || "Sin descripción");
+                $safe('yt-comment', 'value', s1.youtube?.primer_comentario || "Sin comentario");
                 
                 // TikTok
-                document.getElementById('tt-texto').value = s1.tiktok?.texto || "Sin texto";
-                document.getElementById('tt-tags').value = s1.tiktok?.hashtags || "Sin hashtags";
+                $safe('tt-texto', 'value', s1.tiktok?.texto || "Sin texto");
+                $safe('tt-tags', 'value', s1.tiktok?.hashtags || "Sin hashtags");
                 
                 // Instagram
-                document.getElementById('ig-texto').value = s1.instagram?.texto || "Sin texto";
-                document.getElementById('ig-tags').value = s1.instagram?.hashtags || "Sin hashtags";
-                document.getElementById('ig-comment').value = s1.instagram?.primer_comentario || "Sin comentario";
+                $safe('ig-texto', 'value', s1.instagram?.texto || "Sin texto");
+                $safe('ig-tags', 'value', s1.instagram?.hashtags || "Sin hashtags");
+                $safe('ig-comment', 'value', s1.instagram?.primer_comentario || "Sin comentario");
 
                 // X
-                document.getElementById('x-texto').value = s1.x?.texto || "Sin tuit";
+                $safe('x-texto', 'value', s1.x?.texto || "Sin tuit");
 
                 // Threads
-                document.getElementById('th-texto').value = s1.threads?.texto || "Sin texto";
+                $safe('th-texto', 'value', s1.threads?.texto || "Sin texto");
 
                 
                 // YouTube Comunidad
@@ -321,10 +324,10 @@ HTML_FACTORY = """<!DOCTYPE html>
                 }
 
                 // Blogger
-                document.getElementById('bl-titulo').value = s1.blogger?.titulo || "Sin título";
-                document.getElementById('bl-resumen').value = s1.blogger?.resumen || "Sin resumen";
+                $safe('bl-titulo', 'value', s1.blogger?.titulo || "Sin título");
+                $safe('bl-resumen', 'value', s1.blogger?.resumen || "Sin resumen");
 
-                cambiarVideo('largo');
+                try { cambiarVideo('largo'); } catch(_e) { console.warn('cambiarVideo:', _e); }
             });
         }
 
@@ -334,18 +337,18 @@ HTML_FACTORY = """<!DOCTYPE html>
                 const tab = document.getElementById('tab-' + t);
                 if (tab) tab.className = t === v ? "tab-active text-sm font-semibold pb-2 px-2 whitespace-nowrap" : "text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap";
             });
-            if (v === 'monetizacion') document.getElementById('view-monetizacion').classList.add('grid');
-            if (v === 'live') { document.getElementById('view-live').classList.add('grid'); liveInit(); }
-            if (v === 'analytics') { document.getElementById('view-analytics').classList.add('grid'); cargarCloudflareStats(); }
-            if (v === 'ab') document.getElementById('view-ab').classList.add('grid');
-            if (v === 'calendario') document.getElementById('view-calendario').classList.add('grid');
-            if (v === 'agentes') document.getElementById('view-agentes').classList.add('grid');
-            if (v === 'distribucion') { document.getElementById('view-distribucion').classList.add('grid'); cargarPublicar(); }
-            if (v === 'crear') { document.getElementById('view-crear').classList.add('grid'); cargarCrear(); }
-            if (v === 'ab') { document.getElementById('view-ab').classList.add('grid'); cargarAB(); }
-            if (v === 'calendario') { document.getElementById('view-calendario').classList.add('grid'); calendarioCargar(); }
-            if (v === 'agentes') { document.getElementById('view-agentes').classList.add('grid'); agentesCargar(); }
-            if (v === 'cms') { document.getElementById('view-cms').classList.add('grid'); cmsCargarArbol(); }
+            if (v === 'monetizacion') $safeClass('view-monetizacion', 'add', 'grid');
+            if (v === 'live') { $safeClass('view-live', 'add', 'grid'); liveInit(); }
+            if (v === 'analytics') { $safeClass('view-analytics', 'add', 'grid'); cargarCloudflareStats(); }
+            if (v === 'ab') $safeClass('view-ab', 'add', 'grid');
+            if (v === 'calendario') $safeClass('view-calendario', 'add', 'grid');
+            if (v === 'agentes') $safeClass('view-agentes', 'add', 'grid');
+            if (v === 'distribucion') { $safeClass('view-distribucion', 'add', 'grid'); cargarPublicar(); }
+            if (v === 'crear') { $safeClass('view-crear', 'add', 'grid'); cargarCrear(); }
+            if (v === 'ab') { $safeClass('view-ab', 'add', 'grid'); cargarAB(); }
+            if (v === 'calendario') { $safeClass('view-calendario', 'add', 'grid'); calendarioCargar(); }
+            if (v === 'agentes') { $safeClass('view-agentes', 'add', 'grid'); agentesCargar(); }
+            if (v === 'cms') { $safeClass('view-cms', 'add', 'grid'); cmsCargarArbol(); }
         }
 
         function cambiarVideo(tipo) {
@@ -446,10 +449,10 @@ HTML_FACTORY = """<!DOCTYPE html>
                 const vt = d.visitas || 0;
                 const tp = (d.top_paginas && d.top_paginas.length) ? d.top_paginas[0] : null;
                 const tc = (d.top_paises && d.top_paises.length) ? d.top_paises[0] : null;
-                document.getElementById('cf-pv').textContent = pv.toLocaleString('es-ES');
-                document.getElementById('cf-vt').textContent = vt.toLocaleString('es-ES');
-                document.getElementById('cf-pais').textContent = tc ? tc[0] : '—';
-                document.getElementById('cf-pag').textContent = tp ? (tp[0].replace(/\\/$/, '').split('/').pop() || '/') : '—';
+                $safe('cf-pv', 'textContent', pv.toLocaleString('es-ES'));
+                $safe('cf-vt', 'textContent', vt.toLocaleString('es-ES'));
+                $safe('cf-pais', 'textContent', tc ? tc[0] : '—');
+                $safe('cf-pag', 'textContent', tp ? (tp[0].replace(/\\/$/, '').split('/').pop() || '/') : '—');
                 const maxP = d.top_paginas && d.top_paginas.length ? d.top_paginas[0][1] : 1;
                 const paginasEl = document.getElementById('cf-top-paginas');
                 if (!d.top_paginas || !d.top_paginas.length) { paginasEl.innerHTML = '<div class="text-xs text-zinc-500 italic">Sin datos aún</div>'; }
@@ -504,7 +507,7 @@ HTML_FACTORY = """<!DOCTYPE html>
                         </div>`;
                     });
                     root.innerHTML = html;
-                }).catch(e => document.getElementById('publicar-content').innerHTML = 'Error: ' + e.message);
+                }).catch(e => $safe('publicar-content', 'innerHTML', 'Error: ' + e.message));
         }
 
         function verGuion(id) {
@@ -540,7 +543,7 @@ HTML_FACTORY = """<!DOCTYPE html>
         let _cmsCurrentPath = "";
         function cmsAbrirArchivo(path) {
             _cmsCurrentPath = path;
-            document.getElementById('cms-filename').textContent = path;
+            $safe('cms-filename', 'textContent', path);
             const ed = document.getElementById('cms-editor');
             ed.disabled = true; ed.value = "Cargando...";
             fetch('/api/cms/read', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({path})})
@@ -631,7 +634,7 @@ HTML_FACTORY = """<!DOCTYPE html>
             if (temaTipo === 'manual' && !tema) return mostrarToast('Escribe tu tema', 'bg-red-600');
             
             mostrarToast('🚀 Lanzando pipeline custom...', 'bg-orange-600');
-            document.getElementById('crear-logs').textContent = '>>> Iniciando...';
+            $safe('crear-logs', 'textContent', '>>> Iniciando...');
             fetch('/api/encuadre/crear_custom', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({nicho, formatos, num_shorts, tema_tipo: temaTipo, tema})})
                 .then(r=>r.json()).then(d => {
                     if (d.ok) {
@@ -646,7 +649,7 @@ HTML_FACTORY = """<!DOCTYPE html>
             if (_crearPolling) clearInterval(_crearPolling);
             _crearPolling = setInterval(() => {
                 fetch('/api/encuadre/pipeline_status').then(r=>r.json()).then(d => {
-                    document.getElementById('crear-logs').textContent = d.logs || 'Sin salida';
+                    $safe('crear-logs', 'textContent', d.logs || 'Sin salida');
                     if (!d.running) { clearInterval(_crearPolling); _crearPolling = null; mostrarToast('✅ Pipeline custom terminado', 'bg-green-600'); }
                 });
             }, 3000);
@@ -656,10 +659,10 @@ HTML_FACTORY = """<!DOCTYPE html>
         // ═══ A/B TITULOS ═══
         function cargarAB() {
             fetch('/api/encuadre/ab_titulos/' + fechaActual).then(r=>r.json()).then(d => {
-                document.getElementById('ab-actual').innerHTML = '<div class="mono">' + (d.actual||'—') + '</div>';
-                document.getElementById('ab-alt0').textContent = (d.alternativas && d.alternativas[0]) || '—';
-                document.getElementById('ab-alt1').textContent = (d.alternativas && d.alternativas[1]) || '—';
-                document.getElementById('ab-nota').textContent = d.nota || '';
+                $safe('ab-actual', 'innerHTML', '<div class="mono">' + (d.actual||'—') + '</div>');
+                $safe('ab-alt0', 'textContent', (d.alternativas && d.alternativas[0]) || '—');
+                $safe('ab-alt1', 'textContent', (d.alternativas && d.alternativas[1]) || '—');
+                $safe('ab-nota', 'textContent', d.nota || '');
             });
         }
 
@@ -770,11 +773,11 @@ HTML_FACTORY = """<!DOCTYPE html>
             if (!_liveLogActual) return;
             fetch('/api/encuadre/logs/tail?name=' + encodeURIComponent(_liveLogActual) + '&n=300')
                 .then(r=>r.json()).then(d => {
-                    if (d.error) { document.getElementById('live-terminal').textContent = 'Error: ' + d.error; return; }
+                    if (d.error) { $safe('live-terminal', 'textContent', 'Error: ' + d.error); return; }
                     const term = document.getElementById('live-terminal');
                     term.textContent = d.content || '(vacio)';
                     if (document.getElementById('live-scroll').checked) term.scrollTop = term.scrollHeight;
-                    document.getElementById('live-meta').textContent = d.name + ' · ' + Math.round(d.size/1024) + 'KB · ' + new Date(d.mtime*1000).toLocaleTimeString();
+                    $safe('live-meta', 'textContent', d.name + ' · ' + Math.round(d.size/1024) + 'KB · ' + new Date(d.mtime*1000).toLocaleTimeString());
                 }).catch(e => console.warn('liveTail:', e));
         }
 
