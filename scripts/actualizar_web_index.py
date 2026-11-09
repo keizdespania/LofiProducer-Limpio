@@ -68,7 +68,7 @@ def _todos_los_posts():
     posts.sort(key=lambda p: (p["fecha"], p["slug"]), reverse=True)
     return posts
 
-def _card(post, con_data_cat=False, con_imagen=False):
+def _card(post, con_data_cat=False, con_imagen=False, prefijo=""):
     import pathlib as _pl
     _root = _pl.Path(__file__).resolve().parent.parent
     img = ""
@@ -94,7 +94,7 @@ def _card(post, con_data_cat=False, con_imagen=False):
                        f'onclick="event.stopPropagation()" class="holo-fuente">'
                        f'🔗 Ver fuente · {dom}</a>')
     return (f"  <div class=\"holo-card\" style=\"cursor:pointer\" "
-            f"onclick=\"window.location.href='{post['slug']}/'\"{dc}>\n"
+            f"onclick=\"window.location.href='{prefijo}{post['slug']}/'\"{dc}>\n"
             f"    <div class=\"holo-badge {post['badge_class']}\">{post['badge']}</div>\n"
             f"    {img}\n"
             f"    <h3>{post['titulo']}</h3>\n"
@@ -111,8 +111,8 @@ GLOSARIO_CARD = """  <a href="glosario/" class="holo-card">
   </a>"""
 
 def _generar_home(posts):
-    recientes = posts[:3]
-    cards = [_card(p, con_imagen=True) for p in recientes]
+    recientes = posts[:5]
+    cards = [_card(p, con_imagen=True, prefijo="analisis/") for p in recientes]
     cards.append(GLOSARIO_CARD)
     contenido = "---\nhide:\n  - navigation\n  - toc\n---\n\n"
     contenido += "<div class=\"holo-hero\">\n"
@@ -131,7 +131,7 @@ def _generar_home(posts):
     contenido += "  <div class=\"holo-card\" style=\"cursor: default;\"><h3>⚖️ Rigor Legal (Art. 32 LPI)</h3><p>Analizamos bajo el derecho de cita. No acusamos de delitos, describimos técnicas.</p></div>\n"
     contenido += "</div>\n"
     (DOCS / "index.md").write_text(contenido, encoding="utf-8")
-    print(f"✅ index.md: {len(recientes)} posts + glosario")
+    print(f"✅ index.md: {len(recientes)} ultimos + glosario")
 
 def _generar_analisis(posts):
     cards = [_card(p, con_data_cat=True, con_imagen=True) for p in posts]

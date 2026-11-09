@@ -13,7 +13,7 @@ hide:
 <h2 class="holo-section-title">Últimos Análisis</h2>
 
 <div class="holo-grid">
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-mediano-medio_crudo/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-08-mediano-medio_crudo/'">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     <img src="/media/imagenes/post_2026-11-08_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la ilusión de dinamismo y inevitabilidad</h3>
@@ -22,7 +22,7 @@ hide:
     
     <a href="https://www.lemonde.fr/politique/article/2026/11/08/presidentielle-2027-en-meeting-au-bourget-jean-luc-melenchon-s-attelle-a-mobiliser-sa-base-tout-en-elargissant-son-electorat_6808387_823448.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · lemonde.fr</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-largo/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-08-largo/'">
     <div class="holo-badge badge-new">🔥 Análisis Diario</div>
     <img src="/media/imagenes/post_2026-11-08_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>El Encuadre: El presidente de Israel encarga formar gobierno</h3>
@@ -31,7 +31,7 @@ hide:
     
     <a href="https://www.elespanol.com/espana/política/20261108/ayuso-mafia-sindical-haciendo-campana-amo-sanchez-secuestra-servicios-publicos/1003744449012_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-dossier-v2/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-08-dossier-v2/'">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
     <img src="/media/imagenes/post_2026-11-08_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Dossier del día: El Encuadre: El presidente de Israel encarga formar gobierno</h3>
