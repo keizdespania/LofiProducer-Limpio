@@ -832,8 +832,8 @@
     ]
   },
   "defaults": {
-    "inference_steps": 12,
-    "guidance_scale": 3.5,
+    "inference_steps": 6,
+    "guidance_scale": 1.0,
     "shift": 3.0
   }
 }

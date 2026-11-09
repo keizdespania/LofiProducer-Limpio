@@ -32,8 +32,8 @@ sh("rm -rf build && mkdir build && cd build && cmake .. -DGGML_CUDA=ON -DGGML_NC
 print("== 3. GGUF (~3.5GB) ==", flush=True)
 MODELS.mkdir(exist_ok=True)
 for f in [
-    "acestep-v15-turbo-Q4_K_M.gguf",
-    "acestep-5Hz-lm-0.6B-Q8_0.gguf",
+    "acestep-v15-turbo-Q6_K.gguf",
+    "acestep-5Hz-lm-1.7B-Q8_0.gguf",
     "Qwen3-Embedding-0.6B-Q8_0.gguf",
     "vae-BF16.gguf",
 ]:
@@ -42,8 +42,8 @@ for f in [
 
 print("== 4. request.json ==", flush=True)
 request = {
-    "lm_model": "acestep-5Hz-lm-0.6B-Q8_0.gguf",
-    "synth_model": "acestep-v15-turbo-Q4_K_M.gguf",
+    "lm_model": "acestep-5Hz-lm-1.7B-Q8_0.gguf",
+    "synth_model": "acestep-v15-turbo-Q6_K.gguf",
     "caption": "",  # se rellena dentro del bucle for
     "task_type": __TASK_TYPE__,
     "lyrics": __LYRICS__,
