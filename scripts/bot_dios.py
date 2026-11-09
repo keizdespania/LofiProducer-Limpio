@@ -206,6 +206,65 @@ def main():
             for upd in data.get("result", []):
                 offset = upd["update_id"] + 1
                 msg = upd.get("message") or upd.get("edited_message")
+                # 2026-11-09: callback_query (botones inline)
+                cb = upd.get("callback_query")
+                if cb:
+                    cb_data = cb.get("data", "")
+                    cb_id = cb.get("id")
+                    cb_msg = cb.get("message", {})
+                    cb_chat = str(cb_msg.get("chat", {}).get("id", ""))
+                    cb_msg_id = cb_msg.get("message_id")
+                    if cb_chat != str(CHAT_PRIVADO):
+                        _post("answerCallbackQuery", {"callback_query_id": cb_id})
+                        continue
+                    _post("answerCallbackQuery", {"callback_query_id": cb_id, "text": "Procesando..."})
+                    try:
+                        import dios_sugerencias_db as _db
+                        if cb_data.startswith("dios_aceptar_"):
+                            sid = int(cb_data.replace("dios_aceptar_", ""))
+                            s = _db.por_id(sid)
+                            if s:
+                                _db.marcar(sid, "aceptada")
+                                _post("editMessageText", {"chat_id": cb_chat, "message_id": cb_msg_id,
+                                    "text": f"✅ Aceptada #{sid}: {s['titulo']}\n\n⚙️ Ejecutando {s['accion_tool'] or 'acción'}...",
+                                    "parse_mode": "HTML"})
+                                if s["accion_tool"]:
+                                    _typing()
+                                    # 2026-11-09: llamada DIRECTA a la tool, sin pasar por agente
+                                    import json as _json
+                                    import importlib, sys as _sys
+                                    _sys.path.insert(0, str(ROOT / "scripts"))
+                                    _sys.path.insert(0, str(ROOT / "brain"))
+                                    try:
+                                        import dios as _dios_mod
+                                        importlib.reload(_dios_mod)
+                                        tool_name = s["accion_tool"]
+                                        args = _json.loads(s.get("payload") or "{}")
+                                        if tool_name in _dios_mod.TOOL_FNS:
+                                            responder(cb_chat, f"⚙️ Ejecutando <b>{tool_name}</b>...\nArgs: <code>{_json.dumps(args)[:200]}</code>")
+                                            resultado = _dios_mod.TOOL_FNS[tool_name](args)
+                                            responder(cb_chat, f"🤖 <b>#{sid} → {tool_name}</b>\n\n{str(resultado)[:3500]}")
+                                        else:
+                                            responder(cb_chat, f"❌ Tool '{tool_name}' no existe en TOOL_FNS")
+                                    except Exception as e:
+                                        responder(cb_chat, f"❌ Error ejecutando {s['accion_tool']}: {e}")
+                                else:
+                                    responder(cb_chat, f"ℹ️ #{sid} aceptada (sin tool asociada)")
+                        elif cb_data.startswith("dios_ignorar_"):
+                            sid = int(cb_data.replace("dios_ignorar_", ""))
+                            s = _db.por_id(sid)
+                            _db.marcar(sid, "ignorada")
+                            _post("editMessageText", {"chat_id": cb_chat, "message_id": cb_msg_id,
+                                "text": f"❌ Ignorada #{sid}: {s['titulo'] if s else ''}",
+                                "parse_mode": "HTML"})
+                        elif cb_data.startswith("dios_posponer_"):
+                            sid = int(cb_data.replace("dios_posponer_", ""))
+                            _post("editMessageText", {"chat_id": cb_chat, "message_id": cb_msg_id,
+                                "text": f"⏰ Pospuesta #{sid} (1h)", "parse_mode": "HTML"})
+                            _db.marcar(sid, "pospuesta")
+                    except Exception as e:
+                        responder(cb_chat, f"❌ Error callback: {e}")
+                    continue
                 if not msg: continue
                 chat_id = str(msg.get("chat", {}).get("id", ""))
                 if chat_id != str(CHAT_PRIVADO): continue
