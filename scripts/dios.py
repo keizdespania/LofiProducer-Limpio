@@ -2723,20 +2723,27 @@ def _tool_generar_thumbnails_lote(args):
         
         # Lista de vídeos: largo + shorts
         videos = []
-        largo = d.get("largo") or {}
-        if largo.get("video_id"):
+        largo = d.get("largo")
+        # 2026-11-09: defensivo (algunos JSONs viejos tienen largo como string)
+        if isinstance(largo, dict) and largo.get("video_id"):
             videos.append({
                 "tipo": "largo",
                 "video_id": largo["video_id"],
                 "titulo": largo.get("titulo") or (seo.get("largo") or {}).get("titulo", "") or (prod.get("dossier") or {}).get("titular_brutal", ""),
             })
+        elif isinstance(largo, str) and largo:
+            # largo es solo el video_id como string
+            videos.append({
+                "tipo": "largo",
+                "video_id": largo,
+                "titulo": (seo.get("largo") or {}).get("titulo", "") or (prod.get("dossier") or {}).get("titular_brutal", ""),
+            })
         for s in (d.get("shorts") or []):
-            if s.get("video_id"):
-                videos.append({
-                    "tipo": "short",
-                    "video_id": s["video_id"],
-                    "titulo": s.get("titulo", ""),
-                })
+            # 2026-11-09: defensivo (strings o dicts)
+            if isinstance(s, dict) and s.get("video_id"):
+                videos.append({"tipo": "short", "video_id": s["video_id"], "titulo": s.get("titulo", "")})
+            elif isinstance(s, str) and s:
+                videos.append({"tipo": "short", "video_id": s, "titulo": ""})
         
         for v in videos:
             vid = v["video_id"]
