@@ -1007,22 +1007,6 @@ def api_publicar_datos(fecha):
 
 # === ABRIR APP (Android intent + clipboard) ===
 @encuadre_bp.route("/api/encuadre/abrir_app", methods=["POST"])
-
-def _abrir_en_navegador(url):
-    """Fuerza abrir URL en navegador (no app). MIME text/html = Android prefiere browser."""
-    import subprocess as _sp
-    try:
-        _sp.Popen(["am", "start", "-a", "android.intent.action.VIEW",
-                   "-d", url, "-t", "text/html"],
-                  stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
-        return True
-    except Exception:
-        try:
-            _sp.Popen(["termux-open-url", url], stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
-            return True
-        except Exception:
-            return False
-
 def api_abrir_app():
     """Abre app/red con texto pre-rellenado. Usa redirector web para forzar navegador si la app buguea."""
     import subprocess as _sp
