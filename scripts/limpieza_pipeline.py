@@ -19,7 +19,10 @@ PROTEGIDAS = [
     "data/agent",              # memoria Dios + contratos + cola DBs
     "config", "scripts", "brain", "core", "fases",
     "web/dashboard",           # Factory OS (código)
-    "web/hooks", "web/overrides",
+    "web/hooks", "web/overrides", "web/assets",
+    "web/docs",                # BLOG COMPLETO - INTOCABLE (posts, podcast, glosario, home)
+    "web/mkdocs.yml",          # build config - INTOCABLE
+    "web/media",               # imágenes que usa la web activamente - INTOCABLE
     "docs",                    # MANUAL_ECOSISTEMA
     ".git", "sandbox", "secrets", "agent",
     "output/videos/biblioteca", # BIBLIOTECA LTX - INTOCABLE
@@ -45,11 +48,9 @@ DIRS_FECHA = [
     "output/cola_blogger",
     "output/podcast",
     "output/shorts",
-    "web/docs/analisis",
-    "web/docs/podcast",
-    "web/media/imagenes",
-    "web/docs/media/imagenes",   # copia del hook
     "data/logs",
+    # web/docs/* PROTEGIDOS - ya no se limpian automáticamente.
+    # Los posts viejos se borran manualmente con scripts específicos si hace falta.
 ]
 
 EXT_BORRAR = {".mp4", ".mp3", ".wav", ".m4a", ".webm", ".png", ".jpg", ".jpeg", ".json", ".md", ".pdf", ".ass", ".srt"}
@@ -93,6 +94,25 @@ def borrar_dir(ruta, forzar=False):
     return n, b
 
 total_n = total_b = 0
+
+# 0. BACKUP pre-limpieza de web/docs (safety net)
+import tarfile as _tar
+_bk_dir = ROOT / "output" / "web_backups"
+_bk_dir.mkdir(parents=True, exist_ok=True)
+_bk_file = _bk_dir / f"web_docs_{datetime.now().strftime('%Y%m%d_%H%M')}.tar.gz"
+try:
+    with _tar.open(_bk_file, "w:gz") as _tar_obj:
+        _tar_obj.add(ROOT / "web" / "docs", arcname="docs")
+        _tar_obj.add(ROOT / "web" / "mkdocs.yml", arcname="mkdocs.yml")
+        if (ROOT / "web" / "media").exists():
+            _tar_obj.add(ROOT / "web" / "media", arcname="media")
+    print(f"  [backup] {_bk_file.name} ({_bk_file.stat().st_size//1024}KB)")
+    # Rotar: máx 7 backups
+    _bks = sorted(_bk_dir.glob("web_docs_*.tar.gz"), reverse=True)
+    for _old in _bks[7:]:
+        _old.unlink()
+except Exception as _e:
+    print(f"  [backup] ERROR: {_e}")
 
 # 1. BORRAR_SIEMPRE
 for ruta in BORRAR_SIEMPRE:

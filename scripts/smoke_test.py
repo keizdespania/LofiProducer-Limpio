@@ -44,6 +44,19 @@ for url in ENDPOINTS:
     except Exception as e:
         fallos.append(f"HTTP {url}: {e}")
 
+# 2026-11-09: check web/docs no vacio (protección limpieza)
+_docs = ROOT / "web" / "docs"
+if _docs.exists():
+    _md_count = len(list(_docs.rglob("*.md")))
+    if _md_count < 5:
+        fallos.append(f"web/docs casi vacio: {_md_count} .md (minimo esperado 5)")
+    _idx = _docs / "index.md"
+    if not _idx.exists():
+        fallos.append("web/docs/index.md NO existe")
+    _mk = ROOT / "web" / "mkdocs.yml"
+    if not _mk.exists():
+        fallos.append("web/mkdocs.yml NO existe")
+
 if fallos:
     print(f"❌ SMOKE TEST FALLO ({len(fallos)} errores):")
     for f in fallos: print("  -", f)
