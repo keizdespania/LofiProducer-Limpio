@@ -3,6 +3,7 @@ site_url: https://elencuadre.pages.dev/
 site_description: Análisis técnico de cómo los medios construyen tu realidad.
 
 theme:
+  custom_dir: overrides
   name: material
   language: es
   logo: assets/images/logo.jpg
@@ -70,9 +71,6 @@ nav:
   - Contacto: contacto.md
   - Próximamente: proximamente.md
 
-extra:
-  generator: false
-
 extra_css:
   - stylesheets/extra.css
 
@@ -109,3 +107,15 @@ plugins:
       enabled: true
 
 use_directory_urls: true
+
+# 2026-11-09: config global web (banner, monetizacion, telegram)
+# Para activar monetización: monetizacion_activa: true + adsense_client: 'ca-pub-XXXX'
+extra:
+  generator: false
+  telegram_url: 'https://t.me/somoselencuadre'
+  telegram_label: 'Únete al canal de Telegram'
+  monetizacion_activa: false
+  adsense_client: ''
+  adsense_slot: ''
+  autor: 'Somos El Encuadre'
+  telegram_mostrar_banner: true
