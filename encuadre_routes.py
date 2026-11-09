@@ -8,921 +8,659 @@ ROOT = Path(__file__).resolve().parent
 HTML_FACTORY = """<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Factory OS - Somos El Encuadre</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background: #09090b; color: #f4f4f5; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        .glass { background: rgba(24, 24, 27, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(63, 63, 70, 0.5); }
-        .glow-red { box-shadow: 0 0 15px rgba(230, 57, 70, 0.4); }
-        .tab-active { border-bottom: 2px solid #e63946; color: #e63946; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
-        .video-container { aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; display: flex; justify-content: center; transition: all 0.3s ease; }
-        .video-container.vertical { aspect-ratio: 9/16; max-height: 60vh; margin: 0 auto; }
-        .video-container video { width: 100%; height: 100%; object-fit: contain; }
-        .toast { animation: slideIn 0.3s forwards; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .field-box { background: #09090b; border: 1px solid #3f3f46; border-radius: 6px; padding: 8px; font-size: 12px; width: 100%; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Factory OS · Somos El Encuadre</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+body{font-family:Inter,system-ui,sans-serif;background:#09090b;color:#f4f4f5;margin:0}
+.mono{font-family:'JetBrains Mono',monospace}
+.glass{background:rgba(24,24,27,.7);backdrop-filter:blur(12px);border:1px solid rgba(63,63,70,.5)}
+.tab-active{border-bottom:2px solid #e63946;color:#e63946}
+.video-container{aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;display:flex;justify-content:center}
+.video-container.vertical{aspect-ratio:9/16;max-height:60vh;margin:0 auto}
+.video-container video{width:100%;height:100%;object-fit:contain}
+.field-box{background:#09090b;border:1px solid #3f3f46;border-radius:6px;padding:8px;font-size:12px;width:100%;margin-bottom:8px;font-family:'JetBrains Mono',monospace;color:#fff}
+.hidden{display:none!important}
+.grid{display:grid}
+</style>
 </head>
-<body class="min-h-screen pb-20">
-<div id="__jstest" style="position:fixed;top:0;left:0;right:0;background:#ff0000;color:#fff;padding:10px;font-size:16px;z-index:999999;font-family:monospace;">🔴 JS NO EJECUTA</div>
-<script>
-    setTimeout(function(){
-        var el = document.getElementById('__jstest');
-        if (el) {
-            el.textContent = '🟢 JS OK · cambiarVista=' + (typeof cambiarVista) + ' · cargarDatos=' + (typeof cargarDatos) + ' · init=' + (typeof __init_factory);
-            el.style.background = '#008800';
-        }
-    }, 300);
-</script>
-
-    <div id="toastContainer" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2"></div>
-
-    <header class="border-b border-zinc-800 bg-zinc-950/80 sticky top-0 z-50 glass">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <a href="/" class="mr-4 text-zinc-400 hover:text-white transition" title="Volver a la Web Principal">
-                    <i class="fa-solid fa-arrow-left text-xl"></i>
-                </a>
-                <div class="w-10 h-10 rounded-lg bg-red-600 flex items-center justify-center glow-red">
-                    <i class="fa-solid fa-film text-white text-xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold tracking-tight">FACTORY OS</h1>
-                    <p class="text-xs text-zinc-400 mono">SOMOS EL ENCUADRE</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-6">
-                <select id="dateSelector" class="bg-zinc-900 border border-zinc-700 text-sm rounded-lg px-3 py-2 outline-none mono cursor-pointer">
-                    <option value="">Cargando...</option>
-                </select>
-                <div class="text-right">
-                    <p class="text-[10px] text-zinc-400 uppercase tracking-widest">IMD Global</p>
-                    <p id="imdScore" class="text-2xl font-bold text-red-500 mono">--</p>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 mt-6">
-        <div class="flex gap-4 border-b border-zinc-800 mb-4 overflow-x-auto">
-            <button onclick="cambiarVista('preview')" id="tab-preview" class="tab-active text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-eye mr-2"></i>Previsualización</button>
-            <button onclick="cambiarVista('distribucion')" id="tab-distribucion" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-share-nodes mr-2"></i>Distribución & SEO</button>
-            <button onclick="cambiarVista('live')" id="tab-live" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-terminal mr-2"></i>Pipeline Live</button>
-            <button onclick="cambiarVista('analytics')" id="tab-analytics" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-chart-line mr-2"></i>Analytics</button>
-            <button onclick="cambiarVista('ab')" id="tab-ab" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-flask mr-2"></i>A/B Testing</button>
-            <button onclick="cambiarVista('calendario')" id="tab-calendario" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-regular fa-calendar mr-2"></i>Calendario</button>
-            <button onclick="cambiarVista('agentes')" id="tab-agentes" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-robot mr-2"></i>Agentes</button>
-            <button onclick="cambiarVista('monetizacion')" id="tab-monetizacion" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-sack-dollar mr-2"></i>Monetización</button>
-            <button onclick="cambiarVista('crear')" id="tab-crear" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Crear Custom</button>
-            <button onclick="cambiarVista('cms')" id="tab-cms" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-pen-ruler mr-2"></i>Diseño Web (CMS)</button>
-        </div>
-
-        <!-- VISTA PREVIEW -->
-        <div id="view-preview" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- COLUMNA IZQ: VÍDEO + SHORTS + PODCAST -->
-            <div class="lg:col-span-8 space-y-4">
-                <!-- Vídeo largo -->
-                <div class="glass rounded-2xl p-4">
-                    <div class="flex justify-between items-center mb-3">
-                        <h3 class="font-bold text-sm text-red-400">🎬 Vídeo Largo</h3>
-                        <div class="flex gap-2">
-                            <button onclick="cambiarVideo('largo')" id="btn-largo" class="tab-active text-sm font-semibold pb-1 px-1">Largo</button>
-                        </div>
-                    </div>
-                    <div id="videoWrapper" class="video-container">
-                        <video id="mainPlayer" controls></video>
-                    </div>
-                    <div class="mt-3 flex gap-2">
-                        <button onclick="compartir('youtube')" class="flex-1 bg-red-600 py-2 rounded-lg font-semibold text-sm"><i class="fa-brands fa-youtube mr-2"></i>Subir a YouTube</button>
-                        <button onclick="abrirDrawer('articulo')" class="flex-1 bg-zinc-800 py-2 rounded-lg font-semibold text-sm"><i class="fa-solid fa-newspaper mr-2"></i>Artículo Web</button>
-                    </div>
-                </div>
-
-                <!-- Shorts (galería) -->
-                <div class="glass rounded-2xl p-4">
-                    <h3 class="font-bold text-sm text-orange-400 mb-3">📱 Shorts (4)</h3>
-                    <div id="shorts-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <div class="text-xs text-zinc-500 italic">Cargando...</div>
-                    </div>
-                </div>
-
-                <!-- Podcast -->
-                <div class="glass rounded-2xl p-4">
-                    <h3 class="font-bold text-sm text-purple-400 mb-3">🎧 Podcast del día</h3>
-                    <div id="podcast-player" class="text-xs text-zinc-500 italic">Cargando...</div>
-                </div>
-            </div>
-
-            <!-- COLUMNA DER: DOSSIER -->
-            <div class="lg:col-span-4 space-y-4">
-                <div class="glass rounded-2xl p-4">
-                    <h3 class="font-bold text-sm mb-2 text-red-400">📋 Dossier de Hoy</h3>
-                    <div id="dossierResumen" class="text-xs text-zinc-300 space-y-2"></div>
-                </div>
-                <div class="glass rounded-2xl p-4">
-                    <h3 class="font-bold text-sm mb-2 text-orange-400">🌐 Enlaces públicos</h3>
-                    <div id="enlaces-web" class="space-y-1 text-xs"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- VISTA PUBLICAR (Distribucion) -->
-        <div id="view-distribucion" class="hidden grid-cols-1 gap-6">
-            <div class="flex justify-between items-center bg-zinc-900/50 p-4 rounded-xl border border-zinc-800">
-                <div>
-                    <h2 class="text-xl font-bold text-red-500">🚀 Publicar Todo</h2>
-                    <p class="text-xs text-zinc-400">Guiones, SEO y redes listos para copiar o subir</p>
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="copiarTodoPublicar()" class="bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded text-sm font-semibold transition"><i class="fa-solid fa-copy mr-2"></i>Copiar TODO</button>
-                    <button onclick="subirTodoYouTube()" class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded text-sm font-semibold transition"><i class="fa-brands fa-youtube mr-2"></i>Subir Todo a YT</button>
-                </div>
-            </div>
-            <div id="publicar-content" class="grid grid-cols-1 gap-4"><div class="text-center py-10"><i class="fa-solid fa-spinner fa-spin text-2xl text-red-500"></i></div></div>
-        </div>
-        
-        <!-- VISTA CREAR CUSTOM -->
-        <div id="view-crear" class="hidden grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="glass rounded-2xl p-6">
-                <h2 class="text-xl font-bold text-red-500 mb-4"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Crear Contenido a la Carta</h2>
-                
-                <label class="text-xs text-zinc-400 uppercase tracking-wide">Nicho</label>
-                <select id="crear-nicho" class="field-box mb-3"></select>
-
-                <label class="text-xs text-zinc-400 uppercase tracking-wide">Formato (uno o varios)</label>
-                <div class="flex gap-2 mb-3 flex-wrap" id="crear-formatos"></div>
-
-                <label class="text-xs text-zinc-400 uppercase tracking-wide">Nº Shorts</label>
-                <select id="crear-num" class="field-box mb-3"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4" selected>4</option></select>
-
-                <label class="text-xs text-zinc-400 uppercase tracking-wide">Tema</label>
-                <select id="crear-tema-tipo" class="field-box mb-2" onchange="crearToggleTema()">
-                    <option value="auto">🤖 Automático (dossier del día)</option>
-                    <option value="topico">📰 Elegir del top de hoy</option>
-                    <option value="manual">✍️ Escribir mi tema</option>
-                </select>
-                <select id="crear-topico" class="field-box mb-2 hidden"></select>
-                <input id="crear-manual" type="text" class="field-box mb-3 hidden" placeholder="Ej: La manipulación del caso Urda">
-
-                <button onclick="crearLanzar()" class="w-full bg-gradient-to-r from-red-600 to-orange-500 py-3 rounded-lg font-bold text-sm hover:opacity-90 transition"><i class="fa-solid fa-rocket mr-2"></i>Lanzar Pipeline Custom</button>
-            </div>
-
-            <div class="glass rounded-2xl p-6">
-                <h3 class="font-bold text-sm text-orange-400 mb-3"><i class="fa-solid fa-chart-line mr-2"></i>SEO Optimizer · Top 1</h3>
-                <div id="crear-seo" class="space-y-3 text-sm"><div class="text-zinc-500 italic">Cargando análisis...</div></div>
-            </div>
-
-            <div class="lg:col-span-2 glass rounded-2xl p-6">
-                <h3 class="font-bold text-sm text-zinc-400 mb-3"><i class="fa-solid fa-terminal mr-2"></i>Logs del pipeline custom</h3>
-                <pre id="crear-logs" class="mono text-xs text-zinc-400 bg-black/50 rounded p-3 overflow-y-auto" style="max-height:300px">Esperando...</pre>
-            </div>
-        </div>
-
-        <!-- VISTA CMS (Diseño Web) -->
-        <div id="view-cms" class="hidden grid-cols-1 lg:grid-cols-12 gap-4">
-            <div class="lg:col-span-3 glass rounded-2xl p-4 flex flex-col" style="max-height: 75vh;">
-                <h3 class="font-bold text-sm mb-3 text-red-400"><i class="fa-solid fa-folder-tree mr-2"></i>Archivos</h3>
-                <div id="cms-tree" class="overflow-y-auto text-sm flex-1 space-y-1"></div>
-                <button onclick="cmsNuevoArchivo()" class="mt-3 bg-zinc-800 hover:bg-zinc-700 py-2 rounded text-xs"><i class="fa-solid fa-plus mr-1"></i>Nuevo Archivo</button>
-            </div>
-            <div class="lg:col-span-9 glass rounded-2xl p-4 flex flex-col" style="max-height: 75vh;">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 id="cms-filename" class="font-bold text-sm text-zinc-300 font-mono">Selecciona un archivo</h3>
-                    <div class="flex gap-2">
-                        <button onclick="cmsGuardar()" class="bg-green-600/20 text-green-400 border border-green-600/30 px-3 py-1 rounded text-xs font-semibold hover:bg-green-600/40"><i class="fa-solid fa-save mr-1"></i>Guardar</button>
-                        <button onclick="cmsBuild()" class="bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded text-xs font-semibold"><i class="fa-solid fa-rocket mr-1"></i>Build & Deploy</button>
-                    </div>
-                </div>
-                <textarea id="cms-editor" class="flex-1 w-full bg-[#09090b] text-zinc-300 font-mono text-xs p-3 rounded border border-zinc-700 outline-none focus:border-red-500" placeholder="El contenido aparecerá aquí..." spellcheck="false" disabled></textarea>
-            </div>
-        </div>
-
-        <!-- VISTA MONETIZACIÓN -->
-        <div id="view-monetizacion" class="hidden grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="glass rounded-2xl p-5 border-t-4 border-t-green-500">
-                <h3 class="font-bold text-lg mb-2 text-green-400"><i class="fa-brands fa-google mr-2"></i>AdSense + Afiliados</h3>
-                <p class="text-xs text-zinc-400 mb-4">Inyecta el tag de Amazon y prepara el post para AdSense.</p>
-                <input id="amazon-tag" type="text" placeholder="Tag Amazon" class="field-box">
-                <button onclick="aplicarAfiliados()" class="w-full bg-green-600 py-2 rounded font-semibold text-sm mt-2">Inyectar en Artículo</button>
-            </div>
-            <div class="glass rounded-2xl p-5 border-t-4 border-t-purple-500">
-                <h3 class="font-bold text-lg mb-2 text-purple-400"><i class="fa-solid fa-shirt mr-2"></i>Printify (Merch)</h3>
-                <p class="text-xs text-zinc-400 mb-4">Sube las mejores imágenes generadas para crear camisetas y posters.</p>
-                <button onclick="subirPrintify()" class="w-full bg-purple-600 py-2 rounded font-semibold text-sm">Subir a Printify</button>
-            </div>
-            <div class="glass rounded-2xl p-5 border-t-4 border-t-yellow-500">
-                <h3 class="font-bold text-lg mb-2 text-yellow-400"><i class="fa-solid fa-book mr-2"></i>Amazon KDP</h3>
-                <p class="text-xs text-zinc-400 mb-4">Genera un PDF con el glosario de 51 técnicas y los análisis del mes.</p>
-                <button onclick="generarKDP()" class="w-full bg-yellow-600 text-black py-2 rounded font-bold text-sm">Generar PDF KDP</button>
-            </div>
-        </div>
-
-        <!-- VISTA ANALYTICS (Cloudflare RUM) -->
-        <div id="view-analytics" class="hidden grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="md:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="glass rounded-xl p-4"><div class="text-xs text-zinc-400 uppercase tracking-wide">Page Views</div><div class="text-3xl font-extrabold text-red-400 mt-1" id="cf-pv">—</div></div>
-                <div class="glass rounded-xl p-4"><div class="text-xs text-zinc-400 uppercase tracking-wide">Visitas Únicas</div><div class="text-3xl font-extrabold text-orange-400 mt-1" id="cf-vt">—</div></div>
-                <div class="glass rounded-xl p-4"><div class="text-xs text-zinc-400 uppercase tracking-wide">Top País</div><div class="text-lg font-bold text-zinc-100 mt-1 truncate" id="cf-pais">—</div></div>
-                <div class="glass rounded-xl p-4"><div class="text-xs text-zinc-400 uppercase tracking-wide">Top Página</div><div class="text-lg font-bold text-zinc-100 mt-1 truncate" id="cf-pag">—</div></div>
-            </div>
-            <div class="glass rounded-2xl p-4"><h3 class="font-bold text-sm mb-3 text-red-400"><i class="fa-solid fa-fire mr-2"></i>Top Páginas (7d)</h3><div id="cf-top-paginas" class="space-y-2 text-sm"><div class="text-xs text-zinc-500 italic">Cargando...</div></div></div>
-            <div class="glass rounded-2xl p-4"><h3 class="font-bold text-sm mb-3 text-orange-400"><i class="fa-solid fa-globe mr-2"></i>Top Países (7d)</h3><div id="cf-top-paises" class="space-y-2 text-sm"><div class="text-xs text-zinc-500 italic">Cargando...</div></div></div>
-            <div class="md:col-span-2 text-xs text-zinc-500 text-center py-2"><i class="fa-solid fa-circle-info mr-1"></i>Datos de <strong>Cloudflare Web Analytics (RUM)</strong> · Sin cookies · Excluye bots</div>
-        </div>
-        <div id="view-ab" class="hidden glass rounded-2xl p-8 text-center"><div class="text-4xl mb-2">🧪</div><h3 class="font-bold text-zinc-200">A/B Testing</h3><p class="text-xs text-zinc-500 mt-1">En construcción</p></div>
-        <div id="view-calendario" class="hidden glass rounded-2xl p-8 text-center"><div class="text-4xl mb-2">📅</div><h3 class="font-bold text-zinc-200">Calendario editorial</h3><p class="text-xs text-zinc-500 mt-1">En construcción</p></div>
-        <div id="view-agentes" class="hidden glass rounded-2xl p-8 text-center"><div class="text-4xl mb-2">🤖</div><h3 class="font-bold text-zinc-200">Agentes IA</h3><p class="text-xs text-zinc-500 mt-1">En construcción</p></div>
-    </main>
-
-    
-        <!-- VISTA PIPELINE LIVE -->
-        <div id="view-live" class="hidden grid-cols-1 gap-4">
-            <div class="glass rounded-2xl p-4">
-                <div class="flex justify-between items-center mb-3 flex-wrap gap-2">
-                    <h3 class="font-bold text-sm text-red-400"><i class="fa-solid fa-terminal mr-2"></i>Pipeline Live · Logs en directo</h3>
-                    <div class="flex gap-2 flex-wrap">
-                        <select id="live-log-select" onchange="liveCambiarLog()" class="bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs text-white" style="min-width:200px"></select>
-                        <button onclick="liveRefrescar()" class="bg-zinc-800 hover:bg-zinc-700 px-3 py-1 rounded text-xs">🔄 Refresh</button>
-                        <label class="flex items-center gap-1 text-xs text-zinc-400 cursor-pointer"><input type="checkbox" id="live-auto" checked onchange="liveToggleAuto()"> Auto</label>
-                    </div>
-                </div>
-                <div class="flex gap-2 mb-3 flex-wrap">
-                    <button onclick="liveLanzarPipeline()" class="bg-green-600 hover:bg-green-500 px-3 py-1.5 rounded text-xs font-semibold"><i class="fa-solid fa-play mr-1"></i>Lanzar pipeline</button>
-                    <button onclick="liveLanzarCustom()" class="bg-orange-600 hover:bg-orange-500 px-3 py-1.5 rounded text-xs font-semibold"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Custom</button>
-                    <button onclick="liveMatar()" class="bg-red-700 hover:bg-red-600 px-3 py-1.5 rounded text-xs font-semibold"><i class="fa-solid fa-stop mr-1"></i>Matar</button>
-                </div>
-                <div id="live-activos" class="text-xs mb-2"></div>
-                <pre id="live-terminal" class="text-[11px] mono text-green-400 bg-black rounded p-3 overflow-y-auto" style="font-family:'JetBrains Mono',monospace;height:60vh;white-space:pre-wrap;word-break:break-all">Esperando logs...</pre>
-                <div class="flex justify-between items-center mt-2 text-[10px] text-zinc-500">
-                    <span id="live-meta">—</span>
-                    <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="live-scroll" checked> Auto-scroll</label>
-                </div>
-            </div>
-        </div>
-
-    <div id="drawer" class="fixed top-0 right-[-100%] w-full max-w-2xl h-full bg-zinc-900 transition-all duration-300 z-[100] overflow-y-auto p-6 border-l border-zinc-800">
-        <div class="flex justify-between items-center mb-6">
-            <h2 id="drawerTitle" class="text-2xl font-bold text-red-500"></h2>
-            <button onclick="cerrarDrawer()" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
-        </div>
-        <div id="drawerContent" class="text-sm text-zinc-300 space-y-4"></div>
-    </div>
-
-    <script>
-// 2026-11-09: capturador de errores JS visible en Android (sin DevTools)
-window.__factoryErrors = [];
-function __showError(msg, src, line) {
-    try {
-        var box = document.getElementById('__err_box');
-        if (!box) {
-            box = document.createElement('div');
-            box.id = '__err_box';
-            box.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#7f1d1d;color:#fff;padding:8px;font-family:monospace;font-size:11px;max-height:40vh;overflow:auto;border-bottom:3px solid #ef4444;';
-            box.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><strong>🚨 ERROR JS</strong><button onclick="document.getElementById(\'__err_box\').remove()" style="background:#ef4444;border:none;color:#fff;padding:2px 8px;border-radius:4px;cursor:pointer;">✕</button></div><div id="__err_list"></div>';
-            document.body.appendChild(box);
-        }
-        var list = document.getElementById('__err_list');
-        var item = document.createElement('div');
-        item.style.cssText = 'border-top:1px solid #991b1b;padding:4px 0;word-break:break-all;';
-        item.textContent = '• ' + msg + '  (' + (src||'').split('/').pop() + ':' + line + ')';
-        list.appendChild(item);
-        window.__factoryErrors.push({msg: msg, line: line});
-    } catch(e) {}
-}
-window.onerror = function(msg, src, line, col, err) {
-    __showError(msg, src, line);
-    return false;
-};
-window.addEventListener('unhandledrejection', function(e) {
-    __showError('Promise: ' + (e.reason && e.reason.message ? e.reason.message : String(e.reason)), '', 0);
-});
-</script>
-<script>let fechaActual = "";
-
-function $safe(id, prop, val) { var el = document.getElementById(id); if (el) { try { el[prop] = val; } catch(e){} } }
-function $safeStyle(id, prop, val) { var el = document.getElementById(id); if (el) { try { el.style[prop] = val; } catch(e){} } }
-function $safeClass(id, action, cls) { var el = document.getElementById(id); if (el) { try { el.classList[action](cls); } catch(e){} } }        let datosGlobales = null;
-
-        
-        function abrirDrawer(tipo) {
-            var d = document.getElementById('drawer');
-            var title = document.getElementById('drawerTitle');
-            var content = document.getElementById('drawerContent');
-            if (!d) return;
-            if (title) title.textContent = tipo === 'articulo' ? 'Artículo Web' : (tipo || 'Detalle');
-            if (content) content.innerHTML = '<p class="text-zinc-400">Cargando ' + (tipo || '') + '...</p>';
-            d.style.right = '0';
-        }
-        function cerrarDrawer() {
-            var d = document.getElementById('drawer');
-            if (d) d.style.right = '-100%';
-        }
-
-        function __init_factory() {
-    var _st = document.getElementById('__init_status');
-    if (_st) _st.textContent = 'init: corriendo...';
-    console.log('[factory] init corriendo');
-    try {
-            fetch('/api/encuadre/fechas').then(r => r.json()).then(data => {
-                const sel = document.getElementById('dateSelector');
-                if (!data.fechas || data.fechas.length === 0) { sel.innerHTML = '<option value="">Sin producciones</option>'; return; }
-                sel.innerHTML = '';
-                data.fechas.forEach(f => sel.innerHTML += `<option value="${f}">${f}</option>`);
-                cargarDatos(data.fechas[0]);
-            });
-            document.getElementById('dateSelector').addEventListener('change', (e) => cargarDatos(e.target.value));
-        _st = document.getElementById('__init_status');
-        if (_st) _st.textContent = 'init: OK';
-        console.log('[factory] init OK');
-    } catch(e) {
-        var _st2 = document.getElementById('__init_status');
-        if (_st2) { _st2.textContent = 'INIT ERROR: ' + e.message; _st2.style.background = '#7f1d1d'; }
-        console.error('[factory] INIT ERROR:', e);
-    }
-}
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', __init_factory);
-} else {
-    __init_factory();
-}
-
-        function cargarDatos(fecha) {
-            if (!fecha) return;
-            fechaActual = fecha;
-            fetch(`/api/encuadre/datos/${fecha}`).then(r => r.json()).then(data => {
-                datosGlobales = data;
-                $safe('imdScore', 'innerText', data.dossier?.indice_manipulacion_global || "--");
-                document.getElementById('dossierResumen').innerHTML = `
-                    <p><strong class="text-red-400">Tema:</strong> ${data.dossier?.tema_del_dia || 'N/A'}</p>
-                    <p><strong class="text-red-400">Cita Bomba:</strong> <em>"${data.dossier?.cita_bomba || 'N/A'}"</em></p>
-                    <p><strong class="text-red-400">Sarcasmo:</strong> ${data.dossier?.sarcasmo_del_dia || 'N/A'}</p>
-                `;
-
-                const s1 = (data.shorts_finales && data.shorts_finales[0]) || {};
-                
-                // YouTube
-                $safe('yt-titulo', 'value', s1.youtube?.titulo || "Sin título");
-                $safe('yt-desc', 'value', s1.youtube?.descripcion || "Sin descripción");
-                $safe('yt-comment', 'value', s1.youtube?.primer_comentario || "Sin comentario");
-                
-                // TikTok
-                $safe('tt-texto', 'value', s1.tiktok?.texto || "Sin texto");
-                $safe('tt-tags', 'value', s1.tiktok?.hashtags || "Sin hashtags");
-                
-                // Instagram
-                $safe('ig-texto', 'value', s1.instagram?.texto || "Sin texto");
-                $safe('ig-tags', 'value', s1.instagram?.hashtags || "Sin hashtags");
-                $safe('ig-comment', 'value', s1.instagram?.primer_comentario || "Sin comentario");
-
-                // X
-                $safe('x-texto', 'value', s1.x?.texto || "Sin tuit");
-
-                // Threads
-                $safe('th-texto', 'value', s1.threads?.texto || "Sin texto");
-
-                
-                // YouTube Comunidad
-                const ytCom = document.getElementById('yt-community');
-                if (ytCom) {
-                    ytCom.value = `📢 Nuevo análisis: ${s1.youtube?.titulo || 'Análisis del día'}\n\n${s1.youtube?.descripcion || ''}\n\nLee el análisis completo en: https://elencuadre.pages.dev`;
-                }
-
-                // Blogger
-                $safe('bl-titulo', 'value', s1.blogger?.titulo || "Sin título");
-                $safe('bl-resumen', 'value', s1.blogger?.resumen || "Sin resumen");
-
-                try { cambiarVideo('largo'); } catch(_e) { console.warn('cambiarVideo:', _e); }
-            });
-        }
-
-        function cambiarVista(v) {
-            ['preview', 'distribucion', 'monetizacion', 'live', 'analytics', 'ab', 'calendario', 'agentes', 'crear', 'cms'].forEach(t => {
-                try {
-                    var vel = document.getElementById('view-' + t);
-                    if (vel) vel.classList.toggle('hidden', t !== v);
-                    var tab = document.getElementById('tab-' + t);
-                    if (tab) tab.className = t === v ? "tab-active text-sm font-semibold pb-2 px-2 whitespace-nowrap" : "text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap";
-                } catch(e) { console.warn('cambiarVista', t, e); }
-            });
-            if (v === 'monetizacion') $safeClass('view-monetizacion', 'add', 'grid');
-            if (v === 'live') { $safeClass('view-live', 'add', 'grid'); liveInit(); }
-            if (v === 'analytics') { $safeClass('view-analytics', 'add', 'grid'); cargarCloudflareStats(); }
-            if (v === 'ab') $safeClass('view-ab', 'add', 'grid');
-            if (v === 'calendario') $safeClass('view-calendario', 'add', 'grid');
-            if (v === 'agentes') $safeClass('view-agentes', 'add', 'grid');
-            if (v === 'distribucion') { $safeClass('view-distribucion', 'add', 'grid'); cargarPublicar(); }
-            if (v === 'crear') { $safeClass('view-crear', 'add', 'grid'); cargarCrear(); }
-            if (v === 'ab') { $safeClass('view-ab', 'add', 'grid'); cargarAB(); }
-            if (v === 'calendario') { $safeClass('view-calendario', 'add', 'grid'); calendarioCargar(); }
-            if (v === 'agentes') { $safeClass('view-agentes', 'add', 'grid'); agentesCargar(); }
-            if (v === 'cms') { $safeClass('view-cms', 'add', 'grid'); cmsCargarArbol(); }
-        }
-
-        function cambiarVideo(tipo) {
-            const w = document.getElementById('videoWrapper');
-            const p = document.getElementById('mainPlayer');
-            if (tipo === 'largo') { w.classList.remove('vertical'); p.src = `/output/encuadre/video_largo_${fechaActual}.mp4`; }
-            else { w.classList.add('vertical'); p.src = `/output/encuadre/short_1_${fechaActual}.mp4`; }
-        }
-        function reproducirShort(n) {
-            const p = document.getElementById('mainPlayer');
-            const w = document.getElementById('videoWrapper');
-            w.classList.add('vertical');
-            p.src = `/output/encuadre/short_${n}_${fechaActual}.mp4`;
-            p.play();
-            w.scrollIntoView({behavior:'smooth', block:'center'});
-        }
-
-        function copiar(id) {
-            const el = document.getElementById(id);
-            el.select(); document.execCommand('copy');
-            mostrarToast('✅ Copiado al portapapeles', 'bg-green-600');
-        }
-
-        function compartir(red) {
-            mostrarToast('🚀 Abriendo ' + red + '...', 'bg-blue-600');
-            fetch('/api/encuadre/compartir', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({red: red, fecha: fechaActual}) });
-        }
-
-        function publicarBlogger() {
-            mostrarToast('⏳ Publicando en Blogger...', 'bg-orange-600');
-            fetch('/api/encuadre/publicar_blogger', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({fecha: fechaActual}) })
-            .then(() => mostrarToast('✅ Publicado en Blogger', 'bg-green-600'));
-        }
-
-        function mostrarToast(msg, color) {
-            const t = document.createElement('div');
-            t.className = `toast ${color} text-white px-4 py-2 rounded shadow-lg text-sm font-bold`;
-            t.innerText = msg;
-            document.getElementById('toastContainer').appendChild(t);
-            setTimeout(() => t.remove(), 3000);
-        }
-
-        
-        // --- PIPELINE LIVE ---
-        let logInterval = null;
-
-        function iniciarPipeline() {
-            const btn = document.getElementById('btn-run-pipeline');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Ejecutando...';
-            btn.disabled = true;
-            btn.classList.add('opacity-50');
-
-            fetch('/api/encuadre/run_pipeline', { method: 'POST' })
-                .then(r => r.json())
-                .then(data => {
-                    mostrarToast(data.msg, data.status === 'ok' ? 'bg-green-600' : 'bg-red-600');
-                    if (data.status === 'ok') {
-                        iniciarPollingLogs();
-                    } else {
-                        btn.innerHTML = '<i class="fa-solid fa-play mr-2"></i>Ejecutar Pipeline';
-                        btn.disabled = false;
-                        btn.classList.remove('opacity-50');
-                    }
-                });
-        }
-
-        function iniciarPollingLogs() {
-            if (logInterval) clearInterval(logInterval);
-            const terminal = document.getElementById('terminalLogs');
-            const btn = document.getElementById('btn-run-pipeline');
-
-            logInterval = setInterval(() => {
-                fetch('/api/encuadre/pipeline_status')
-                    .then(r => r.json())
-                    .then(data => {
-                        terminal.innerText = data.logs || "Esperando salida...";
-                        terminal.scrollTop = terminal.scrollHeight;
-                        
-                        if (!data.running) {
-                            clearInterval(logInterval);
-                            btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i>Terminado';
-                            btn.classList.remove('opacity-50');
-                            btn.classList.add('bg-zinc-700');
-                            mostrarToast('Pipeline finalizado', 'bg-green-600');
-                        }
-                    });
-            }, 2000); // Actualizar cada 2 segundos
-        }
-
-        // --- MONETIZACIÓN ---
-        function aplicarAfiliados() { mostrarToast('💸 Inyectando afiliados...', 'bg-green-600'); }
-        function subirPrintify() { mostrarToast('👕 Subiendo a Printify...', 'bg-purple-600'); }
-        function generarKDP() { mostrarToast('📚 Generando PDF KDP...', 'bg-yellow-600'); }
-
-        function cargarCloudflareStats() {
-            fetch('/api/cloudflare/stats').then(r => r.json()).then(d => {
-                const pv = d.page_views || 0;
-                const vt = d.visitas || 0;
-                const tp = (d.top_paginas && d.top_paginas.length) ? d.top_paginas[0] : null;
-                const tc = (d.top_paises && d.top_paises.length) ? d.top_paises[0] : null;
-                $safe('cf-pv', 'textContent', pv.toLocaleString('es-ES'));
-                $safe('cf-vt', 'textContent', vt.toLocaleString('es-ES'));
-                $safe('cf-pais', 'textContent', tc ? tc[0] : '—');
-                $safe('cf-pag', 'textContent', tp ? (tp[0].replace(/\/$/, '').split('/').pop() || '/') : '—');
-                const maxP = d.top_paginas && d.top_paginas.length ? d.top_paginas[0][1] : 1;
-                const paginasEl = document.getElementById('cf-top-paginas');
-                if (!d.top_paginas || !d.top_paginas.length) { paginasEl.innerHTML = '<div class="text-xs text-zinc-500 italic">Sin datos aún</div>'; }
-                else {
-                    paginasEl.innerHTML = d.top_paginas.map(p => {
-                        const pct = Math.round((p[1] / maxP) * 100);
-                        const slug = p[0].replace(/\/$/, '').split('/').pop() || '/';
-                        return '<div class="mb-2"><div class="flex justify-between mb-1"><span class="mono text-xs text-zinc-300 truncate">' + slug + '</span><span class="text-xs text-zinc-500">' + p[1] + '</span></div><div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-red-500 to-orange-400" style="width:' + pct + '%"></div></div></div>';
-                    }).join('');
-                }
-                const maxC = d.top_paises && d.top_paises.length ? d.top_paises[0][1] : 1;
-                const paisesEl = document.getElementById('cf-top-paises');
-                if (!d.top_paises || !d.top_paises.length) { paisesEl.innerHTML = '<div class="text-xs text-zinc-500 italic">Sin datos aún</div>'; }
-                else {
-                    paisesEl.innerHTML = d.top_paises.map(c => {
-                        const pct = Math.round((c[1] / maxC) * 100);
-                        return '<div class="mb-2"><div class="flex justify-between mb-1"><span class="text-xs text-zinc-300">' + c[0] + '</span><span class="text-xs text-zinc-500">' + c[1] + '</span></div><div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-orange-500 to-yellow-400" style="width:' + pct + '%"></div></div></div>';
-                    }).join('');
-                }
-            }).catch(e => console.warn('CF:', e));
-        }
-
-        // ═══ PUBLICAR ═══
-        let _publicarData = null;
-        function cargarPublicar() {
-            if (_publicarData) return;
-            fetch('/api/encuadre/publicar/' + fechaActual)
-                .then(r => r.json())
-                .then(d => {
-                    _publicarData = d;
-                    const root = document.getElementById('publicar-content');
-                    let html = '';
-                    // LARGO
-                    html += `<div class="glass rounded-xl p-4 border-l-4 border-l-red-500">
-                        <div class="flex justify-between items-start">
-                            <div><h3 class="font-bold text-red-400">🎬 Vídeo Largo</h3><p class="text-xs text-zinc-400 mt-1">${d.largo.palabras} palabras · Score: ${d.largo.viralidad}/10</p></div>
-                            <div class="flex gap-2"><button onclick="verGuion('largo')" class="bg-zinc-800 px-3 py-1 rounded text-xs"><i class="fa-solid fa-eye mr-1"></i>Guion</button></div>
-                        </div>
-                        <div class="mt-3 bg-zinc-900/50 p-2 rounded text-xs text-zinc-300"><strong>SEO:</strong> ${d.largo.seo?.titulo || '—'}</div>
-                    </div>`;
-                    // SHORTS
-                    d.shorts.forEach(s => {
-                        html += `<div class="glass rounded-xl p-4 border-l-4 border-l-orange-500">
-                            <div class="flex justify-between items-start">
-                                <div><h3 class="font-bold text-orange-400">📱 Short ${s.num} · ${s.tipo}</h3><p class="text-xs text-zinc-400 mt-1">"${s.hook}"</p></div>
-                                <div class="flex gap-2">
-                                    <button onclick="verGuion(${s.num})" class="bg-zinc-800 px-3 py-1 rounded text-xs"><i class="fa-solid fa-eye mr-1"></i>Guion</button>
-                                    <button onclick="abrirApp('tiktok', '${(s.guion||'').replace(/'/g, "\\'")}')" class="bg-black px-3 py-1 rounded text-xs border border-zinc-700">TikTok</button>
-                                </div>
-                            </div>
-                            <div class="mt-3 bg-zinc-900/50 p-2 rounded text-xs text-zinc-300"><strong>SEO:</strong> ${s.seo?.titulo || '—'} · ${s.seo?.hashtags || ''}</div>
-                        </div>`;
-                    });
-                    root.innerHTML = html;
-                }).catch(e => $safe('publicar-content', 'innerHTML', 'Error: ' + e.message));
-        }
-
-        function verGuion(id) {
-            if (!_publicarData) return;
-            let txt = "";
-            if (id === 'largo') txt = _publicarData.largo.guion;
-            else txt = _publicarData.shorts[id-1]?.guion || "Sin guion";
-            alert("=== GUION ===\n\n" + txt);
-        }
-        
-        function copiarTodoPublicar() { mostrarToast('Copiando todo...', 'bg-green-600'); }
-        function subirTodoYouTube() { mostrarToast('Subiendo todo a YouTube... (en desarrollo)', 'bg-red-600'); }
-
-        function abrirApp(red, texto) {
-            fetch('/api/encuadre/abrir_app', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({red, texto})})
-                .then(r=>r.json()).then(d => mostrarToast('🚀 Abriendo ' + red, 'bg-blue-600'));
-        }
-
-        // ═══ CMS (DISEÑO WEB) ═══
-        function cmsCargarArbol() {
-            fetch('/api/cms/files').then(r=>r.json()).then(d => {
-                const root = document.getElementById('cms-tree');
-                function render(items, depth=0) {
-                    return items.map(i => {
-                        if (i.type === 'dir') return `<div class="text-zinc-500 font-bold text-xs mt-2 mb-1">📁 ${i.name}</div>` + render(i.children || [], depth+1);
-                        return `<div onclick="cmsAbrirArchivo('${i.path}')" class="cursor-pointer text-zinc-300 hover:text-white hover:bg-zinc-800 px-2 py-1 rounded truncate" title="${i.path}">📄 ${i.name}</div>`;
-                    }).join('');
-                }
-                root.innerHTML = render(d.tree);
-            });
-        }
-
-        let _cmsCurrentPath = "";
-        function cmsAbrirArchivo(path) {
-            _cmsCurrentPath = path;
-            $safe('cms-filename', 'textContent', path);
-            const ed = document.getElementById('cms-editor');
-            ed.disabled = true; ed.value = "Cargando...";
-            fetch('/api/cms/read', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({path})})
-                .then(r=>r.json()).then(d => {
-                    if (d.type === 'binary') { ed.value = "[Archivo binario: " + d.url + "]"; }
-                    else { ed.value = d.content; ed.disabled = false; }
-                });
-        }
-
-        function cmsGuardar() {
-            if (!_cmsCurrentPath) return;
-            const content = document.getElementById('cms-editor').value;
-            fetch('/api/cms/save', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({path: _cmsCurrentPath, content})})
-                .then(r=>r.json()).then(d => { if(d.ok) mostrarToast('✅ Guardado', 'bg-green-600'); else mostrarToast('Error: '+d.error, 'bg-red-600'); });
-        }
-
-        function cmsNuevoArchivo() {
-            const name = prompt("Nombre del nuevo archivo (ej: analisis/nuevo-post.md):");
-            if(name) cmsAbrirArchivo("docs/" + name);
-        }
-
-        function cmsBuild() {
-            mostrarToast('🚀 Compilando y desplegando...', 'bg-blue-600');
-            fetch('/api/cms/build', {method:'POST'}).then(r=>r.json()).then(d => {
-                if(d.ok) mostrarToast('✅ Build & Push OK', 'bg-green-600');
-                else mostrarToast('❌ ' + d.error, 'bg-red-600');
-            });
-        }
-
-
-        // ═══ CREAR CUSTOM ═══
-        let _crearSeo = null;
-        function cargarCrear() {
-            // Cargar nichos, topicos y SEO en paralelo
-            Promise.all([
-                fetch('/api/encuadre/pipeline_options').then(r=>r.json()),
-                fetch('/api/encuadre/topicos').then(r=>r.json()),
-                fetch('/api/encuadre/seo_top').then(r=>r.json()).catch(()=>({}))
-            ]).then(([opt, top, seo]) => {
-                // Nichos
-                const sel = document.getElementById('crear-nicho');
-                sel.innerHTML = (opt.nichos || []).map(n => `<option value="${n}">${n}</option>`).join('');
-                // Formatos
-                const fmt = document.getElementById('crear-formatos');
-                fmt.innerHTML = (opt.formatos || []).map(f => `
-                    <label class="flex items-center gap-1 bg-zinc-800 px-3 py-2 rounded text-xs cursor-pointer">
-                        <input type="checkbox" value="${f.id}" ${f.id==='largo'?'checked':''}> ${f.icon} ${f.label}
-                    </label>`).join('');
-                // Tópicos
-                const ts = document.getElementById('crear-topico');
-                ts.innerHTML = (top.topicos || []).map((tp,i) => `<option value="${tp.titulo}">${tp.titulo.substring(0,60)}</option>`).join('');
-                if (!top.topicos || top.topicos.length === 0) ts.innerHTML = '<option value="">(sin tópicos hoy)</option>';
-                // SEO
-                _crearSeo = seo;
-                renderSeo();
-            });
-        }
-
-        function crearToggleTema() {
-            const v = document.getElementById('crear-tema-tipo').value;
-            document.getElementById('crear-topico').classList.toggle('hidden', v !== 'topico');
-            document.getElementById('crear-manual').classList.toggle('hidden', v !== 'manual');
-        }
-
-        function renderSeo() {
-            const el = document.getElementById('crear-seo');
-            if (!_crearSeo || !_crearSeo.keywords) {
-                el.innerHTML = '<div class="text-xs text-zinc-500 italic">Sin datos SEO aún</div>';
-                return;
-            }
-            el.innerHTML = `
-                <div><span class="text-zinc-400 text-xs">Keywords top:</span><div class="text-zinc-200 font-mono text-xs mt-1">${(_crearSeo.keywords||[]).join(' · ')}</div></div>
-                <div><span class="text-zinc-400 text-xs">Mejor hora publicar:</span><div class="text-green-400 font-bold text-lg">${_crearSeo.mejor_hora||'20:00'}</div></div>
-                <div><span class="text-zinc-400 text-xs">CTR estimado:</span><div class="text-orange-400 font-bold">${_crearSeo.ctr_estimado||'—'}</div></div>
-                <div class="text-xs text-zinc-500 italic border-t border-zinc-800 pt-2 mt-2">${_crearSeo.nota||''}</div>
-            `;
-        }
-
-        function crearLanzar() {
-            const nicho = document.getElementById('crear-nicho').value;
-            const formatos = Array.from(document.querySelectorAll('#crear-formatos input:checked')).map(i=>i.value);
-            const num_shorts = parseInt(document.getElementById('crear-num').value);
-            const temaTipo = document.getElementById('crear-tema-tipo').value;
-            let tema = '';
-            if (temaTipo === 'topico') tema = document.getElementById('crear-topico').value;
-            else if (temaTipo === 'manual') tema = document.getElementById('crear-manual').value;
-            if (!formatos.length) return mostrarToast('Elige al menos un formato', 'bg-red-600');
-            if (temaTipo === 'manual' && !tema) return mostrarToast('Escribe tu tema', 'bg-red-600');
-            
-            mostrarToast('🚀 Lanzando pipeline custom...', 'bg-orange-600');
-            $safe('crear-logs', 'textContent', '>>> Iniciando...');
-            fetch('/api/encuadre/crear_custom', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({nicho, formatos, num_shorts, tema_tipo: temaTipo, tema})})
-                .then(r=>r.json()).then(d => {
-                    if (d.ok) {
-                        mostrarToast('✅ Pipeline lanzado', 'bg-green-600');
-                        iniciarPollingCrear();
-                    } else mostrarToast('❌ ' + (d.error||d.msg), 'bg-red-600');
-                });
-        }
-
-        let _crearPolling = null;
-        function iniciarPollingCrear() {
-            if (_crearPolling) clearInterval(_crearPolling);
-            _crearPolling = setInterval(() => {
-                fetch('/api/encuadre/pipeline_status').then(r=>r.json()).then(d => {
-                    $safe('crear-logs', 'textContent', d.logs || 'Sin salida');
-                    if (!d.running) { clearInterval(_crearPolling); _crearPolling = null; mostrarToast('✅ Pipeline custom terminado', 'bg-green-600'); }
-                });
-            }, 3000);
-        }
-
-
-        // ═══ A/B TITULOS ═══
-        function cargarAB() {
-            fetch('/api/encuadre/ab_titulos/' + fechaActual).then(r=>r.json()).then(d => {
-                $safe('ab-actual', 'innerHTML', '<div class="mono">' + (d.actual||'—') + '</div>');
-                $safe('ab-alt0', 'textContent', (d.alternativas && d.alternativas[0]) || '—');
-                $safe('ab-alt1', 'textContent', (d.alternativas && d.alternativas[1]) || '—');
-                $safe('ab-nota', 'textContent', d.nota || '');
-            });
-        }
-
-        // ═══ CALENDARIO ═══
-        function calendarioCargar() {
-            fetch('/api/encuadre/calendario').then(r=>r.json()).then(d => {
-                const el = document.getElementById('cal-lista');
-                if (!d.items || !d.items.length) { el.innerHTML = '<div class="text-xs text-zinc-500 italic">No hay publicaciones programadas. Pulsa "Programar HOY" para encolar el vídeo del día.</div>'; return; }
-                el.innerHTML = d.items.map(it => {
-                    const estado = it.estado || 'pendiente';
-                    const color = estado === 'publicado' ? 'green' : estado === 'pendiente' ? 'yellow' : 'zinc';
-                    return `<div class="flex justify-between items-center bg-zinc-900/50 rounded p-2 text-xs">
-                        <div class="flex-1 min-w-0">
-                            <div class="font-semibold truncate">${it.titulo || '(sin titulo)'}</div>
-                            <div class="text-zinc-500 text-[10px]">${it.publish_at || ''} · ${it.video_path ? it.video_path.split('/').pop() : ''}</div>
-                        </div>
-                        <span class="badge bg-${color}-600/20 text-${color}-400 px-2 py-0.5 rounded text-[10px]">${estado}</span>
-                    </div>`;
-                }).join('');
-            });
-        }
-        function calendarioProgramarHoy() {
-            if (!confirm('¿Programar el vídeo largo de hoy para publicar en +4h?')) return;
-            fetch('/api/encuadre/programar_hoy', {method:'POST'}).then(r=>r.json()).then(d => {
-                if (d.ok) { mostrarToast('✅ Programado: ' + d.titulo, 'bg-green-600'); calendarioCargar(); }
-                else mostrarToast('❌ ' + (d.error||'error'), 'bg-red-600');
-            });
-        }
-
-        // ═══ AGENTES ═══
-        function agentesCargar() {
-            fetch('/api/encuadre/agentes').then(r=>r.json()).then(d => {
-                const el = document.getElementById('agentes-grid');
-                if (!d.agentes || !d.agentes.length) { el.innerHTML = '<div class="text-xs text-zinc-500 italic">No hay agentes definidos</div>'; return; }
-                el.innerHTML = d.agentes.map(a => `
-                    <div class="glass rounded-xl p-3">
-                        <div class="text-sm font-bold text-red-400 mb-1">${a.label}</div>
-                        <div class="text-[10px] text-zinc-500 line-clamp-2">${a.desc || '(sin descripcion)'}</div>
-                    </div>
-                `).join('');
-            });
-        }
-
-
-        // ═══ DIOS FAB ═══
-        function diosToggle() {
-            const p = document.getElementById('dios-panel');
-            p.style.display = p.style.display === 'none' ? 'flex' : 'none';
-        }
-        function diosEnviar() {
-            const inp = document.getElementById('dios-input');
-            const q = inp.value.trim();
-            if (!q) return;
-            inp.value = '';
-            diosPush('👤 ' + q, '#a1a1aa');
-            diosPush('⏳ Pensando...', '#f77f00');
-            fetch('/api/encuadre/dios_ask', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({pregunta:q, fecha: fechaActual})})
-                .then(r=>r.json()).then(d => {
-                    // Quitar el "Pensando..."
-                    const chat = document.getElementById('dios-chat');
-                    chat.lastChild.remove();
-                    if (d.ok) diosPush('🤖 ' + d.respuesta, '#d4d4d8');
-                    else diosPush('❌ ' + (d.error || 'Error'), '#ef4444');
-                }).catch(e => diosPush('❌ ' + e.message, '#ef4444'));
-        }
-        function diosPush(txt, color) {
-            const chat = document.getElementById('dios-chat');
-            const div = document.createElement('div');
-            div.style.marginBottom = '8px';
-            div.style.color = color;
-            div.style.whiteSpace = 'pre-wrap';
-            div.textContent = txt;
-            chat.appendChild(div);
-            chat.scrollTop = chat.scrollHeight;
-        }
-
-
-        // ═══ LIVE LOGS UNIVERSAL ═══
-        let _liveTimer = null;
-        let _liveLogActual = 'pipeline.log';
-
-        function liveInit() {
-            liveCargarLista();
-            liveIniciarAuto();
-        }
-
-        function liveCargarLista() {
-            fetch('/api/encuadre/logs/list').then(r=>r.json()).then(d => {
-                const sel = document.getElementById('live-log-select');
-                const cur = _liveLogActual;
-                const logs = (d.logs || []).slice(0, 30);
-                sel.innerHTML = logs.map(l => '<option value="' + l.name + '"' + (l.name===cur?' selected':'') + '>' + l.name + ' · ' + Math.round(l.size/1024) + 'KB</option>').join('') || '<option value="">(sin logs)</option>';
-                const act = document.getElementById('live-activos');
-                if (d.pipelines_activos && d.pipelines_activos.length) {
-                    act.innerHTML = '<span class="bg-green-600/20 text-green-400 px-2 py-0.5 rounded">🔴 ' + d.pipelines_activos.length + ' pipeline(s) corriendo</span>';
-                } else {
-                    act.innerHTML = '<span class="text-zinc-500">Sin pipelines activos</span>';
-                }
-            }).catch(e => console.warn('liveLista:', e));
-        }
-
-        function liveCambiarLog() {
-            _liveLogActual = document.getElementById('live-log-select').value;
-            liveRefrescar();
-        }
-
-        function liveRefrescar() {
-            if (!_liveLogActual) return;
-            fetch('/api/encuadre/logs/tail?name=' + encodeURIComponent(_liveLogActual) + '&n=300')
-                .then(r=>r.json()).then(d => {
-                    if (d.error) { $safe('live-terminal', 'textContent', 'Error: ' + d.error); return; }
-                    const term = document.getElementById('live-terminal');
-                    term.textContent = d.content || '(vacio)';
-                    if (document.getElementById('live-scroll').checked) term.scrollTop = term.scrollHeight;
-                    $safe('live-meta', 'textContent', d.name + ' · ' + Math.round(d.size/1024) + 'KB · ' + new Date(d.mtime*1000).toLocaleTimeString());
-                }).catch(e => console.warn('liveTail:', e));
-        }
-
-        function liveToggleAuto() {
-            if (document.getElementById('live-auto').checked) liveIniciarAuto();
-            else if (_liveTimer) { clearInterval(_liveTimer); _liveTimer = null; }
-        }
-
-        function liveIniciarAuto() {
-            if (_liveTimer) clearInterval(_liveTimer);
-            liveRefrescar();
-            _liveTimer = setInterval(() => {
-                if (location.hash !== '#live') return;
-                liveRefrescar();
-                liveCargarLista();
-            }, 3000);
-        }
-
-        function liveLanzarPipeline() {
-            if (!confirm('¿Lanzar pipeline del dia?')) return;
-            fetch('/api/encuadre/run_pipeline', {method:'POST'}).then(r=>r.json()).then(d => {
-                if (d.status === 'ok' || d.ok) { mostrarToast('✅ Pipeline lanzado', 'bg-green-600'); _liveLogActual = 'pipeline_web.log'; liveCargarLista(); liveIniciarAuto(); }
-                else mostrarToast('❌ ' + (d.msg||d.error||'error'), 'bg-red-600');
-            });
-        }
-
-        function liveLanzarCustom() { location.hash = '#crear'; }
-
-        function liveMatar() {
-            if (!confirm('¿Matar TODOS los pipelines en curso?')) return;
-            fetch('/api/encuadre/kill_pipeline', {method:'POST'}).then(r=>r.json()).then(d => {
-                mostrarToast(d.ok ? '✅ Matados: ' + (d.matados||0) : '❌ ' + (d.error||'error'), d.ok ? 'bg-green-600' : 'bg-red-600');
-                setTimeout(liveCargarLista, 800);
-            });
-        }
-
-    </script>
-
-    <!-- DIOS FAB + PANEL -->
-    <button id="dios-fab" onclick="diosToggle()" title="Hablar con Dios" style="position:fixed;bottom:24px;right:24px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#e63946,#f77f00);color:#fff;border:none;font-size:1.6em;z-index:100;cursor:pointer;box-shadow:0 8px 32px rgba(230,57,70,0.5);display:flex;align-items:center;justify-content:center;animation:diosPulse 2.5s ease-in-out infinite;">🤖</button>
-    <style>@keyframes diosPulse{0%,100%{box-shadow:0 8px 32px rgba(230,57,70,0.5)}50%{box-shadow:0 8px 32px rgba(230,57,70,0.5),0 0 0 12px rgba(230,57,70,0)}}</style>
-    <div id="dios-panel" style="display:none;position:fixed;bottom:96px;right:24px;width:min(420px,90vw);max-height:70vh;background:#18181b;border:1px solid #e63946;border-radius:16px;z-index:101;box-shadow:0 20px 60px rgba(0,0,0,0.6);flex-direction:column;overflow:hidden;">
-        <div style="padding:12px 16px;border-bottom:1px solid #3f3f46;display:flex;justify-content:space-between;align-items:center;">
-            <strong style="color:#f77f00;">🤖 Dios del Encuadre</strong>
-            <button onclick="diosToggle()" style="background:none;border:none;color:#a1a1aa;font-size:1.3em;cursor:pointer;">×</button>
-        </div>
-        <div id="dios-chat" style="flex:1;overflow-y:auto;padding:12px;font-size:12px;color:#d4d4d8;min-height:120px;max-height:50vh;"></div>
-        <div style="padding:10px;border-top:1px solid #3f3f46;display:flex;gap:6px;">
-            <input id="dios-input" placeholder="Pregúntale a Dios..." style="flex:1;background:#09090b;border:1px solid #3f3f46;color:#fff;border-radius:6px;padding:8px;font-size:12px;outline:none;" onkeypress="if(event.key==='Enter')diosEnviar()">
-            <button onclick="diosEnviar()" style="background:#e63946;border:none;color:#fff;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">Enviar</button>
-        </div>
-    </div>
-<div id="__init_status" style="position:fixed;bottom:4px;right:4px;background:#1a1a24;color:#888;padding:2px 6px;font-size:9px;font-family:monospace;z-index:99998;border-radius:3px;opacity:0.7;">init: pendiente</div>
-<div id="__endtest" style="position:fixed;bottom:0;left:0;right:0;background:#000088;color:#fff;padding:8px;font-size:13px;z-index:999999;font-family:monospace;">🔵 FINAL NO ALCANZADO</div>
-<script>
-    try {
-        var e = document.getElementById('__endtest');
-        e.textContent = '🟢 FINAL: cambiarVista=' + (typeof cambiarVista) + ' · init=' + (typeof __init_factory);
-        e.style.background = '#008800';
-    } catch(x) {
-        document.getElementById('__endtest').textContent = '🔴 FINAL ERR: ' + x.message;
-    }
-</script>
+<body>
+<header style="position:sticky;top:0;z-index:50;background:rgba(9,9,11,.95);backdrop-filter:blur;border-bottom:1px solid #27272a;padding:10px 12px">
+<div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+<div style="display:flex;align-items:center;gap:8px">
+<div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#dc2626,#ea580c);display:flex;align-items:center;justify-content:center;font-size:14px">🎬</div>
+<div><div style="font-weight:800;font-size:13px;color:#fafafa">FACTORY OS</div><div style="font-size:10px;color:#71717a">Somos El Encuadre</div></div>
+</div>
+<select id="dateSelector" style="background:#18181b;border:1px solid #3f3f46;border-radius:6px;padding:6px 10px;font-size:11px;color:#fff;margin-left:auto"></select>
+<div id="initStatus" style="font-size:10px;color:#71717a;font-family:'JetBrains Mono',monospace">init: pendiente</div>
+</div>
+</header>
+<nav style="position:sticky;top:53px;z-index:40;background:rgba(9,9,11,.95);backdrop-filter:blur;border-bottom:1px solid #27272a;overflow-x:auto">
+<div style="max-width:1280px;margin:0 auto;display:flex;gap:2px;padding:0 12px">
+<button onclick="cambiarVista('preview')" id="tab-preview" class="tab-active" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#e63946">👁 Preview</button>
+<button onclick="cambiarVista('distribucion')" id="tab-distribucion" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">📤 Distribución</button>
+<button onclick="cambiarVista('publicar')" id="tab-publicar" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">🚀 Publicar</button>
+<button onclick="cambiarVista('crear')" id="tab-crear" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">✨ Crear</button>
+<button onclick="cambiarVista('live')" id="tab-live" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">🖥 Live</button>
+<button onclick="cambiarVista('analytics')" id="tab-analytics" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">📈 Analytics</button>
+<button onclick="cambiarVista('ab')" id="tab-ab" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">🧪 A/B</button>
+<button onclick="cambiarVista('calendario')" id="tab-calendario" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">📅 Calendario</button>
+<button onclick="cambiarVista('agentes')" id="tab-agentes" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">🤖 Agentes</button>
+<button onclick="cambiarVista('cms')" id="tab-cms" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">✏ CMS</button>
+<button onclick="cambiarVista('monetizacion')" id="tab-monetizacion" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">💰 Monetización</button>
+</div>
+</nav>
+<main style="max-width:1280px;margin:0 auto;padding:12px;padding-bottom:80px">
+
+<div id="view-preview" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div class="glass" style="border-radius:12px;padding:12px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h3 style="font-size:12px;font-weight:700;color:#f87171;margin:0">🎬 Vídeo Largo</h3><button onclick="cambiarVideo('largo')" style="font-size:10px;background:#27272a;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">Largo</button></div>
+<div id="videoWrapper" class="video-container"><video id="mainPlayer" controls></video></div>
+<div style="margin-top:8px"><button onclick="compartir('youtube')" style="width:100%;background:#dc2626;padding:8px;border-radius:6px;font-size:11px;font-weight:700;border:none;color:#fff;cursor:pointer">▶ Subir YT</button></div>
+</div>
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#fb923c;margin:0 0 8px 0">📱 Shorts</h3><div id="shorts-gallery" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px"><div style="font-size:11px;color:#71717a">Cargando...</div></div></div>
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#c084fc;margin:0 0 8px 0">🎧 Podcast</h3><div id="podcast-player" style="font-size:11px;color:#71717a">Cargando...</div></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#f87171;margin:0 0 8px 0">📋 Dossier</h3><div id="dossierResumen" style="font-size:11px;color:#d4d4d8"></div></div>
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#fb923c;margin:0 0 8px 0">🌐 Enlaces</h3><div id="enlaces-web" style="font-size:11px"></div></div>
+</div>
+</div>
+
+<div id="view-distribucion" class="hidden"><div id="distribucion-content" class="glass" style="border-radius:12px;padding:12px;font-size:11px;color:#71717a">Cargando...</div></div>
+
+<div id="view-publicar" class="hidden">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h2 style="font-size:16px;font-weight:700;color:#ef4444;margin:0">🚀 Publicar Todo</h2><button onclick="cargarPublicar()" style="font-size:10px;background:#27272a;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">🔄</button></div>
+<div id="publicar-content" style="display:flex;flex-direction:column;gap:8px"><div style="font-size:11px;color:#71717a">Cargando...</div></div>
+</div>
+
+<div id="view-crear" class="hidden" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">
+<div class="glass" style="border-radius:12px;padding:12px">
+<h3 style="font-size:12px;font-weight:700;color:#ef4444;margin:0 0 8px 0">✨ Crear Custom</h3>
+<label style="font-size:10px;color:#a1a1aa;text-transform:uppercase">Nicho</label>
+<select id="crear-nicho" class="field-box"></select>
+<label style="font-size:10px;color:#a1a1aa;text-transform:uppercase">Formatos</label>
+<div id="crear-formatos" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"></div>
+<label style="font-size:10px;color:#a1a1aa;text-transform:uppercase">Tema</label>
+<select id="crear-tema-tipo" class="field-box" onchange="crearToggleTema()"><option value="auto">Auto (dossier)</option><option value="manual">Manual</option></select>
+<input id="crear-manual" type="text" class="field-box hidden" placeholder="Ej: La manipulación del caso Urda">
+<button onclick="crearLanzar()" style="width:100%;background:linear-gradient(90deg,#dc2626,#ea580c);padding:8px;border-radius:6px;font-size:11px;font-weight:700;border:none;color:#fff;cursor:pointer">🚀 Lanzar</button>
+</div>
+<div class="glass" style="border-radius:12px;padding:12px">
+<h3 style="font-size:12px;font-weight:700;color:#fb923c;margin:0 0 8px 0">📊 SEO Optimizer</h3>
+<div id="crear-seo" style="font-size:11px;color:#71717a">Cargando...</div>
+</div>
+</div>
+
+<div id="view-live" class="hidden">
+<div class="glass" style="border-radius:12px;padding:12px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px">
+<h3 style="font-size:12px;font-weight:700;color:#f87171;margin:0">🔴 Pipeline Live</h3>
+<div style="display:flex;gap:4px">
+<select id="live-log-select" onchange="liveCambiarLog()" style="background:#18181b;border:1px solid #3f3f46;border-radius:4px;padding:4px 8px;font-size:10px;color:#fff;max-width:160px"></select>
+<button onclick="liveRefrescar()" style="font-size:10px;background:#27272a;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">🔄</button>
+<label style="font-size:10px;color:#a1a1aa;display:flex;align-items:center;gap:2px"><input type="checkbox" id="live-auto" checked onchange="liveToggleAuto()">Auto</label>
+</div>
+</div>
+<div style="display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap">
+<button onclick="liveLanzarPipeline()" style="font-size:10px;background:#16a34a;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">▶ Lanzar</button>
+<button onclick="liveMatar()" style="font-size:10px;background:#b91c1c;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">⏹ Matar</button>
+</div>
+<div id="live-activos" style="font-size:10px;margin-bottom:4px"></div>
+<pre id="live-terminal" class="mono" style="font-size:10px;color:#4ade80;background:#000;border-radius:6px;padding:8px;overflow-y:auto;height:55vh;white-space:pre-wrap;margin:0">Esperando logs...</pre>
+</div>
+</div>
+
+<div id="view-analytics" class="hidden" style="display:flex;flex-direction:column;gap:12px">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px">
+<div class="glass" style="border-radius:12px;padding:10px"><div style="font-size:10px;color:#71717a;text-transform:uppercase">Page Views</div><div id="cf-pv" style="font-size:22px;font-weight:800;color:#f87171">—</div></div>
+<div class="glass" style="border-radius:12px;padding:10px"><div style="font-size:10px;color:#71717a;text-transform:uppercase">Visitas</div><div id="cf-vt" style="font-size:22px;font-weight:800;color:#fb923c">—</div></div>
+<div class="glass" style="border-radius:12px;padding:10px"><div style="font-size:10px;color:#71717a;text-transform:uppercase">Top País</div><div id="cf-pais" style="font-size:14px;font-weight:700">—</div></div>
+<div class="glass" style="border-radius:12px;padding:10px"><div style="font-size:10px;color:#71717a;text-transform:uppercase">Top Página</div><div id="cf-pag" style="font-size:14px;font-weight:700">—</div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#f87171;margin:0 0 8px 0">🔥 Top Páginas</h3><div id="cf-top-paginas" style="font-size:11px">Cargando...</div></div>
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#fb923c;margin:0 0 8px 0">🌐 Top Países</h3><div id="cf-top-paises" style="font-size:11px">Cargando...</div></div>
+</div>
+</div>
+
+<div id="view-ab" class="hidden" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#f87171;margin:0 0 8px 0">🎯 Actual</h3><div id="ab-actual" style="font-size:11px">Cargando...</div></div>
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#fb923c;margin:0 0 8px 0">🅰️ Alt A</h3><div id="ab-alt0" style="font-size:11px">—</div></div>
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#facc15;margin:0 0 8px 0">🅱️ Alt B</h3><div id="ab-alt1" style="font-size:11px">—</div></div>
+</div>
+
+<div id="view-calendario" class="hidden">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h3 style="font-size:12px;font-weight:700;color:#f87171;margin:0">📅 Calendario</h3><div style="display:flex;gap:4px"><button onclick="cargarCalendario()" style="font-size:10px;background:#27272a;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">🔄</button><button onclick="calendarioProgramarHoy()" style="font-size:10px;background:#dc2626;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">➕ Hoy</button></div></div>
+<div id="cal-lista" style="display:flex;flex-direction:column;gap:4px;font-size:11px">Cargando...</div>
+</div>
+
+<div id="view-agentes" class="hidden">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h3 style="font-size:12px;font-weight:700;color:#f87171;margin:0">🤖 Agentes IA</h3><button onclick="cargarAgentes()" style="font-size:10px;background:#27272a;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">🔄</button></div>
+<div id="agentes-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;font-size:11px">Cargando...</div>
+</div>
+
+<div id="view-cms" class="hidden" style="display:grid;grid-template-columns:1fr 3fr;gap:12px">
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#f87171;margin:0 0 8px 0">📁 Archivos</h3><div id="cms-tree" style="font-size:11px;overflow-y:auto;max-height:70vh">Cargando...</div></div>
+<div class="glass" style="border-radius:12px;padding:12px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h3 id="cms-filename" class="mono" style="font-size:12px;font-weight:700;color:#d4d4d8;margin:0">Selecciona archivo</h3><div style="display:flex;gap:4px"><button onclick="cmsGuardar()" style="font-size:10px;background:#16a34a;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">💾</button><button onclick="cmsBuild()" style="font-size:10px;background:#2563eb;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">🚀</button></div></div>
+<textarea id="cms-editor" class="mono" style="width:100%;height:70vh;background:#09090b;color:#d4d4d8;font-size:11px;padding:8px;border-radius:6px;border:1px solid #3f3f46;outline:none;resize:vertical" disabled></textarea>
+</div>
+</div>
+
+<div id="view-monetizacion" class="hidden" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#4ade80;margin:0 0 8px 0">💸 Afiliados</h3><p style="font-size:11px;color:#a1a1aa;margin:0 0 8px 0">Amazon + libros</p><button onclick="aplicarAfiliados()" style="width:100%;background:#16a34a;padding:8px;border-radius:6px;font-size:11px;font-weight:700;border:none;color:#fff;cursor:pointer">Inyectar</button></div>
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#c084fc;margin:0 0 8px 0">👕 Printify</h3><p style="font-size:11px;color:#a1a1aa;margin:0 0 8px 0">Merch SDXL</p><button onclick="subirPrintify()" style="width:100%;background:#9333ea;padding:8px;border-radius:6px;font-size:11px;font-weight:700;border:none;color:#fff;cursor:pointer">Subir</button></div>
+<div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#facc15;margin:0 0 8px 0">📚 KDP</h3><p style="font-size:11px;color:#a1a1aa;margin:0 0 8px 0">Libro análisis</p><button onclick="generarKDP()" style="width:100%;background:#ca8a04;padding:8px;border-radius:6px;font-size:11px;font-weight:700;border:none;color:#fff;cursor:pointer">Generar</button></div>
+</div>
+
+</main>
+
+<div id="drawer" style="position:fixed;top:0;right:-100%;width:100%;max-width:640px;height:100%;background:#18181b;transition:right .3s;z-index:50;overflow-y:auto;padding:16px;border-left:1px solid #3f3f46">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h2 id="drawerTitle" style="font-size:16px;font-weight:700;color:#ef4444;margin:0"></h2><button onclick="cerrarDrawer()" style="color:#a1a1aa;font-size:22px;background:none;border:none;cursor:pointer">×</button></div>
+<div id="drawerContent" style="font-size:11px;color:#d4d4d8"></div>
+</div>
+
+<button onclick="diosToggle()" style="position:fixed;bottom:16px;right:16px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#e63946,#f77f00);color:#fff;border:none;font-size:1.4em;z-index:100;cursor:pointer;box-shadow:0 8px 32px rgba(230,57,70,.5)">🤖</button>
+<div id="dios-panel" style="display:none;position:fixed;bottom:76px;right:16px;width:min(360px,90vw);max-height:60vh;background:#18181b;border:1px solid #e63946;border-radius:12px;z-index:101;box-shadow:0 20px 60px rgba(0,0,0,.6);flex-direction:column;overflow:hidden">
+<div style="padding:10px;border-bottom:1px solid #3f3f46;display:flex;justify-content:space-between;align-items:center"><strong style="color:#f77f00;font-size:.9em">🤖 Dios</strong><button onclick="diosToggle()" style="background:none;border:none;color:#a1a1aa;font-size:1.2em;cursor:pointer">×</button></div>
+<div id="dios-chat" style="flex:1;overflow-y:auto;padding:10px;font-size:11px;color:#d4d4d8;min-height:100px;max-height:45vh"></div>
+<div style="padding:8px;border-top:1px solid #3f3f46;display:flex;gap:4px"><input id="dios-input" placeholder="Pregunta..." style="flex:1;background:#09090b;border:1px solid #3f3f46;color:#fff;border-radius:4px;padding:6px;font-size:11px;outline:none" onkeypress="if(event.key==='Enter')diosEnviar()"><button onclick="diosEnviar()" style="background:#e63946;border:none;color:#fff;padding:6px 10px;border-radius:4px;cursor:pointer;font-size:11px">→</button></div>
+</div>
+
+<div id="toastContainer" style="position:fixed;top:16px;right:16px;z-index:200"></div>
+
+<script src="/encuadre/factory.js?v=2"></script>
 </body>
-</html>"""
+</html>
+"""
+
+FACTORY_JS = r"""/* Factory OS JS - 2026-11-09 */
+var fechaActual = '';
+var datosGlobales = null;
+var _liveTimer = null;
+var _liveLogActual = 'pipeline.log';
+var _publicarData = null;
+var _crearSeo = null;
+
+function $safe(id, prop, val) {
+  var el = document.getElementById(id);
+  if (el) { try { el[prop] = val; } catch(e){} }
+}
+function $safeHTML(id, html) {
+  var el = document.getElementById(id);
+  if (el) { try { el.innerHTML = html; } catch(e){} }
+}
+function $safeText(id, txt) {
+  var el = document.getElementById(id);
+  if (el) { try { el.textContent = txt; } catch(e){} }
+}
+
+function mostrarToast(msg, color) {
+  var c = document.getElementById('toastContainer');
+  if (!c) return;
+  var t = document.createElement('div');
+  t.className = 'toast ' + (color || 'bg-zinc-700');
+  t.style.cssText = 'background:#18181b;color:#fff;padding:8px 12px;border-radius:6px;font-size:11px;margin-bottom:6px;border-left:3px solid #e63946';
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 3000);
+}
+
+function cambiarVista(v) {
+  var vistas = ['preview','distribucion','publicar','crear','live','analytics','ab','calendario','agentes','cms','monetizacion'];
+  vistas.forEach(function(t){
+    try {
+      var vel = document.getElementById('view-' + t);
+      if (vel) {
+        if (t === v) { vel.classList.remove('hidden'); vel.style.display = ''; }
+        else { vel.classList.add('hidden'); vel.style.display = 'none'; }
+      }
+      var tab = document.getElementById('tab-' + t);
+      if (tab) tab.style.color = (t === v) ? '#e63946' : '#a1a1aa';
+    } catch(e) { console.warn('cambiarVista', t, e); }
+  });
+  try {
+    if (v === 'publicar') cargarPublicar();
+    if (v === 'crear') cargarCrear();
+    if (v === 'live') liveInit();
+    if (v === 'analytics') cargarCloudflareStats();
+    if (v === 'ab') cargarAB();
+    if (v === 'calendario') cargarCalendario();
+    if (v === 'agentes') cargarAgentes();
+    if (v === 'cms') cmsCargarArbol();
+  } catch(e) { console.warn('hook vista', v, e); }
+}
+
+function cargarDatos(fecha) {
+  if (!fecha) return;
+  fechaActual = fecha;
+  fetch('/api/encuadre/datos/' + fecha).then(function(r){ return r.json(); }).then(function(data){
+    datosGlobales = data;
+    var d = data.dossier || {};
+    var html = '<p><strong style="color:#f87171">Tema:</strong> ' + (d.tema_del_dia || 'N/A') + '</p>';
+    html += '<p style="margin-top:6px"><strong style="color:#f87171">Cita:</strong> <em>' + (d.cita_bomba || 'N/A') + '</em></p>';
+    $safeHTML('dossierResumen', html);
+
+    var shorts = data.shorts_finales || [];
+    var sg = document.getElementById('shorts-gallery');
+    if (sg) {
+      if (shorts.length) {
+        var sh = '';
+        shorts.forEach(function(s, i){
+          sh += '<div onclick="reproducirShort(' + (i+1) + ')" style="cursor:pointer;background:#18181b;border-radius:6px;padding:6px;text-align:center">' +
+                '<div style="font-size:18px">📱</div>' +
+                '<div style="font-size:10px;color:#fb923c;font-weight:700">S' + (i+1) + '</div>' +
+                '<div style="font-size:9px;color:#71717a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (s.tipo || '') + '</div></div>';
+        });
+        sg.innerHTML = sh;
+      } else {
+        sg.innerHTML = '<div style="font-size:11px;color:#71717a">Sin shorts</div>';
+      }
+    }
+
+    var podEl = document.getElementById('podcast-player');
+    if (podEl) {
+      podEl.innerHTML = '<audio controls preload="none" style="width:100%" src="/output/encuadre/podcast_' + fecha + '.mp3"></audio>';
+    }
+
+    var linkEl = document.getElementById('enlaces-web');
+    if (linkEl) {
+      linkEl.innerHTML = '<a href="https://elencuadre.pages.dev/analisis/' + fecha + '-largo/" target="_blank" style="color:#60a5fa;text-decoration:none;display:block;padding:2px 0">📄 Post largo</a>' +
+                         '<a href="https://elencuadre.pages.dev/analisis/' + fecha + '-dossier-v2/" target="_blank" style="color:#60a5fa;text-decoration:none;display:block;padding:2px 0">📄 Dossier v2</a>' +
+                         '<a href="https://elencuadre.pages.dev/" target="_blank" style="color:#60a5fa;text-decoration:none;display:block;padding:2px 0">🏠 Home</a>';
+    }
+
+    try { cambiarVideo('largo'); } catch(e) {}
+  }).catch(function(e){ console.warn('cargarDatos', e); });
+}
+
+function cambiarVideo(tipo) {
+  var w = document.getElementById('videoWrapper');
+  var p = document.getElementById('mainPlayer');
+  if (!w || !p) return;
+  if (tipo === 'largo') {
+    w.classList.remove('vertical');
+    p.src = '/output/encuadre/video_largo_' + fechaActual + '.mp4';
+  } else {
+    w.classList.add('vertical');
+    p.src = '/output/encuadre/short_1_' + fechaActual + '.mp4';
+  }
+}
+
+function reproducirShort(n) {
+  var p = document.getElementById('mainPlayer');
+  var w = document.getElementById('videoWrapper');
+  if (!p) return;
+  if (w) w.classList.add('vertical');
+  p.src = '/output/encuadre/short_' + n + '_' + fechaActual + '.mp4';
+  try { p.play(); } catch(e){}
+}
+
+function compartir(red) {
+  mostrarToast('🚀 Abriendo ' + red + '...', 'bg-blue-600');
+  fetch('/api/encuadre/compartir', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({red: red, fecha: fechaActual})});
+}
+
+function abrirDrawer(tipo) {
+  var d = document.getElementById('drawer');
+  var t = document.getElementById('drawerTitle');
+  var c = document.getElementById('drawerContent');
+  if (!d) return;
+  if (t) t.textContent = tipo || 'Detalle';
+  if (c) c.innerHTML = '<p style="color:#71717a">Cargando...</p>';
+  d.style.right = '0';
+}
+function cerrarDrawer() {
+  var d = document.getElementById('drawer');
+  if (d) d.style.right = '-100%';
+}
+
+function abrirApp(red, texto) {
+  fetch('/api/encuadre/abrir_app', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({red: red, texto: texto || ''})})
+    .then(function(r){ return r.json(); }).then(function(d){ mostrarToast('🚀 ' + red, 'bg-blue-600'); });
+}
+
+/* PUBLICAR */
+function cargarPublicar() {
+  var root = document.getElementById('publicar-content');
+  if (!root) return;
+  root.innerHTML = '<div style="font-size:11px;color:#71717a">Cargando...</div>';
+  fetch('/api/encuadre/publicar/' + fechaActual).then(function(r){ return r.json(); }).then(function(d){
+    _publicarData = d;
+    var html = '';
+    var largo = d.largo || {};
+    html += '<div class="glass" style="border-radius:10px;padding:10px;border-left:3px solid #dc2626">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:12px;font-weight:700;color:#f87171">🎬 Vídeo Largo</div><button onclick="verGuion(\'largo\')" style="font-size:10px;background:#27272a;padding:3px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">Ver</button></div>' +
+            '<div style="font-size:10px;color:#a1a1aa;margin-top:4px">' + (largo.palabras || 0) + ' palabras · Viralidad ' + (largo.viralidad || 0) + '/10</div>' +
+            '<div style="font-size:10px;color:#d4d4d8;margin-top:4px"><strong>SEO:</strong> ' + ((largo.seo && largo.seo.titulo) || '—') + '</div></div>';
+
+    (d.shorts || []).forEach(function(s){
+      html += '<div class="glass" style="border-radius:10px;padding:10px;border-left:3px solid #ea580c">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:12px;font-weight:700;color:#fb923c">📱 Short ' + s.num + ' · ' + (s.tipo || '') + '</div><button onclick="verGuion(' + s.num + ')" style="font-size:10px;background:#27272a;padding:3px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">Ver</button></div>' +
+              '<div style="font-size:10px;color:#a1a1aa;margin-top:4px">' + (s.hook || '') + '</div>' +
+              '<div style="font-size:10px;color:#d4d4d8;margin-top:4px"><strong>SEO:</strong> ' + ((s.seo && s.seo.titulo) || '—') + '</div></div>';
+    });
+    root.innerHTML = html;
+  }).catch(function(e){ root.innerHTML = '<div style="color:#ef4444;font-size:11px">Error: ' + e.message + '</div>'; });
+}
+
+function verGuion(id) {
+  if (!_publicarData) return;
+  var txt = '';
+  if (id === 'largo') txt = (_publicarData.largo && _publicarData.largo.guion) || 'Sin guion';
+  else {
+    var s = (_publicarData.shorts || [])[id-1];
+    txt = (s && s.guion) || 'Sin guion';
+  }
+  alert('=== GUION ===\n\n' + txt);
+}
+
+/* CREAR */
+function cargarCrear() {
+  fetch('/api/encuadre/pipeline_options').then(function(r){ return r.json(); }).then(function(opt){
+    var sel = document.getElementById('crear-nicho');
+    if (sel) sel.innerHTML = (opt.nichos || []).map(function(n){ return '<option value="' + n + '">' + n + '</option>'; }).join('');
+    var fmt = document.getElementById('crear-formatos');
+    if (fmt) fmt.innerHTML = (opt.formatos || []).map(function(f){
+      return '<label style="font-size:10px;background:#27272a;padding:4px 8px;border-radius:4px;cursor:pointer;display:flex;align-items:center;gap:4px"><input type="checkbox" value="' + f.id + '"> ' + f.icon + ' ' + f.label + '</label>';
+    }).join('');
+  });
+  fetch('/api/encuadre/seo_top').then(function(r){ return r.json(); }).then(function(d){
+    _crearSeo = d;
+    var html = '<div style="margin-bottom:6px"><div style="font-size:10px;color:#71717a">Keywords:</div><div class="mono" style="font-size:10px;color:#d4d4d8">' + ((d.keywords || []).join(' · ') || '—') + '</div></div>';
+    html += '<div style="margin-bottom:6px"><div style="font-size:10px;color:#71717a">Mejor hora:</div><div style="font-size:14px;font-weight:700;color:#4ade80">' + (d.mejor_hora || '—') + '</div></div>';
+    html += '<div><div style="font-size:10px;color:#71717a">CTR estimado:</div><div style="font-size:12px;font-weight:700;color:#fb923c">' + (d.ctr_estimado || '—') + '</div></div>';
+    $safeHTML('crear-seo', html);
+  });
+}
+
+function crearToggleTema() {
+  var v = document.getElementById('crear-tema-tipo');
+  var m = document.getElementById('crear-manual');
+  if (v && m) m.classList.toggle('hidden', v.value !== 'manual');
+}
+
+function crearLanzar() {
+  var nicho = (document.getElementById('crear-nicho') || {}).value || '';
+  var formatos = [];
+  document.querySelectorAll('#crear-formatos input:checked').forEach(function(i){ formatos.push(i.value); });
+  var temaTipo = (document.getElementById('crear-tema-tipo') || {}).value || 'auto';
+  var tema = temaTipo === 'manual' ? ((document.getElementById('crear-manual') || {}).value || '') : '';
+  if (!formatos.length) { mostrarToast('Elige formato', 'bg-red-600'); return; }
+  if (temaTipo === 'manual' && !tema) { mostrarToast('Escribe tema', 'bg-red-600'); return; }
+  mostrarToast('🚀 Lanzando...', 'bg-orange-600');
+  fetch('/api/encuadre/crear_custom', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({nicho: nicho, formatos: formatos, num_shorts: 4, tema_tipo: temaTipo, tema: tema})})
+    .then(function(r){ return r.json(); }).then(function(d){
+      if (d.ok) mostrarToast('✅ Lanzado', 'bg-green-600');
+      else mostrarToast('❌ ' + (d.error || 'error'), 'bg-red-600');
+    });
+}
+
+/* LIVE */
+function liveInit() {
+  liveCargarLista();
+  liveIniciarAuto();
+}
+function liveCargarLista() {
+  fetch('/api/encuadre/logs/list').then(function(r){ return r.json(); }).then(function(d){
+    var sel = document.getElementById('live-log-select');
+    if (sel) {
+      var cur = _liveLogActual;
+      sel.innerHTML = (d.logs || []).slice(0, 20).map(function(l){
+        return '<option value="' + l.name + '"' + (l.name === cur ? ' selected' : '') + '>' + l.name + '</option>';
+      }).join('') || '<option value="">(sin logs)</option>';
+    }
+    var act = document.getElementById('live-activos');
+    if (act) {
+      if (d.pipelines_activos && d.pipelines_activos.length) act.innerHTML = '<span style="color:#4ade80">🔴 ' + d.pipelines_activos.length + ' corriendo</span>';
+      else act.innerHTML = '<span style="color:#71717a">Sin pipelines</span>';
+    }
+  });
+}
+function liveCambiarLog() {
+  var s = document.getElementById('live-log-select');
+  if (s) { _liveLogActual = s.value; liveRefrescar(); }
+}
+function liveRefrescar() {
+  if (!_liveLogActual) return;
+  fetch('/api/encuadre/logs/tail?name=' + encodeURIComponent(_liveLogActual) + '&n=200').then(function(r){ return r.json(); }).then(function(d){
+    var term = document.getElementById('live-terminal');
+    if (!term) return;
+    if (d.error) { term.textContent = 'Error: ' + d.error; return; }
+    term.textContent = d.content || '(vacio)';
+    term.scrollTop = term.scrollHeight;
+  });
+}
+function liveToggleAuto() {
+  var a = document.getElementById('live-auto');
+  if (a && a.checked) liveIniciarAuto();
+  else if (_liveTimer) { clearInterval(_liveTimer); _liveTimer = null; }
+}
+function liveIniciarAuto() {
+  if (_liveTimer) clearInterval(_liveTimer);
+  liveRefrescar();
+  _liveTimer = setInterval(function(){
+    if (location.hash && location.hash.indexOf('live') < 0) return;
+    liveRefrescar();
+  }, 3000);
+}
+function liveLanzarPipeline() {
+  if (!confirm('Lanzar pipeline?')) return;
+  fetch('/api/encuadre/run_pipeline', {method:'POST'}).then(function(r){ return r.json(); }).then(function(d){
+    if (d.status === 'ok' || d.ok) { mostrarToast('✅ Lanzado', 'bg-green-600'); liveIniciarAuto(); }
+    else mostrarToast('❌ ' + (d.msg || d.error || 'error'), 'bg-red-600');
+  });
+}
+function liveMatar() {
+  if (!confirm('Matar pipelines?')) return;
+  fetch('/api/encuadre/kill_pipeline', {method:'POST'}).then(function(r){ return r.json(); }).then(function(d){
+    mostrarToast(d.ok ? '✅ Matados' : '❌ Error', d.ok ? 'bg-green-600' : 'bg-red-600');
+  });
+}
+
+/* ANALYTICS */
+function cargarCloudflareStats() {
+  fetch('/api/cloudflare/stats').then(function(r){ return r.json(); }).then(function(d){
+    $safeText('cf-pv', (d.page_views || 0).toLocaleString('es-ES'));
+    $safeText('cf-vt', (d.visitas || 0).toLocaleString('es-ES'));
+    var tp = (d.top_paginas || [])[0];
+    var tc = (d.top_paises || [])[0];
+    $safeText('cf-pais', tc ? tc[0] : '—');
+    var pag = tp ? tp[0].replace(/\/$/, '').split('/').pop() : '—';
+    $safeText('cf-pag', pag || '—');
+    var maxP = tp ? tp[1] : 1;
+    var pg = document.getElementById('cf-top-paginas');
+    if (pg) {
+      pg.innerHTML = (d.top_paginas || []).map(function(p){
+        var pct = Math.round((p[1] / maxP) * 100);
+        var slug = p[0].replace(/\/$/, '').split('/').pop() || '/';
+        return '<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:10px;color:#d4d4d8"><span>' + slug + '</span><span>' + p[1] + '</span></div><div style="height:4px;background:#27272a;border-radius:2px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#ef4444,#f97316)"></div></div></div>';
+      }).join('') || '<div style="font-size:11px;color:#71717a">Sin datos</div>';
+    }
+    var maxC = tc ? tc[1] : 1;
+    var ps = document.getElementById('cf-top-paises');
+    if (ps) {
+      ps.innerHTML = (d.top_paises || []).map(function(c){
+        var pct = Math.round((c[1] / maxC) * 100);
+        return '<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:10px;color:#d4d4d8"><span>' + c[0] + '</span><span>' + c[1] + '</span></div><div style="height:4px;background:#27272a;border-radius:2px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#f97316,#facc15)"></div></div></div>';
+      }).join('') || '<div style="font-size:11px;color:#71717a">Sin datos</div>';
+    }
+  });
+}
+
+/* A/B */
+function cargarAB() {
+  fetch('/api/encuadre/ab_titulos/' + fechaActual).then(function(r){ return r.json(); }).then(function(d){
+    $safeText('ab-actual', d.actual || '—');
+    $safeText('ab-alt0', (d.alternativas && d.alternativas[0]) || '—');
+    $safeText('ab-alt1', (d.alternativas && d.alternativas[1]) || '—');
+  });
+}
+
+/* CALENDARIO */
+function cargarCalendario() {
+  fetch('/api/encuadre/calendario').then(function(r){ return r.json(); }).then(function(d){
+    var el = document.getElementById('cal-lista');
+    if (!el) return;
+    if (!d.items || !d.items.length) { el.innerHTML = '<div style="color:#71717a">Sin publicaciones programadas</div>'; return; }
+    el.innerHTML = d.items.map(function(it){
+      return '<div style="background:#18181b;border-radius:4px;padding:6px 8px;display:flex;justify-content:space-between;align-items:center"><span>' + (it.titulo || '') + '</span><span style="color:#fbbf24;font-size:10px">' + (it.estado || '') + '</span></div>';
+    }).join('');
+  });
+}
+function calendarioProgramarHoy() {
+  if (!confirm('Programar vídeo de hoy?')) return;
+  fetch('/api/encuadre/programar_hoy', {method:'POST'}).then(function(r){ return r.json(); }).then(function(d){
+    mostrarToast(d.ok ? '✅ Programado' : '❌ ' + (d.error || ''), d.ok ? 'bg-green-600' : 'bg-red-600');
+    cargarCalendario();
+  });
+}
+
+/* AGENTES */
+function cargarAgentes() {
+  fetch('/api/encuadre/agentes').then(function(r){ return r.json(); }).then(function(d){
+    var el = document.getElementById('agentes-grid');
+    if (!el) return;
+    if (!d.agentes || !d.agentes.length) { el.innerHTML = '<div style="color:#ef4444">0 agentes</div>'; return; }
+    el.innerHTML = d.agentes.map(function(a){
+      return '<div class="glass" style="border-radius:8px;padding:8px"><div style="font-size:11px;font-weight:700;color:#f87171">' + a.label + '</div><div style="font-size:9px;color:#71717a;margin-top:2px;max-height:32px;overflow:hidden">' + (a.desc || '') + '</div></div>';
+    }).join('');
+  });
+}
+
+/* CMS */
+function cmsCargarArbol() {
+  fetch('/api/cms/files').then(function(r){ return r.json(); }).then(function(d){
+    var root = document.getElementById('cms-tree');
+    if (!root) return;
+    function render(items) {
+      return (items || []).map(function(i){
+        if (i.type === 'dir') return '<div style="font-size:10px;color:#71717a;margin-top:4px;font-weight:700">📁 ' + i.name + '</div>' + render(i.children);
+        return '<div onclick="cmsAbrirArchivo(\'' + i.path + '\')" style="font-size:10px;color:#d4d4d8;cursor:pointer;padding:2px 4px;border-radius:2px">📄 ' + i.name + '</div>';
+      }).join('');
+    }
+    root.innerHTML = render(d.tree);
+  });
+}
+var _cmsCurrentPath = '';
+function cmsAbrirArchivo(path) {
+  _cmsCurrentPath = path;
+  $safeText('cms-filename', path);
+  var ed = document.getElementById('cms-editor');
+  if (!ed) return;
+  ed.disabled = true; ed.value = 'Cargando...';
+  fetch('/api/cms/read', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({path: path})})
+    .then(function(r){ return r.json(); }).then(function(d){
+      if (d.type === 'binary') ed.value = '[binario]';
+      else { ed.value = d.content || ''; ed.disabled = false; }
+    });
+}
+function cmsGuardar() {
+  if (!_cmsCurrentPath) return;
+  var ed = document.getElementById('cms-editor');
+  if (!ed) return;
+  fetch('/api/cms/save', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({path: _cmsCurrentPath, content: ed.value})})
+    .then(function(r){ return r.json(); }).then(function(d){ mostrarToast(d.ok ? '✅ Guardado' : '❌ ' + (d.error || ''), d.ok ? 'bg-green-600' : 'bg-red-600'); });
+}
+function cmsBuild() {
+  mostrarToast('🚀 Build...', 'bg-blue-600');
+  fetch('/api/cms/build', {method:'POST'}).then(function(r){ return r.json(); }).then(function(d){
+    mostrarToast(d.ok ? '✅ Deploy' : '❌ ' + (d.error || ''), d.ok ? 'bg-green-600' : 'bg-red-600');
+  });
+}
+
+/* MONETIZACIÓN */
+function aplicarAfiliados() { mostrarToast('💸 Inyectando afiliados', 'bg-green-600'); }
+function subirPrintify() { mostrarToast('👕 Printify', 'bg-purple-600'); }
+function generarKDP() { mostrarToast('📚 KDP', 'bg-yellow-600'); }
+
+/* DIOS */
+function diosToggle() {
+  var p = document.getElementById('dios-panel');
+  if (!p) return;
+  p.style.display = (p.style.display === 'none' || !p.style.display) ? 'flex' : 'none';
+}
+function diosPush(txt, color) {
+  var c = document.getElementById('dios-chat');
+  if (!c) return;
+  var d = document.createElement('div');
+  d.style.marginBottom = '6px';
+  d.style.color = color;
+  d.style.whiteSpace = 'pre-wrap';
+  d.textContent = txt;
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+function diosEnviar() {
+  var inp = document.getElementById('dios-input');
+  if (!inp) return;
+  var q = inp.value.trim();
+  if (!q) return;
+  inp.value = '';
+  diosPush('👤 ' + q, '#a1a1aa');
+  diosPush('⏳ ...', '#f77f00');
+  fetch('/api/encuadre/dios_ask', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({pregunta: q, fecha: fechaActual})})
+    .then(function(r){ return r.json(); }).then(function(d){
+      var c = document.getElementById('dios-chat');
+      if (c && c.lastChild) c.lastChild.remove();
+      if (d.ok) diosPush('🤖 ' + d.respuesta, '#d4d4d8');
+      else diosPush('❌ ' + (d.error || ''), '#ef4444');
+    });
+}
+
+/* INIT */
+function __init_factory() {
+  var st = document.getElementById('initStatus');
+  if (st) st.textContent = 'init: ok';
+  fetch('/api/encuadre/fechas').then(function(r){ return r.json(); }).then(function(data){
+    var sel = document.getElementById('dateSelector');
+    if (!sel) return;
+    if (!data.fechas || !data.fechas.length) { sel.innerHTML = '<option>Sin producciones</option>'; return; }
+    sel.innerHTML = data.fechas.map(function(f){ return '<option value="' + f + '">' + f + '</option>'; }).join('');
+    sel.onchange = function(){ cargarDatos(this.value); };
+    cargarDatos(data.fechas[0]);
+  }).catch(function(e){
+    if (st) st.textContent = 'init ERR: ' + e.message;
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', __init_factory);
+} else {
+  __init_factory();
+}
+
+/* Expose globals */
+try {
+  ['cambiarVista','cargarDatos','cambiarVideo','reproducirShort','compartir','abrirDrawer','cerrarDrawer','abrirApp',
+   'cargarPublicar','verGuion','cargarCrear','crearToggleTema','crearLanzar',
+   'liveInit','liveCargarLista','liveCambiarLog','liveRefrescar','liveToggleAuto','liveLanzarPipeline','liveMatar',
+   'cargarCloudflareStats','cargarAB','cargarCalendario','calendarioProgramarHoy','cargarAgentes',
+   'cmsCargarArbol','cmsAbrirArchivo','cmsGuardar','cmsBuild',
+   'aplicarAfiliados','subirPrintify','generarKDP','diosToggle','diosEnviar','diosPush','mostrarToast'
+  ].forEach(function(fn){
+    try { window[fn] = eval(fn); } catch(e){}
+  });
+  console.log('[factory] globals attached');
+} catch(e) { console.error('[factory] attach fail', e); }
+"""
+
 
 
 # === LOGS EN VIVO (2026-11-09) ===
 LOGS_DIR = ROOT / "data" / "logs"
 
 
+
+
+@encuadre_bp.route("/encuadre/factory.js")
+def factory_js():
+    from flask import Response
+    return Response(FACTORY_JS, mimetype="application/javascript", headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
 
 
 @encuadre_bp.route("/api/encuadre/buscar")
