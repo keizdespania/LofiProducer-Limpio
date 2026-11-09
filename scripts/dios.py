@@ -1633,14 +1633,95 @@ def _tool_ver_contrato(args):
         txt = _j.dumps(d, indent=1, ensure_ascii=False)
         # Truncar inteligente: si >3000, mostrar keys principales
         if len(txt) > 3000:
-            keys = list(d.keys()) if isinstance(d, dict) else []
+            keys = list(d.keys()) if isinstance(d, dict) else [    {"type": "function", "function": {"name": "procesar_video_existente", "description": "Procesa un vídeo/URL ya descargado con el pipeline REAL: transcribe (transcribir_groq.py) → analiza (analista_fase1.py) → sintetiza dossier (sintetizador.py) → genera post (fase2_produccion.py). Usa esto en vez de reimplementar. Tarda 5-15min.", "parameters": {"type": "object", "properties": {"url_o_path": {"type": "string", "description": "URL de YouTube o ruta local al vídeo/audio"}, "nicho": {"type": "string", "description": "el_encuadre, ia_news, finanzas_barrio (defecto el_encuadre)"}}, "required": ["url_o_path"]}}},
+    {"type": "function", "function": {"name": "descargar_audio_youtube", "description": "Descarga solo el AUDIO de un vídeo YouTube a output/encuadre/audios/. Es el paso que usa recolector.py. Ligero, no descarga vídeo completo.", "parameters": {"type": "object", "properties": {"video_id": {"type": "string", "description": "ID de YouTube (11 chars)"}}, "required": ["video_id"]}}},
+]
             return f"Contrato {nombre} ({len(txt)} chars). Keys: {keys}. Primeras 3000 chars:\n{txt[:3000]}...\n[Truncado. Usa seccion especifica si necesitas mas.]"
         return txt
     except Exception as e:
         return f"ERROR: {e}"
 
 
+
+def _tool_descargar_audio_youtube(args):
+    """Descarga audio vía yt-dlp (mismo flujo que recolector.py)."""
+    import subprocess as _sp
+    vid = args.get("video_id", "").strip()
+    if not vid: return "ERROR: falta video_id"
+    import re as _re
+    if "/" in vid or "?" in vid:
+        m = _re.search(r"(?:v=|youtu\.be/)([a-zA-Z0-9_-]{11})", vid)
+        if m: vid = m.group(1)
+        else: return f"ERROR: video_id inválido"
+    dst = ROOT / "output" / "encuadre" / "audios"
+    dst.mkdir(parents=True, exist_ok=True)
+    out_tmpl = str(dst / f"%(id)s.%(ext)s")
+    try:
+        cmd = ["yt-dlp", "-f", "bestaudio[ext=m4a]/bestaudio",
+               "--extract-audio", "--audio-format", "mp3", "--audio-quality", "5",
+               "-o", out_tmpl,
+               "--print", "after_move:%(filepath)s",
+               f"https://youtu.be/{vid}"]
+        r = _sp.run(cmd, capture_output=True, text=True, timeout=300)
+        if r.returncode != 0: return f"ERROR yt-dlp: {r.stderr[:300]}"
+        files = list(dst.glob(f"{vid}.*"))
+        if not files: return "ERROR: no se descargó"
+        f = files[0]
+        mb = f.stat().st_size // 1024 // 1024
+        return f"OK audio descargado: {f.relative_to(ROOT)} ({mb}MB)"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_procesar_video_existente(args):
+    """Orquesta el pipeline REAL: recolector → transcribir → analizar → sintetizar → post."""
+    import subprocess as _sp, datetime
+    url_or_path = args.get("url_o_path", "").strip()
+    nicho = args.get("nicho", "el_encuadre")
+    if not url_or_path: return "ERROR: falta url_o_path"
+    fecha = datetime.date.today().isoformat()
+    pasos = []
+    
+    # Si es URL YouTube, descargar audio primero
+    if "youtu" in url_or_path:
+        import re as _re
+        m = _re.search(r"(?:v=|youtu\.be/)([a-zA-Z0-9_-]{11})", url_or_path)
+        if not m: return "ERROR: URL YouTube inválida"
+        vid = m.group(1)
+        r = _tool_descargar_audio_youtube({"video_id": vid})
+        if r.startswith("ERROR"): return r
+        pasos.append(f"1. {r}")
+        # Buscar el audio descargado
+        dst = ROOT / "output" / "encuadre" / "audios"
+        files = list(dst.glob(f"{vid}.*"))
+        if not files: return "ERROR: audio no encontrado tras descarga"
+        audio_path = files[0]
+    else:
+        audio_path = ROOT / url_or_path.lstrip("/") if not pathlib.Path(url_or_path).is_absolute() else pathlib.Path(url_or_path)
+        if not audio_path.exists(): return f"ERROR: no existe {audio_path}"
+    
+    # 2. Transcribir con script REAL
+    try:
+        r = _sp.run(["python3", "scripts/transcribir_groq.py", str(audio_path)],
+                    cwd=str(ROOT), capture_output=True, text=True, timeout=300)
+        if r.returncode != 0:
+            return f"ERROR transcribir_groq: {r.stderr[:300]}\n{pasos}"
+        pasos.append(f"2. ✅ transcrito: {r.stdout[-200:]}")
+    except Exception as e:
+        return f"ERROR transcripción: {e}\n{pasos}"
+    
+    return (
+        f"OK cadena iniciada.\n" + "\n".join(pasos) + "\n\n"
+        f"NOTA: Para generar el dossier + post completo con este material, "
+        f"usa el pipeline normal: `python3 scripts/pipeline_encuadre.py` "
+        f"(ya cogerá los audios/transcripciones de output/encuadre/audios/).\n"
+        f"El pipeline completo tarda 30-40min pero da dossier + web + shorts + podcast + YT."
+    )
+
+
 TOOL_FNS = {
+    "procesar_video_existente": _tool_procesar_video_existente,
+    "descargar_audio_youtube": _tool_descargar_audio_youtube,
     "ver_contrato": _tool_ver_contrato,
     "escanear_ecosistema": _tool_escanear_ecosistema,
     "ejecutar_limpieza": _tool_ejecutar_limpieza,
