@@ -40,7 +40,6 @@ body{font-family:Inter,system-ui,sans-serif;background:#09090b;color:#f4f4f5;mar
 <nav style="position:sticky;top:53px;z-index:40;background:rgba(9,9,11,.95);backdrop-filter:blur;border-bottom:1px solid #27272a;overflow-x:auto">
 <div style="max-width:1280px;margin:0 auto;display:flex;gap:2px;padding:0 12px">
 <button onclick="cambiarVista('preview')" id="tab-preview" class="tab-active" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#e63946">👁 Preview</button>
-<button onclick="cambiarVista('distribucion')" id="tab-distribucion" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">📤 Distribución</button>
 <button onclick="cambiarVista('publicar')" id="tab-publicar" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">🚀 Publicar</button>
 <button onclick="cambiarVista('crear')" id="tab-crear" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">✨ Crear</button>
 <button onclick="cambiarVista('live')" id="tab-live" style="font-size:11px;font-weight:600;padding:8px 12px;white-space:nowrap;background:none;border:none;cursor:pointer;color:#a1a1aa">🖥 Live</button>
@@ -58,8 +57,8 @@ body{font-family:Inter,system-ui,sans-serif;background:#09090b;color:#f4f4f5;mar
 <div style="display:flex;flex-direction:column;gap:12px">
 <div class="glass" style="border-radius:12px;padding:12px">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h3 style="font-size:12px;font-weight:700;color:#f87171;margin:0">🎬 Vídeo Largo</h3><button onclick="cambiarVideo('largo')" style="font-size:10px;background:#27272a;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">Largo</button></div>
-<div id="videoWrapper" class="video-container"><video id="mainPlayer" controls></video></div>
-<div style="margin-top:8px"><button onclick="compartir('youtube')" style="width:100%;background:#dc2626;padding:8px;border-radius:6px;font-size:11px;font-weight:700;border:none;color:#fff;cursor:pointer">▶ Subir YT</button></div>
+<div id="videoWrapper" class="video-container" style="position:relative"><iframe id="ytFrame" style="width:100%;height:100%;border:0;border-radius:12px" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe><div id="videoPlaceholder" style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:#71717a;font-size:12px;background:#000;border-radius:12px">🎬 Vídeo no disponible</div></div>
+<div id="ytLinkWrapper" style="margin-top:8px;display:none"><a id="ytLink" target="_blank" style="display:block;text-align:center;background:#dc2626;padding:8px;border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;color:#fff">▶ Ver en YouTube</a></div>
 </div>
 <div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#fb923c;margin:0 0 8px 0">📱 Shorts</h3><div id="shorts-gallery" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px"><div style="font-size:11px;color:#71717a">Cargando...</div></div></div>
 <div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#c084fc;margin:0 0 8px 0">🎧 Podcast</h3><div id="podcast-player" style="font-size:11px;color:#71717a">Cargando...</div></div>
@@ -70,7 +69,6 @@ body{font-family:Inter,system-ui,sans-serif;background:#09090b;color:#f4f4f5;mar
 </div>
 </div>
 
-<div id="view-distribucion" class="hidden"><div id="distribucion-content" class="glass" style="border-radius:12px;padding:12px;font-size:11px;color:#71717a">Cargando...</div></div>
 
 <div id="view-publicar" class="hidden">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h2 style="font-size:16px;font-weight:700;color:#ef4444;margin:0">🚀 Publicar Todo</h2><button onclick="cargarPublicar()" style="font-size:10px;background:#27272a;padding:4px 8px;border-radius:4px;color:#fff;border:none;cursor:pointer">🔄</button></div>
@@ -127,10 +125,19 @@ body{font-family:Inter,system-ui,sans-serif;background:#09090b;color:#f4f4f5;mar
 </div>
 </div>
 
-<div id="view-ab" class="hidden" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+<div id="view-ab" class="hidden">
+<div style="margin-bottom:8px;display:flex;gap:4px;flex-wrap:wrap">
+<button onclick="cargarAB('largo')" id="ab-tab-largo" style="font-size:10px;background:#dc2626;color:#fff;padding:4px 10px;border-radius:4px;border:none;cursor:pointer;font-weight:700">Largo</button>
+<button onclick="cargarAB('short_1')" id="ab-tab-short_1" style="font-size:10px;background:#27272a;color:#fff;padding:4px 10px;border-radius:4px;border:none;cursor:pointer">Short 1</button>
+<button onclick="cargarAB('short_2')" id="ab-tab-short_2" style="font-size:10px;background:#27272a;color:#fff;padding:4px 10px;border-radius:4px;border:none;cursor:pointer">Short 2</button>
+<button onclick="cargarAB('short_3')" id="ab-tab-short_3" style="font-size:10px;background:#27272a;color:#fff;padding:4px 10px;border-radius:4px;border:none;cursor:pointer">Short 3</button>
+<button onclick="cargarAB('short_4')" id="ab-tab-short_4" style="font-size:10px;background:#27272a;color:#fff;padding:4px 10px;border-radius:4px;border:none;cursor:pointer">Short 4</button>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
 <div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#f87171;margin:0 0 8px 0">🎯 Actual</h3><div id="ab-actual" style="font-size:11px">Cargando...</div></div>
 <div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#fb923c;margin:0 0 8px 0">🅰️ Alt A</h3><div id="ab-alt0" style="font-size:11px">—</div></div>
 <div class="glass" style="border-radius:12px;padding:12px"><h3 style="font-size:12px;font-weight:700;color:#facc15;margin:0 0 8px 0">🅱️ Alt B</h3><div id="ab-alt1" style="font-size:11px">—</div></div>
+</div>
 </div>
 
 <div id="view-calendario" class="hidden">
@@ -174,155 +181,159 @@ body{font-family:Inter,system-ui,sans-serif;background:#09090b;color:#f4f4f5;mar
 <div id="toastContainer" style="position:fixed;top:16px;right:16px;z-index:200"></div>
 
 <script src="/encuadre/factory.js?v=2"></script>
+
+<!-- Modal universal (agentes/guion/lightbox) -->
+<div id="bigModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:center;justify-content:center;padding:16px" onclick="if(event.target.id==='bigModal')cerrarModal()">
+<div style="background:#18181b;border:1px solid #e63946;border-radius:12px;max-width:720px;width:100%;max-height:85vh;display:flex;flex-direction:column;overflow:hidden">
+<div style="padding:12px 16px;border-bottom:1px solid #3f3f46;display:flex;justify-content:space-between;align-items:center"><strong id="bigModalTitle" style="color:#f87171;font-size:14px">Info</strong><button onclick="cerrarModal()" style="background:none;border:none;color:#a1a1aa;font-size:22px;cursor:pointer;line-height:1">×</button></div>
+<div id="bigModalContent" style="flex:1;overflow-y:auto;padding:16px;font-size:12px;color:#d4d4d8;line-height:1.6"></div>
+</div>
+</div>
+
 </body>
 </html>
 """
 
-FACTORY_JS = r"""/* Factory OS JS - 2026-11-09 */
+FACTORY_JS = r"""/* Factory OS JS - 2026-11-09 v2 */
 var fechaActual = '';
 var datosGlobales = null;
 var _liveTimer = null;
 var _liveLogActual = 'pipeline.log';
 var _publicarData = null;
 var _crearSeo = null;
+var _cmsCurrentPath = '';
+var _abTipo = 'largo';
 
-function $safe(id, prop, val) {
-  var el = document.getElementById(id);
-  if (el) { try { el[prop] = val; } catch(e){} }
-}
-function $safeHTML(id, html) {
-  var el = document.getElementById(id);
-  if (el) { try { el.innerHTML = html; } catch(e){} }
-}
-function $safeText(id, txt) {
-  var el = document.getElementById(id);
-  if (el) { try { el.textContent = txt; } catch(e){} }
-}
+function $safe(id, prop, val) { var el = document.getElementById(id); if (el) { try { el[prop] = val; } catch(e){} } }
+function $safeHTML(id, html) { var el = document.getElementById(id); if (el) { try { el.innerHTML = html; } catch(e){} } }
+function $safeText(id, txt) { var el = document.getElementById(id); if (el) { try { el.textContent = txt; } catch(e){} } }
+function $esc(s) { return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 function mostrarToast(msg, color) {
-  var c = document.getElementById('toastContainer');
-  if (!c) return;
+  var c = document.getElementById('toastContainer'); if (!c) return;
   var t = document.createElement('div');
-  t.className = 'toast ' + (color || 'bg-zinc-700');
   t.style.cssText = 'background:#18181b;color:#fff;padding:8px 12px;border-radius:6px;font-size:11px;margin-bottom:6px;border-left:3px solid #e63946';
-  t.textContent = msg;
-  c.appendChild(t);
+  t.textContent = msg; c.appendChild(t);
   setTimeout(function(){ t.remove(); }, 3000);
 }
 
+function abrirModal(titulo, contenidoHTML) {
+  var m = document.getElementById('bigModal');
+  var t = document.getElementById('bigModalTitle');
+  var c = document.getElementById('bigModalContent');
+  if (!m) return;
+  if (t) t.textContent = titulo || '';
+  if (c) c.innerHTML = contenidoHTML || '';
+  m.style.display = 'flex';
+}
+function cerrarModal() {
+  var m = document.getElementById('bigModal'); if (m) m.style.display = 'none';
+}
+
 function cambiarVista(v) {
-  var vistas = ['preview','distribucion','publicar','crear','live','analytics','ab','calendario','agentes','cms','monetizacion'];
+  var vistas = ['preview','publicar','crear','live','analytics','ab','calendario','agentes','cms','monetizacion'];
   vistas.forEach(function(t){
     try {
       var vel = document.getElementById('view-' + t);
-      if (vel) {
-        if (t === v) { vel.classList.remove('hidden'); vel.style.display = ''; }
-        else { vel.classList.add('hidden'); vel.style.display = 'none'; }
-      }
+      if (vel) { if (t === v) { vel.classList.remove('hidden'); vel.style.display = ''; } else { vel.classList.add('hidden'); vel.style.display = 'none'; } }
       var tab = document.getElementById('tab-' + t);
       if (tab) tab.style.color = (t === v) ? '#e63946' : '#a1a1aa';
-    } catch(e) { console.warn('cambiarVista', t, e); }
+    } catch(e) {}
   });
   try {
     if (v === 'publicar') cargarPublicar();
     if (v === 'crear') cargarCrear();
     if (v === 'live') liveInit();
     if (v === 'analytics') cargarCloudflareStats();
-    if (v === 'ab') cargarAB();
+    if (v === 'ab') cargarAB('largo');
     if (v === 'calendario') cargarCalendario();
     if (v === 'agentes') cargarAgentes();
     if (v === 'cms') cmsCargarArbol();
-  } catch(e) { console.warn('hook vista', v, e); }
+  } catch(e) { console.warn('hook', v, e); }
 }
 
 function cargarDatos(fecha) {
   if (!fecha) return;
   fechaActual = fecha;
+
+  // YouTube
+  fetch('/api/encuadre/youtube/' + fecha).then(function(r){ return r.json(); }).then(function(yt){
+    window._ytData = yt;
+    actualizarVideoYT('largo');
+  }).catch(function(e){ console.warn('yt', e); });
+
+  // Producción (dossier, shorts)
   fetch('/api/encuadre/datos/' + fecha).then(function(r){ return r.json(); }).then(function(data){
     datosGlobales = data;
     var d = data.dossier || {};
-    var html = '<p><strong style="color:#f87171">Tema:</strong> ' + (d.tema_del_dia || 'N/A') + '</p>';
-    html += '<p style="margin-top:6px"><strong style="color:#f87171">Cita:</strong> <em>' + (d.cita_bomba || 'N/A') + '</em></p>';
+    var html = '';
+    if (d.titular_brutal) html += '<p style="margin:0 0 6px 0"><strong style="color:#f87171">Titular:</strong> ' + $esc(d.titular_brutal) + '</p>';
+    if (d.resumen_ejecutivo) html += '<p style="margin:0 0 6px 0;font-size:10px"><strong style="color:#f87171">Resumen:</strong> ' + $esc(d.resumen_ejecutivo) + '</p>';
+    if (d.citas_bomba && d.citas_bomba.length) html += '<p style="margin:0 0 6px 0"><strong style="color:#f87171">Cita:</strong> <em>' + $esc(d.citas_bomba[0]) + '</em></p>';
+    if (d.metricas) html += '<p style="margin:0;font-size:10px;color:#71717a">' + JSON.stringify(d.metricas).slice(0,80) + '</p>';
+    if (!html) html = '<p style="color:#71717a;font-size:11px">Dossier sin datos</p>';
     $safeHTML('dossierResumen', html);
 
     var shorts = data.shorts_finales || [];
     var sg = document.getElementById('shorts-gallery');
     if (sg) {
       if (shorts.length) {
-        var sh = '';
-        shorts.forEach(function(s, i){
-          sh += '<div onclick="reproducirShort(' + (i+1) + ')" style="cursor:pointer;background:#18181b;border-radius:6px;padding:6px;text-align:center">' +
-                '<div style="font-size:18px">📱</div>' +
-                '<div style="font-size:10px;color:#fb923c;font-weight:700">S' + (i+1) + '</div>' +
-                '<div style="font-size:9px;color:#71717a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (s.tipo || '') + '</div></div>';
-        });
-        sg.innerHTML = sh;
-      } else {
-        sg.innerHTML = '<div style="font-size:11px;color:#71717a">Sin shorts</div>';
-      }
+        sg.innerHTML = shorts.map(function(s, i){
+          return '<div onclick="actualizarVideoYT(\'short_' + (i+1) + '\')" style="cursor:pointer;background:#18181b;border-radius:6px;padding:6px;text-align:center">' +
+                 '<div style="font-size:18px">📱</div><div style="font-size:10px;color:#fb923c;font-weight:700">S' + (i+1) + '</div>' +
+                 '<div style="font-size:9px;color:#71717a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + $esc(s.tipo || '') + '</div></div>';
+        }).join('');
+      } else sg.innerHTML = '<div style="font-size:11px;color:#71717a">Sin shorts</div>';
     }
+  }).catch(function(e){ console.warn('datos', e); });
 
-    var podEl = document.getElementById('podcast-player');
-    if (podEl) {
-      podEl.innerHTML = '<audio controls preload="none" style="width:100%" src="/output/encuadre/podcast_' + fecha + '.mp3"></audio>';
-    }
+  // Podcast
+  fetch('/api/encuadre/podcast/' + fecha).then(function(r){ return r.json(); }).then(function(d){
+    var el = document.getElementById('podcast-player');
+    if (!el) return;
+    if (d.url) el.innerHTML = '<audio controls preload="none" style="width:100%" src="' + d.url + '"></audio><div style="font-size:9px;color:#71717a;margin-top:4px">' + (Math.round(d.size/1024/1024*10)/10) + 'MB</div>';
+    else el.innerHTML = '<div style="font-size:11px;color:#71717a">Sin podcast disponible</div>';
+  }).catch(function(e){ console.warn('podcast', e); });
 
-    var linkEl = document.getElementById('enlaces-web');
-    if (linkEl) {
-      linkEl.innerHTML = '<a href="https://elencuadre.pages.dev/analisis/' + fecha + '-largo/" target="_blank" style="color:#60a5fa;text-decoration:none;display:block;padding:2px 0">📄 Post largo</a>' +
-                         '<a href="https://elencuadre.pages.dev/analisis/' + fecha + '-dossier-v2/" target="_blank" style="color:#60a5fa;text-decoration:none;display:block;padding:2px 0">📄 Dossier v2</a>' +
-                         '<a href="https://elencuadre.pages.dev/" target="_blank" style="color:#60a5fa;text-decoration:none;display:block;padding:2px 0">🏠 Home</a>';
-    }
-
-    try { cambiarVideo('largo'); } catch(e) {}
-  }).catch(function(e){ console.warn('cargarDatos', e); });
-}
-
-function cambiarVideo(tipo) {
-  var w = document.getElementById('videoWrapper');
-  var p = document.getElementById('mainPlayer');
-  if (!w || !p) return;
-  if (tipo === 'largo') {
-    w.classList.remove('vertical');
-    p.src = '/output/encuadre/video_largo_' + fechaActual + '.mp4';
-  } else {
-    w.classList.add('vertical');
-    p.src = '/output/encuadre/short_1_' + fechaActual + '.mp4';
+  // Enlaces web
+  var linkEl = document.getElementById('enlaces-web');
+  if (linkEl) {
+    linkEl.innerHTML = '<a href="https://elencuadre.pages.dev/analisis/' + fecha + '-largo/" target="_blank" style="color:#60a5fa;text-decoration:none;display:block;padding:2px 0">📄 Post largo</a>' +
+                       '<a href="https://elencuadre.pages.dev/analisis/' + fecha + '-dossier-v2/" target="_blank" style="color:#60a5fa;text-decoration:none;display:block;padding:2px 0">📄 Dossier v2</a>' +
+                       '<a href="https://elencuadre.pages.dev/" target="_blank" style="color:#60a5fa;text-decoration:none;display:block;padding:2px 0">🏠 Home</a>';
   }
 }
 
-function reproducirShort(n) {
-  var p = document.getElementById('mainPlayer');
-  var w = document.getElementById('videoWrapper');
-  if (!p) return;
-  if (w) w.classList.add('vertical');
-  p.src = '/output/encuadre/short_' + n + '_' + fechaActual + '.mp4';
-  try { p.play(); } catch(e){}
+function actualizarVideoYT(tipo) {
+  var yt = window._ytData || {};
+  var frame = document.getElementById('ytFrame');
+  var placeholder = document.getElementById('videoPlaceholder');
+  var ytLink = document.getElementById('ytLinkWrapper');
+  var ytLinkAnchor = document.getElementById('ytLink');
+  if (!frame) return;
+  var videoId = null, url = null, titulo = '';
+  if (tipo === 'largo' && yt.largo && yt.largo.video_id) { videoId = yt.largo.video_id; url = 'https://youtu.be/' + videoId; titulo = yt.largo.titulo || 'Vídeo largo'; }
+  else if (tipo.indexOf('short_') === 0) {
+    var idx = parseInt(tipo.replace('short_', '')) - 1;
+    var s = (yt.shorts || [])[idx];
+    if (s && s.video_id) { videoId = s.video_id; url = 'https://youtu.be/' + videoId; titulo = s.titulo || 'Short'; }
+  }
+  if (videoId) {
+    frame.src = 'https://www.youtube.com/embed/' + videoId + '?rel=0';
+    frame.style.display = 'block';
+    if (placeholder) placeholder.style.display = 'none';
+    if (ytLink) ytLink.style.display = 'block';
+    if (ytLinkAnchor) { ytLinkAnchor.href = url; ytLinkAnchor.textContent = '▶ Ver en YouTube: ' + titulo.slice(0, 40); }
+  } else {
+    frame.src = '';
+    frame.style.display = 'none';
+    if (placeholder) placeholder.style.display = 'flex';
+    if (ytLink) ytLink.style.display = 'none';
+  }
 }
 
-function compartir(red) {
-  mostrarToast('🚀 Abriendo ' + red + '...', 'bg-blue-600');
-  fetch('/api/encuadre/compartir', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({red: red, fecha: fechaActual})});
-}
-
-function abrirDrawer(tipo) {
-  var d = document.getElementById('drawer');
-  var t = document.getElementById('drawerTitle');
-  var c = document.getElementById('drawerContent');
-  if (!d) return;
-  if (t) t.textContent = tipo || 'Detalle';
-  if (c) c.innerHTML = '<p style="color:#71717a">Cargando...</p>';
-  d.style.right = '0';
-}
-function cerrarDrawer() {
-  var d = document.getElementById('drawer');
-  if (d) d.style.right = '-100%';
-}
-
-function abrirApp(red, texto) {
-  fetch('/api/encuadre/abrir_app', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({red: red, texto: texto || ''})})
-    .then(function(r){ return r.json(); }).then(function(d){ mostrarToast('🚀 ' + red, 'bg-blue-600'); });
-}
+function cambiarVideo(tipo) { actualizarVideoYT(tipo); }
+function reproducirShort(n) { actualizarVideoYT('short_' + n); }
 
 /* PUBLICAR */
 function cargarPublicar() {
@@ -334,15 +345,14 @@ function cargarPublicar() {
     var html = '';
     var largo = d.largo || {};
     html += '<div class="glass" style="border-radius:10px;padding:10px;border-left:3px solid #dc2626">' +
-            '<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:12px;font-weight:700;color:#f87171">🎬 Vídeo Largo</div><button onclick="verGuion(\'largo\')" style="font-size:10px;background:#27272a;padding:3px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">Ver</button></div>' +
+            '<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:12px;font-weight:700;color:#f87171">🎬 Vídeo Largo</div><button onclick="verGuion(\'largo\')" style="font-size:10px;background:#27272a;padding:3px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">Ver guion</button></div>' +
             '<div style="font-size:10px;color:#a1a1aa;margin-top:4px">' + (largo.palabras || 0) + ' palabras · Viralidad ' + (largo.viralidad || 0) + '/10</div>' +
-            '<div style="font-size:10px;color:#d4d4d8;margin-top:4px"><strong>SEO:</strong> ' + ((largo.seo && largo.seo.titulo) || '—') + '</div></div>';
-
+            '<div style="font-size:10px;color:#d4d4d8;margin-top:4px"><strong>SEO:</strong> ' + $esc((largo.seo && largo.seo.titulo) || '—') + '</div></div>';
     (d.shorts || []).forEach(function(s){
       html += '<div class="glass" style="border-radius:10px;padding:10px;border-left:3px solid #ea580c">' +
-              '<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:12px;font-weight:700;color:#fb923c">📱 Short ' + s.num + ' · ' + (s.tipo || '') + '</div><button onclick="verGuion(' + s.num + ')" style="font-size:10px;background:#27272a;padding:3px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">Ver</button></div>' +
-              '<div style="font-size:10px;color:#a1a1aa;margin-top:4px">' + (s.hook || '') + '</div>' +
-              '<div style="font-size:10px;color:#d4d4d8;margin-top:4px"><strong>SEO:</strong> ' + ((s.seo && s.seo.titulo) || '—') + '</div></div>';
+              '<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:12px;font-weight:700;color:#fb923c">📱 Short ' + s.num + ' · ' + $esc(s.tipo || '') + '</div><button onclick="verGuion(' + s.num + ')" style="font-size:10px;background:#27272a;padding:3px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">Ver guion</button></div>' +
+              '<div style="font-size:10px;color:#a1a1aa;margin-top:4px">' + $esc((s.hook || '').slice(0, 100)) + '</div>' +
+              '<div style="font-size:10px;color:#d4d4d8;margin-top:4px"><strong>SEO:</strong> ' + $esc((s.seo && s.seo.titulo) || '—') + '</div></div>';
     });
     root.innerHTML = html;
   }).catch(function(e){ root.innerHTML = '<div style="color:#ef4444;font-size:11px">Error: ' + e.message + '</div>'; });
@@ -350,13 +360,10 @@ function cargarPublicar() {
 
 function verGuion(id) {
   if (!_publicarData) return;
-  var txt = '';
-  if (id === 'largo') txt = (_publicarData.largo && _publicarData.largo.guion) || 'Sin guion';
-  else {
-    var s = (_publicarData.shorts || [])[id-1];
-    txt = (s && s.guion) || 'Sin guion';
-  }
-  alert('=== GUION ===\n\n' + txt);
+  var txt = '', titulo = '';
+  if (id === 'largo') { txt = (_publicarData.largo && _publicarData.largo.guion) || 'Sin guion'; titulo = '🎬 Guion Vídeo Largo'; }
+  else { var s = (_publicarData.shorts || [])[id-1]; txt = (s && s.guion) || 'Sin guion'; titulo = '📱 Guion Short ' + id + ' · ' + ((s && s.tipo) || ''); }
+  abrirModal(titulo, '<pre style="white-space:pre-wrap;font-family:inherit;font-size:12px;line-height:1.6;margin:0">' + $esc(txt) + '</pre>');
 }
 
 /* CREAR */
@@ -371,60 +378,42 @@ function cargarCrear() {
   });
   fetch('/api/encuadre/seo_top').then(function(r){ return r.json(); }).then(function(d){
     _crearSeo = d;
-    var html = '<div style="margin-bottom:6px"><div style="font-size:10px;color:#71717a">Keywords:</div><div class="mono" style="font-size:10px;color:#d4d4d8">' + ((d.keywords || []).join(' · ') || '—') + '</div></div>';
-    html += '<div style="margin-bottom:6px"><div style="font-size:10px;color:#71717a">Mejor hora:</div><div style="font-size:14px;font-weight:700;color:#4ade80">' + (d.mejor_hora || '—') + '</div></div>';
-    html += '<div><div style="font-size:10px;color:#71717a">CTR estimado:</div><div style="font-size:12px;font-weight:700;color:#fb923c">' + (d.ctr_estimado || '—') + '</div></div>';
+    var html = '<div style="margin-bottom:6px"><div style="font-size:10px;color:#71717a">Keywords:</div><div class="mono" style="font-size:10px;color:#d4d4d8">' + $esc((d.keywords || []).join(' · ') || '—') + '</div></div>';
+    html += '<div style="margin-bottom:6px"><div style="font-size:10px;color:#71717a">Mejor hora:</div><div style="font-size:14px;font-weight:700;color:#4ade80">' + $esc(d.mejor_hora || '—') + '</div></div>';
+    html += '<div><div style="font-size:10px;color:#71717a">CTR estimado:</div><div style="font-size:12px;font-weight:700;color:#fb923c">' + $esc(d.ctr_estimado || '—') + '</div></div>';
     $safeHTML('crear-seo', html);
   });
 }
-
 function crearToggleTema() {
-  var v = document.getElementById('crear-tema-tipo');
-  var m = document.getElementById('crear-manual');
+  var v = document.getElementById('crear-tema-tipo'); var m = document.getElementById('crear-manual');
   if (v && m) m.classList.toggle('hidden', v.value !== 'manual');
 }
-
 function crearLanzar() {
   var nicho = (document.getElementById('crear-nicho') || {}).value || '';
-  var formatos = [];
-  document.querySelectorAll('#crear-formatos input:checked').forEach(function(i){ formatos.push(i.value); });
+  var formatos = []; document.querySelectorAll('#crear-formatos input:checked').forEach(function(i){ formatos.push(i.value); });
   var temaTipo = (document.getElementById('crear-tema-tipo') || {}).value || 'auto';
   var tema = temaTipo === 'manual' ? ((document.getElementById('crear-manual') || {}).value || '') : '';
   if (!formatos.length) { mostrarToast('Elige formato', 'bg-red-600'); return; }
   if (temaTipo === 'manual' && !tema) { mostrarToast('Escribe tema', 'bg-red-600'); return; }
   mostrarToast('🚀 Lanzando...', 'bg-orange-600');
   fetch('/api/encuadre/crear_custom', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({nicho: nicho, formatos: formatos, num_shorts: 4, tema_tipo: temaTipo, tema: tema})})
-    .then(function(r){ return r.json(); }).then(function(d){
-      if (d.ok) mostrarToast('✅ Lanzado', 'bg-green-600');
-      else mostrarToast('❌ ' + (d.error || 'error'), 'bg-red-600');
-    });
+    .then(function(r){ return r.json(); }).then(function(d){ if (d.ok) mostrarToast('✅ Lanzado', 'bg-green-600'); else mostrarToast('❌ ' + (d.error || 'error'), 'bg-red-600'); });
 }
 
 /* LIVE */
-function liveInit() {
-  liveCargarLista();
-  liveIniciarAuto();
-}
+function liveInit() { liveCargarLista(); liveIniciarAuto(); }
 function liveCargarLista() {
   fetch('/api/encuadre/logs/list').then(function(r){ return r.json(); }).then(function(d){
     var sel = document.getElementById('live-log-select');
     if (sel) {
       var cur = _liveLogActual;
-      sel.innerHTML = (d.logs || []).slice(0, 20).map(function(l){
-        return '<option value="' + l.name + '"' + (l.name === cur ? ' selected' : '') + '>' + l.name + '</option>';
-      }).join('') || '<option value="">(sin logs)</option>';
+      sel.innerHTML = (d.logs || []).slice(0, 20).map(function(l){ return '<option value="' + l.name + '"' + (l.name === cur ? ' selected' : '') + '>' + l.name + '</option>'; }).join('') || '<option value="">(sin logs)</option>';
     }
     var act = document.getElementById('live-activos');
-    if (act) {
-      if (d.pipelines_activos && d.pipelines_activos.length) act.innerHTML = '<span style="color:#4ade80">🔴 ' + d.pipelines_activos.length + ' corriendo</span>';
-      else act.innerHTML = '<span style="color:#71717a">Sin pipelines</span>';
-    }
+    if (act) act.innerHTML = (d.pipelines_activos && d.pipelines_activos.length) ? '<span style="color:#4ade80">🔴 ' + d.pipelines_activos.length + ' corriendo</span>' : '<span style="color:#71717a">Sin pipelines</span>';
   });
 }
-function liveCambiarLog() {
-  var s = document.getElementById('live-log-select');
-  if (s) { _liveLogActual = s.value; liveRefrescar(); }
-}
+function liveCambiarLog() { var s = document.getElementById('live-log-select'); if (s) { _liveLogActual = s.value; liveRefrescar(); } }
 function liveRefrescar() {
   if (!_liveLogActual) return;
   fetch('/api/encuadre/logs/tail?name=' + encodeURIComponent(_liveLogActual) + '&n=200').then(function(r){ return r.json(); }).then(function(d){
@@ -435,19 +424,8 @@ function liveRefrescar() {
     term.scrollTop = term.scrollHeight;
   });
 }
-function liveToggleAuto() {
-  var a = document.getElementById('live-auto');
-  if (a && a.checked) liveIniciarAuto();
-  else if (_liveTimer) { clearInterval(_liveTimer); _liveTimer = null; }
-}
-function liveIniciarAuto() {
-  if (_liveTimer) clearInterval(_liveTimer);
-  liveRefrescar();
-  _liveTimer = setInterval(function(){
-    if (location.hash && location.hash.indexOf('live') < 0) return;
-    liveRefrescar();
-  }, 3000);
-}
+function liveToggleAuto() { var a = document.getElementById('live-auto'); if (a && a.checked) liveIniciarAuto(); else if (_liveTimer) { clearInterval(_liveTimer); _liveTimer = null; } }
+function liveIniciarAuto() { if (_liveTimer) clearInterval(_liveTimer); liveRefrescar(); _liveTimer = setInterval(function(){ liveRefrescar(); }, 3000); }
 function liveLanzarPipeline() {
   if (!confirm('Lanzar pipeline?')) return;
   fetch('/api/encuadre/run_pipeline', {method:'POST'}).then(function(r){ return r.json(); }).then(function(d){
@@ -457,9 +435,7 @@ function liveLanzarPipeline() {
 }
 function liveMatar() {
   if (!confirm('Matar pipelines?')) return;
-  fetch('/api/encuadre/kill_pipeline', {method:'POST'}).then(function(r){ return r.json(); }).then(function(d){
-    mostrarToast(d.ok ? '✅ Matados' : '❌ Error', d.ok ? 'bg-green-600' : 'bg-red-600');
-  });
+  fetch('/api/encuadre/kill_pipeline', {method:'POST'}).then(function(r){ return r.json(); }).then(function(d){ mostrarToast(d.ok ? '✅ Matados' : '❌ Error', d.ok ? 'bg-green-600' : 'bg-red-600'); });
 }
 
 /* ANALYTICS */
@@ -467,34 +443,34 @@ function cargarCloudflareStats() {
   fetch('/api/cloudflare/stats').then(function(r){ return r.json(); }).then(function(d){
     $safeText('cf-pv', (d.page_views || 0).toLocaleString('es-ES'));
     $safeText('cf-vt', (d.visitas || 0).toLocaleString('es-ES'));
-    var tp = (d.top_paginas || [])[0];
-    var tc = (d.top_paises || [])[0];
+    var tp = (d.top_paginas || [])[0]; var tc = (d.top_paises || [])[0];
     $safeText('cf-pais', tc ? tc[0] : '—');
     var pag = tp ? tp[0].replace(/\/$/, '').split('/').pop() : '—';
     $safeText('cf-pag', pag || '—');
     var maxP = tp ? tp[1] : 1;
     var pg = document.getElementById('cf-top-paginas');
-    if (pg) {
-      pg.innerHTML = (d.top_paginas || []).map(function(p){
-        var pct = Math.round((p[1] / maxP) * 100);
-        var slug = p[0].replace(/\/$/, '').split('/').pop() || '/';
-        return '<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:10px;color:#d4d4d8"><span>' + slug + '</span><span>' + p[1] + '</span></div><div style="height:4px;background:#27272a;border-radius:2px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#ef4444,#f97316)"></div></div></div>';
-      }).join('') || '<div style="font-size:11px;color:#71717a">Sin datos</div>';
-    }
+    if (pg) pg.innerHTML = (d.top_paginas || []).map(function(p){
+      var pct = Math.round((p[1] / maxP) * 100);
+      var slug = p[0].replace(/\/$/, '').split('/').pop() || '/';
+      return '<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:10px;color:#d4d4d8"><span>' + $esc(slug) + '</span><span>' + p[1] + '</span></div><div style="height:4px;background:#27272a;border-radius:2px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#ef4444,#f97316)"></div></div></div>';
+    }).join('') || '<div style="font-size:11px;color:#71717a">Sin datos aún (beacon <24h)</div>';
     var maxC = tc ? tc[1] : 1;
     var ps = document.getElementById('cf-top-paises');
-    if (ps) {
-      ps.innerHTML = (d.top_paises || []).map(function(c){
-        var pct = Math.round((c[1] / maxC) * 100);
-        return '<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:10px;color:#d4d4d8"><span>' + c[0] + '</span><span>' + c[1] + '</span></div><div style="height:4px;background:#27272a;border-radius:2px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#f97316,#facc15)"></div></div></div>';
-      }).join('') || '<div style="font-size:11px;color:#71717a">Sin datos</div>';
-    }
+    if (ps) ps.innerHTML = (d.top_paises || []).map(function(c){
+      var pct = Math.round((c[1] / maxC) * 100);
+      return '<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:10px;color:#d4d4d8"><span>' + $esc(c[0]) + '</span><span>' + c[1] + '</span></div><div style="height:4px;background:#27272a;border-radius:2px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#f97316,#facc15)"></div></div></div>';
+    }).join('') || '<div style="font-size:11px;color:#71717a">Sin datos aún</div>';
   });
 }
 
 /* A/B */
-function cargarAB() {
-  fetch('/api/encuadre/ab_titulos/' + fechaActual).then(function(r){ return r.json(); }).then(function(d){
+function cargarAB(tipo) {
+  _abTipo = tipo || 'largo';
+  ['largo','short_1','short_2','short_3','short_4'].forEach(function(t){
+    var b = document.getElementById('ab-tab-' + t);
+    if (b) b.style.background = (t === _abTipo) ? '#dc2626' : '#27272a';
+  });
+  fetch('/api/encuadre/ab_titulos/' + fechaActual + '?tipo=' + _abTipo).then(function(r){ return r.json(); }).then(function(d){
     $safeText('ab-actual', d.actual || '—');
     $safeText('ab-alt0', (d.alternativas && d.alternativas[0]) || '—');
     $safeText('ab-alt1', (d.alternativas && d.alternativas[1]) || '—');
@@ -504,49 +480,47 @@ function cargarAB() {
 /* CALENDARIO */
 function cargarCalendario() {
   fetch('/api/encuadre/calendario').then(function(r){ return r.json(); }).then(function(d){
-    var el = document.getElementById('cal-lista');
-    if (!el) return;
-    if (!d.items || !d.items.length) { el.innerHTML = '<div style="color:#71717a">Sin publicaciones programadas</div>'; return; }
+    var el = document.getElementById('cal-lista'); if (!el) return;
+    if (!d.items || !d.items.length) { el.innerHTML = '<div style="color:#71717a">Sin publicaciones programadas. Pulsa ➕ Hoy para encolar el vídeo de hoy.</div>'; return; }
     el.innerHTML = d.items.map(function(it){
-      return '<div style="background:#18181b;border-radius:4px;padding:6px 8px;display:flex;justify-content:space-between;align-items:center"><span>' + (it.titulo || '') + '</span><span style="color:#fbbf24;font-size:10px">' + (it.estado || '') + '</span></div>';
+      return '<div style="background:#18181b;border-radius:4px;padding:6px 8px;display:flex;justify-content:space-between;align-items:center"><span>' + $esc(it.titulo || '') + '</span><span style="color:#fbbf24;font-size:10px">' + $esc(it.estado || '') + '</span></div>';
     }).join('');
   });
 }
 function calendarioProgramarHoy() {
   if (!confirm('Programar vídeo de hoy?')) return;
-  fetch('/api/encuadre/programar_hoy', {method:'POST'}).then(function(r){ return r.json(); }).then(function(d){
-    mostrarToast(d.ok ? '✅ Programado' : '❌ ' + (d.error || ''), d.ok ? 'bg-green-600' : 'bg-red-600');
-    cargarCalendario();
-  });
+  fetch('/api/encuadre/programar_hoy', {method:'POST'}).then(function(r){ return r.json(); }).then(function(d){ mostrarToast(d.ok ? '✅ Programado' : '❌ ' + (d.error || ''), d.ok ? 'bg-green-600' : 'bg-red-600'); cargarCalendario(); });
 }
 
-/* AGENTES */
+/* AGENTES con modal */
 function cargarAgentes() {
   fetch('/api/encuadre/agentes').then(function(r){ return r.json(); }).then(function(d){
-    var el = document.getElementById('agentes-grid');
-    if (!el) return;
+    var el = document.getElementById('agentes-grid'); if (!el) return;
     if (!d.agentes || !d.agentes.length) { el.innerHTML = '<div style="color:#ef4444">0 agentes</div>'; return; }
-    el.innerHTML = d.agentes.map(function(a){
-      return '<div class="glass" style="border-radius:8px;padding:8px"><div style="font-size:11px;font-weight:700;color:#f87171">' + a.label + '</div><div style="font-size:9px;color:#71717a;margin-top:2px;max-height:32px;overflow:hidden">' + (a.desc || '') + '</div></div>';
+    el.innerHTML = d.agentes.map(function(a, i){
+      return '<div class="glass" style="border-radius:8px;padding:8px;cursor:pointer" onclick="verAgente(' + i + ')"><div style="font-size:11px;font-weight:700;color:#f87171">' + $esc(a.label) + '</div><div style="font-size:9px;color:#71717a;margin-top:2px;max-height:32px;overflow:hidden;text-overflow:ellipsis">' + $esc((a.desc || '').slice(0, 80)) + '</div></div>';
     }).join('');
+    window._agentesData = d.agentes;
   });
 }
+function verAgente(i) {
+  var a = (window._agentesData || [])[i]; if (!a) return;
+  abrirModal('🤖 ' + a.label, '<div style="margin-bottom:8px"><strong style="color:#f87171">ID:</strong> <code style="color:#d4d4d8">' + $esc(a.id) + '</code></div><div><strong style="color:#f87171">Descripción completa:</strong><p style="margin-top:6px;font-size:12px;line-height:1.6">' + $esc(a.desc || '(sin descripción)') + '</p></div>');
+}
 
-/* CMS */
+/* CMS con lightbox imagen */
 function cmsCargarArbol() {
   fetch('/api/cms/files').then(function(r){ return r.json(); }).then(function(d){
-    var root = document.getElementById('cms-tree');
-    if (!root) return;
+    var root = document.getElementById('cms-tree'); if (!root) return;
     function render(items) {
       return (items || []).map(function(i){
-        if (i.type === 'dir') return '<div style="font-size:10px;color:#71717a;margin-top:4px;font-weight:700">📁 ' + i.name + '</div>' + render(i.children);
-        return '<div onclick="cmsAbrirArchivo(\'' + i.path + '\')" style="font-size:10px;color:#d4d4d8;cursor:pointer;padding:2px 4px;border-radius:2px">📄 ' + i.name + '</div>';
+        if (i.type === 'dir') return '<div style="font-size:10px;color:#71717a;margin-top:4px;font-weight:700">📁 ' + $esc(i.name) + '</div>' + render(i.children);
+        return '<div onclick="cmsAbrirArchivo(\'' + $esc(i.path).replace(/'/g, "\\'") + '\')" style="font-size:10px;color:#d4d4d8;cursor:pointer;padding:2px 4px;border-radius:2px">📄 ' + $esc(i.name) + '</div>';
       }).join('');
     }
     root.innerHTML = render(d.tree);
   });
 }
-var _cmsCurrentPath = '';
 function cmsAbrirArchivo(path) {
   _cmsCurrentPath = path;
   $safeText('cms-filename', path);
@@ -555,22 +529,30 @@ function cmsAbrirArchivo(path) {
   ed.disabled = true; ed.value = 'Cargando...';
   fetch('/api/cms/read', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({path: path})})
     .then(function(r){ return r.json(); }).then(function(d){
-      if (d.type === 'binary') ed.value = '[binario]';
-      else { ed.value = d.content || ''; ed.disabled = false; }
+      if (d.type === 'binary') {
+        ed.value = '';
+        var url = d.url || ('/' + path);
+        if (/\.(png|jpg|jpeg|gif|webp|svg)$/i.test(path)) {
+          abrirModal('🖼 ' + path.split('/').pop(), '<img src="' + url + '" style="max-width:100%;border-radius:8px" onerror="this.style.display=\'none\';this.parentNode.innerHTML+=\'<p style=color:#ef4444>No se pudo cargar</p>\'"><p style="margin-top:8px;font-size:11px;color:#71717a">' + url + '</p>');
+        } else if (/\.(mp3|wav|ogg)$/i.test(path)) {
+          abrirModal('🎵 ' + path.split('/').pop(), '<audio controls style="width:100%" src="' + url + '"></audio>');
+        } else if (/\.(mp4|webm)$/i.test(path)) {
+          abrirModal('🎬 ' + path.split('/').pop(), '<video controls style="width:100%" src="' + url + '"></video>');
+        } else {
+          ed.value = '[archivo binario: ' + url + ']';
+        }
+      } else { ed.value = d.content || ''; ed.disabled = false; }
     });
 }
 function cmsGuardar() {
   if (!_cmsCurrentPath) return;
-  var ed = document.getElementById('cms-editor');
-  if (!ed) return;
+  var ed = document.getElementById('cms-editor'); if (!ed) return;
   fetch('/api/cms/save', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({path: _cmsCurrentPath, content: ed.value})})
     .then(function(r){ return r.json(); }).then(function(d){ mostrarToast(d.ok ? '✅ Guardado' : '❌ ' + (d.error || ''), d.ok ? 'bg-green-600' : 'bg-red-600'); });
 }
 function cmsBuild() {
   mostrarToast('🚀 Build...', 'bg-blue-600');
-  fetch('/api/cms/build', {method:'POST'}).then(function(r){ return r.json(); }).then(function(d){
-    mostrarToast(d.ok ? '✅ Deploy' : '❌ ' + (d.error || ''), d.ok ? 'bg-green-600' : 'bg-red-600');
-  });
+  fetch('/api/cms/build', {method:'POST'}).then(function(r){ return r.json(); }).then(function(d){ mostrarToast(d.ok ? '✅ Deploy' : '❌ ' + (d.error || ''), d.ok ? 'bg-green-600' : 'bg-red-600'); });
 }
 
 /* MONETIZACIÓN */
@@ -579,75 +561,35 @@ function subirPrintify() { mostrarToast('👕 Printify', 'bg-purple-600'); }
 function generarKDP() { mostrarToast('📚 KDP', 'bg-yellow-600'); }
 
 /* DIOS */
-function diosToggle() {
-  var p = document.getElementById('dios-panel');
-  if (!p) return;
-  p.style.display = (p.style.display === 'none' || !p.style.display) ? 'flex' : 'none';
-}
-function diosPush(txt, color) {
-  var c = document.getElementById('dios-chat');
-  if (!c) return;
-  var d = document.createElement('div');
-  d.style.marginBottom = '6px';
-  d.style.color = color;
-  d.style.whiteSpace = 'pre-wrap';
-  d.textContent = txt;
-  c.appendChild(d);
-  c.scrollTop = c.scrollHeight;
-}
+function diosToggle() { var p = document.getElementById('dios-panel'); if (!p) return; p.style.display = (p.style.display === 'none' || !p.style.display) ? 'flex' : 'none'; }
+function diosPush(txt, color) { var c = document.getElementById('dios-chat'); if (!c) return; var d = document.createElement('div'); d.style.marginBottom = '6px'; d.style.color = color; d.style.whiteSpace = 'pre-wrap'; d.textContent = txt; c.appendChild(d); c.scrollTop = c.scrollHeight; }
 function diosEnviar() {
-  var inp = document.getElementById('dios-input');
-  if (!inp) return;
-  var q = inp.value.trim();
-  if (!q) return;
+  var inp = document.getElementById('dios-input'); if (!inp) return;
+  var q = inp.value.trim(); if (!q) return;
   inp.value = '';
-  diosPush('👤 ' + q, '#a1a1aa');
-  diosPush('⏳ ...', '#f77f00');
+  diosPush('👤 ' + q, '#a1a1aa'); diosPush('⏳ ...', '#f77f00');
   fetch('/api/encuadre/dios_ask', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({pregunta: q, fecha: fechaActual})})
-    .then(function(r){ return r.json(); }).then(function(d){
-      var c = document.getElementById('dios-chat');
-      if (c && c.lastChild) c.lastChild.remove();
-      if (d.ok) diosPush('🤖 ' + d.respuesta, '#d4d4d8');
-      else diosPush('❌ ' + (d.error || ''), '#ef4444');
-    });
+    .then(function(r){ return r.json(); }).then(function(d){ var c = document.getElementById('dios-chat'); if (c && c.lastChild) c.lastChild.remove(); if (d.ok) diosPush('🤖 ' + d.respuesta, '#d4d4d8'); else diosPush('❌ ' + (d.error || ''), '#ef4444'); });
 }
 
 /* INIT */
 function __init_factory() {
-  var st = document.getElementById('initStatus');
-  if (st) st.textContent = 'init: ok';
+  var st = document.getElementById('initStatus'); if (st) st.textContent = 'init: ok';
   fetch('/api/encuadre/fechas').then(function(r){ return r.json(); }).then(function(data){
-    var sel = document.getElementById('dateSelector');
-    if (!sel) return;
+    var sel = document.getElementById('dateSelector'); if (!sel) return;
     if (!data.fechas || !data.fechas.length) { sel.innerHTML = '<option>Sin producciones</option>'; return; }
     sel.innerHTML = data.fechas.map(function(f){ return '<option value="' + f + '">' + f + '</option>'; }).join('');
     sel.onchange = function(){ cargarDatos(this.value); };
     cargarDatos(data.fechas[0]);
-  }).catch(function(e){
-    if (st) st.textContent = 'init ERR: ' + e.message;
-  });
+  }).catch(function(e){ if (st) st.textContent = 'init ERR: ' + e.message; });
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', __init_factory);
-} else {
-  __init_factory();
-}
+if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', __init_factory); } else { __init_factory(); }
 
-/* Expose globals */
-try {
-  ['cambiarVista','cargarDatos','cambiarVideo','reproducirShort','compartir','abrirDrawer','cerrarDrawer','abrirApp',
-   'cargarPublicar','verGuion','cargarCrear','crearToggleTema','crearLanzar',
-   'liveInit','liveCargarLista','liveCambiarLog','liveRefrescar','liveToggleAuto','liveLanzarPipeline','liveMatar',
-   'cargarCloudflareStats','cargarAB','cargarCalendario','calendarioProgramarHoy','cargarAgentes',
-   'cmsCargarArbol','cmsAbrirArchivo','cmsGuardar','cmsBuild',
-   'aplicarAfiliados','subirPrintify','generarKDP','diosToggle','diosEnviar','diosPush','mostrarToast'
-  ].forEach(function(fn){
-    try { window[fn] = eval(fn); } catch(e){}
-  });
-  console.log('[factory] globals attached');
-} catch(e) { console.error('[factory] attach fail', e); }
+['cambiarVista','cargarDatos','actualizarVideoYT','cambiarVideo','reproducirShort','compartir','abrirModal','cerrarModal','cargarPublicar','verGuion','cargarCrear','crearToggleTema','crearLanzar','liveInit','liveCargarLista','liveCambiarLog','liveRefrescar','liveToggleAuto','liveLanzarPipeline','liveMatar','cargarCloudflareStats','cargarAB','cargarCalendario','calendarioProgramarHoy','cargarAgentes','verAgente','cmsCargarArbol','cmsAbrirArchivo','cmsGuardar','cmsBuild','aplicarAfiliados','subirPrintify','generarKDP','diosToggle','diosEnviar','diosPush','mostrarToast'].forEach(function(fn){ try { window[fn] = eval(fn); } catch(e){} });
+console.log('[factory] ready');
 """
+
 
 
 
@@ -655,6 +597,38 @@ try {
 LOGS_DIR = ROOT / "data" / "logs"
 
 
+
+
+
+@encuadre_bp.route("/api/encuadre/youtube/<fecha>")
+def api_youtube(fecha):
+    p = ROOT / "data" / "agent" / f"youtube_urls_{fecha}.json"
+    if not p.exists(): return jsonify({"largo": None, "shorts": [], "error": "sin_urls"})
+    try: return jsonify(json.loads(p.read_text()))
+    except Exception as e: return jsonify({"error": str(e)})
+
+
+@encuadre_bp.route("/api/encuadre/podcast/<fecha>")
+def api_podcast(fecha):
+    """Devuelve URL del podcast: prefiere /docs/podcast/ (protegido, persiste)."""
+    web_pod = ROOT / "web" / "docs" / "podcast" / f"{fecha}.mp3"
+    out_pod = ROOT / "output" / "encuadre" / "podcast" / f"{fecha}.mp3"
+    out_direct = ROOT / "output" / "encuadre" / f"podcast_{fecha}.mp3"
+    for path, url in [
+        (web_pod, f"/ui-podcast/{fecha}.mp3"),
+        (out_pod, f"/output/encuadre/podcast/{fecha}.mp3"),
+        (out_direct, f"/output/encuadre/podcast_{fecha}.mp3"),
+    ]:
+        if path.exists(): return jsonify({"url": url, "size": path.stat().st_size, "source": path.name})
+    return jsonify({"url": None, "error": "sin_podcast"})
+
+
+@encuadre_bp.route("/ui-podcast/<path:filename>")
+def serve_ui_podcast(filename):
+    from flask import send_from_directory
+    if ".." in filename or "/" in filename:
+        return jsonify({"error": "invalido"}), 400
+    return send_from_directory(str(ROOT / "web" / "docs" / "podcast"), filename, mimetype="audio/mpeg")
 
 
 @encuadre_bp.route("/encuadre/factory.js")
