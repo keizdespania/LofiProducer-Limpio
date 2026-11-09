@@ -2660,7 +2660,12 @@ def _tool_generar_thumbnail_video(args):
                 f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={vid}",
                 headers={"Authorization": f"Bearer {access}", "Content-Type": "image/png"},
                 data=f.read(), timeout=60)
-        subida = "✅ subida a YouTube" if r.status_code in (200, 204) else f"⚠️ upload HTTP {r.status_code}"
+        if r.status_code in (200, 204):
+            subida = "✅ subida a YouTube"
+        elif r.status_code == 403:
+            subida = "⚠️ HTTP 403: canal necesita verificación (7d+ activo) o falta scope youtube.upload. Thumbnail guardada local."
+        else:
+            subida = f"⚠️ upload HTTP {r.status_code}: {r.text[:200]}"
     except Exception as e:
         subida = f"⚠️ upload error: {e}"
     
