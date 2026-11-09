@@ -2774,8 +2774,10 @@ def _tool_generar_thumbnails_lote(args):
             if metodo == "?":
                 try:
                     _sys.path.insert(0, str(ROOT / "scripts"))
+                    _sys.path.insert(0, str(ROOT / "brain"))
                     from generar_imagen import generar
-                    prompt = f"Cinematic dramatic scene representing: {titulo[:100]}. Dark moody lighting, high contrast, no text, editorial photography style, 16:9"
+                    from prompt_thumbnail import generar_prompt as _gen_prompt_thumb
+                    prompt = _gen_prompt_thumb(titulo or "news manipulation analysis")
                     r = generar(prompt, preset="cinematic", aspect="16:9", canal="encuadre")
                     if r.startswith("OK: "):
                         src = pathlib.Path(r.split("OK: ")[1].split(" ")[0])
