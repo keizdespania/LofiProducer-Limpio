@@ -15,7 +15,7 @@ hide:
 <div class="holo-grid">
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-mediano-medio_crudo/'">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
-    
+    <img src="/media/imagenes/post_2026-11-08_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la ilusión de dinamismo y inevitabilidad</h3>
     <p>Analisis medio_crudo: Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la i</p>
     <div class="holo-meta"><span>📅 2026-11-08</span></div>
@@ -24,7 +24,7 @@ hide:
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-largo/'">
     <div class="holo-badge badge-new">🔥 Análisis Diario</div>
-    
+    <img src="/media/imagenes/post_2026-11-08_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>El Encuadre: El presidente de Israel encarga formar gobierno</h3>
     <p>Analisis largo: El Encuadre: El presidente de Israel encarga formar gobierno</p>
     <div class="holo-meta"><span>📅 2026-11-08</span></div>
@@ -33,7 +33,7 @@ hide:
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-dossier-v2/'">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    
+    <img src="/media/imagenes/post_2026-11-08_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Dossier del día: El Encuadre: El presidente de Israel encarga formar gobierno</h3>
     <p>Dossier ejecutivo: El Encuadre: El presidente de Israel encarga formar gobierno al opositor Eisenko</p>
     <div class="holo-meta"><span>📅 2026-11-08</span></div>

@@ -32,6 +32,15 @@ except Exception as _e:
 BLOGGER_PAUSADO = True
 BLOGGER_DESBLOQUEO = "2026-11-11"
 
+# 2026-11-09: snapshot rollback antes de pipeline
+try:
+    import sys as _sys_snap
+    _sys_snap.path.insert(0, str(ROOT / "scripts"))
+    from rollback import snapshot as _snap
+    _snap("pre-pipeline")
+except Exception as _e:
+    print(f"   [snapshot] {_e}", flush=True)
+
 def _run(script, args=None, timeout=1200, retries=3):
     cmd = ["python3", f"scripts/{script}"] + (args or [])
     for intento in range(retries):

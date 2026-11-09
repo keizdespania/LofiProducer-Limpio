@@ -835,6 +835,44 @@ HTML_FACTORY = """<!DOCTYPE html>
 LOGS_DIR = ROOT / "data" / "logs"
 
 
+
+@encuadre_bp.route("/api/encuadre/rollback/list")
+def api_rollback_list():
+    import subprocess as _sp
+    r = _sp.run(["git", "tag", "-l", "snap-*"], cwd=str(ROOT), capture_output=True, text=True, timeout=10)
+    tags = sorted(r.stdout.strip().splitlines(), reverse=True)[:20]
+    items = []
+    for tag in tags:
+        info = _sp.run(["git", "log", "-1", "--format=%ci|%s", tag], cwd=str(ROOT), capture_output=True, text=True, timeout=5)
+        parts = info.stdout.strip().split("|", 1)
+        items.append({"tag": tag, "fecha": parts[0] if parts else "", "motivo": parts[1] if len(parts) > 1 else ""})
+    return jsonify({"tags": items})
+
+
+@encuadre_bp.route("/api/encuadre/rollback/create", methods=["POST"])
+def api_rollback_create():
+    import subprocess as _sp
+    try:
+        r = _sp.run(["python3", "scripts/rollback.py", "snapshot", "manual-dashboard"], cwd=str(ROOT), capture_output=True, text=True, timeout=60)
+        return jsonify({"ok": True, "output": r.stdout[-300:]})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@encuadre_bp.route("/api/encuadre/rollback/to", methods=["POST"])
+def api_rollback_to():
+    import subprocess as _sp
+    data = request.get_json() or {}
+    tag = data.get("tag", "")
+    if not tag.startswith("snap-"):
+        return jsonify({"ok": False, "error": "Tag invalido"}), 400
+    try:
+        r = _sp.run(["python3", "scripts/rollback.py", "rollback", tag], cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+        return jsonify({"ok": r.returncode == 0, "output": r.stdout[-300:]})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
 @encuadre_bp.route("/api/encuadre/kill_pipeline", methods=["POST"])
 def api_kill_pipeline():
     import subprocess as _sp

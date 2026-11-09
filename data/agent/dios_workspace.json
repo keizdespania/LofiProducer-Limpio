@@ -1,0 +1,15 @@
+{
+  "ultima_tarea": "test memoria",
+  "ultimo_resultado": "resultado ok",
+  "ultimas_tools": [
+    "ver_mi_workspace"
+  ],
+  "timestamp": 1794191739.9294267,
+  "historial": [
+    {
+      "t": "test memoria",
+      "r": "resultado ok",
+      "ts": 1794191739.9294326
+    }
+  ]
+}
