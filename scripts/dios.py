@@ -1635,6 +1635,24 @@ def _tool_ver_contrato(args):
         if len(txt) > 3000:
             keys = list(d.keys()) if isinstance(d, dict) else [    {"type": "function", "function": {"name": "procesar_video_existente", "description": "Procesa un vídeo/URL ya descargado con el pipeline REAL: transcribe (transcribir_groq.py) → analiza (analista_fase1.py) → sintetiza dossier (sintetizador.py) → genera post (fase2_produccion.py). Usa esto en vez de reimplementar. Tarda 5-15min.", "parameters": {"type": "object", "properties": {"url_o_path": {"type": "string", "description": "URL de YouTube o ruta local al vídeo/audio"}, "nicho": {"type": "string", "description": "el_encuadre, ia_news, finanzas_barrio (defecto el_encuadre)"}}, "required": ["url_o_path"]}}},
     {"type": "function", "function": {"name": "descargar_audio_youtube", "description": "Descarga solo el AUDIO de un vídeo YouTube a output/encuadre/audios/. Es el paso que usa recolector.py. Ligero, no descarga vídeo completo.", "parameters": {"type": "object", "properties": {"video_id": {"type": "string", "description": "ID de YouTube (11 chars)"}}, "required": ["video_id"]}}},
+    {"type": "function", "function": {"name": "pipeline_step", "description": "Ejecuta UN paso del pipeline. Pasos: limpieza_pipeline, gen_manual, recolector, transcribir_groq, analista_fase1, sintetizador, fase2_produccion, voz_edge, director_arte, render_robusto, factory_shorts, generar_web_v3, generar_web_dossier, actualizar_web_index, generar_redes, generar_redes_cruzadas, sincronizar_podcasts, generar_podcast, generar_informe_pdf. Recibe fecha YYYY-MM-DD o 'hoy'.", "parameters": {"type": "object", "properties": {"step": {"type": "string"}, "fecha": {"type": "string"}}, "required": ["step"]}}},
+    {"type": "function", "function": {"name": "pipeline_completo", "description": "Lanza pipeline completo 06:00 para una fecha. Tarda 30-40min. Recolectar+analizar+guion+voz+arte+video+shorts+web+YT+podcast.", "parameters": {"type": "object", "properties": {"fecha": {"type": "string"}}, "required": []}}},
+    {"type": "function", "function": {"name": "pipeline_status", "description": "Estado del pipeline: corriendo/detenido, ultimo log, tail.", "parameters": {"type": "object", "properties": {}, "required": []}}},
+    {"type": "function", "function": {"name": "pipeline_kill", "description": "Detiene el pipeline actual.", "parameters": {"type": "object", "properties": {}, "required": []}}},
+    {"type": "function", "function": {"name": "pipeline_custom", "description": "Pipeline a la carta: nicho + formatos + tema. Formatos: largo, shorts, posts, podcast.", "parameters": {"type": "object", "properties": {"nicho": {"type": "string"}, "formatos": {"type": "array", "items": {"type": "string"}}, "tema": {"type": "string"}, "num_shorts": {"type": "integer"}}, "required": ["nicho"]}}},
+    {"type": "function", "function": {"name": "generar_short", "description": "Genera 1 short rapido (2min) sobre tema. Sin GPU, Pixabay.", "parameters": {"type": "object", "properties": {"tema": {"type": "string"}, "nicho": {"type": "string"}}, "required": ["tema"]}}},
+    {"type": "function", "function": {"name": "generar_post_web", "description": "Genera post web: largo + dossier + mediano + build + push.", "parameters": {"type": "object", "properties": {"fecha": {"type": "string"}}, "required": []}}},
+    {"type": "function", "function": {"name": "generar_podcast_dia", "description": "Genera podcast MP3 del dia desde guion.", "parameters": {"type": "object", "properties": {"fecha": {"type": "string"}}, "required": []}}},
+    {"type": "function", "function": {"name": "subir_youtube_dia", "description": "Sube video largo + shorts a YouTube con publish_at escalonado (18-21h ES).", "parameters": {"type": "object", "properties": {"fecha": {"type": "string"}}, "required": []}}},
+    {"type": "function", "function": {"name": "programar_youtube", "description": "Programa un video ya subido. Args: video_id, hora HH:MM (Espana).", "parameters": {"type": "object", "properties": {"video_id": {"type": "string"}, "hora": {"type": "string"}}, "required": ["video_id", "hora"]}}},
+    {"type": "function", "function": {"name": "publicar_blogger", "description": "Publica el post del dia en Blogger con horarios escalonados.", "parameters": {"type": "object", "properties": {"fecha": {"type": "string"}}, "required": []}}},
+    {"type": "function", "function": {"name": "generar_seo", "description": "Regenera SEO (titulo + descripcion + tags) del video y shorts del dia.", "parameters": {"type": "object", "properties": {"fecha": {"type": "string"}, "tipo": {"type": "string"}}, "required": []}}},
+    {"type": "function", "function": {"name": "generar_titulo_ab", "description": "Genera titulos A/B para test CTR.", "parameters": {"type": "object", "properties": {"fecha": {"type": "string"}, "tipo": {"type": "string"}}, "required": []}}},
+    {"type": "function", "function": {"name": "cloudflare_stats", "description": "Visitas web ultimos 7 dias: page_views, visitas, top paginas, top paises.", "parameters": {"type": "object", "properties": {}, "required": []}}},
+    {"type": "function", "function": {"name": "buscar_historico", "description": "Busca en historico indexado (posts + produccion + dossiers). FTS5.", "parameters": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}}},
+    {"type": "function", "function": {"name": "reindexar_busqueda", "description": "Reindexa busqueda FTS5 con ultimos posts/producciones.", "parameters": {"type": "object", "properties": {}, "required": []}}},
+    {"type": "function", "function": {"name": "rollback_snapshot", "description": "Crea snapshot git del repo actual.", "parameters": {"type": "object", "properties": {"motivo": {"type": "string"}}, "required": []}}},
+    {"type": "function", "function": {"name": "rollback_listar", "description": "Lista snapshots git disponibles.", "parameters": {"type": "object", "properties": {}, "required": []}}},
 ]
             return f"Contrato {nombre} ({len(txt)} chars). Keys: {keys}. Primeras 3000 chars:\n{txt[:3000]}...\n[Truncado. Usa seccion especifica si necesitas mas.]"
         return txt
@@ -1719,7 +1737,280 @@ def _tool_procesar_video_existente(args):
     )
 
 
+
+def _tool_pipeline_step(args):
+    import subprocess as _sp, datetime
+    step = (args.get("step") or "").strip()
+    fecha = args.get("fecha") or datetime.date.today().isoformat()
+    if fecha == "hoy": fecha = datetime.date.today().isoformat()
+    validos = ["limpieza_pipeline","gen_manual","recolector","transcribir_groq","analista_fase1",
+               "sintetizador","fase2_produccion","voz_edge","director_arte","render_robusto",
+               "factory_shorts","generar_web_v3","generar_web_dossier","actualizar_web_index",
+               "generar_redes","generar_redes_cruzadas","sincronizar_podcasts","generar_podcast",
+               "generar_informe_pdf"]
+    if step not in validos:
+        return f"ERROR: step invalido. Validos: {', '.join(validos)}"
+    script = ROOT / "scripts" / f"{step}.py"
+    if not script.exists():
+        return f"ERROR: no existe {script.relative_to(ROOT)}"
+    try:
+        r = _sp.run(["python3", str(script), fecha], cwd=str(ROOT), capture_output=True, text=True, timeout=900)
+        return f"{'OK' if r.returncode==0 else 'FAIL'} {step}: {(r.stdout or r.stderr or '')[-1500:]}"
+    except _sp.TimeoutExpired:
+        return f"ERROR: {step} timeout"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_pipeline_completo(args):
+    import subprocess as _sp, datetime
+    fecha = args.get("fecha") or datetime.date.today().isoformat()
+    if fecha == "hoy": fecha = datetime.date.today().isoformat()
+    try:
+        log = open(ROOT / "data" / "logs" / f"pipeline_dios_{fecha}.log", "w")
+        _sp.Popen(["python3", "scripts/pipeline_encuadre.py"], cwd=str(ROOT), stdout=log, stderr=_sp.STDOUT)
+        return f"OK pipeline lanzado {fecha} (background, 30-40min). Log: data/logs/pipeline_dios_{fecha}.log"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_pipeline_status(args):
+    import subprocess as _sp, time
+    r = _sp.run(["pgrep", "-af", "pipeline_encuadre"], capture_output=True, text=True, timeout=5)
+    proc = r.stdout.strip() or "(nada corriendo)"
+    log = ROOT / "data" / "logs" / "pipeline.log"
+    info = ""
+    if log.exists():
+        mins = (time.time() - log.stat().st_mtime) / 60
+        tail = _sp.run(["tail", "-8", str(log)], capture_output=True, text=True, timeout=5)
+        info = f"\nUltimo log hace {mins:.0f}min\n\n{tail.stdout[-1200:]}"
+    return f"Pipeline: {proc}{info}"
+
+
+def _tool_pipeline_kill(args):
+    import subprocess as _sp
+    try:
+        _sp.run(["pkill", "-9", "-f", "pipeline_encuadre"], timeout=10, check=False)
+        return "OK pipeline detenido"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_pipeline_custom(args):
+    import subprocess as _sp, datetime, json as _j
+    nicho = args.get("nicho", "")
+    formatos = args.get("formatos") or ["largo"]
+    tema = args.get("tema", "")
+    num_shorts = args.get("num_shorts", 4)
+    if not nicho: return "ERROR: falta nicho"
+    fecha = datetime.date.today().isoformat()
+    req = {"fecha": fecha, "nicho": nicho, "formatos": formatos, "num_shorts": num_shorts,
+           "tema_tipo": "manual" if tema else "auto", "tema": tema,
+           "timestamp": datetime.datetime.now().isoformat()}
+    req_path = ROOT / "output" / "encuadre" / f"custom_request_{fecha}.json"
+    req_path.write_text(_j.dumps(req, ensure_ascii=False, indent=2))
+    log = open(ROOT / "data" / "logs" / f"pipeline_custom_{fecha}.log", "w")
+    _sp.Popen(["python3", "scripts/pipeline_encuadre.py"], cwd=str(ROOT), stdout=log, stderr=_sp.STDOUT)
+    return f"OK pipeline custom: nicho={nicho}, formatos={formatos}, tema={tema[:40] or 'auto'}"
+
+
+def _tool_generar_short(args):
+    import subprocess as _sp
+    tema = args.get("tema", "")
+    nicho = args.get("nicho", "el_encuadre")
+    if not tema: return "ERROR: falta tema"
+    try:
+        r = _sp.run(["python3", "scripts/short_engine_encuadre.py", tema, nicho],
+                    cwd=str(ROOT), capture_output=True, text=True, timeout=600)
+        return f"{'OK' if r.returncode==0 else 'FAIL'}: {(r.stdout or r.stderr or '')[-800:]}"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_generar_post_web(args):
+    import subprocess as _sp, datetime
+    fecha = args.get("fecha") or datetime.date.today().isoformat()
+    if fecha == "hoy": fecha = datetime.date.today().isoformat()
+    pasos = []
+    for script in ["generar_web_v3.py", "generar_web_dossier.py", "actualizar_web_index.py"]:
+        try:
+            r = _sp.run(["python3", f"scripts/{script}", fecha], cwd=str(ROOT), capture_output=True, text=True, timeout=900)
+            pasos.append(f"{script}: {'OK' if r.returncode==0 else 'FAIL'}")
+        except Exception as e:
+            pasos.append(f"{script}: ERR {e}")
+    try:
+        _sp.run(["mkdocs", "build"], cwd=str(ROOT / "web"), capture_output=True, timeout=120)
+        _sp.run(["git", "add", "web/"], cwd=str(ROOT), timeout=30)
+        _sp.run(["git", "commit", "-m", f"post: {fecha}", "--no-verify"], cwd=str(ROOT), timeout=30)
+        _sp.run(["git", "push", "origin", "main", "--no-verify"], cwd=str(ROOT), timeout=60)
+        pasos.append("build+push: OK")
+    except Exception as e:
+        pasos.append(f"build+push: ERR {e}")
+    return "\n".join(pasos)
+
+
+def _tool_generar_podcast_dia(args):
+    import subprocess as _sp, datetime
+    fecha = args.get("fecha") or datetime.date.today().isoformat()
+    if fecha == "hoy": fecha = datetime.date.today().isoformat()
+    try:
+        r = _sp.run(["python3", "scripts/generar_podcast.py", fecha], cwd=str(ROOT), capture_output=True, text=True, timeout=600)
+        return f"{'OK' if r.returncode==0 else 'FAIL'}: {(r.stdout or r.stderr or '')[-600:]}"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_subir_youtube_dia(args):
+    import datetime as _dt
+    fecha = args.get("fecha") or _dt.date.today().isoformat()
+    if fecha == "hoy": fecha = _dt.date.today().isoformat()
+    video = ROOT / "output" / "encuadre" / f"video_largo_{fecha}.mp4"
+    if not video.exists():
+        return f"ERROR: no existe video_largo_{fecha}.mp4"
+    try:
+        import sys as _sys_yt
+        _sys_yt.path.insert(0, str(ROOT / "scripts"))
+        from subir_youtube import subir
+        import json as _j
+        seo = {}
+        seo_path = ROOT / "output" / "encuadre" / f"seo_{fecha}.json"
+        if seo_path.exists(): seo = _j.loads(seo_path.read_text()).get("largo", {})
+        titulo = seo.get("titulo", f"El Encuadre {fecha}")
+        desc = seo.get("descripcion", "")
+        pub = _dt.datetime.now().replace(hour=17, minute=0, second=0, microsecond=0)
+        if pub < _dt.datetime.now(): pub += _dt.timedelta(days=1)
+        r = subir(str(video), titulo, desc, privacidad="private",
+                  publish_at=pub.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                  token_file="data/youtube_encuadre_token.json")
+        return f"OK https://youtu.be/{r.get('id')}"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_programar_youtube(args):
+    import datetime
+    vid = args.get("video_id", "")
+    hora = args.get("hora", "18:00")
+    if not vid: return "ERROR: falta video_id"
+    try:
+        import sys as _sys_yt
+        _sys_yt.path.insert(0, str(ROOT / "scripts"))
+        from subir_youtube import actualizar_video, token
+        token("data/youtube_encuadre_token.json")
+        h, m = hora.split(":")
+        dt = datetime.datetime.now().replace(hour=int(h), minute=int(m), second=0, microsecond=0)
+        if dt < datetime.datetime.now(): dt += datetime.timedelta(days=1)
+        pub = dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+        actualizar_video(vid, publish_at=pub, token_file="data/youtube_encuadre_token.json")
+        return f"OK {vid} programado {pub}"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_publicar_blogger(args):
+    import subprocess as _sp, datetime
+    fecha = args.get("fecha") or datetime.date.today().isoformat()
+    if fecha == "hoy": fecha = datetime.date.today().isoformat()
+    try:
+        r = _sp.run(["python3", "scripts/publicar_blogger_encuadre.py", fecha],
+                    cwd=str(ROOT), capture_output=True, text=True, timeout=300)
+        return f"{'OK' if r.returncode==0 else 'FAIL'}: {(r.stdout or r.stderr or '')[-600:]}"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_generar_seo(args):
+    import subprocess as _sp, datetime
+    fecha = args.get("fecha") or datetime.date.today().isoformat()
+    tipo = args.get("tipo", "video_largo")
+    try:
+        r = _sp.run(["python3", "scripts/generar_titulo_seo.py", fecha, tipo],
+                    cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+        return f"{'OK' if r.returncode==0 else 'FAIL'}: {(r.stdout or r.stderr or '')[-400:]}"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_generar_titulo_ab(args):
+    return _tool_generar_seo(args)
+
+
+def _tool_cloudflare_stats(args):
+    try:
+        import sys as _sys_cf
+        _sys_cf.path.insert(0, str(ROOT / "scripts"))
+        from cloudflare_stats import resumen
+        r = resumen(7)
+        return f"7d: {r.get('page_views',0)} views | {r.get('visitas',0)} visitas\nTop: {r.get('top_paginas',[])[:3]}\nPaises: {r.get('top_paises',[])[:3]}"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_buscar_historico(args):
+    import sqlite3
+    q = (args.get("query") or "").strip()
+    if not q: return "ERROR: falta query"
+    db = ROOT / "data" / "agent" / "busqueda_fts.db"
+    if not db.exists(): return "ERROR: indice no construido"
+    try:
+        con = sqlite3.connect(str(db))
+        cur = con.execute("SELECT tipo, fecha, titulo, snippet(docs, 3, '<b>', '</b>', '...', 20) FROM docs WHERE docs MATCH ? ORDER BY rank LIMIT 5", (q,))
+        rows = cur.fetchall()
+        if not rows: return f"Sin resultados para '{q}'"
+        return "\n".join([f"[{r[0]}] {r[1]} — {r[2][:60]}\n  {r[3][:150]}" for r in rows])
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_reindexar_busqueda(args):
+    import subprocess as _sp
+    try:
+        r = _sp.run(["python3", "scripts/indexar_busqueda.py"], cwd=str(ROOT), capture_output=True, text=True, timeout=180)
+        return f"{'OK' if r.returncode==0 else 'FAIL'}: {(r.stdout or r.stderr or '')[-400:]}"
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_rollback_snapshot(args):
+    import subprocess as _sp
+    motivo = args.get("motivo", "manual")
+    try:
+        r = _sp.run(["python3", "scripts/rollback.py", "snapshot", motivo],
+                    cwd=str(ROOT), capture_output=True, text=True, timeout=60)
+        return (r.stdout or r.stderr or "")[-300:]
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_rollback_listar(args):
+    import subprocess as _sp
+    try:
+        r = _sp.run(["python3", "scripts/rollback.py", "listar"],
+                    cwd=str(ROOT), capture_output=True, text=True, timeout=30)
+        return (r.stdout or r.stderr or "")[-1500:]
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
 TOOL_FNS = {
+    "rollback_listar": _tool_rollback_listar,
+    "rollback_snapshot": _tool_rollback_snapshot,
+    "reindexar_busqueda": _tool_reindexar_busqueda,
+    "buscar_historico": _tool_buscar_historico,
+    "cloudflare_stats": _tool_cloudflare_stats,
+    "generar_titulo_ab": _tool_generar_titulo_ab,
+    "generar_seo": _tool_generar_seo,
+    "publicar_blogger": _tool_publicar_blogger,
+    "programar_youtube": _tool_programar_youtube,
+    "subir_youtube_dia": _tool_subir_youtube_dia,
+    "generar_podcast_dia": _tool_generar_podcast_dia,
+    "generar_post_web": _tool_generar_post_web,
+    "generar_short": _tool_generar_short,
+    "pipeline_custom": _tool_pipeline_custom,
+    "pipeline_kill": _tool_pipeline_kill,
+    "pipeline_status": _tool_pipeline_status,
+    "pipeline_completo": _tool_pipeline_completo,
+    "pipeline_step": _tool_pipeline_step,
     "procesar_video_existente": _tool_procesar_video_existente,
     "descargar_audio_youtube": _tool_descargar_audio_youtube,
     "ver_contrato": _tool_ver_contrato,
