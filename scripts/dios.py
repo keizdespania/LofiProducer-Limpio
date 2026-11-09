@@ -506,6 +506,9 @@ TOOLS = [
             "speed": {"type": "number", "description": "0.5-2.0. Multiplicador de velocidad"},
             "nombre": {"type": "string", "description": "Nombre del archivo (opcional)"}
         }, "required": ["texto"]}}},
+    {"type": "function", "function": {"name": "consultar_manual_ecosistema", "description": "Consulta una seccion del MANUAL_ECOSISTEMA.md (arquitectura, errores, pipelines, contratos, motores, apis, comandos, contextos, reglas). Usa seccion=todo para todo.", "parameters": {"type": "object", "properties": {"seccion": {"type": "string"}}, "required": ["seccion"]}}},
+    {"type": "function", "function": {"name": "buscar_en_manual", "description": "Busca una query en MANUAL_ECOSISTEMA.md y devuelve lineas con contexto.", "parameters": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}}},
+    {"type": "function", "function": {"name": "listar_mis_tools", "description": "Devuelve TODAS las tools disponibles con su descripcion. Usala cuando el usuario pregunte que puedes hacer o que tools tienes.", "parameters": {"type": "object", "properties": {}, "required": []}}},
 ]
 
 
@@ -1414,7 +1417,67 @@ def _tool_generar_narracion(args):
         return "ERROR: " + str(e)
 
 
+def _tool_consultar_manual_ecosistema(args):
+    seccion = (args.get("seccion") or "todo").lower().strip()
+    p = ROOT / "docs" / "MANUAL_ECOSISTEMA.md"
+    if not p.exists(): return "ERROR: manual no existe"
+    txt = p.read_text(encoding="utf-8")
+    if seccion in ("todo", "all", ""): return txt[:4000]
+    import re as _re
+    pat = _re.compile(r"##\s+\d+\.?\s*" + _re.escape(seccion) + r".*?(?=\n##\s+\d+\.|\Z)", _re.DOTALL | _re.IGNORECASE)
+    m = pat.search(txt)
+    if m: return m.group(0)[:4000]
+    lineas = [l for l in txt.splitlines() if seccion in l.lower()]
+    if lineas: return f"Coincidencias '{seccion}':\n" + "\n".join(lineas[:30])
+    return f"Seccion '{seccion}' no encontrada. Disponibles: " + ", ".join(_re.findall(r"^##\s+\d+\.\s*(.+?)$", txt, _re.MULTILINE))
+
+
+def _tool_buscar_en_manual(args):
+    query = (args.get("query") or "").strip()
+    if not query: return "ERROR: falta query"
+    p = ROOT / "docs" / "MANUAL_ECOSISTEMA.md"
+    if not p.exists(): return "ERROR: manual no existe"
+    import subprocess as _sp
+    try:
+        r = _sp.run(["grep", "-n", "-i", "-B1", "-A3", query, str(p)], capture_output=True, text=True, timeout=10)
+        return (r.stdout.strip() or f"Sin coincidencias: {query}")[:4000]
+    except Exception as e: return f"ERROR: {e}"
+
+
+def _tool_listar_mis_tools(args):
+    ls = [f"=== MIS TOOLS ({len(TOOLS)}) ==="]
+    for tool in TOOLS:
+        fn = tool.get("function", {})
+        ls.append(f"- {fn.get('name','?')}: {fn.get('description','(sin)')[:150]}")
+    return "\n".join(ls)
+
+
+# Stubs auto (tools declaradas sin handler)
+def _tool_subir_youtube(args):
+    return f"ERROR: tool subir_youtube sin handler real"
+
+def _tool_producir_nicho(args):
+    return f"ERROR: tool producir_nicho sin handler real"
+
+def _tool_ensamblar_video_largo(args):
+    return f"ERROR: tool ensamblar_video_largo sin handler real"
+
+def _tool_crear_nicho(args):
+    return f"ERROR: tool crear_nicho sin handler real"
+
+def _tool_evaluar_produccion(args):
+    return f"ERROR: tool evaluar_produccion sin handler real"
+
+
 TOOL_FNS = {
+    "evaluar_produccion": _tool_evaluar_produccion,
+    "crear_nicho": _tool_crear_nicho,
+    "ensamblar_video_largo": _tool_ensamblar_video_largo,
+    "producir_nicho": _tool_producir_nicho,
+    "subir_youtube": _tool_subir_youtube,
+    "consultar_manual_ecosistema": _tool_consultar_manual_ecosistema,
+    "buscar_en_manual": _tool_buscar_en_manual,
+    "listar_mis_tools": _tool_listar_mis_tools,
     "publicar_en_redes": _tool_publicar_en_redes,
     "producir_video": _tool_producir_video,
     "ensamblar_video_final": _tool_ensamblar_video_final,
