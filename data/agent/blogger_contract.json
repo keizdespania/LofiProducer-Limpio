@@ -1,6 +1,6 @@
 {
   "motor": "Blogger API v3",
-  "version": "v3",
+  "version": "3.0",
   "endpoint_post": "POST https://www.googleapis.com/blogger/v3/blogs/{blogId}/posts",
   "endpoint_list_blogs": "GET https://www.googleapis.com/blogger/v3/users/self/blogs",
   "scope": "https://www.googleapis.com/auth/blogger",
@@ -179,5 +179,17 @@
     "presets": 6,
     "reglas": 12,
     "errores": 5
-  }
+  },
+  "fecha": "2026-11-06",
+  "blog_id": "5810739452530624729",
+  "url": "https://iaglobalnews.blogspot.com",
+  "oauth": "reutiliza token YouTube (ver oauth_contract.json)",
+  "pipeline": "RSS+Web+YouTube → Verificación → Redactor SEO → SEO → Blogger",
+  "quality_gate": "experto_blog audita. Si score <8/10 → reescribe",
+  "endpoints": [
+    "POST /api/generar_borrador_blog",
+    "GET /api/borradores_blog",
+    "POST /api/publicar_borrador"
+  ],
+  "actualizado": "2026-11-09"
 }
