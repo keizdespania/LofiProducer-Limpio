@@ -31,6 +31,17 @@ HTML_FACTORY = """<!DOCTYPE html>
     </style>
 </head>
 <body class="min-h-screen pb-20">
+<div id="__jstest" style="position:fixed;top:0;left:0;right:0;background:#ff0000;color:#fff;padding:10px;font-size:16px;z-index:999999;font-family:monospace;">🔴 JS NO EJECUTA</div>
+<script>
+    setTimeout(function(){
+        var el = document.getElementById('__jstest');
+        if (el) {
+            el.textContent = '🟢 JS OK · cambiarVista=' + (typeof cambiarVista) + ' · cargarDatos=' + (typeof cargarDatos) + ' · init=' + (typeof __init_factory);
+            el.style.background = '#008800';
+        }
+    }, 300);
+</script>
+
     <div id="toastContainer" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2"></div>
 
     <header class="border-b border-zinc-800 bg-zinc-950/80 sticky top-0 z-50 glass">
@@ -894,6 +905,16 @@ if (document.readyState === 'loading') {
         </div>
     </div>
 <div id="__init_status" style="position:fixed;bottom:4px;right:4px;background:#1a1a24;color:#888;padding:2px 6px;font-size:9px;font-family:monospace;z-index:99998;border-radius:3px;opacity:0.7;">init: pendiente</div>
+<div id="__endtest" style="position:fixed;bottom:0;left:0;right:0;background:#000088;color:#fff;padding:8px;font-size:13px;z-index:999999;font-family:monospace;">🔵 FINAL NO ALCANZADO</div>
+<script>
+    try {
+        var e = document.getElementById('__endtest');
+        e.textContent = '🟢 FINAL: cambiarVista=' + (typeof cambiarVista) + ' · init=' + (typeof __init_factory);
+        e.style.background = '#008800';
+    } catch(x) {
+        document.getElementById('__endtest').textContent = '🔴 FINAL ERR: ' + x.message;
+    }
+</script>
 </body>
 </html>"""
 
