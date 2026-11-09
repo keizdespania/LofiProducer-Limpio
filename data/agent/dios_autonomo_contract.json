@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "actualizado": "2026-11-09",
+  "daemon": "scripts/dios_autonomo.py",
+  "frecuencia": "30min",
+  "throttle": "6h por regla",
+  "reglas_total": 40,
+  "db": "data/agent/dios_sugerencias.db"
+}

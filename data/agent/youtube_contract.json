@@ -1,8 +1,7 @@
 {
-  "version": "2.0",
-  "actualizado": "2026-11-03",
+  "version": "2.1",
+  "actualizado": "2026-11-09",
   "nombre": "Contrato YouTube API v3 (upload + programación + refresh)",
-
   "credenciales": {
     "token_file": "data/youtube_encuadre_token.json",
     "env_var_ruta": "YOUTUBE_ENCUADRE_TOKEN_FILE",
@@ -15,7 +14,6 @@
       "https://www.googleapis.com/auth/blogger"
     ]
   },
-
   "reglas_criticas": [
     "REFRESH TOKEN SIEMPRE ANTES DE SUBIR. No esperar a que expire (Google revoca tokens de apps en testing a los 7 días de inactividad).",
     "Si refresh falla con 'invalid_grant' → token REVOCADO. Ejecutar scripts/reautorizar_youtube.py (OAuth manual 2 min).",
@@ -24,20 +22,28 @@
     "NUNCA hardcodear access_token. NUNCA commitear el token a git.",
     "El token va a data/youtube_encuadre_token.json (NO en .env, es JSON con 6 campos)."
   ],
-
   "subida": {
     "script": "scripts/subir_youtube.py",
     "funcion": "subir(video, titulo, desc, tags, privacidad, publish_at, token_file)",
     "modo": "private + publishAt (programación)",
-    "horarios_shorts": ["18:30", "19:00", "19:30", "20:00"],
+    "horarios_shorts": [
+      "18:30",
+      "19:00",
+      "19:30",
+      "20:00"
+    ],
     "horario_video_largo": "20:00",
     "max_uploads_dia": 6,
     "max_tamano_mb": 128000,
-    "formatos": [".mp4", ".mov", ".avi", ".webm"],
+    "formatos": [
+      ".mp4",
+      ".mov",
+      ".avi",
+      ".webm"
+    ],
     "codec_video": "h264 (libx264)",
     "codec_audio": "aac 128k"
   },
-
   "titulos_seo": {
     "script_generador": "scripts/generar_titulo_seo.py",
     "video_largo": {
@@ -59,7 +65,6 @@
       }
     }
   },
-
   "descripcion": {
     "fuente": "output/encuadre/seo_FECHA.json",
     "video_largo": "Descripción con capítulos (00:00, 00:34, ...) + links cruzados + hashtags",
@@ -73,14 +78,21 @@
       "https://threads.net/@somoselencuadre"
     ]
   },
-
   "tags": [
-    "manipulación mediática", "sesgo informativo", "análisis de medios",
-    "fake news", "desinformación", "prensa española", "framing",
-    "El Encuadre", "análisis político", "periodismo crítico",
-    "sesgos cognitivos", "propaganda", "2026"
+    "manipulación mediática",
+    "sesgo informativo",
+    "análisis de medios",
+    "fake news",
+    "desinformación",
+    "prensa española",
+    "framing",
+    "El Encuadre",
+    "análisis político",
+    "periodismo crítico",
+    "sesgos cognitivos",
+    "propaganda",
+    "2026"
   ],
-
   "auditoria_pendiente": {
     "estado": "pendiente",
     "motivo": "API no auditada → vídeos salen privados, no se pueden hacer públicos manualmente",
@@ -88,25 +100,30 @@
     "solucion_futura": "Rellenar formulario auditoría Google Cloud (support.google.com/youtube/contact/yt_api_form)",
     "aviso_telegram": "brain/notificador_encuadre.py → avisar_videos_privados() con botones a Studio"
   },
-
   "registro_subidas": {
     "fichero": "output/encuadre/shorts_subidos_FECHA.json",
     "contenido": "Lista de {num, tipo, id, url, publish_at}",
     "uso": "Auditar qué se subió y cuándo"
   },
-
   "errores_conocidos": {
     "invalid_grant": "Token revocado → reautorizar (scripts/reautorizar_youtube.py)",
     "HTTP 400 Bad Request": "Metadata inválida o token caducado → verificar título/desc/tags",
     "quotaExceeded": "10.000 unidades/día agotadas → esperar 24h o rotar cuenta",
-    "uploadLimitExceeded": "6 subidas/día por proyecto → esperar 24h o rotar cuenta"
+    "uploadLimitExceeded": "6 subidas/día por proyecto → esperar 24h o rotar cuenta",
+    "thumbnails_403": {
+      "causa": "canal no verificado (7d) o falta scope",
+      "fix": "verificar canal + reautenticar"
+    }
   },
-
   "notas_2026_11_03": {
     "token_revocado": "El refresh_token estaba revocado (invalid_grant). Google revoca tokens de apps en testing a los 7 días de inactividad.",
     "reautorizacion": "Ejecutado scripts/reautorizar_youtube.py → nuevo refresh_token guardado.",
     "refresh_siempre": "Parcheado subir_youtube.py: refresh SIEMPRE antes de subir (no solo si expiró).",
     "pipeline_parche": "pipeline_encuadre._subir_youtube() llama token() antes de subir.",
     "subidos_hoy": "5 vídeos: largo (mlik6-9Ip10) + 4 shorts (cqjGp1XzYqo, 1cjWN4auMWg, l7JJjYV16DQ, -SNoQJeIPfg)"
+  },
+  "publish_at": {
+    "fix": "insert privado → update publishAt (2 pasos)",
+    "horarios": "18:00-21:00 ES escalonado"
   }
 }

@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "actualizado": "2026-11-09",
+  "modulo": "brain/notificador_top1.py",
+  "canales": {
+    "privado": "alertas+ideas+bot",
+    "publico": "@somoselencuadre contenido"
+  },
+  "throttle": {
+    "alerta": "2h",
+    "info": "4h",
+    "resumen": "20h",
+    "canal": "30min"
+  }
+}

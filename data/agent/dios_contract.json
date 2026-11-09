@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "fecha": "2026-11-06",
   "fichero": "scripts/dios.py",
   "tamano": "~1500 líneas",
@@ -16,5 +16,17 @@
     "Verificar tools con re.findall antes de tocar.",
     "El pruner reduce contexto; no meter prompts enormes."
   ],
-  "zonas_privadas": "Solo IA A toca scripts/dios.py"
+  "zonas_privadas": "Solo IA A toca scripts/dios.py",
+  "actualizado": "2026-11-09",
+  "tools_total": 76,
+  "reglas_autonomas": 40,
+  "daemon": "scripts/dios_autonomo.py (sv service, 30min)",
+  "bot_telegram": "scripts/bot_dios.py (sv service)",
+  "memoria_sqlite": [
+    "dios_workspace.json",
+    "dios_episodios.db",
+    "dios_costes.db",
+    "dios_fallos.db",
+    "busqueda_fts.db"
+  ]
 }

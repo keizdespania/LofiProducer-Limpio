@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "actualizado": "2026-11-09",
+  "prompt_file": "brain/prompt_thumbnail.py",
+  "tool": "_tool_generar_thumbnails_lote",
+  "pipeline_auto": "tras YouTube 06:00",
+  "throttle_upload": "45s",
+  "fallback": "background retry 30min",
+  "requiere": "canal verificado"
+}

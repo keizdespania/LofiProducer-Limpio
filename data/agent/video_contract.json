@@ -1,6 +1,6 @@
 {
-  "version": "3.0",
-  "actualizado": "2026-11-08",
+  "version": "3.1",
+  "actualizado": "2026-11-09",
   "motor": "FFmpeg directo (render_robusto.py v4)",
   "nombre": "Vídeo largo 16:9 (~11 min) con lofi CC de fondo",
   "arquitectura": {
@@ -143,5 +143,16 @@
     "Seed determinista por (fecha, idx)",
     "Pool histórico 7 días (seg_NNN_YYYY-MM-DD.png)",
     "Filtro refusals (lo siento, no puedo)"
-  ]
+  ],
+  "miniaturas": {
+    "prompt": "brain/prompt_thumbnail.py (concepto+estilo+composicion)",
+    "tool": "_tool_generar_thumbnails_lote",
+    "pipeline": "automatico tras subir a YouTube 06:00",
+    "throttle_upload": "45s entre uploads (rate limit YouTube)",
+    "fallback": "subir_thumbs_background.py retry cada 30min si 429"
+  },
+  "youtube_upload": {
+    "fix_2026_11_09": "publishAt en 2 pasos: insert privado + update publishAt (YouTube ignora publishAt en insert)",
+    "embeddable": "True + publicStatsViewable:True (necesario para compartir en redes)"
+  }
 }

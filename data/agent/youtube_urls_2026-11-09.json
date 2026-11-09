@@ -1,0 +1,30 @@
+{
+  "fecha": "2026-11-09",
+  "largo": {
+    "titulo": "ABC: La vivienda, mayor problema nacional entre los votantes",
+    "video_id": "w9i2oqLGS6M",
+    "tipo": "video_largo"
+  },
+  "shorts": [
+    {
+      "titulo": "🟠 Más de la mitad de los titulares de los principales...",
+      "video_id": "VACO6NJIRO8",
+      "tipo": "short"
+    },
+    {
+      "titulo": "🎬 Nadie habla de esto pero los medios, como siempre,...",
+      "video_id": "5Sf6pE9sWIw",
+      "tipo": "short"
+    },
+    {
+      "titulo": "🔮 En 6 meses el PP intentará vendernos la ilusión de que...",
+      "video_id": "J6WSHzkqY08",
+      "tipo": "short"
+    },
+    {
+      "titulo": "🎯 Así puedes desenmascarar la farsa mediática en tres...",
+      "video_id": "eQmIKKtfrTc",
+      "tipo": "short"
+    }
+  ]
+}
