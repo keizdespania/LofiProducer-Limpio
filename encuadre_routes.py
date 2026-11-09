@@ -75,22 +75,50 @@ HTML_FACTORY = """<!DOCTYPE html>
 
         <!-- VISTA PREVIEW -->
         <div id="view-preview" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div class="lg:col-span-8 glass rounded-2xl p-4">
-                <div class="flex gap-4 border-b border-zinc-800 mb-3">
-                    <button onclick="cambiarVideo('largo')" id="btn-largo" class="tab-active text-sm font-semibold pb-2 px-1">Vídeo Largo</button>
-                    <button onclick="cambiarVideo('short')" id="btn-short" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-1">Short</button>
+            <!-- COLUMNA IZQ: VÍDEO + SHORTS + PODCAST -->
+            <div class="lg:col-span-8 space-y-4">
+                <!-- Vídeo largo -->
+                <div class="glass rounded-2xl p-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-sm text-red-400">🎬 Vídeo Largo</h3>
+                        <div class="flex gap-2">
+                            <button onclick="cambiarVideo('largo')" id="btn-largo" class="tab-active text-sm font-semibold pb-1 px-1">Largo</button>
+                        </div>
+                    </div>
+                    <div id="videoWrapper" class="video-container">
+                        <video id="mainPlayer" controls></video>
+                    </div>
+                    <div class="mt-3 flex gap-2">
+                        <button onclick="compartir('youtube')" class="flex-1 bg-red-600 py-2 rounded-lg font-semibold text-sm"><i class="fa-brands fa-youtube mr-2"></i>Subir a YouTube</button>
+                        <button onclick="abrirDrawer('articulo')" class="flex-1 bg-zinc-800 py-2 rounded-lg font-semibold text-sm"><i class="fa-solid fa-newspaper mr-2"></i>Artículo Web</button>
+                    </div>
                 </div>
-                <div id="videoWrapper" class="video-container">
-                    <video id="mainPlayer" controls></video>
+
+                <!-- Shorts (galería) -->
+                <div class="glass rounded-2xl p-4">
+                    <h3 class="font-bold text-sm text-orange-400 mb-3">📱 Shorts (4)</h3>
+                    <div id="shorts-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div class="text-xs text-zinc-500 italic">Cargando...</div>
+                    </div>
                 </div>
-                <div class="mt-3 flex gap-2">
-                    <button onclick="compartir('youtube')" class="flex-1 bg-red-600 py-2 rounded-lg font-semibold text-sm"><i class="fa-brands fa-youtube mr-2"></i>Subir a YouTube</button>
-                    <button onclick="abrirDrawer('articulo')" class="flex-1 bg-zinc-800 py-2 rounded-lg font-semibold text-sm"><i class="fa-solid fa-newspaper mr-2"></i>Artículo Web</button>
+
+                <!-- Podcast -->
+                <div class="glass rounded-2xl p-4">
+                    <h3 class="font-bold text-sm text-purple-400 mb-3">🎧 Podcast del día</h3>
+                    <div id="podcast-player" class="text-xs text-zinc-500 italic">Cargando...</div>
                 </div>
             </div>
-            <div class="lg:col-span-4 glass rounded-2xl p-4">
-                <h3 class="font-bold text-sm mb-2 text-red-400">Dossier de Hoy</h3>
-                <div id="dossierResumen" class="text-xs text-zinc-300 space-y-2"></div>
+
+            <!-- COLUMNA DER: DOSSIER -->
+            <div class="lg:col-span-4 space-y-4">
+                <div class="glass rounded-2xl p-4">
+                    <h3 class="font-bold text-sm mb-2 text-red-400">📋 Dossier de Hoy</h3>
+                    <div id="dossierResumen" class="text-xs text-zinc-300 space-y-2"></div>
+                </div>
+                <div class="glass rounded-2xl p-4">
+                    <h3 class="font-bold text-sm mb-2 text-orange-400">🌐 Enlaces públicos</h3>
+                    <div id="enlaces-web" class="space-y-1 text-xs"></div>
+                </div>
             </div>
         </div>
 
@@ -309,12 +337,18 @@ HTML_FACTORY = """<!DOCTYPE html>
         }
 
         function cambiarVideo(tipo) {
-            document.getElementById('btn-largo').className = tipo === 'largo' ? "tab-active text-sm font-semibold pb-2 px-1" : "text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-1";
-            document.getElementById('btn-short').className = tipo === 'short' ? "tab-active text-sm font-semibold pb-2 px-1" : "text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-1";
             const w = document.getElementById('videoWrapper');
             const p = document.getElementById('mainPlayer');
             if (tipo === 'largo') { w.classList.remove('vertical'); p.src = `/output/encuadre/video_largo_${fechaActual}.mp4`; }
             else { w.classList.add('vertical'); p.src = `/output/encuadre/short_1_${fechaActual}.mp4`; }
+        }
+        function reproducirShort(n) {
+            const p = document.getElementById('mainPlayer');
+            const w = document.getElementById('videoWrapper');
+            w.classList.add('vertical');
+            p.src = `/output/encuadre/short_${n}_${fechaActual}.mp4`;
+            p.play();
+            w.scrollIntoView({behavior:'smooth', block:'center'});
         }
 
         function copiar(id) {

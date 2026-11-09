@@ -8,6 +8,27 @@ OUT = ROOT / "output" / "encuadre"
 TOKEN_ENC = ROOT / "data" / "youtube_encuadre_token.json"
 
 # PAUSA BLOGGER por baneo (reactivar 2026-11-11)
+# 2026-11-09: overrides custom desde dashboard (Crear Custom)
+CUSTOM_OVERRIDES = {}
+try:
+    import json as _json
+    _fecha_hoy = datetime.date.today().isoformat()
+    _req_path = ROOT / "output" / "encuadre" / f"custom_request_{_fecha_hoy}.json"
+    if _req_path.exists():
+        CUSTOM_OVERRIDES = _json.loads(_req_path.read_text())
+        print(f"Custom request detectado: nicho={CUSTOM_OVERRIDES.get('nicho')}, tema_tipo={CUSTOM_OVERRIDES.get('tema_tipo')}, tema={CUSTOM_OVERRIDES.get('tema','')[:60]}", flush=True)
+        _ctx_path = ROOT / "output" / "encuadre" / f"custom_context_{_fecha_hoy}.json"
+        _ctx_path.write_text(_json.dumps({
+            "nicho": CUSTOM_OVERRIDES.get("nicho"),
+            "tema": CUSTOM_OVERRIDES.get("tema"),
+            "tema_tipo": CUSTOM_OVERRIDES.get("tema_tipo"),
+            "num_shorts": CUSTOM_OVERRIDES.get("num_shorts"),
+            "formatos": CUSTOM_OVERRIDES.get("formatos", []),
+            "forzar": True,
+        }, ensure_ascii=False, indent=2))
+except Exception as _e:
+    print(f"custom_request: {_e}", flush=True)
+
 BLOGGER_PAUSADO = True
 BLOGGER_DESBLOQUEO = "2026-11-11"
 
