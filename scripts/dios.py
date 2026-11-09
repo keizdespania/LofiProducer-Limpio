@@ -2739,7 +2739,6 @@ TOOL_FNS = {
     "list_canales": _tool_list_canales,
     "estado_sistema": _tool_estado_sistema,
     "consultar_manual_python": _tool_consultar_manual_python,
-    "consultar_manual_sistema": _tool_consultar_manual_python,
     "instalar_dependencia": _tool_instalar_dependencia,
     "generar_narracion": _tool_generar_narracion,
     "analizar_video_competencia": _tool_analizar_video_competencia,
