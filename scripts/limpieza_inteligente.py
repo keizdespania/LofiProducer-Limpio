@@ -45,6 +45,26 @@ for patron in ["web/media/imagenes/seg_*.png", "web/media/imagenes/short_*.png"]
     total_n += n; total_b += b
     if n: print(f"  {patron.split('/')[-1]}: {n} ({b//1024//1024}MB)")
 
+# 2a. audios descargados (ya transcritos, >1d)
+p2 = ROOT / "output" / "encuadre" / "audios"
+if p2.exists():
+    corte_aud = time.time() - 86400
+    n = b = 0
+    for f in p2.iterdir():
+        if f.is_file() and f.stat().st_mtime < corte_aud:
+            try: b += f.stat().st_size; f.unlink(); n += 1
+            except: pass
+    total_n += n; total_b += b
+    if n: print(f"  audios (>1d): {n} ({b//1024//1024}MB)")
+
+# 2a2. temporales .*.tmp.mp4 ocultos (siempre)
+n = b = 0
+for f in (ROOT/"output"/"encuadre").glob(".*.tmp.mp4"):
+    try: b += f.stat().st_size; f.unlink(); n += 1
+    except: pass
+total_n += n; total_b += b
+if n: print(f"  .tmp.mp4: {n} ({b//1024//1024}MB)")
+
 # 2b. render_work + clips (siempre, son temporales del render)
 for d in ["output/encuadre/render_work", "output/encuadre/clips"]:
     p2 = ROOT / d
