@@ -299,6 +299,21 @@ function $safe(id, prop, val) { var el = document.getElementById(id); if (el) { 
 function $safeStyle(id, prop, val) { var el = document.getElementById(id); if (el) { try { el.style[prop] = val; } catch(e){} } }
 function $safeClass(id, action, cls) { var el = document.getElementById(id); if (el) { try { el.classList[action](cls); } catch(e){} } }        let datosGlobales = null;
 
+        
+        function abrirDrawer(tipo) {
+            var d = document.getElementById('drawer');
+            var title = document.getElementById('drawerTitle');
+            var content = document.getElementById('drawerContent');
+            if (!d) return;
+            if (title) title.textContent = tipo === 'articulo' ? 'Artículo Web' : (tipo || 'Detalle');
+            if (content) content.innerHTML = '<p class="text-zinc-400">Cargando ' + (tipo || '') + '...</p>';
+            d.style.right = '0';
+        }
+        function cerrarDrawer() {
+            var d = document.getElementById('drawer');
+            if (d) d.style.right = '-100%';
+        }
+
         function __init_factory() {
     var _st = document.getElementById('__init_status');
     if (_st) _st.textContent = 'init: corriendo...';
@@ -378,9 +393,12 @@ if (document.readyState === 'loading') {
 
         function cambiarVista(v) {
             ['preview', 'distribucion', 'monetizacion', 'live', 'analytics', 'ab', 'calendario', 'agentes', 'crear', 'cms'].forEach(t => {
-                document.getElementById('view-' + t).classList.toggle('hidden', t !== v);
-                const tab = document.getElementById('tab-' + t);
-                if (tab) tab.className = t === v ? "tab-active text-sm font-semibold pb-2 px-2 whitespace-nowrap" : "text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap";
+                try {
+                    var vel = document.getElementById('view-' + t);
+                    if (vel) vel.classList.toggle('hidden', t !== v);
+                    var tab = document.getElementById('tab-' + t);
+                    if (tab) tab.className = t === v ? "tab-active text-sm font-semibold pb-2 px-2 whitespace-nowrap" : "text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap";
+                } catch(e) { console.warn('cambiarVista', t, e); }
             });
             if (v === 'monetizacion') $safeClass('view-monetizacion', 'add', 'grid');
             if (v === 'live') { $safeClass('view-live', 'add', 'grid'); liveInit(); }
