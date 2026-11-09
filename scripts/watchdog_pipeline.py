@@ -1,40 +1,77 @@
 #!/usr/bin/env python3
-"""Watchdog: si el pipeline corre >90min sin log nuevo o el cron 06:00 no arrancó, alerta Telegram."""
-import pathlib, time, subprocess, datetime
+"""Watchdog v2 - Solo alerta errores REALES. Sin falsos positivos.
+Usa notificador_top1 (throttle + dedupe).
+Reglas:
+  1. Si pipeline no arrancó HOY a las 06:00 (log sin entradas nuevas >2h)
+  2. Si pipeline zombie (>90min corriendo sin log nuevo)
+  3. Si YouTube falló hoy (falta youtube_urls_{fecha}.json y ya son >10AM)
+  4. Si disco >95% lleno
+"""
+import sys, pathlib, time, subprocess, datetime
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "brain"))
+from notificador_top1 import alerta
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 LOG = ROOT / "data" / "logs" / "pipeline.log"
-TOKEN = ""
-CHAT = ""
-for line in (ROOT/".env").read_text().splitlines():
-    if line.startswith("TELEGRAM_BOT_TOKEN="): TOKEN = line.split("=",1)[1].strip().strip('"').strip("'")
-    if line.startswith("TELEGRAM_CHAT_ID="): CHAT = line.split("=",1)[1].strip().strip('"').strip("'")
+YT_JSON = ROOT / "data" / "agent"
 
-def alerta(msg):
-    if not TOKEN or not CHAT: return
-    try:
-        import requests
-        requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", json={"chat_id": CHAT, "text": msg}, timeout=10)
-    except: pass
+ahora = datetime.datetime.now()
+hoy = ahora.date().isoformat()
+hora = ahora.hour
 
-hoy = datetime.date.today().isoformat()
-hora = datetime.datetime.now().hour
+def _log_tiene_entradas_hoy():
+    """¿Hay algún log de hoy con contenido?"""
+    if not LOG.exists(): return False
+    if datetime.datetime.fromtimestamp(LOG.stat().st_mtime).date() == ahora.date():
+        return True
+    return False
 
-# 1. ¿Cron 06:00 arrancó?
-if 7 <= hora <= 9:
-    marca = ROOT / "data" / "agent" / f"cron_arrancado_{hoy}.flag"
-    if not marca.exists():
-        # ¿Hay algo en el log de hoy?
-        if LOG.exists() and LOG.stat().st_mtime < time.time() - 3600:
-            alerta(f"⚠️ Pipeline {hoy} NO arrancó a las 06:00 (log sin actualizar desde {(time.time()-LOG.stat().st_mtime)/60:.0f}min)")
-        else:
-            alerta(f"⚠️ Pipeline {hoy} NO arrancó a las 06:00 (no existe flag arranque)")
+def _log_hace_cuanto_min():
+    if not LOG.exists(): return 9999
+    return (time.time() - LOG.stat().st_mtime) / 60
 
-# 2. ¿Pipeline zombie?
+# ─── 1. PIPELINE NO ARRANCÓ ───
+if 9 <= hora <= 12:
+    if not _log_tiene_entradas_hoy():
+        mins = _log_hace_cuanto_min()
+        if mins > 120:
+            alerta("pipeline_no_arranco",
+                   f"No hay entradas en pipeline.log hoy {hoy}.\nÚltimo log: hace {int(mins)}min.\n\n"
+                   f"Verifica: <code>tail -20 data/logs/pipeline.log</code>",
+                   nivel="critico")
+
+# ─── 2. PIPELINE ZOMBIE ───
 try:
     r = subprocess.run(["pgrep", "-af", "pipeline_encuadre"], capture_output=True, text=True, timeout=5)
     if r.stdout.strip():
-        if LOG.exists():
-            sin_cambios = (time.time() - LOG.stat().st_mtime) / 60
-            if sin_cambios > 90:
-                alerta(f"🚨 Pipeline lleva {sin_cambios:.0f}min sin escribir en log. Posible zombie. Revisa: pgrep -af pipeline")
+        mins = _log_hace_cuanto_min()
+        if mins > 90:
+            alerta("pipeline_zombie",
+                   f"Pipeline corriendo pero sin escribir en log hace {int(mins)}min.\n\n"
+                   f"Revisa: <code>pgrep -af pipeline_encuadre</code>",
+                   nivel="critico")
 except: pass
+
+# ─── 3. YOUTUBE FALLÓ ───
+if 10 <= hora <= 13:
+    yt_file = YT_JSON / f"youtube_urls_{hoy}.json"
+    if not yt_file.exists():
+        alerta("youtube_fail",
+               f"No existe youtube_urls_{hoy}.json.\n\n"
+               f"El vídeo largo o los shorts no se subieron.\n"
+               f"Revisa: <code>grep -i youtube data/logs/pipeline.log | tail -10</code>",
+               nivel="warning")
+
+# ─── 4. DISCO ───
+try:
+    st = subprocess.run(["df", "-h", str(ROOT)], capture_output=True, text=True, timeout=5)
+    lines = st.stdout.strip().split("\n")
+    if len(lines) > 1:
+        partes = lines[1].split()
+        uso = partes[4].replace("%", "")
+        if int(uso) >= 95:
+            alerta("disco_lleno", f"Disco al {uso}%. Limpia o el pipeline fallará.", nivel="critico")
+except: pass
+
+# ─── 5. LIMPIAR throttle de tipos ya resueltos ───
+# (opcional: si todo OK hoy, resetea alertas previas)

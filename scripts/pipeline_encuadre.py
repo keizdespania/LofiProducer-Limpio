@@ -4,6 +4,16 @@ from pathlib import Path
 import edge_tts
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+
+# 2026-11-09: notificador top-1 centralizado
+import sys as _sys_notif
+_sys_notif.path.insert(0, str(ROOT / "brain"))
+try:
+    from notificador_top1 import alerta as _alerta_t1, resumen_diario as _resumen_t1, canal_nuevo_video as _canal_video_t1
+except Exception as _e:
+    _alerta_t1 = _resumen_t1 = _canal_video_t1 = lambda *a, **k: None
+    print(f"   [notif] no cargado: {_e}", flush=True)
+
 OUT = ROOT / "output" / "encuadre"
 TOKEN_ENC = ROOT / "data" / "youtube_encuadre_token.json"
 
