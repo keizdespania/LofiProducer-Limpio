@@ -333,6 +333,9 @@ HTML_FACTORY = """<!DOCTYPE html>
             if (v === 'agentes') document.getElementById('view-agentes').classList.add('grid');
             if (v === 'distribucion') { document.getElementById('view-distribucion').classList.add('grid'); cargarPublicar(); }
             if (v === 'crear') { document.getElementById('view-crear').classList.add('grid'); cargarCrear(); }
+            if (v === 'ab') { document.getElementById('view-ab').classList.add('grid'); cargarAB(); }
+            if (v === 'calendario') { document.getElementById('view-calendario').classList.add('grid'); calendarioCargar(); }
+            if (v === 'agentes') { document.getElementById('view-agentes').classList.add('grid'); agentesCargar(); }
             if (v === 'cms') { document.getElementById('view-cms').classList.add('grid'); cmsCargarArbol(); }
         }
 
@@ -640,7 +643,106 @@ HTML_FACTORY = """<!DOCTYPE html>
             }, 3000);
         }
 
+
+        // ═══ A/B TITULOS ═══
+        function cargarAB() {
+            fetch('/api/encuadre/ab_titulos/' + fechaActual).then(r=>r.json()).then(d => {
+                document.getElementById('ab-actual').innerHTML = '<div class="mono">' + (d.actual||'—') + '</div>';
+                document.getElementById('ab-alt0').textContent = (d.alternativas && d.alternativas[0]) || '—';
+                document.getElementById('ab-alt1').textContent = (d.alternativas && d.alternativas[1]) || '—';
+                document.getElementById('ab-nota').textContent = d.nota || '';
+            });
+        }
+
+        // ═══ CALENDARIO ═══
+        function calendarioCargar() {
+            fetch('/api/encuadre/calendario').then(r=>r.json()).then(d => {
+                const el = document.getElementById('cal-lista');
+                if (!d.items || !d.items.length) { el.innerHTML = '<div class="text-xs text-zinc-500 italic">No hay publicaciones programadas. Pulsa "Programar HOY" para encolar el vídeo del día.</div>'; return; }
+                el.innerHTML = d.items.map(it => {
+                    const estado = it.estado || 'pendiente';
+                    const color = estado === 'publicado' ? 'green' : estado === 'pendiente' ? 'yellow' : 'zinc';
+                    return `<div class="flex justify-between items-center bg-zinc-900/50 rounded p-2 text-xs">
+                        <div class="flex-1 min-w-0">
+                            <div class="font-semibold truncate">${it.titulo || '(sin titulo)'}</div>
+                            <div class="text-zinc-500 text-[10px]">${it.publish_at || ''} · ${it.video_path ? it.video_path.split('/').pop() : ''}</div>
+                        </div>
+                        <span class="badge bg-${color}-600/20 text-${color}-400 px-2 py-0.5 rounded text-[10px]">${estado}</span>
+                    </div>`;
+                }).join('');
+            });
+        }
+        function calendarioProgramarHoy() {
+            if (!confirm('¿Programar el vídeo largo de hoy para publicar en +4h?')) return;
+            fetch('/api/encuadre/programar_hoy', {method:'POST'}).then(r=>r.json()).then(d => {
+                if (d.ok) { mostrarToast('✅ Programado: ' + d.titulo, 'bg-green-600'); calendarioCargar(); }
+                else mostrarToast('❌ ' + (d.error||'error'), 'bg-red-600');
+            });
+        }
+
+        // ═══ AGENTES ═══
+        function agentesCargar() {
+            fetch('/api/encuadre/agentes').then(r=>r.json()).then(d => {
+                const el = document.getElementById('agentes-grid');
+                if (!d.agentes || !d.agentes.length) { el.innerHTML = '<div class="text-xs text-zinc-500 italic">No hay agentes definidos</div>'; return; }
+                el.innerHTML = d.agentes.map(a => `
+                    <div class="glass rounded-xl p-3">
+                        <div class="text-sm font-bold text-red-400 mb-1">${a.label}</div>
+                        <div class="text-[10px] text-zinc-500 line-clamp-2">${a.desc || '(sin descripcion)'}</div>
+                    </div>
+                `).join('');
+            });
+        }
+
+
+        // ═══ DIOS FAB ═══
+        function diosToggle() {
+            const p = document.getElementById('dios-panel');
+            p.style.display = p.style.display === 'none' ? 'flex' : 'none';
+        }
+        function diosEnviar() {
+            const inp = document.getElementById('dios-input');
+            const q = inp.value.trim();
+            if (!q) return;
+            inp.value = '';
+            diosPush('👤 ' + q, '#a1a1aa');
+            diosPush('⏳ Pensando...', '#f77f00');
+            fetch('/api/encuadre/dios_ask', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({pregunta:q, fecha: fechaActual})})
+                .then(r=>r.json()).then(d => {
+                    // Quitar el "Pensando..."
+                    const chat = document.getElementById('dios-chat');
+                    chat.lastChild.remove();
+                    if (d.ok) diosPush('🤖 ' + d.respuesta, '#d4d4d8');
+                    else diosPush('❌ ' + (d.error || 'Error'), '#ef4444');
+                }).catch(e => diosPush('❌ ' + e.message, '#ef4444'));
+        }
+        function diosPush(txt, color) {
+            const chat = document.getElementById('dios-chat');
+            const div = document.createElement('div');
+            div.style.marginBottom = '8px';
+            div.style.color = color;
+            div.style.whiteSpace = 'pre-wrap';
+            div.textContent = txt;
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
     </script>
+
+    <!-- DIOS FAB + PANEL -->
+    <button id="dios-fab" onclick="diosToggle()" title="Hablar con Dios" style="position:fixed;bottom:24px;right:24px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#e63946,#f77f00);color:#fff;border:none;font-size:1.6em;z-index:100;cursor:pointer;box-shadow:0 8px 32px rgba(230,57,70,0.5);display:flex;align-items:center;justify-content:center;animation:diosPulse 2.5s ease-in-out infinite;">🤖</button>
+    <style>@keyframes diosPulse{0%,100%{box-shadow:0 8px 32px rgba(230,57,70,0.5)}50%{box-shadow:0 8px 32px rgba(230,57,70,0.5),0 0 0 12px rgba(230,57,70,0)}}</style>
+    <div id="dios-panel" style="display:none;position:fixed;bottom:96px;right:24px;width:min(420px,90vw);max-height:70vh;background:#18181b;border:1px solid #e63946;border-radius:16px;z-index:101;box-shadow:0 20px 60px rgba(0,0,0,0.6);flex-direction:column;overflow:hidden;">
+        <div style="padding:12px 16px;border-bottom:1px solid #3f3f46;display:flex;justify-content:space-between;align-items:center;">
+            <strong style="color:#f77f00;">🤖 Dios del Encuadre</strong>
+            <button onclick="diosToggle()" style="background:none;border:none;color:#a1a1aa;font-size:1.3em;cursor:pointer;">×</button>
+        </div>
+        <div id="dios-chat" style="flex:1;overflow-y:auto;padding:12px;font-size:12px;color:#d4d4d8;min-height:120px;max-height:50vh;"></div>
+        <div style="padding:10px;border-top:1px solid #3f3f46;display:flex;gap:6px;">
+            <input id="dios-input" placeholder="Pregúntale a Dios..." style="flex:1;background:#09090b;border:1px solid #3f3f46;color:#fff;border-radius:6px;padding:8px;font-size:12px;outline:none;" onkeypress="if(event.key==='Enter')diosEnviar()">
+            <button onclick="diosEnviar()" style="background:#e63946;border:none;color:#fff;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">Enviar</button>
+        </div>
+    </div>
 </body>
 </html>"""
 
@@ -1021,6 +1123,212 @@ def api_crear_custom():
     return jsonify({"ok": True, "msg": "Pipeline custom lanzado", "request": req})
 
 
-@encuadre_bp.route("/output/encuadre/<path:filename>")
+
+@encuadre_bp.route("/api/encuadre/calendario")
+def api_calendario():
+    import sqlite3
+    db = ROOT / "data" / "agent" / "cola_publicacion.db"
+    if not db.exists(): return jsonify({"items": [], "hoy_programado": False})
+    try:
+        con = sqlite3.connect(str(db)); con.row_factory = sqlite3.Row
+        cur = con.cursor()
+        cur.execute("SELECT id, video_path, titulo, publish_at, estado, youtube_id, creada FROM publicaciones ORDER BY publish_at ASC")
+        items = [dict(r) for r in cur.fetchall()]
+        import datetime
+        hoy = datetime.date.today().isoformat()
+        hoy_prog = any((it.get("publish_at") or "").startswith(hoy) for it in items)
+        con.close()
+        return jsonify({"items": items, "hoy_programado": hoy_prog, "total": len(items)})
+    except Exception as e:
+        return jsonify({"error": str(e), "items": []})
+
+
+@encuadre_bp.route("/api/encuadre/programar_hoy", methods=["POST"])
+def api_programar_hoy():
+    import sqlite3, datetime, json as _j
+    OUT = ROOT / "output" / "encuadre"
+    hoy = datetime.date.today().isoformat()
+    prod_p = OUT / f"produccion_{hoy}.json"
+    seo_p = OUT / f"seo_{hoy}.json"
+    if not prod_p.exists(): return jsonify({"error": "No hay produccion de hoy"}), 404
+    try: prod = _j.loads(prod_p.read_text())
+    except: prod = {}
+    try: seo = _j.loads(seo_p.read_text()) if seo_p.exists() else {}
+    except: seo = {}
+    video = str(OUT / f"video_largo_{hoy}.mp4")
+    seo_largo = seo.get("largo", {})
+    titulo = seo_largo.get("titulo") or (prod.get("dossier") or {}).get("titular_brutal", "Video largo")
+    desc = seo_largo.get("descripcion", "")
+    tags = seo_largo.get("tags", [])
+    publish_at = (datetime.datetime.now() + datetime.timedelta(hours=4)).isoformat()
+    db = ROOT / "data" / "agent" / "cola_publicacion.db"
+    db.parent.mkdir(parents=True, exist_ok=True)
+    con = sqlite3.connect(str(db))
+    cur = con.cursor()
+    cur.execute("""INSERT INTO publicaciones (video_path, titulo, descripcion, tags, publish_at, estado, creada)
+                   VALUES (?, ?, ?, ?, ?, 'pendiente', ?)""",
+                (video, titulo, desc, _j.dumps(tags, ensure_ascii=False), publish_at, datetime.datetime.now().isoformat()))
+    con.commit(); con.close()
+    return jsonify({"ok": True, "titulo": titulo, "publish_at": publish_at})
+
+
+@encuadre_bp.route("/api/encuadre/agentes")
+def api_agentes():
+    import importlib, sys as _sys, re as _re
+    roles = {}
+    err = None
+    try:
+        brain_dir = str(ROOT / "brain")
+        if brain_dir not in _sys.path:
+            _sys.path.insert(0, brain_dir)
+        if "especialistas" in _sys.modules:
+            _esp = importlib.reload(_sys.modules["especialistas"])
+        else:
+            import especialistas as _esp
+        roles = getattr(_esp, "ROLES", {}) or {}
+    except Exception as e:
+        err = "import: " + type(e).__name__ + ": " + str(e)
+    if not roles:
+        try:
+            txt = (ROOT / "brain" / "especialistas.py").read_text()
+            m = _re.search(r'^ROLES\s*=\s*\{(.+?)^\}', txt, _re.DOTALL | _re.MULTILINE)
+            if m:
+                for km in _re.finditer(r'^\s{4,}["\']?([a-z0-9_]+)["\']?\s*:', m.group(1), _re.MULTILINE):
+                    roles[km.group(1)] = {}
+                err = (err or "") + " | fallback_parse_ok:" + str(len(roles))
+        except Exception as e:
+            err = (err or "") + " | parse: " + str(e)
+    agentes = []
+    for nombre, cfg in roles.items():
+        desc = ""
+        if isinstance(cfg, dict):
+            desc = (cfg.get("descripcion") or cfg.get("desc") or (cfg.get("system", "") or "")[:140])
+        elif isinstance(cfg, str):
+            desc = cfg[:140]
+        agentes.append({"id": nombre, "label": nombre.replace("_", " ").title(), "desc": desc})
+    out = {"agentes": agentes, "total": len(agentes)}
+    if err:
+        out["error"] = err
+    return jsonify(out)
+
+@encuadre_bp.route("/api/encuadre/ab_titulos/<fecha>")
+def api_ab_titulos(fecha):
+    import json as _j, random
+    OUT = ROOT / "output" / "encuadre"
+    seo_p = OUT / f"seo_{fecha}.json"
+    actual = ""
+    if seo_p.exists():
+        try: actual = _j.loads(seo_p.read_text()).get("largo", {}).get("titulo", "")
+        except: pass
+    # Generar 2 alternativas simples basadas en el actual
+    alt = []
+    if actual:
+        base = actual.replace("—", "-")
+        if "|" in base:
+            parts = base.split("|")
+            alt.append(" | ".join(reversed([p.strip() for p in parts])))
+        else:
+            alt.append(base.replace(": ", " — "))
+        alt.append("🔴 " + base[:150])
+        if "?" not in base and "!" not in base:
+            alt.append(base[:140] + " ¿Por qué?")
+    else:
+        alt = ["Titulo A/B pendiente (sin seo del dia)", "Titulo A/B pendiente 2"]
+    return jsonify({
+        "fecha": fecha,
+        "actual": actual or "(no generado)",
+        "alternativas": alt[:2],
+        "nota": "A/B real: cuando publiques, YouTube Analytics mostrara CTR por titulo en 48h",
+    })
+
+
+
+@encuadre_bp.route("/api/encuadre/dios_ask", methods=["POST"])
+def api_dios_ask():
+    import requests as _rq, json as _j, datetime, pathlib as _pl
+    data = request.get_json() or {}
+    pregunta = (data.get("pregunta") or "").strip()
+    fecha = data.get("fecha") or datetime.date.today().isoformat()
+    if not pregunta:
+        return jsonify({"ok": False, "error": "Falta pregunta"}), 400
+
+    # Construir contexto del día
+    OUT = ROOT / "output" / "encuadre"
+    prod = {}
+    p = OUT / f"produccion_{fecha}.json"
+    if p.exists():
+        try: prod = _j.loads(p.read_text())
+        except: pass
+    seo = {}
+    p = OUT / f"seo_{fecha}.json"
+    if p.exists():
+        try: seo = _j.loads(p.read_text())
+        except: pass
+    dossier = prod.get("dossier", {})
+    seo_largo = seo.get("largo", {})
+    shorts_lines = []
+    for i, s in enumerate((prod.get("shorts_finales") or [])[:4]):
+        ss = (seo.get("shorts") or [])
+        tit = ss[i].get("titulo", "") if i < len(ss) else ""
+        shorts_lines.append(f"  - Short {i+1} ({s.get('tipo','?')}): hook='{(s.get('hook') or '')[:50]}' | seo='{tit[:50]}'")
+    ctx = (
+        f"Eres el director técnico de El Encuadre. Fecha {fecha}.\n"
+        f"Titulo largo: {seo_largo.get('titulo', '(no)')[:150]}\n"
+        f"Score viralidad: {(prod.get('viralidad') or {}).get('score', 0)}/10\n"
+        f"Titular dossier: {dossier.get('titular_brutal', '(no)')[:150]}\n"
+        f"Shorts:\n" + "\n".join(shorts_lines) + "\n\n"
+        f"Pregunta del operador (responde breve, accionable, 1-3 frases max): {pregunta}"
+    )
+
+    # CAPA 1: llamar a /api/jarvis/chat (dios.py completo)
+    try:
+        r = _rq.post("http://127.0.0.1:8001/api/jarvis/chat",
+                     json={"texto": ctx}, timeout=180)
+        if r.status_code == 200:
+            j = r.json()
+            resp = j.get("respuesta", "").strip()
+            if resp and "Fallo Groq" not in resp and "HTTP 401" not in resp and "Sin respuesta" not in resp:
+                return jsonify({"ok": True, "respuesta": resp, "capa": 1, "fecha": fecha})
+    except Exception as e:
+        pass
+
+    # CAPA 2: fallback directo a Groq con cascada
+    try:
+        env_path = ROOT / ".env"
+        keys = []
+        models = []
+        for line in env_path.read_text().splitlines():
+            if line.startswith("GROQ_API_KEY"):
+                keys.append(line.split("=", 1)[1].strip().strip('"').strip("'"))
+            if line.startswith("GROQ_MODEL"):
+                models.append(line.split("=", 1)[1].strip().strip('"').strip("'"))
+        if not keys:
+            return jsonify({"ok": False, "error": "Sin GROQ_API_KEY en .env"}), 500
+        if not models:
+            models = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b", "openai/gpt-oss-20b"]
+        CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        last_err = ""
+        for idx, k in enumerate(keys):
+            modelo = models[idx] if idx < len(models) else "openai/gpt-oss-120b"
+            try:
+                rr = _rq.post("https://api.groq.com/openai/v1/chat/completions",
+                    headers={"Authorization": f"Bearer {k}", "Content-Type": "application/json", "User-Agent": CHROME},
+                    json={"model": modelo, "messages": [{"role": "user", "content": ctx}], "max_tokens": 800, "temperature": 0.5},
+                    timeout=60)
+                if rr.status_code == 200:
+                    jj = rr.json()
+                    msg = jj.get("choices", [{}])[0].get("message", {})
+                    content = (msg.get("content") or "").strip()
+                    if not content and msg.get("reasoning"):
+                        content = "(razonamiento) " + msg["reasoning"][:400]
+                    return jsonify({"ok": True, "respuesta": content or "(respuesta vacia)", "capa": 2, "modelo": modelo, "fecha": fecha})
+                last_err = f"HTTP {rr.status_code}: {rr.text[:200]}"
+            except Exception as e:
+                last_err = str(e)
+        return jsonify({"ok": False, "error": "Groq fallo en cascada: " + last_err}), 500
+    except Exception as e:
+        return jsonify({"ok": False, "error": "Fallback: " + str(e)}), 500
+
+
 def video_encuadre(filename):
     return send_from_directory(ROOT / "output" / "encuadre", filename)
