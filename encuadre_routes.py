@@ -335,28 +335,95 @@ function actualizarVideoYT(tipo) {
 function cambiarVideo(tipo) { actualizarVideoYT(tipo); }
 function reproducirShort(n) { actualizarVideoYT('short_' + n); }
 
-/* PUBLICAR */
+/* PUBLICAR v2 - redes cruzadas */
 function cargarPublicar() {
   var root = document.getElementById('publicar-content');
   if (!root) return;
   root.innerHTML = '<div style="font-size:11px;color:#71717a">Cargando...</div>';
-  fetch('/api/encuadre/publicar/' + fechaActual).then(function(r){ return r.json(); }).then(function(d){
-    _publicarData = d;
+  fetch('/api/encuadre/redes_cruzadas/' + fechaActual).then(function(r){ return r.json(); }).then(function(d){
+    if (d.error) { root.innerHTML = '<div style="color:#ef4444">' + d.error + '</div>'; return; }
+    window._redesCruzadas = d;
     var html = '';
-    var largo = d.largo || {};
-    html += '<div class="glass" style="border-radius:10px;padding:10px;border-left:3px solid #dc2626">' +
-            '<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:12px;font-weight:700;color:#f87171">🎬 Vídeo Largo</div><button onclick="verGuion(\'largo\')" style="font-size:10px;background:#27272a;padding:3px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">Ver guion</button></div>' +
-            '<div style="font-size:10px;color:#a1a1aa;margin-top:4px">' + (largo.palabras || 0) + ' palabras · Viralidad ' + (largo.viralidad || 0) + '/10</div>' +
-            '<div style="font-size:10px;color:#d4d4d8;margin-top:4px"><strong>SEO:</strong> ' + $esc((largo.seo && largo.seo.titulo) || '—') + '</div></div>';
-    (d.shorts || []).forEach(function(s){
-      html += '<div class="glass" style="border-radius:10px;padding:10px;border-left:3px solid #ea580c">' +
-              '<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:12px;font-weight:700;color:#fb923c">📱 Short ' + s.num + ' · ' + $esc(s.tipo || '') + '</div><button onclick="verGuion(' + s.num + ')" style="font-size:10px;background:#27272a;padding:3px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">Ver guion</button></div>' +
-              '<div style="font-size:10px;color:#a1a1aa;margin-top:4px">' + $esc((s.hook || '').slice(0, 100)) + '</div>' +
-              '<div style="font-size:10px;color:#d4d4d8;margin-top:4px"><strong>SEO:</strong> ' + $esc((s.seo && s.seo.titulo) || '—') + '</div></div>';
+
+    // ══ LARGO ══
+    if (d.largo) {
+      html += _cardPublicar('largo', 0, '🎬 VÍDEO LARGO', d.largo.titulo, d.largo.link_yt, d.largo.link_post, d.largo.redes, '#dc2626');
+    }
+
+    // ══ SHORTS ══
+    (d.shorts || []).forEach(function(s, i){
+      html += _cardPublicar('short', i, '📱 SHORT ' + s.num + ' · ' + (s.tipo || '').toUpperCase(), s.titulo || s.hook, s.link_yt, s.link_largo, s.redes, '#ea580c');
     });
+
+    // ══ POSTS ══
+    (d.posts || []).forEach(function(p, i){
+      html += _cardPublicar('post', i, '📄 ' + (p.tipo || 'POST').toUpperCase(), p.titulo, p.url, p.link_short, p.redes, '#7c3aed');
+    });
+
     root.innerHTML = html;
   }).catch(function(e){ root.innerHTML = '<div style="color:#ef4444;font-size:11px">Error: ' + e.message + '</div>'; });
 }
+
+function _cardPublicar(kind, idx, titulo, subtitulo, linkPrincipal, linkCruzado, redes, color) {
+  var uid = kind + '_' + idx;
+  var html = '<div class="glass" style="border-radius:10px;overflow:hidden;border-left:3px solid ' + color + '">';
+  html += '<div style="padding:10px;cursor:pointer" onclick="toggleRedes(\'' + uid + '\')">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center">';
+  html += '<div style="font-size:12px;font-weight:700;color:' + color + '">' + _esc(titulo) + '</div>';
+  html += '<span id="tog_' + uid + '" style="font-size:10px;color:#a1a1aa">▼</span>';
+  html += '</div>';
+  html += '<div style="font-size:10px;color:#a1a1aa;margin-top:4px">' + _esc((subtitulo || '').slice(0, 100)) + '</div>';
+  if (linkPrincipal) html += '<div style="font-size:10px;margin-top:4px"><a href="' + linkPrincipal + '" target="_blank" style="color:#60a5fa;text-decoration:none">🔗 ' + linkPrincipal + '</a></div>';
+  html += '</div>';
+  html += '<div id="redes_' + uid + '" style="display:none;border-top:1px solid #27272a;padding:10px">';
+
+  var redes_orden = ['youtube', 'youtube_comunidad', 'tiktok', 'instagram', 'x', 'threads', 'linkedin'];
+  redes_orden.forEach(function(red){
+    if (!redes[red]) return;
+    var r = redes[red];
+    var texto = r.texto || r.descripcion || '';
+    var tags = r.hashtags || '';
+    var full = texto + (tags ? '\n\n' + tags : '');
+    var rid = uid + '_' + red;
+    html += '<div style="margin-bottom:10px;background:#09090b;border-radius:6px;padding:8px">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">';
+    html += '<strong style="font-size:11px;color:#fbbf24;text-transform:uppercase">' + red + '</strong>';
+    html += '<div style="display:flex;gap:4px">';
+    html += '<button onclick="copiarTexto(\'' + rid + '\')" style="font-size:10px;background:#16a34a;padding:2px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">📋</button>';
+    html += '<button onclick="abrirRed(\'' + red + '\', \'' + rid + '\')" style="font-size:10px;background:#2563eb;padding:2px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">🚀</button>';
+    html += '</div></div>';
+    html += '<textarea id="' + rid + '" readonly style="width:100%;background:#18181b;border:1px solid #3f3f46;border-radius:4px;padding:6px;color:#d4d4d8;font-size:10px;font-family:monospace;resize:vertical;min-height:60px">' + _esc(full) + '</textarea>';
+    html += '</div>';
+  });
+  html += '</div></div>';
+  return html;
+}
+
+function toggleRedes(uid) {
+  var el = document.getElementById('redes_' + uid);
+  var tog = document.getElementById('tog_' + uid);
+  if (!el) return;
+  if (el.style.display === 'none' || !el.style.display) { el.style.display = 'block'; tog.textContent = '▲'; }
+  else { el.style.display = 'none'; tog.textContent = '▼'; }
+}
+
+function copiarTexto(id) {
+  var el = document.getElementById(id); if (!el) return;
+  el.select(); el.setSelectionRange(0, el.value.length);
+  try { document.execCommand('copy'); mostrarToast('✅ Copiado', 'bg-green-600'); }
+  catch(e) {
+    fetch('/api/encuadre/copiar_portapapeles', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({texto: el.value})}).then(function(){ mostrarToast('✅ Copiado', 'bg-green-600'); });
+  }
+}
+
+function abrirRed(red, textareaId) {
+  var el = document.getElementById(textareaId);
+  var texto = el ? el.value : '';
+  fetch('/api/encuadre/abrir_app', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({red: red, texto: texto})})
+    .then(function(){ mostrarToast('🚀 ' + red + ' abierto', 'bg-blue-600'); });
+}
+
+function _esc(s) { return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 function verGuion(id) {
   if (!_publicarData) return;
@@ -586,7 +653,7 @@ function __init_factory() {
 
 if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', __init_factory); } else { __init_factory(); }
 
-['cambiarVista','cargarDatos','actualizarVideoYT','cambiarVideo','reproducirShort','compartir','abrirModal','cerrarModal','cargarPublicar','verGuion','cargarCrear','crearToggleTema','crearLanzar','liveInit','liveCargarLista','liveCambiarLog','liveRefrescar','liveToggleAuto','liveLanzarPipeline','liveMatar','cargarCloudflareStats','cargarAB','cargarCalendario','calendarioProgramarHoy','cargarAgentes','verAgente','cmsCargarArbol','cmsAbrirArchivo','cmsGuardar','cmsBuild','aplicarAfiliados','subirPrintify','generarKDP','diosToggle','diosEnviar','diosPush','mostrarToast'].forEach(function(fn){ try { window[fn] = eval(fn); } catch(e){} });
+['cambiarVista','cargarDatos','actualizarVideoYT','cambiarVideo','reproducirShort','compartir','abrirModal','cerrarModal','cargarPublicar','verGuion','toggleRedes','copiarTexto','abrirRed','cargarCrear','crearToggleTema','crearLanzar','liveInit','liveCargarLista','liveCambiarLog','liveRefrescar','liveToggleAuto','liveLanzarPipeline','liveMatar','cargarCloudflareStats','cargarAB','cargarCalendario','calendarioProgramarHoy','cargarAgentes','verAgente','cmsCargarArbol','cmsAbrirArchivo','cmsGuardar','cmsBuild','aplicarAfiliados','subirPrintify','generarKDP','diosToggle','diosEnviar','diosPush','mostrarToast'].forEach(function(fn){ try { window[fn] = eval(fn); } catch(e){} });
 console.log('[factory] ready');
 """
 
@@ -598,6 +665,38 @@ LOGS_DIR = ROOT / "data" / "logs"
 
 
 
+
+
+
+@encuadre_bp.route("/api/encuadre/redes_cruzadas/<fecha>")
+def api_redes_cruzadas(fecha):
+    import json as _j, subprocess as _sp
+    OUT = ROOT / "output" / "encuadre"
+    p = OUT / f"redes_{fecha}_cruzadas.json"
+    # Si no existe, generarlo
+    if not p.exists():
+        try:
+            _sp.run(["python3", "scripts/generar_redes_cruzadas.py", fecha],
+                    cwd=str(ROOT), timeout=60, check=False, capture_output=True)
+        except: pass
+    if not p.exists():
+        return jsonify({"error": "no_generado"}), 404
+    try: return jsonify(_j.loads(p.read_text()))
+    except Exception as e: return jsonify({"error": str(e)}), 500
+
+
+@encuadre_bp.route("/api/encuadre/copiar_portapapeles", methods=["POST"])
+def api_copiar_portapapeles():
+    import subprocess as _sp
+    data = request.get_json() or {}
+    texto = data.get("texto", "")
+    if not texto:
+        return jsonify({"ok": False, "error": "sin texto"}), 400
+    try:
+        _sp.run(["termux-clipboard-set", texto], timeout=5, check=False)
+        return jsonify({"ok": True})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
 
 
 @encuadre_bp.route("/api/encuadre/youtube/<fecha>")
