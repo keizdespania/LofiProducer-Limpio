@@ -452,14 +452,14 @@ function $safeClass(id, action, cls) { var el = document.getElementById(id); if 
                 $safe('cf-pv', 'textContent', pv.toLocaleString('es-ES'));
                 $safe('cf-vt', 'textContent', vt.toLocaleString('es-ES'));
                 $safe('cf-pais', 'textContent', tc ? tc[0] : '—');
-                $safe('cf-pag', 'textContent', tp ? (tp[0].replace(/\\/$/, '').split('/').pop() || '/') : '—');
+                $safe('cf-pag', 'textContent', tp ? (tp[0].replace(/\/$/, '').split('/').pop() || '/') : '—');
                 const maxP = d.top_paginas && d.top_paginas.length ? d.top_paginas[0][1] : 1;
                 const paginasEl = document.getElementById('cf-top-paginas');
                 if (!d.top_paginas || !d.top_paginas.length) { paginasEl.innerHTML = '<div class="text-xs text-zinc-500 italic">Sin datos aún</div>'; }
                 else {
                     paginasEl.innerHTML = d.top_paginas.map(p => {
                         const pct = Math.round((p[1] / maxP) * 100);
-                        const slug = p[0].replace(/\\/$/, '').split('/').pop() || '/';
+                        const slug = p[0].replace(/\/$/, '').split('/').pop() || '/';
                         return '<div class="mb-2"><div class="flex justify-between mb-1"><span class="mono text-xs text-zinc-300 truncate">' + slug + '</span><span class="text-xs text-zinc-500">' + p[1] + '</span></div><div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-red-500 to-orange-400" style="width:' + pct + '%"></div></div></div>';
                     }).join('');
                 }
