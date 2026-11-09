@@ -141,5 +141,16 @@ def main():
     dur_real = _dur(final)
     print(f"\n✅ VÍDEO OK: {final.name} ({dur_real/60:.1f}min, {final.stat().st_size//1024//1024}MB)", flush=True)
 
+    # 2026-11-09: limpieza automatica render_work (399MB por dia sin esto)
+    try:
+        import shutil as _sh
+        _WORK = ROOT / "output" / "encuadre" / "render_work"
+        if _WORK.exists():
+            _size = sum(f.stat().st_size for f in _WORK.rglob("*") if f.is_file())
+            _sh.rmtree(_WORK, ignore_errors=True)
+            print(f"   [clean] render_work borrado ({_size//1024//1024}MB)", flush=True)
+    except Exception as _e:
+        print(f"   [clean] {_e}", flush=True)
+
 if __name__ == "__main__":
     main()
