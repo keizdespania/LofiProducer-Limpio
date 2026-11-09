@@ -71,18 +71,37 @@ def _groq_fast(prompt, system="", max_tokens=500):
     return None
 
 def _clasificar(texto):
-    """Devuelve 'chat' o 'agent'."""
+    """Devuelve 'chat' o 'agent'. Cualquier cosa que pida datos reales → agent."""
+    low = texto.lower()
+    if texto.startswith("#"): return "agent"
+    if texto.startswith("!"): return "chat"
+    
+    # Verbos de acción
     verbos = ["crea", "crear", "genera", "generar", "haz", "hacer", "lanza", "lanzar",
               "busca", "buscar", "instala", "instalar", "ejecuta", "ejecutar",
               "sube", "subir", "publica", "publicar", "arregla", "arreglar", "corrige",
               "descarga", "descargar", "mata", "matar", "limpia", "limpiar",
               "programa", "programar", "analiza", "analizar", "revisa", "revisar",
-              "modifica", "modificar", "borra", "borrar", "actualiza", "actualizar",
-              "cuantos", "cuántos", "listame", "lista", "muestrame", "muéstrame", "dime"]
-    low = texto.lower()
-    if texto.startswith("#"): return "agent"
-    if texto.startswith("!"): return "chat"
-    return "agent" if any(v in low for v in verbos) else "chat"
+              "modifica", "modificar", "borra", "borrar", "actualiza", "actualizar"]
+    
+    # Verbos de consulta de datos reales
+    consultas = ["cuantos", "cuántos", "listame", "lista", "muestrame", "muéstrame", "dime",
+                 "cual", "cuál", "que", "qué", "quien", "quién", "donde", "dónde", "cuando", "cuándo",
+                 "ayer", "hoy", "mañana", "semana", "mes",
+                 "video", "vídeo", "short", "youtube", "podcast", "post", "blog", "web",
+                 "visitas", "vistas", "viral", "trending", "tendencia", "noticia"]
+    
+    # Si tiene verbo de acción O de consulta → agent
+    if any(v in low for v in verbos) or any(v in low for v in consultas):
+        return "agent"
+    
+    # Saludos puros → chat
+    saludos = ["hola", "buenas", "hey", "gracias", "ok", "genial", "bien", "mal", "tal"]
+    if low.strip() in saludos or len(low.split()) <= 2:
+        return "chat"
+    
+    # Default: agent (más seguro para no perder datos)
+    return "agent"
 
 def _comando_status():
     r = subprocess.run(["pgrep", "-af", "pipeline_encuadre"], capture_output=True, text=True, timeout=5)
