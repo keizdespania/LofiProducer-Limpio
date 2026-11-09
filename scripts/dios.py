@@ -93,6 +93,23 @@ TOOL_FALLBACKS = {
     "subir_youtube": ["procesar_cola_youtube"],
 }
 
+
+def _check_tokens_limit():
+    """Aborta si >500k tokens hoy. Alerta Telegram a 400k."""
+    try:
+        r = COSTES.resumen_hoy()
+        total = (r.get("tokens_in", 0) or 0) + (r.get("tokens_out", 0) or 0)
+        if total > 400_000 and total <= 500_000:
+            import subprocess as _sp
+            try:
+                _sp.run(["python3", "scripts/notificar_telegram.py", f"⚠️ Dios: {total} tokens hoy (>80% del limite 500k)"], cwd=str(ROOT), timeout=15, capture_output=False)
+            except: pass
+        if total > 500_000:
+            print(f"🛑 LIMITE TOKENS: {total}/500000. Abortando tarea.")
+            return False
+    except: pass
+    return True
+
 def _guardar_resultado(prompt, resumen, tools, exito=True):
     try:
         WORKSPACE.anotar_tarea(prompt, resumen, tools)
@@ -1978,6 +1995,11 @@ def main() -> int:
         return 2
 
     prompt = " ".join(sys.argv[1:]).strip()
+
+    # 2026-11-09: limite tokens diario
+    if not _check_tokens_limit():
+        print("[dios] Limite tokens alcanzado. Espera mañana o sube DIOS_MAX_TOKENS.")
+        return 1
 
     # ── DETECCION DE MODO ──
     _modo_actual = _detectar_modo(prompt) if prompt else "agent"
