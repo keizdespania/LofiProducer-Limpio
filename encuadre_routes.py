@@ -1024,67 +1024,71 @@ def _abrir_en_navegador(url):
             return False
 
 def api_abrir_app():
-    """Intents URL (texto pre-rellenado) + share sheet para video + clipboard fallback."""
+    """Abre app/red con texto pre-rellenado. Usa redirector web para forzar navegador si la app buguea."""
     import subprocess as _sp
     import urllib.parse as _up
     data = request.get_json() or {}
-    red = (data.get("red") or "").lower()
-    texto = (data.get("texto") or "").strip()
-    video_path = (data.get("video_path") or "").strip()
+    red = (data.get('red') or '').lower()
+    texto = (data.get('texto') or '').strip()
+    video_path = (data.get('video_path') or '').strip()
 
-    # 1. Copiar SIEMPRE al portapapeles (fallback universal)
+    # 1. Clipboard siempre
     clip = False
     if texto:
         try:
-            _sp.run(["termux-clipboard-set", texto], timeout=5, check=False)
+            _sp.run(['termux-clipboard-set', texto], timeout=5, check=False)
             clip = True
         except: pass
 
-    # 2. Intents URL con texto YA escrito (X, Threads, LinkedIn, Telegram)
+    def _open(url):
+        try:
+            _sp.Popen(['termux-open-url', url], stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
+            return True
+        except: return False
+
+    # 2. Intents directos (X, LinkedIn, Telegram: apps OK con %20)
     INTENTS = {
-        "x": "https://twitter.com/intent/tweet?text=" + _up.quote(texto),
-        "threads": "https://threads.net/intent/post?text=" + _up.quote(texto),
-        "linkedin": "https://linkedin.com/feed/?shareActive=true&text=" + _up.quote(texto),
-        "telegram": "https://t.me/share/url?text=" + _up.quote(texto),
+        'x': 'https://twitter.com/intent/tweet?text=' + _up.quote(texto[:260]),
+        'linkedin': 'https://www.linkedin.com/feed/?shareActive=true&text=' + _up.quote(texto),
+        'telegram': 'https://t.me/share/url?text=' + _up.quote(texto),
     }
     if red in INTENTS and texto:
-        if _abrir_en_navegador(INTENTS[red]):
-            return jsonify({"ok": True, "accion": "intent_url_browser", "red": red, "clipboard": clip})
+        if _open(INTENTS[red]):
+            return jsonify({'ok': True, 'accion': 'intent_url', 'red': red, 'clipboard': clip})
 
-    # 3. Share sheet con video (TikTok/IG/boton compartir video)
-    if video_path and red in ("tiktok", "instagram", "video"):
-        vp = ROOT / video_path.lstrip("/")
+    # 3. Redirector web para Threads (app bug +) y YT Comunidad (app no soporta /community)
+    REDIR_TARGET = {
+        'threads': 'https://threads.net/intent/post?text=' + _up.quote(texto),
+        'youtube_comunidad': 'https://www.youtube.com/@somoselencuadre.oficial/community',
+    }
+    if red in REDIR_TARGET:
+        redir_url = 'https://elencuadre.pages.dev/redir.html?to=' + _up.quote(REDIR_TARGET[red], safe='')
+        if _open(redir_url):
+            return jsonify({'ok': True, 'accion': 'browser_redirect', 'red': red, 'clipboard': clip})
+
+    # 4. Share sheet video (TikTok/IG cuando hay vídeo)
+    if video_path and red in ('tiktok', 'instagram', 'video'):
+        vp = ROOT / video_path.lstrip('/')
         if vp.exists():
             try:
-                _sp.Popen(["termux-share", "-a", "send", "-c", "video/mp4", str(vp)],
+                _sp.Popen(['termux-share', '-a', 'send', '-c', 'video/mp4', str(vp)],
                           stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
-                return jsonify({"ok": True, "accion": "share_sheet", "video": video_path, "clipboard": clip})
-            except Exception:
-                pass
+                return jsonify({'ok': True, 'accion': 'share_sheet', 'red': red, 'clipboard': clip})
+            except: pass
 
-    # 4. Fallback: deep link a la app (sin texto pre-rellenado)
+    # 5. Fallback
     LINKS = {
-        "tiktok": "snssdk1128://",
-        "instagram": "https://www.instagram.com/somoselencuadre/",
-        "x": "twitter://",
-        "threads": "barcelona://",
-        "linkedin": "linkedin://",
-        "youtube": "vnd.youtube://",
-        "youtube_comunidad": "https://www.youtube.com/@somoselencuadre.oficial/community",
-        "blogger": "https://www.blogger.com/",
+        'tiktok': 'https://www.tiktok.com/upload',
+        'instagram': 'https://www.instagram.com/somoselencuadre/',
+        'x': 'https://twitter.com/compose/tweet',
+        'threads': 'https://www.threads.net/',
+        'youtube': 'https://studio.youtube.com/',
+        'blogger': 'https://www.blogger.com/',
     }
-    url = LINKS.get(red, "https://www." + red + ".com/")
-    try:
-        if url.startswith("http") and red in ("youtube_comunidad", "blogger"):
-            _abrir_en_navegador(url)
-            return jsonify({"ok": True, "accion": "browser", "red": red, "clipboard": clip})
-        if url.startswith("http"):
-            _sp.Popen(["termux-open-url", url], stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
-        else:
-            _sp.Popen(["termux-open", url], stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
-        return jsonify({"ok": True, "accion": "app_abierta", "red": red, "clipboard": clip})
-    except Exception as e:
-        return jsonify({"ok": False, "error": str(e)}), 500
+    url = LINKS.get(red, 'https://www.' + red + '.com/')
+    if _open(url):
+        return jsonify({'ok': True, 'accion': 'app_abierta', 'red': red, 'clipboard': clip})
+    return jsonify({'ok': False, 'error': 'no se pudo abrir'}), 500
 
 @encuadre_bp.route("/api/encuadre/pipeline_options")
 def api_pipeline_options():
