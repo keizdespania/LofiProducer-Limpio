@@ -595,6 +595,9 @@ TOOLS = [
     {"type": "function", "function": {"name": "reindexar_busqueda", "description": "Reindexa FTS5.", "parameters": {"type": "object", "properties": {}, "required": []}}},
     {"type": "function", "function": {"name": "rollback_snapshot", "description": "Crea snapshot git.", "parameters": {"type": "object", "properties": {"motivo": {"type": "string"}}, "required": []}}},
     {"type": "function", "function": {"name": "rollback_listar", "description": "Lista snapshots.", "parameters": {"type": "object", "properties": {}, "required": []}}},
+    {"type": "function", "function": {"name": "publicar_comentario_youtube", "description": "Publica y fija un comentario SEO completo en un video YouTube: pregunta abierta + CTA + link cruzado al post del blog + hashtags. Usa la YouTube Data API. Necesita scope de escritura.", "parameters": {"type": "object", "properties": {"video_id": {"type": "string"}, "fecha": {"type": "string", "description": "Fecha produccion (YYYY-MM-DD o hoy)"}, "texto_extra": {"type": "string", "description": "Texto adicional al inicio (opcional)"}}, "required": ["video_id"]}}},
+    {"type": "function", "function": {"name": "analizar_short_viral", "description": "Analiza metricas de un short YouTube (vistas, likes, comentarios, ratio) y compara con la media de tus ultimos 10 shorts. Devuelve diagnostico + propuesta: si va bien -> como exprimir el tiron (secuela, boost, cross-post). Si va mal -> que cambiar (titulo, hook, thumbnail).", "parameters": {"type": "object", "properties": {"video_id": {"type": "string"}, "fecha": {"type": "string"}}, "required": ["video_id"]}}},
+    {"type": "function", "function": {"name": "generar_thumbnail_video", "description": "Genera miniatura para video YouTube. Intenta primero NANO BANANA (si hay token/servicio). Fallback: imagen impactante SDXL con estilo cinematic que retenga clicks. Luego la sube a YouTube via API thumbnails.set.", "parameters": {"type": "object", "properties": {"video_id": {"type": "string"}, "fecha": {"type": "string", "description": "Fecha produccion (YYYY-MM-DD o hoy)"}, "titular": {"type": "string", "description": "Titular del dia (opcional, si no lo detecta)"}}, "required": ["video_id"]}}},
 ]
 
 
@@ -2430,7 +2433,230 @@ def _tool_rollback_listar(args):
         return (r.stdout or r.stderr or "")[-1500:]
     except Exception as e: return f"ERROR: {e}"
 
+
+def _tool_publicar_comentario_youtube(args):
+    """Comentario SEO top-1 + fijado + tráfico cruzado."""
+    import requests, datetime, json as _j, sys as _sys_cm
+    vid = (args.get("video_id") or "").strip()
+    if not vid: return "ERROR: falta video_id"
+    fecha = args.get("fecha") or datetime.date.today().isoformat()
+    if fecha == "hoy": fecha = datetime.date.today().isoformat()
+    extra = (args.get("texto_extra") or "").strip()
+    
+    # Cargar SEO + producción para generar comentario rico
+    seo_path = ROOT / "output" / "encuadre" / f"seo_{fecha}.json"
+    prod_path = ROOT / "output" / "encuadre" / f"produccion_{fecha}.json"
+    seo = _j.loads(seo_path.read_text()) if seo_path.exists() else {}
+    prod = _j.loads(prod_path.read_text()) if prod_path.exists() else {}
+    titulo = (seo.get("largo") or {}).get("titulo", "")
+    dossier = prod.get("dossier") or {}
+    tema = dossier.get("titular_brutal", "")[:100]
+    
+    # Comentario top-1: pregunta + CTA + link cruzado + hashtags
+    post_url = f"https://elencuadre.pages.dev/analisis/{fecha}-largo/"
+    comentario = extra + ("\n\n" if extra else "")
+    comentario += f"📊 ANÁLISIS COMPLETO: {post_url}\n\n"
+    if tema:
+        comentario += f"🎯 Hoy analizamos: {tema}\n\n"
+    comentario += "💬 ¿Tú qué opinas? ¿Has detectado estas técnicas en los medios que lees?\n\n"
+    comentario += "📩 Recibe el dossier diario en Telegram: https://t.me/somoselencuadre\n\n"
+    comentario += "#ElEncuadre #AnálisisMediático #Framing #SesgosCognitivos"
+    
+    # Obtener token
+    try:
+        _sys_cm.path.insert(0, str(ROOT / "scripts"))
+        from subir_youtube import token
+        access = token("data/youtube_encuadre_token.json")
+    except Exception as e:
+        return f"ERROR token: {e}"
+    
+    # 1. Insertar comentario
+    try:
+        r = requests.post(
+            "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet",
+            headers={"Authorization": f"Bearer {access}", "Content-Type": "application/json"},
+            json={"snippet": {"videoId": vid, "topLevelComment": {"snippet": {"textOriginal": comentario}}}},
+            timeout=30
+        )
+        if r.status_code != 200:
+            return f"ERROR insert comentario HTTP {r.status_code}: {r.text[:300]}"
+        cid = r.json()["snippet"]["topLevelComment"]["id"]
+    except Exception as e:
+        return f"ERROR insert: {e}"
+    
+    # 2. Fijar (setModerationStatus)
+    try:
+        r2 = requests.post(
+            f"https://www.googleapis.com/youtube/v3/comments/setModerationStatus?id={cid}&moderationStatus=published",
+            headers={"Authorization": f"Bearer {access}"}, timeout=20
+        )
+        fijado = r2.status_code in (200, 204)
+    except Exception:
+        fijado = False
+    
+    return f"OK comentario publicado en {vid}{' y fijado' if fijado else ''}\nID: {cid}\n\n{comentario[:400]}"
+
+
+def _tool_analizar_short_viral(args):
+    """Analiza métricas y propone acciones."""
+    import requests, datetime, json as _j, sys as _sys_yt
+    vid = (args.get("video_id") or "").strip()
+    if not vid: return "ERROR: falta video_id"
+    fecha = args.get("fecha") or datetime.date.today().isoformat()
+    if fecha == "hoy": fecha = datetime.date.today().isoformat()
+    
+    try:
+        _sys_yt.path.insert(0, str(ROOT / "scripts"))
+        from subir_youtube import token
+        access = token("data/youtube_encuadre_token.json")
+    except Exception as e:
+        return f"ERROR token: {e}"
+    
+    # Stats del vídeo
+    try:
+        r = requests.get(
+            "https://www.googleapis.com/youtube/v3/videos",
+            params={"part": "statistics,snippet", "id": vid},
+            headers={"Authorization": f"Bearer {access}"}, timeout=20
+        )
+        if r.status_code != 200 or not r.json().get("items"):
+            return f"ERROR stats: HTTP {r.status_code}"
+        v = r.json()["items"][0]
+        stats = v.get("statistics", {})
+        titulo = v.get("snippet", {}).get("title", "")
+        vistas = int(stats.get("viewCount", 0))
+        likes = int(stats.get("likeCount", 0))
+        comentarios = int(stats.get("commentCount", 0))
+    except Exception as e:
+        return f"ERROR stats: {e}"
+    
+    ratio_like = likes / vistas * 100 if vistas > 0 else 0
+    ratio_coment = comentarios / vistas * 100 if vistas > 0 else 0
+    
+    # Media de últimos shorts del mismo JSON
+    yt_path = ROOT / "data" / "agent" / f"youtube_urls_{fecha}.json"
+    media = 0
+    if yt_path.exists():
+        try:
+            d = _j.loads(yt_path.read_text())
+            otros_ids = [s.get("video_id") for s in d.get("shorts", []) if s.get("video_id") and s["video_id"] != vid]
+            if otros_ids:
+                r2 = requests.get("https://www.googleapis.com/youtube/v3/videos",
+                    params={"part": "statistics", "id": ",".join(otros_ids[:5])},
+                    headers={"Authorization": f"Bearer {access}"}, timeout=20)
+                if r2.status_code == 200:
+                    vistas_otros = [int(i.get("statistics", {}).get("viewCount", 0)) for i in r2.json().get("items", [])]
+                    media = sum(vistas_otros) / len(vistas_otros) if vistas_otros else 0
+        except: pass
+    
+    # Diagnóstico
+    rendimiento = "🔥 EXCELENTE" if media > 0 and vistas > media * 2 else (
+        "✅ BUENO" if media > 0 and vistas > media else (
+            "⚠️ BAJO" if media > 0 else "🤷 SIN REFERENCIA"))
+    
+    propuestas = []
+    if "EXCELENTE" in rendimiento or "BUENO" in rendimiento:
+        propuestas.append("🎬 Hacer secuela con mismo tema/hook")
+        propuestas.append("📱 Cross-post a TikTok + IG Reels (share sheet)")
+        propuestas.append("📝 Post web relacionado profundo")
+        propuestas.append("🎙 Mención en podcast de hoy")
+        propuestas.append("💬 Publicar comentario SEO fijado con CTA")
+    else:
+        propuestas.append("🔄 Cambiar título a variante A/B")
+        propuestas.append("🖼 Regenerar thumbnail más impactante")
+        propuestas.append("✂️ Re-cortar con hook más fuerte en primeros 2s")
+        propuestas.append("🎯 Cambiar ángulo (dato → contradicción)")
+    
+    return (
+        f"📊 SHORT: {titulo[:80]}\n"
+        f"   Vistas: {vistas:,} | Likes: {likes:,} | Coments: {comentarios}\n"
+        f"   Ratio like: {ratio_like:.2f}% | Ratio coment: {ratio_coment:.3f}%\n"
+        f"   Media otros shorts: {media:,.0f} vistas\n"
+        f"   Rendimiento: {rendimiento}\n\n"
+        f"🎯 QUÉ HACER:\n" + "\n".join(f"   {p}" for p in propuestas)
+    )
+
+
+def _tool_generar_thumbnail_video(args):
+    """Genera thumbnail top-1: intenta Nano Banana, fallback SDXL."""
+    import requests, datetime, json as _j, sys as _sys_tb, subprocess as _sp
+    vid = (args.get("video_id") or "").strip()
+    if not vid: return "ERROR: falta video_id"
+    fecha = args.get("fecha") or datetime.date.today().isoformat()
+    if fecha == "hoy": fecha = datetime.date.today().isoformat()
+    titular = (args.get("titular") or "").strip()
+    
+    if not titular:
+        seo_path = ROOT / "output" / "encuadre" / f"seo_{fecha}.json"
+        prod_path = ROOT / "output" / "encuadre" / f"produccion_{fecha}.json"
+        if seo_path.exists():
+            titular = (_j.loads(seo_path.read_text()).get("largo") or {}).get("titulo", "")
+        if not titular and prod_path.exists():
+            titular = (_j.loads(prod_path.read_text()).get("dossier") or {}).get("titular_brutal", "")
+    if not titular: return "ERROR: sin titular"
+    
+    thumb_path = ROOT / "output" / "encuadre" / f"thumbnail_{fecha}_{vid[:6]}.png"
+    thumb_path.parent.mkdir(parents=True, exist_ok=True)
+    metodo = "?"
+    
+    # ═══ INTENTO 1: Nano Banana (si hay endpoint en .env) ═══
+    nano_url = ""
+    nano_key = ""
+    for line in (ROOT / ".env").read_text().splitlines():
+        if line.startswith("NANO_BANANA_URL="): nano_url = line.split("=",1)[1].strip().strip('"').strip("'")
+        if line.startswith("NANO_BANANA_KEY="): nano_key = line.split("=",1)[1].strip().strip('"').strip("'")
+    
+    if nano_url:
+        try:
+            r = requests.post(nano_url,
+                headers={"Authorization": f"Bearer {nano_key}"} if nano_key else {},
+                json={"prompt": f"Thumbnail YouTube impactante sobre: {titular}. Estilo cinematic oscuro, alto contraste, sin texto legible.", "width": 1280, "height": 720},
+                timeout=60)
+            if r.status_code == 200:
+                thumb_path.write_bytes(r.content)
+                metodo = "nano_banana"
+        except: pass
+    
+    # ═══ FALLBACK: SDXL Cloudflare ═══
+    if metodo == "?":
+        try:
+            _sys_tb.path.insert(0, str(ROOT / "scripts"))
+            from generar_imagen import generar
+            prompt = f"Cinematic dramatic scene representing: {titular[:100]}. Dark moody lighting, high contrast, no text, editorial photography style, 16:9"
+            r = generar(prompt, preset="cinematic", aspect="16:9", canal="encuadre")
+            if r.startswith("OK: "):
+                src = pathlib.Path(r.split("OK: ")[1].split(" ")[0])
+                if src.exists():
+                    import shutil
+                    shutil.copy2(src, thumb_path)
+                    metodo = "sdxl_cloudflare"
+        except Exception as e:
+            return f"ERROR generar thumbnail: {e}"
+    
+    if not thumb_path.exists() or thumb_path.stat().st_size < 10000:
+        return f"ERROR: thumbnail vacía o fallo"
+    
+    # ═══ SUBIR a YouTube thumbnails.set ═══
+    try:
+        _sys_tb.path.insert(0, str(ROOT / "scripts"))
+        from subir_youtube import token
+        access = token("data/youtube_encuadre_token.json")
+        with open(thumb_path, "rb") as f:
+            r = requests.post(
+                f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={vid}",
+                headers={"Authorization": f"Bearer {access}", "Content-Type": "image/png"},
+                data=f.read(), timeout=60)
+        subida = "✅ subida a YouTube" if r.status_code in (200, 204) else f"⚠️ upload HTTP {r.status_code}"
+    except Exception as e:
+        subida = f"⚠️ upload error: {e}"
+    
+    return f"OK thumbnail ({metodo}) → {thumb_path.relative_to(ROOT)}\n{subida}\nTamaño: {thumb_path.stat().st_size//1024}KB"
+
+
 TOOL_FNS = {
+    "generar_thumbnail_video": _tool_generar_thumbnail_video,
+    "analizar_short_viral": _tool_analizar_short_viral,
+    "publicar_comentario_youtube": _tool_publicar_comentario_youtube,
     "rollback_listar": _tool_rollback_listar,
     "rollback_snapshot": _tool_rollback_snapshot,
     "reindexar_busqueda": _tool_reindexar_busqueda,
@@ -2449,8 +2675,6 @@ TOOL_FNS = {
     "pipeline_status": _tool_pipeline_status,
     "pipeline_completo": _tool_pipeline_completo,
     "pipeline_step": _tool_pipeline_step,
-    "procesar_video_existente": _tool_procesar_video_existente,
-    "descargar_audio_youtube": _tool_descargar_audio_youtube,
     "ver_contrato": _tool_ver_contrato,
     "escanear_ecosistema": _tool_escanear_ecosistema,
     "ejecutar_limpieza": _tool_ejecutar_limpieza,
