@@ -5,17 +5,44 @@ hide:
 
 <div class="holo-hero">
   <h1>El Archivo del Anti-Medio</h1>
-  <p>Todo nuestro arsenal. 48 análisis publicados. Sin filtros, con enlaces verificables.</p>
+  <p>Todo nuestro arsenal. 51 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (48)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (9)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (13)</button>
-  <button class="holo-filter-btn" data-filter="mediano">Medianos (7)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (51)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (10)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (14)</button>
+  <button class="holo-filter-btn" data-filter="mediano">Medianos (8)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-09-mediano-quirurgico/'" data-category="mediano">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    <img src="/media/imagenes/post_2026-11-09_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El ángulo que nadie cuenta: ¿Te cuesta encontrar casa?</h3>
+    <p>Analisis quirurgico: El ángulo que nadie cuenta: ¿Te cuesta encontrar casa?</p>
+    <div class="holo-meta"><span>📅 2026-11-09</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-09-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    <img src="/media/imagenes/post_2026-11-09_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El Encuadre: Nvidia abre una investigación a su consejero de</h3>
+    <p>Analisis largo: El Encuadre: Nvidia abre una investigación a su consejero de</p>
+    <div class="holo-meta"><span>📅 2026-11-09</span></div>
+    
+    <a href="https://www.lavanguardia.com/política/20261108/11679248/sanchez-advierte-pp-vox-gobiernan-plegaran-trump-tragan.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · lavanguardia.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-09-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    <img src="/media/imagenes/post_2026-11-09_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Dossier del día: El Encuadre: Nvidia abre una investigación a su consejero de</h3>
+    <p>Dossier ejecutivo: El Encuadre: Nvidia abre una investigación a su consejero delegado sobre su rela</p>
+    <div class="holo-meta"><span>📅 2026-11-09</span></div>
+    
+    <a href="https://www.lavanguardia.com/política/20261108/11679248/sanchez-advierte-pp-vox-gobiernan-plegaran-trump-tragan.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · lavanguardia.com</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-08-mediano-medio_crudo/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     <img src="/media/imagenes/post_2026-11-08_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
