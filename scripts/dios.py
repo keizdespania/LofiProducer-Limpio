@@ -1553,9 +1553,9 @@ def _call_llm(api_key, messages, force_no_tools=False):
                 print(f"   [Groq#{idx+1}] HTTP {r.status_code}: {r.text[:300]}")
             except Exception as e:
                 print(f"   [Groq#{idx+1}] {str(e)[:80]}, siguiente...")
-        print("   [4 Groq directas fallaron. Esperando 15s y reintentando...]")
+        print("   [4 Groq directas fallaron. Esperando 5s y reintentando...]")
         import time as _t
-        _t.sleep(15)
+        _t.sleep(5)
         for idx, gk in enumerate(claves_groq[:2]):  # solo 2 reintentos
             modelo = modelos_groq[idx] if idx < len(modelos_groq) else modelos_defecto[idx]
             try:

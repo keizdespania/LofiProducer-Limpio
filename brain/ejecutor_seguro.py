@@ -55,6 +55,25 @@ def _pedir_aprobacion(cmd: str) -> bool:
         log.warning("Fallo al pedir aprobación: %s", e)
         return False # Si falla el diálogo, denegamos por seguridad
 
+def _expand_globs(cmd):
+    """Expande wildcards bash-style en el string antes de subprocess."""
+    import glob, shlex
+    try:
+        partes = shlex.split(cmd)
+        out = []
+        for p in partes:
+            if any(c in p for c in "*?["):
+                matches = glob.glob(p)
+                if matches:
+                    out.extend(matches)
+                else:
+                    out.append(p)
+            else:
+                out.append(p)
+        return out
+    except Exception:
+        return shlex.split(cmd)
+
 def ejecutar(cmd: str) -> str:
     """Evalúa y ejecuta un comando con seguridad."""
     cmd = cmd.strip()
@@ -69,7 +88,7 @@ def ejecutar(cmd: str) -> str:
     if any(cmd.startswith(w) for w in WHITELIST):
         log.info("Ejecutando (whitelist): %s", cmd)
         try:
-            r = subprocess.run(cmd.split(), shell=False, capture_output=True, text=True, timeout=600)
+            r = subprocess.run(_expand_globs(cmd), shell=False, capture_output=True, text=True, timeout=600)
             salida = (r.stdout + r.stderr).strip()
             return salida[:2000] if salida else "OK (sin salida)"
         except subprocess.TimeoutExpired:
@@ -81,7 +100,7 @@ def ejecutar(cmd: str) -> str:
     if _pedir_aprobacion(cmd):
         log.info("Ejecutando (aprobado por HITL): %s", cmd)
         try:
-            r = subprocess.run(cmd.split(), shell=False, capture_output=True, text=True, timeout=600)
+            r = subprocess.run(_expand_globs(cmd), shell=False, capture_output=True, text=True, timeout=600)
             salida = (r.stdout + r.stderr).strip()
             return salida[:2000] if salida else "OK (sin salida)"
         except Exception as e:
