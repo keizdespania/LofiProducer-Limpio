@@ -307,11 +307,22 @@ def r20_falta_thumbnail():
     f = _hoy()
     video = ROOT / "output" / "encuadre" / f"video_largo_{f}.mp4"
     thumb = ROOT / "output" / "encuadre" / f"thumbnail_{f}.jpg"
-    if video.exists() and not thumb.exists():
+    
+    # Necesitamos el video_id de youtube_urls
+    yt_path = ROOT / "data" / "agent" / f"youtube_urls_{f}.json"
+    vid = None
+    if yt_path.exists():
+        try:
+            import json as _j
+            d = _j.loads(yt_path.read_text())
+            vid = d.get("largo", {}).get("video_id")
+        except: pass
+        
+    if video.exists() and not thumb.exists() and vid:
         out.append({"regla": "r20_falta_thumbnail", "categoria": "youtube", "prioridad": 0.65,
             "titulo": "Vídeo sin thumbnail custom",
             "mensaje": f"Video de hoy sin thumbnail específica.\n\nPropongo: generar thumbnail impactante (nano-banana o SDXL cinematic) y subir a YouTube.",
-            "payload": {"fecha": f}, "accion_tool": "generar_thumbnail_video"})
+            "payload": {"fecha": f, "video_id": vid}, "accion_tool": "generar_thumbnail_video"})
     return out
 
 # ═══════════════ V2 - OPERACIONAL AVANZADO ═══════════════
@@ -485,19 +496,8 @@ def r30_post_antiguo_reciclar():
     return out
 
 def r31_adblock_placeholder():
-    """Falta zona AdSense."""
-    out = []
-    cfg = ROOT / "web" / "mkdocs.yml"
-    if cfg.exists():
-        try:
-            txt = cfg.read_text()
-            if "monetizacion_activa: false" in txt:
-                out.append({"regla": "r31_adblock_placeholder", "categoria": "monetizacion", "prioridad": 0.3,
-                    "titulo": "AdSense preparado pero OFF",
-                    "mensaje": "Web preparada para AdSense pero desactivado (bien si no eres autónomo).",
-                    "payload": {}, "accion_tool": ""})
-        except: pass
-    return out
+    """AdSense preparado pero OFF (DESACTIVADO 2026-11-09 hasta ser autónomo)."""
+    return []
 
 def r32_paginas_cero_visitas():
     """Páginas con 0 vistas 30 días."""
