@@ -5,6 +5,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "output" / "encuadre"
 sys.path.insert(0, str(pathlib.Path(__file__).parent.parent / "brain"))
 from redes_footer import footer as _footer
+NL = chr(10)
 BASE_URL = "https://elencuadre.pages.dev"
 
 # ═══ Links cruzados a todas las redes del canal ═══
@@ -62,6 +63,53 @@ def _limpiar_md(path):
         txt = re.sub(r'\s+', ' ', txt).strip()
         return txt
     except: return ""
+
+def _limpiar_hook(texto):
+    """Limpia basura residual del hook."""
+    if not texto: return ""
+    s = texto.strip()
+    for b in ["Lee mas", "Leer mas", "Analisis comple", "Analisis completo"]:
+        if s.endswith(b): s = s[:-len(b)].strip()
+    for b in ["...", chr(8230)]:
+        if s.endswith(b): s = s[:-len(b)].strip()
+    if s and s[-1].isalpha() and len(s) > 100:
+        up = max(s.rfind('.'), s.rfind('!'), s.rfind('?'))
+        if up > 50: s = s[:up+1]
+    return s.strip()
+
+
+def _generar_hook_red(texto_base, tipo):
+    """Hook viral 120 chars usando formulas: Rage, Curiosity, Contrarian, Data."""
+    if not texto_base: return ""
+    # 2026-11-09: prioridad por TIPO (garantiza hooks unicos)
+    por_tipo = {
+        "dato": "3 diarios, 1 noticia, 0 contexto real.",
+        "contradiccion": "No es lo que te cuentan. Es lo que ocultan.",
+        "prediccion": "En 6 meses esto estara en todos los medios.",
+        "tutorial": "Como detectar esta manipulacion en 3 segundos.",
+    }
+    ejemplo = por_tipo.get(tipo, "3 diarios, 1 noticia, 0 contexto real.")
+    tl = texto_base.lower()
+    if False:  # (nunca, ejemplo ya definido por tipo)
+        pass
+    elif any(w in tl for w in ["cobra", "millones", "euros", "sueldo"]):
+        ejemplo = "Cobran del Estado mientras llaman mafia a los sindicatos."
+    elif any(w in tl for w in ["oculta", "omite", "silencia", "ignora"]):
+        ejemplo = "7 medios ocultan esto sobre Nvidia. Solo uno lo cuenta."
+    elif any(w in tl for w in ["miente", "mentira", "falso", "manipula"]):
+        ejemplo = "No es un error. Es manipulacion disenada."
+    else:
+        pass  # ejemplo ya definido por tipo
+    
+    nl = chr(10)
+    prompt = "Texto: " + texto_base[:350] + nl + nl + "Crea un TUIT VIRAL para X (max 120 chars). Frase completa, sin cortar. Estilo: " + ejemplo + nl + nl + "Tuit:"
+    txt = _groq(prompt, 200)
+    if txt and 20 < len(txt.strip()) < 200:
+        clean = txt.strip().strip('"').strip("'").splitlines()[0]
+        if not any(r in clean.lower() for r in ["sorry", "lo siento", "cannot", "no puedo"]):
+            return clean[:280]
+    return ejemplo
+
 
 def _load(fecha):
     d = {"prod": {}, "seo": {}, "yt": {},
@@ -162,59 +210,74 @@ def _extraer_todos(d, titular):
         guion = (s.get("guion") or "").strip()
 
         # Prioridad: hook > primera frase guion > artículo filtrado
-        if hook and len(hook) >= 40:
-            print(f"     → short {i+1} ({tipo}): hook real")
-            out[f"SHORT{i+1}_TIKTOK"] = hook
-        elif guion:
-            primera = re.split(r'(?<=[.!?])\s+', guion, maxsplit=1)[0].strip()
-            if len(primera) >= 40:
-                print(f"     → short {i+1} ({tipo}): primera frase guion")
-                out[f"SHORT{i+1}_TIKTOK"] = primera
-            else:
-                print(f"     → short {i+1} ({tipo}): artículo")
-                out[f"SHORT{i+1}_TIKTOK"] = _extraer_frase(md_largo,
-                    f"Elige la frase más directa como gancho TikTok ({tipo}). Sin 'eso importa porque'.",
-                    max_tokens=200)
-        else:
-            out[f"SHORT{i+1}_TIKTOK"] = ""
+        # 2026-11-09: forzar regeneracion con formulas virales
+        base = guion or hook or titular
+        # 2026-11-09: si el LLM devuelve hook repetido, forzar fallback unico por tipo
+        _generado = _generar_hook_red(base, tipo)
+        _usados = [out.get(f"SHORT{j}_TIKTOK", "") for j in range(1, i+1)]
+        if _generado in _usados:
+            _generado = {"dato": "3 diarios, 1 noticia, 0 contexto real.", "contradiccion": "No es lo que te cuentan. Es lo que ocultan.", "prediccion": "En 6 meses esto estara en todos los medios.", "tutorial": "Como detectar esta manipulacion en 3 segundos."}.get(tipo, _generado)
+        out[f"SHORT{i+1}_TIKTOK"] = _generado
 
     return out
+def _post_hook(md_texto, slug):
+    if not md_texto: return ""
+    texto = md_texto
+    prefixes = ["El Encuadre:", "Dossier del dia:", "Dossier del d", "El angulo que nadie cuenta:", "El ángulo que nadie cuenta:"]
+    for p in prefixes:
+        if texto.startswith(p):
+            idx = texto.find(".", 30)
+            if 0 < idx < 400: texto = texto[idx+1:].strip()
+            break
+    if len(texto) > 400 and texto.startswith(md_texto[:20]):
+        texto = texto[350:]
+    texto = texto.replace("!", ".").replace("?", ".")
+    sents = texto.split(". ")
+    body = []
+    for s in sents:
+        s = s.strip()
+        if len(s) > 60 and not s.startswith("Fuentes") and not s.startswith("Leer"):
+            body.append(s + ".")
+            if len(" ".join(body)) > 200: break
+    if not body: return texto[:250]
+    hook = " ".join(body)[:280]
+    cliffs = {"largo": "Pero lo que ocultan es peor. 👇", "dossier": "Y lo que los medios no te cuentan es esto. 👇", "mediano": "Y esto es lo que nadie conecta. 👇"}
+    return hook + chr(10) + chr(10) + cliffs.get(slug, "👇")
+
 def _build(fecha):
     d = _load(fecha)
     prod, seo, yt = d["prod"], d["seo"], d["yt"]
     dossier = prod.get("dossier", {})
-    titular = dossier.get("titular_brutal", "Análisis del día")[:150]
+    titular = dossier.get("titular_brutal", "Analisis del dia")[:150]
 
-    yt_largo = ""
-    if (yt.get("largo") or {}).get("video_id"):
-        yt_largo = f"https://youtu.be/{yt['largo']['video_id']}"
-    yt_shorts = [f"https://youtu.be/{s['video_id']}" for s in (yt.get("shorts") or []) if s.get("video_id")]
-    post_largo = f"{BASE_URL}/analisis/{fecha}-largo/"
-    post_dossier = f"{BASE_URL}/analisis/{fecha}-dossier-v2/"
-    post_mediano = f"{BASE_URL}/analisis/{fecha}-mediano-quirurgico/"
+    yt_largo = "https://youtu.be/" + yt['largo']['video_id'] if (yt.get("largo") or {}).get("video_id") else ""
+    yt_shorts = ["https://youtu.be/" + s['video_id'] for s in (yt.get("shorts") or []) if s.get("video_id")]
+    post_largo = BASE_URL + "/analisis/" + fecha + "-largo/"
+    post_dossier = BASE_URL + "/analisis/" + fecha + "-dossier-v2/"
+    post_mediano = BASE_URL + "/analisis/" + fecha + "-mediano-quirurgico/"
 
-    # 1 LLM call con TODOS los extractos
-    print("  → LLM extrayendo fragmentos (artículo + guion + shorts)...")
+    print("  -> LLM extrayendo fragmentos...")
     frags = _extraer_todos(d, titular)
 
-    # Fallback si LLM falla
-    if not frags.get("HOOK_X"): frags["HOOK_X"] = d["md_largo"][:280]
-    if not frags.get("ANALISIS_THREADS"): frags["ANALISIS_THREADS"] = d["md_largo"][:400]
-    if not frags.get("CIERRE_IG"): frags["CIERRE_IG"] = d["md_largo"][-280:]
+    # ═══ LARGO ═══
+    titulo_largo = seo.get("largo", {}).get("titulo", titular)
+    header = "VIDEO: " + titulo_largo[:100] + NL + NL
+    link_yt = (NL + NL + "Miralo: " + yt_largo) if yt_largo else ""
+    link_web = NL + "Web: " + post_largo
 
     largo = {
-        "num": 0, "tipo": "largo",
-        "titulo": seo.get("largo", {}).get("titulo", titular),
+        "num": 0, "tipo": "largo", "titulo": titulo_largo,
         "video_id": (yt.get("largo") or {}).get("video_id"),
         "link_yt": yt_largo, "link_post": post_largo, "link_dossier": post_dossier,
         "redes": {
-            "x": {"texto": frags["HOOK_X"] + _footer("x")},
-            "threads": {"texto": frags["ANALISIS_THREADS"] + _footer("threads")},
-            "instagram": {"texto": frags["CIERRE_IG"] + _footer("instagram")},
-            "youtube_comunidad": {"texto": frags["HOOK_X"] + _footer("youtube_comunidad")},
+            "x": {"texto": header + frags["HOOK_X"] + link_yt + link_web + _footer("x")},
+            "threads": {"texto": header + frags["ANALISIS_THREADS"] + link_yt + link_web + _footer("threads")},
+            "instagram": {"texto": header + frags["CIERRE_IG"] + link_web + _footer("instagram")},
+            "youtube_comunidad": {"texto": frags["HOOK_X"]},
         }
     }
 
+    # ═══ SHORTS ═══
     prod_shorts = prod.get("shorts_finales", [])
     seo_shorts = seo.get("shorts", [])
     shorts = []
@@ -222,47 +285,50 @@ def _build(fecha):
         tipo = s.get("tipo", "")
         seo_s = seo_shorts[i] if i < len(seo_shorts) else {}
         yt_s = yt_shorts[i] if i < len(yt_shorts) else ""
-        frag = frags.get(f"SHORT{i+1}_TIKTOK", "") or s.get("hook", "")[:150]
+        frag = frags.get("SHORT" + str(i+1) + "_TIKTOK", "") or s.get("hook", "")[:150]
+        titulo_s = seo_s.get("titulo", "Short " + str(i+1))[:100]
+        link_s = (NL + NL + "Miralo: " + yt_s) if yt_s else ""
 
         shorts.append({
-            "num": i+1, "tipo": tipo, "hook": s.get("hook", ""),
+            "num": i+1, "tipo": tipo, "hook": frag,
             "link_yt": yt_s, "link_largo": yt_largo, "link_post": post_largo,
             "redes": {
-                "tiktok": {"texto": frag + _footer("tiktok"), "hashtags": f"#ElEncuadre #{tipo}"},
-                "youtube": {"titulo": seo_s.get("titulo", f"Short {i+1}")[:100],
-                            "descripcion": seo_s.get("descripcion", "")[:400] + _footer("youtube_comunidad"),
-                            "tags": seo_s.get("tags", [])[:10]},
-                "x": {"texto": frag + _footer("x")},
-                "threads": {"texto": frag + _footer("threads")},
+                "tiktok": {"texto": frag + _footer("tiktok"), "hashtags": "#ElEncuadre #" + tipo},
+                "youtube": {"titulo": titulo_s, "descripcion": seo_s.get("descripcion", "")[:400] + _footer("youtube_comunidad"), "tags": seo_s.get("tags", [])[:10]},
+                "x": {"texto": frag + link_s + _footer("x")},
+                "threads": {"texto": frag + link_s + _footer("threads")},
                 "instagram": {"texto": frag + _footer("instagram")},
             }
         })
 
-    # Posts
-    linkedin_txt = frags.get("LINKEDIN_LARGO", "") or d["md_largo"][:400] or titular
+    # === POSTS ===
+    linkedin_shared = frags.get("LINKEDIN_LARGO", "") or titular
     posts = []
     for slug, tipo_post, url, md_texto in [
-        ("largo", "Análisis Largo", post_largo, d["md_largo"]),
+        ("largo", "Analisis Largo", post_largo, d["md_largo"]),
         ("dossier", "Dossier Ejecutivo", post_dossier, d["md_dossier"] or d["md_largo"]),
-        ("mediano", "Análisis Mediano", post_mediano, d["md_mediano"] or d["md_largo"]),
+        ("mediano", "Analisis Mediano", post_mediano, d["md_mediano"] or d["md_largo"]),
     ]:
-        frag = (md_texto[:400] if md_texto else titular)
+        post_body = _post_hook(md_texto, slug)
+        yt_post = (NL + NL + "Video: " + yt_largo) if yt_largo else ""
+        url_line = NL + NL + "Lee: " + url
+        titulo_post = (seo.get("largo", {}).get("titulo") if slug == "largo" else md_texto[:80]) or titular
+        if slug == "largo":
+            li_text = linkedin_shared
+        else:
+            li_text = post_body[:400]
         posts.append({
-            "slug": slug, "tipo": tipo_post, "titulo": (seo.get("largo", {}).get("titulo") if slug == "largo" else md_texto[:80]) or titular,
-            "url": url, "link_short": yt_shorts[0] if yt_shorts else "",
-            "link_yt_largo": yt_largo,
+            "slug": slug, "tipo": tipo_post, "titulo": titulo_post,
+            "url": url, "link_short": yt_shorts[0] if yt_shorts else "", "link_yt_largo": yt_largo,
             "redes": {
-                "x": {"texto": f"{frag}\n\n📄 {url}"},
-                "threads": {"texto": f"{frag}\n\n{url}"},
-                "linkedin": {"texto": linkedin_txt + f"\n\n{url}"},
-                "instagram": {"texto": frag[:200] + "\n\nLink en bio"},
+                "x": {"texto": post_body + url_line + yt_post},
+                "threads": {"texto": post_body + url_line + yt_post},
+                "linkedin": {"texto": li_text + url_line + yt_post},
+                "instagram": {"texto": post_body[:200] + NL + NL + "Link en bio"},
             }
         })
-
-    return {
-        "fecha": fecha, "largo": largo, "shorts": shorts, "posts": posts,
-        "links_globales": {"yt_largo": yt_largo, "yt_shorts": yt_shorts, "web": BASE_URL}
-    }
+    
+    return {"fecha": fecha, "largo": largo, "shorts": shorts, "posts": posts, "links_globales": {"yt_largo": yt_largo, "yt_shorts": yt_shorts, "web": BASE_URL}}
 
 if __name__ == "__main__":
     fecha = sys.argv[1] if len(sys.argv) > 1 else datetime.date.today().isoformat()
