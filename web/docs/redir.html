@@ -1,22 +1,15 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Redirigiendo...</title>
+<html><head><meta charset="utf-8"><title>Abriendo...</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<style>body{background:#0a0a12;color:#e0e0e0;font-family:system-ui;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;text-align:center;padding:20px}
+<style>body{background:#0a0a12;color:#e0e0e0;font-family:system-ui;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:20px;text-align:center}
 .card{background:#18181b;border:1px solid #3f3f46;border-radius:12px;padding:24px;max-width:400px}
 h2{color:#e63946;margin:0 0 12px}p{color:#a1a1aa;font-size:14px;margin:0 0 16px}
-a{display:inline-block;background:#e63946;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700}</style>
-</head><body><div class="card">
+a{display:inline-block;background:#e63946;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700}
+</style></head><body><div class="card">
 <h2>Abriendo...</h2><p id="info">Redirigiendo a la red social</p>
 <a id="manual" href="#">Abrir manualmente</a>
-</div>
-<script>
-const params = new URLSearchParams(window.location.search);
-const to = params.get('to');
-if (to) {
-  document.getElementById('manual').href = to;
-  setTimeout(() => { window.location.href = to; }, 500);
-} else {
-  document.getElementById('info').textContent = 'URL inválida';
-}
-</script>
-</body></html>
+</div><script>
+const p=new URLSearchParams(window.location.search),to=p.get('to');
+if(to){document.getElementById('manual').href=to;setTimeout(()=>{window.location.href=to},300);}
+else{document.getElementById('info').textContent='URL inválida';}
+</script></body></html>
