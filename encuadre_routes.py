@@ -69,6 +69,7 @@ HTML_FACTORY = """<!DOCTYPE html>
             <button onclick="cambiarVista('calendario')" id="tab-calendario" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-regular fa-calendar mr-2"></i>Calendario</button>
             <button onclick="cambiarVista('agentes')" id="tab-agentes" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-robot mr-2"></i>Agentes</button>
             <button onclick="cambiarVista('monetizacion')" id="tab-monetizacion" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-sack-dollar mr-2"></i>Monetización</button>
+            <button onclick="cambiarVista('cms')" id="tab-cms" class="text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap"><i class="fa-solid fa-pen-ruler mr-2"></i>Diseño Web (CMS)</button>
         </div>
 
         <!-- VISTA PREVIEW -->
@@ -92,97 +93,37 @@ HTML_FACTORY = """<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- VISTA DISTRIBUCIÓN -->
-        <div id="view-distribucion" class="hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                
-                <!-- YouTube -->
-                <div class="glass rounded-xl p-4 border-l-4 border-l-red-600">
-                    <h3 class="font-bold text-sm mb-2 text-red-500"><i class="fa-brands fa-youtube mr-2"></i> YouTube Shorts</h3>
-                    <label class="text-[10px] text-zinc-400">Título</label>
-                    <input id="yt-titulo" class="field-box" readonly>
-                    <label class="text-[10px] text-zinc-400">Descripción</label>
-                    <textarea id="yt-desc" class="field-box h-16 resize-none" readonly></textarea>
-                    <label class="text-[10px] text-zinc-400">Primer Comentario</label>
-                    <textarea id="yt-comment" class="field-box h-12 resize-none" readonly></textarea>
-                    <div class="flex gap-2 mt-2">
-                        <button onclick="copiar('yt-titulo')" class="flex-1 bg-zinc-800 py-1.5 rounded text-xs">Copiar Título</button>
-                        <button onclick="copiar('yt-desc')" class="flex-1 bg-zinc-800 py-1.5 rounded text-xs">Copiar Desc</button>
+        <!-- VISTA PUBLICAR (Distribucion) -->
+        <div id="view-distribucion" class="hidden grid-cols-1 gap-6">
+            <div class="flex justify-between items-center bg-zinc-900/50 p-4 rounded-xl border border-zinc-800">
+                <div>
+                    <h2 class="text-xl font-bold text-red-500">🚀 Publicar Todo</h2>
+                    <p class="text-xs text-zinc-400">Guiones, SEO y redes listos para copiar o subir</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="copiarTodoPublicar()" class="bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded text-sm font-semibold transition"><i class="fa-solid fa-copy mr-2"></i>Copiar TODO</button>
+                    <button onclick="subirTodoYouTube()" class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded text-sm font-semibold transition"><i class="fa-brands fa-youtube mr-2"></i>Subir Todo a YT</button>
+                </div>
+            </div>
+            <div id="publicar-content" class="grid grid-cols-1 gap-4"><div class="text-center py-10"><i class="fa-solid fa-spinner fa-spin text-2xl text-red-500"></i></div></div>
+        </div>
+        
+        <!-- VISTA CMS (Diseño Web) -->
+        <div id="view-cms" class="hidden grid-cols-1 lg:grid-cols-12 gap-4">
+            <div class="lg:col-span-3 glass rounded-2xl p-4 flex flex-col" style="max-height: 75vh;">
+                <h3 class="font-bold text-sm mb-3 text-red-400"><i class="fa-solid fa-folder-tree mr-2"></i>Archivos</h3>
+                <div id="cms-tree" class="overflow-y-auto text-sm flex-1 space-y-1"></div>
+                <button onclick="cmsNuevoArchivo()" class="mt-3 bg-zinc-800 hover:bg-zinc-700 py-2 rounded text-xs"><i class="fa-solid fa-plus mr-1"></i>Nuevo Archivo</button>
+            </div>
+            <div class="lg:col-span-9 glass rounded-2xl p-4 flex flex-col" style="max-height: 75vh;">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 id="cms-filename" class="font-bold text-sm text-zinc-300 font-mono">Selecciona un archivo</h3>
+                    <div class="flex gap-2">
+                        <button onclick="cmsGuardar()" class="bg-green-600/20 text-green-400 border border-green-600/30 px-3 py-1 rounded text-xs font-semibold hover:bg-green-600/40"><i class="fa-solid fa-save mr-1"></i>Guardar</button>
+                        <button onclick="cmsBuild()" class="bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded text-xs font-semibold"><i class="fa-solid fa-rocket mr-1"></i>Build & Deploy</button>
                     </div>
                 </div>
-
-                <!-- TikTok -->
-                <div class="glass rounded-xl p-4 border-l-4 border-l-cyan-400">
-                    <h3 class="font-bold text-sm mb-2 text-cyan-400"><i class="fa-brands fa-tiktok mr-2"></i> TikTok</h3>
-                    <label class="text-[10px] text-zinc-400">Texto</label>
-                    <textarea id="tt-texto" class="field-box h-20 resize-none" readonly></textarea>
-                    <label class="text-[10px] text-zinc-400">Hashtags</label>
-                    <input id="tt-tags" class="field-box" readonly>
-                    <div class="flex gap-2 mt-2">
-                        <button onclick="copiar('tt-texto')" class="flex-1 bg-cyan-600 py-1.5 rounded text-xs font-bold text-black">Copiar</button>
-                        <button onclick="compartir('tiktok')" class="flex-1 bg-zinc-800 py-1.5 rounded text-xs">Abrir App</button>
-                    </div>
-                </div>
-
-                <!-- Instagram -->
-                <div class="glass rounded-xl p-4 border-l-4 border-l-pink-500">
-                    <h3 class="font-bold text-sm mb-2 text-pink-500"><i class="fa-brands fa-instagram mr-2"></i> Instagram</h3>
-                    <label class="text-[10px] text-zinc-400">Texto</label>
-                    <textarea id="ig-texto" class="field-box h-16 resize-none" readonly></textarea>
-                    <label class="text-[10px] text-zinc-400">Hashtags</label>
-                    <input id="ig-tags" class="field-box" readonly>
-                    <label class="text-[10px] text-zinc-400">Primer Comentario</label>
-                    <textarea id="ig-comment" class="field-box h-12 resize-none" readonly></textarea>
-                    <div class="flex gap-2 mt-2">
-                        <button onclick="copiar('ig-texto')" class="flex-1 bg-pink-600 py-1.5 rounded text-xs font-bold">Copiar</button>
-                        <button onclick="compartir('instagram')" class="flex-1 bg-zinc-800 py-1.5 rounded text-xs">Abrir App</button>
-                    </div>
-                </div>
-
-                <!-- X -->
-                <div class="glass rounded-xl p-4 border-l-4 border-l-zinc-400">
-                    <h3 class="font-bold text-sm mb-2 text-white"><i class="fa-brands fa-x-twitter mr-2"></i> X (Twitter)</h3>
-                    <label class="text-[10px] text-zinc-400">Tuit</label>
-                    <textarea id="x-texto" class="field-box h-24 resize-none" readonly></textarea>
-                    <div class="flex gap-2 mt-2">
-                        <button onclick="copiar('x-texto')" class="flex-1 bg-zinc-700 py-1.5 rounded text-xs font-bold">Copiar</button>
-                        <button onclick="compartir('x')" class="flex-1 bg-zinc-800 py-1.5 rounded text-xs">Abrir X</button>
-                    </div>
-                </div>
-
-                <!-- Threads -->
-                <div class="glass rounded-xl p-4 border-l-4 border-l-zinc-600">
-                    <h3 class="font-bold text-sm mb-2 text-zinc-300"><i class="fa-brands fa-threads mr-2"></i> Threads</h3>
-                    <label class="text-[10px] text-zinc-400">Texto</label>
-                    <textarea id="th-texto" class="field-box h-24 resize-none" readonly></textarea>
-                    <button onclick="copiar('th-texto')" class="w-full bg-zinc-700 py-1.5 rounded text-xs font-bold mt-2">Copiar</button>
-                </div>
-
-                
-                <!-- YouTube Comunidad -->
-                <div class="glass rounded-xl p-4 border-l-4 border-l-red-500">
-                    <h3 class="font-bold text-sm mb-2 text-red-500"><i class="fa-brands fa-youtube mr-2"></i> YouTube Comunidad</h3>
-                    <label class="text-[10px] text-zinc-400">Texto para el Post de Comunidad</label>
-                    <textarea id="yt-community" class="field-box h-24 resize-none" readonly></textarea>
-                    <div class="flex gap-2 mt-2">
-                        <button onclick="copiar('yt-community')" class="flex-1 bg-zinc-800 py-1.5 rounded text-xs">Copiar</button>
-                        <button onclick="compartir('youtube_comunidad')" class="flex-1 bg-red-600 py-1.5 rounded text-xs font-bold">Abrir Comunidad</button>
-                    </div>
-                </div>
-
-                <!-- Blogger -->
-                <div class="glass rounded-xl p-4 border-l-4 border-l-orange-500">
-                    <h3 class="font-bold text-sm mb-2 text-orange-500"><i class="fa-brands fa-blogger mr-2"></i> Blogger</h3>
-                    <label class="text-[10px] text-zinc-400">Título</label>
-                    <input id="bl-titulo" class="field-box" readonly>
-                    <label class="text-[10px] text-zinc-400">Resumen</label>
-                    <textarea id="bl-resumen" class="field-box h-20 resize-none" readonly></textarea>
-                    <div class="flex gap-2 mt-2">
-                        <button onclick="copiar('bl-resumen')" class="flex-1 bg-orange-600 py-1.5 rounded text-xs font-bold">Copiar</button>
-                        <button onclick="publicarBlogger()" class="flex-1 bg-zinc-800 py-1.5 rounded text-xs">Publicar</button>
-                    </div>
-                </div>
-
+                <textarea id="cms-editor" class="flex-1 w-full bg-[#09090b] text-zinc-300 font-mono text-xs p-3 rounded border border-zinc-700 outline-none focus:border-red-500" placeholder="El contenido aparecerá aquí..." spellcheck="false" disabled></textarea>
             </div>
         </div>
 
@@ -205,6 +146,22 @@ HTML_FACTORY = """<!DOCTYPE html>
                 <button onclick="generarKDP()" class="w-full bg-yellow-600 text-black py-2 rounded font-bold text-sm">Generar PDF KDP</button>
             </div>
         </div>
+
+        <!-- VISTA ANALYTICS (Cloudflare RUM) -->
+        <div id="view-analytics" class="hidden grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="md:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="glass rounded-xl p-4"><div class="text-xs text-zinc-400 uppercase tracking-wide">Page Views</div><div class="text-3xl font-extrabold text-red-400 mt-1" id="cf-pv">—</div></div>
+                <div class="glass rounded-xl p-4"><div class="text-xs text-zinc-400 uppercase tracking-wide">Visitas Únicas</div><div class="text-3xl font-extrabold text-orange-400 mt-1" id="cf-vt">—</div></div>
+                <div class="glass rounded-xl p-4"><div class="text-xs text-zinc-400 uppercase tracking-wide">Top País</div><div class="text-lg font-bold text-zinc-100 mt-1 truncate" id="cf-pais">—</div></div>
+                <div class="glass rounded-xl p-4"><div class="text-xs text-zinc-400 uppercase tracking-wide">Top Página</div><div class="text-lg font-bold text-zinc-100 mt-1 truncate" id="cf-pag">—</div></div>
+            </div>
+            <div class="glass rounded-2xl p-4"><h3 class="font-bold text-sm mb-3 text-red-400"><i class="fa-solid fa-fire mr-2"></i>Top Páginas (7d)</h3><div id="cf-top-paginas" class="space-y-2 text-sm"><div class="text-xs text-zinc-500 italic">Cargando...</div></div></div>
+            <div class="glass rounded-2xl p-4"><h3 class="font-bold text-sm mb-3 text-orange-400"><i class="fa-solid fa-globe mr-2"></i>Top Países (7d)</h3><div id="cf-top-paises" class="space-y-2 text-sm"><div class="text-xs text-zinc-500 italic">Cargando...</div></div></div>
+            <div class="md:col-span-2 text-xs text-zinc-500 text-center py-2"><i class="fa-solid fa-circle-info mr-1"></i>Datos de <strong>Cloudflare Web Analytics (RUM)</strong> · Sin cookies · Excluye bots</div>
+        </div>
+        <div id="view-ab" class="hidden glass rounded-2xl p-8 text-center"><div class="text-4xl mb-2">🧪</div><h3 class="font-bold text-zinc-200">A/B Testing</h3><p class="text-xs text-zinc-500 mt-1">En construcción</p></div>
+        <div id="view-calendario" class="hidden glass rounded-2xl p-8 text-center"><div class="text-4xl mb-2">📅</div><h3 class="font-bold text-zinc-200">Calendario editorial</h3><p class="text-xs text-zinc-500 mt-1">En construcción</p></div>
+        <div id="view-agentes" class="hidden glass rounded-2xl p-8 text-center"><div class="text-4xl mb-2">🤖</div><h3 class="font-bold text-zinc-200">Agentes IA</h3><p class="text-xs text-zinc-500 mt-1">En construcción</p></div>
     </main>
 
     
@@ -304,11 +261,12 @@ HTML_FACTORY = """<!DOCTYPE html>
             });
             if (v === 'monetizacion') document.getElementById('view-monetizacion').classList.add('grid');
             if (v === 'live') document.getElementById('view-live').classList.add('grid');
-            if (v === 'analytics') document.getElementById('view-analytics').classList.add('grid');
+            if (v === 'analytics') { document.getElementById('view-analytics').classList.add('grid'); cargarCloudflareStats(); }
             if (v === 'ab') document.getElementById('view-ab').classList.add('grid');
             if (v === 'calendario') document.getElementById('view-calendario').classList.add('grid');
             if (v === 'agentes') document.getElementById('view-agentes').classList.add('grid');
-            if (v === 'distribucion') document.getElementById('view-distribucion').classList.remove('grid');
+            if (v === 'distribucion') { document.getElementById('view-distribucion').classList.add('grid'); cargarPublicar(); }
+            if (v === 'cms') { document.getElementById('view-cms').classList.add('grid'); cmsCargarArbol(); }
         }
 
         function cambiarVideo(tipo) {
@@ -396,6 +354,137 @@ HTML_FACTORY = """<!DOCTYPE html>
         function aplicarAfiliados() { mostrarToast('💸 Inyectando afiliados...', 'bg-green-600'); }
         function subirPrintify() { mostrarToast('👕 Subiendo a Printify...', 'bg-purple-600'); }
         function generarKDP() { mostrarToast('📚 Generando PDF KDP...', 'bg-yellow-600'); }
+
+        function cargarCloudflareStats() {
+            fetch('/api/cloudflare/stats').then(r => r.json()).then(d => {
+                const pv = d.page_views || 0;
+                const vt = d.visitas || 0;
+                const tp = (d.top_paginas && d.top_paginas.length) ? d.top_paginas[0] : null;
+                const tc = (d.top_paises && d.top_paises.length) ? d.top_paises[0] : null;
+                document.getElementById('cf-pv').textContent = pv.toLocaleString('es-ES');
+                document.getElementById('cf-vt').textContent = vt.toLocaleString('es-ES');
+                document.getElementById('cf-pais').textContent = tc ? tc[0] : '—';
+                document.getElementById('cf-pag').textContent = tp ? (tp[0].replace(/\\/$/, '').split('/').pop() || '/') : '—';
+                const maxP = d.top_paginas && d.top_paginas.length ? d.top_paginas[0][1] : 1;
+                const paginasEl = document.getElementById('cf-top-paginas');
+                if (!d.top_paginas || !d.top_paginas.length) { paginasEl.innerHTML = '<div class="text-xs text-zinc-500 italic">Sin datos aún</div>'; }
+                else {
+                    paginasEl.innerHTML = d.top_paginas.map(p => {
+                        const pct = Math.round((p[1] / maxP) * 100);
+                        const slug = p[0].replace(/\\/$/, '').split('/').pop() || '/';
+                        return '<div class="mb-2"><div class="flex justify-between mb-1"><span class="mono text-xs text-zinc-300 truncate">' + slug + '</span><span class="text-xs text-zinc-500">' + p[1] + '</span></div><div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-red-500 to-orange-400" style="width:' + pct + '%"></div></div></div>';
+                    }).join('');
+                }
+                const maxC = d.top_paises && d.top_paises.length ? d.top_paises[0][1] : 1;
+                const paisesEl = document.getElementById('cf-top-paises');
+                if (!d.top_paises || !d.top_paises.length) { paisesEl.innerHTML = '<div class="text-xs text-zinc-500 italic">Sin datos aún</div>'; }
+                else {
+                    paisesEl.innerHTML = d.top_paises.map(c => {
+                        const pct = Math.round((c[1] / maxC) * 100);
+                        return '<div class="mb-2"><div class="flex justify-between mb-1"><span class="text-xs text-zinc-300">' + c[0] + '</span><span class="text-xs text-zinc-500">' + c[1] + '</span></div><div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-orange-500 to-yellow-400" style="width:' + pct + '%"></div></div></div>';
+                    }).join('');
+                }
+            }).catch(e => console.warn('CF:', e));
+        }
+
+        // ═══ PUBLICAR ═══
+        let _publicarData = null;
+        function cargarPublicar() {
+            if (_publicarData) return;
+            fetch('/api/encuadre/publicar/' + fechaActual)
+                .then(r => r.json())
+                .then(d => {
+                    _publicarData = d;
+                    const root = document.getElementById('publicar-content');
+                    let html = '';
+                    // LARGO
+                    html += `<div class="glass rounded-xl p-4 border-l-4 border-l-red-500">
+                        <div class="flex justify-between items-start">
+                            <div><h3 class="font-bold text-red-400">🎬 Vídeo Largo</h3><p class="text-xs text-zinc-400 mt-1">${d.largo.palabras} palabras · Score: ${d.largo.viralidad}/10</p></div>
+                            <div class="flex gap-2"><button onclick="verGuion('largo')" class="bg-zinc-800 px-3 py-1 rounded text-xs"><i class="fa-solid fa-eye mr-1"></i>Guion</button></div>
+                        </div>
+                        <div class="mt-3 bg-zinc-900/50 p-2 rounded text-xs text-zinc-300"><strong>SEO:</strong> ${d.largo.seo?.titulo || '—'}</div>
+                    </div>`;
+                    // SHORTS
+                    d.shorts.forEach(s => {
+                        html += `<div class="glass rounded-xl p-4 border-l-4 border-l-orange-500">
+                            <div class="flex justify-between items-start">
+                                <div><h3 class="font-bold text-orange-400">📱 Short ${s.num} · ${s.tipo}</h3><p class="text-xs text-zinc-400 mt-1">"${s.hook}"</p></div>
+                                <div class="flex gap-2">
+                                    <button onclick="verGuion(${s.num})" class="bg-zinc-800 px-3 py-1 rounded text-xs"><i class="fa-solid fa-eye mr-1"></i>Guion</button>
+                                    <button onclick="abrirApp('tiktok', '${(s.guion||'').replace(/'/g, "\\'")}')" class="bg-black px-3 py-1 rounded text-xs border border-zinc-700">TikTok</button>
+                                </div>
+                            </div>
+                            <div class="mt-3 bg-zinc-900/50 p-2 rounded text-xs text-zinc-300"><strong>SEO:</strong> ${s.seo?.titulo || '—'} · ${s.seo?.hashtags || ''}</div>
+                        </div>`;
+                    });
+                    root.innerHTML = html;
+                }).catch(e => document.getElementById('publicar-content').innerHTML = 'Error: ' + e.message);
+        }
+
+        function verGuion(id) {
+            if (!_publicarData) return;
+            let txt = "";
+            if (id === 'largo') txt = _publicarData.largo.guion;
+            else txt = _publicarData.shorts[id-1]?.guion || "Sin guion";
+            alert("=== GUION ===\n\n" + txt);
+        }
+        
+        function copiarTodoPublicar() { mostrarToast('Copiando todo...', 'bg-green-600'); }
+        function subirTodoYouTube() { mostrarToast('Subiendo todo a YouTube... (en desarrollo)', 'bg-red-600'); }
+
+        function abrirApp(red, texto) {
+            fetch('/api/encuadre/abrir_app', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({red, texto})})
+                .then(r=>r.json()).then(d => mostrarToast('🚀 Abriendo ' + red, 'bg-blue-600'));
+        }
+
+        // ═══ CMS (DISEÑO WEB) ═══
+        function cmsCargarArbol() {
+            fetch('/api/cms/files').then(r=>r.json()).then(d => {
+                const root = document.getElementById('cms-tree');
+                function render(items, depth=0) {
+                    return items.map(i => {
+                        if (i.type === 'dir') return `<div class="text-zinc-500 font-bold text-xs mt-2 mb-1">📁 ${i.name}</div>` + render(i.children || [], depth+1);
+                        return `<div onclick="cmsAbrirArchivo('${i.path}')" class="cursor-pointer text-zinc-300 hover:text-white hover:bg-zinc-800 px-2 py-1 rounded truncate" title="${i.path}">📄 ${i.name}</div>`;
+                    }).join('');
+                }
+                root.innerHTML = render(d.tree);
+            });
+        }
+
+        let _cmsCurrentPath = "";
+        function cmsAbrirArchivo(path) {
+            _cmsCurrentPath = path;
+            document.getElementById('cms-filename').textContent = path;
+            const ed = document.getElementById('cms-editor');
+            ed.disabled = true; ed.value = "Cargando...";
+            fetch('/api/cms/read', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({path})})
+                .then(r=>r.json()).then(d => {
+                    if (d.type === 'binary') { ed.value = "[Archivo binario: " + d.url + "]"; }
+                    else { ed.value = d.content; ed.disabled = false; }
+                });
+        }
+
+        function cmsGuardar() {
+            if (!_cmsCurrentPath) return;
+            const content = document.getElementById('cms-editor').value;
+            fetch('/api/cms/save', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({path: _cmsCurrentPath, content})})
+                .then(r=>r.json()).then(d => { if(d.ok) mostrarToast('✅ Guardado', 'bg-green-600'); else mostrarToast('Error: '+d.error, 'bg-red-600'); });
+        }
+
+        function cmsNuevoArchivo() {
+            const name = prompt("Nombre del nuevo archivo (ej: analisis/nuevo-post.md):");
+            if(name) cmsAbrirArchivo("docs/" + name);
+        }
+
+        function cmsBuild() {
+            mostrarToast('🚀 Compilando y desplegando...', 'bg-blue-600');
+            fetch('/api/cms/build', {method:'POST'}).then(r=>r.json()).then(d => {
+                if(d.ok) mostrarToast('✅ Build & Push OK', 'bg-green-600');
+                else mostrarToast('❌ ' + d.error, 'bg-red-600');
+            });
+        }
+
     </script>
 </body>
 </html>"""
@@ -479,6 +568,238 @@ def api_publicar_blogger():
     def run(): subprocess.run(["python3", "scripts/publicar_blogger_encuadre.py", data['fecha']], cwd=str(ROOT))
     threading.Thread(target=run).start()
     return jsonify({"status": "ok"})
+
+
+# === PUBLICAR (datos unificados para frontend) ===
+@encuadre_bp.route("/api/encuadre/publicar/<fecha>")
+def api_publicar_datos(fecha):
+    OUT = ROOT / "output" / "encuadre"
+    result = {"fecha": fecha, "largo": {}, "shorts": [], "posts": {}, "dossier": {}}
+    prod = {}
+    p = OUT / f"produccion_{fecha}.json"
+    if p.exists():
+        try: prod = json.loads(p.read_text())
+        except: pass
+    seo = {}
+    p = OUT / f"seo_{fecha}.json"
+    if p.exists():
+        try: seo = json.loads(p.read_text())
+        except: pass
+    redes = {}
+    p = OUT / f"redes_{fecha}.json"
+    if p.exists():
+        try: redes = json.loads(p.read_text())
+        except: pass
+    dossier = {}
+    p = OUT / f"dossier_{fecha}_enriquecido.json"
+    if p.exists():
+        try: dossier = json.loads(p.read_text())
+        except: pass
+    result["largo"] = {
+        "guion": prod.get("texto_voz_largo", ""),
+        "palabras": prod.get("palabras_totales", 0),
+        "viralidad": (prod.get("viralidad") or {}).get("score", 0),
+        "escenas": prod.get("escenas", []),
+        "seo": seo.get("largo", {}),
+        "articulo_html": prod.get("articulo_html", ""),
+    }
+    sp = prod.get("shorts_finales", []) or []
+    ss = seo.get("shorts", []) or []
+    sr = redes.get("shorts", []) or []
+    for i, s in enumerate(sp):
+        ritem = sr[i] if i < len(sr) else {}
+        result["shorts"].append({
+            "num": i + 1,
+            "tipo": s.get("tipo", ""),
+            "guion": s.get("guion", ""),
+            "hook": s.get("hook", ""),
+            "archivo": s.get("archivo", ""),
+            "seo": ss[i] if i < len(ss) else {},
+            "redes": {k: v for k, v in ritem.items() if k != "id"},
+        })
+    result["posts"] = {
+        "largo_html": prod.get("articulo_html", ""),
+        "dossier": prod.get("dossier", {}),
+        "dossier_enriquecido": dossier,
+    }
+    result["dossier"] = prod.get("dossier", {})
+    return jsonify(result)
+
+
+# === ABRIR APP (Android intent + clipboard) ===
+@encuadre_bp.route("/api/encuadre/abrir_app", methods=["POST"])
+def api_abrir_app():
+    data = request.get_json() or {}
+    red = (data.get("red") or "").lower()
+    texto = data.get("texto", "")
+    clip = False
+    if texto:
+        try:
+            subprocess.run(["termux-clipboard-set", texto], timeout=5, check=False)
+            clip = True
+        except Exception:
+            pass
+    links = {
+        "tiktok": "snssdk1128://",
+        "instagram": "instagram://app",
+        "threads": "barcelona://",
+        "x": "twitter://",
+        "youtube": "vnd.youtube://",
+        "youtube_studio": "https://studio.youtube.com/",
+        "blogger": "https://www.blogger.com/",
+    }
+    url = links.get(red, "https://www." + red + ".com/")
+    try:
+        subprocess.run(["termux-open", url], timeout=5, check=False)
+        return jsonify({"ok": True, "red": red, "clipboard": clip, "url": url})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+# === PIPELINE OPTIONS ===
+@encuadre_bp.route("/api/encuadre/pipeline_options")
+def api_pipeline_options():
+    nichos = {}
+    p = ROOT / "config" / "nichos.json"
+    if p.exists():
+        try: nichos = json.loads(p.read_text())
+        except: pass
+    return jsonify({
+        "nichos": list(nichos.keys()) if isinstance(nichos, dict) else [],
+        "formatos": [
+            {"id": "largo", "label": "Video largo 16:9", "icon": "🎬", "desc": "10-15 min con voz + imagenes + musica"},
+            {"id": "shorts", "label": "Shorts 9:16", "icon": "📱", "desc": "1-4 shorts verticales con subtitulos"},
+            {"id": "posts", "label": "Posts web", "icon": "📝", "desc": "Largo + dossier + mediano en elencuadre.pages.dev"},
+            {"id": "podcast", "label": "Podcast MP3", "icon": "🎧", "desc": "Audio ~5 min para Spotify"},
+        ],
+        "num_shorts": [1, 2, 3, 4],
+        "fuentes": [
+            {"id": "auto", "label": "Automatico (dossier del dia)"},
+            {"id": "manual", "label": "Tema manual (yo escribo)"},
+        ],
+    })
+
+
+# === TOPICOS (trending del dia) ===
+@encuadre_bp.route("/api/encuadre/topicos")
+def api_topicos():
+    OUT = ROOT / "output" / "encuadre"
+    ds = sorted(OUT.glob("dossier_*_enriquecido.json"), reverse=True)
+    if not ds:
+        return jsonify({"fecha": None, "topicos": []})
+    try:
+        d = json.loads(ds[0].read_text())
+        fecha = ds[0].stem.replace("dossier_", "").replace("_enriquecido", "")
+        top3 = d.get("top3", {})
+        topicos = []
+        for k, v in top3.items():
+            if isinstance(v, str): v = {"titulo": v}
+            if isinstance(v, dict):
+                topicos.append({
+                    "id": k,
+                    "titulo": v.get("titular") or v.get("titulo") or v.get("headline") or v.get("title") or "",
+                    "resumen": (v.get("resumen") or v.get("summary") or "")[:200],
+                    "medio": v.get("medio") or v.get("fuente") or "",
+                })
+        return jsonify({"fecha": fecha, "topicos": topicos})
+    except Exception as e:
+        return jsonify({"error": str(e), "topicos": []})
+
+
+
+# === CMS (Diseñador Web) ===
+import os
+WEB_DIR = ROOT / "web"
+
+def _safe_path(rel_path):
+    """Evita path traversal. Solo permite rutas dentro de web/."""
+    p = (WEB_DIR / rel_path).resolve()
+    if not str(p).startswith(str(WEB_DIR.resolve())):
+        raise ValueError("Ruta no permitida")
+    return p
+
+@encuadre_bp.route("/api/cms/files")
+def cms_files():
+    """Devuelve el arbol de archivos de web/ (posts, media, config, css)."""
+    def walk(dir_path):
+        rel = str(dir_path.relative_to(WEB_DIR))
+        if rel == ".": rel = ""
+        items = []
+        try:
+            for entry in sorted(dir_path.iterdir(), key=lambda e: (not e.is_dir(), e.name.lower())):
+                if entry.name.startswith(".") or entry.name in ("site", "media"): 
+                    continue
+                entry_rel = str(entry.relative_to(WEB_DIR))
+                if entry.is_dir():
+                    items.append({"name": entry.name, "type": "dir", "path": entry_rel, "children": walk(entry)})
+                else:
+                    if entry.name in ("mkdocs.yml",) or entry.suffix in (".md", ".css", ".yml", ".html"):
+                        items.append({"name": entry.name, "type": "file", "path": entry_rel, "size": entry.stat().st_size})
+        except Exception: pass
+        return items
+
+    # Incluir media/imagenes como carpeta virtual
+    media_dir = WEB_DIR / "media" / "imagenes"
+    media_items = []
+    if media_dir.exists():
+        for f in sorted(media_dir.glob("*"), reverse=True)[:50]:
+            if f.suffix in (".png", ".jpg", ".jpeg"):
+                media_items.append({"name": f.name, "type": "file", "path": str(f.relative_to(WEB_DIR)), "size": f.stat().st_size})
+    
+    tree = walk(WEB_DIR / "docs")
+    tree.insert(0, {"name": "mkdocs.yml", "type": "file", "path": "mkdocs.yml", "size": (WEB_DIR/"mkdocs.yml").stat().st_size if (WEB_DIR/"mkdocs.yml").exists() else 0})
+    tree.insert(1, {"name": "imagenes_media", "type": "dir", "path": "media/imagenes", "children": media_items})
+    return jsonify({"tree": tree})
+
+@encuadre_bp.route("/api/cms/read", methods=["POST"])
+def cms_read():
+    data = request.get_json() or {}
+    rel = data.get("path", "")
+    try:
+        p = _safe_path(rel)
+        if not p.exists(): return jsonify({"error": "No existe"}), 404
+        if p.suffix in (".png", ".jpg", ".jpeg", ".mp3"):
+            return jsonify({"type": "binary", "url": f"/{rel}"})
+        return jsonify({"type": "text", "content": p.read_text(encoding="utf-8"), "path": rel})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@encuadre_bp.route("/api/cms/save", methods=["POST"])
+def cms_save():
+    data = request.get_json() or {}
+    rel = data.get("path", "")
+    content = data.get("content", "")
+    try:
+        p = _safe_path(rel)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(content, encoding="utf-8")
+        return jsonify({"ok": True, "path": rel})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@encuadre_bp.route("/api/cms/delete", methods=["POST"])
+def cms_delete():
+    data = request.get_json() or {}
+    rel = data.get("path", "")
+    try:
+        p = _safe_path(rel)
+        if p.is_file(): p.unlink()
+        return jsonify({"ok": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@encuadre_bp.route("/api/cms/build", methods=["POST"])
+def cms_build():
+    import subprocess
+    try:
+        r1 = subprocess.run(["mkdocs", "build"], cwd=str(WEB_DIR), capture_output=True, text=True, timeout=120)
+        if r1.returncode != 0: return jsonify({"error": "Build fallo: " + r1.stderr[-200:]}), 500
+        subprocess.run(["git", "add", "web/"], cwd=str(ROOT), timeout=30, check=False)
+        subprocess.run(["git", "commit", "-m", "cms: cambios desde dashboard"], cwd=str(ROOT), timeout=30, check=False)
+        r2 = subprocess.run(["git", "push", "origin", "main"], cwd=str(ROOT), capture_output=True, text=True, timeout=60)
+        return jsonify({"ok": True, "msg": "Build & Push OK"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @encuadre_bp.route("/output/encuadre/<path:filename>")
 def video_encuadre(filename):
