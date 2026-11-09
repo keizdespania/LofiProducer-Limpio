@@ -191,6 +191,15 @@ def _publicar_web(fecha):
         return False
 
 def main():
+    # 2026-11-09: limpieza diaria primero (reset total <ayer)
+    import subprocess as _sp_limp
+    try:
+        _sp_limp.run([sys.executable, "scripts/limpieza_pipeline.py"],
+                     cwd=str(ROOT), timeout=120, check=False, capture_output=True)
+        print("   [limpieza] reset diario OK", flush=True)
+    except Exception as _e_limp:
+        print(f"   [limpieza] {_e_limp}", flush=True)
+
     fecha = datetime.date.today().isoformat()
     print(f"🚀 INICIANDO PIPELINE MASIVO - {fecha}", flush=True)
 
