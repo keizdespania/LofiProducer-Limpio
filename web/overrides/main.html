@@ -16,8 +16,8 @@
   "@context": "https://schema.org",
   "@type": "NewsArticle",
   "headline": {{ (page.title or config.site_name) | tojson }},
-  "datePublished": {{ page.meta.date | tojson }},
-  "dateModified": {{ (page.meta.updated or page.meta.date) | tojson }},
+  "datePublished": {{ page.meta.date | string | tojson }},
+  "dateModified": {{ (page.meta.updated or page.meta.date) | string | tojson }},
   "author": {
     "@type": "Organization",
     "name": "{{ config.extra.autor }}",
