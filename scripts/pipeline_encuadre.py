@@ -545,6 +545,19 @@ def main():
         _yt_file.parent.mkdir(parents=True, exist_ok=True)
         _yt_file.write_text(json.dumps(_yt_data, indent=2, ensure_ascii=False))
         print(f"   ✅ URLs YouTube guardadas: {_yt_file.name}", flush=True)
+
+        # 2026-11-09: generar miniaturas top-1 automáticamente
+        try:
+            print(f"\n{'='*60}\n🖼  GENERANDO MINIATURAS TOP-1\n{'='*60}", flush=True)
+            import sys as _sys_thumb
+            _sys_thumb.path.insert(0, str(ROOT / "scripts"))
+            _sys_thumb.path.insert(0, str(ROOT / "brain"))
+            from dios import _tool_generar_thumbnails_lote as _gen_thumbs
+            _res_thumbs = _gen_thumbs({"fecha": fecha})
+            for _line in str(_res_thumbs).split("\n")[:15]:
+                print(f"   {_line}", flush=True)
+        except Exception as _e_thumb:
+            print(f"   ⚠️ Thumbnails: {_e_thumb}", flush=True)
     except Exception as _e:
         print(f"   ⚠️ No pude guardar youtube_urls: {_e}", flush=True)
 
