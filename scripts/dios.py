@@ -2549,13 +2549,27 @@ def _tool_analizar_short_viral(args):
                     media = sum(vistas_otros) / len(vistas_otros) if vistas_otros else 0
         except: pass
     
-    # Diagnóstico
-    rendimiento = "🔥 EXCELENTE" if media > 0 and vistas > media * 2 else (
-        "✅ BUENO" if media > 0 and vistas > media else (
-            "⚠️ BAJO" if media > 0 else "🤷 SIN REFERENCIA"))
+    # Diagnóstico realista (con muestras pequeñas, no fingir éxito)
+    if vistas < 20:
+        rendimiento = "🤷 MUY POCAS VISTAS (muestra insuficiente)"
+        suficiente = False
+    elif media >= 20:
+        if vistas > media * 3: rendimiento = "🔥 EXCELENTE (viral)"
+        elif vistas > media * 1.5: rendimiento = "✅ BUENO (por encima de media)"
+        elif vistas < media * 0.5: rendimiento = "⚠️ BAJO"
+        else: rendimiento = "➖ NORMAL"
+        suficiente = True
+    else:
+        rendimiento = "📊 POCAS MUESTRAS (esperar 24-48h)"
+        suficiente = vistas >= 100
     
     propuestas = []
-    if "EXCELENTE" in rendimiento or "BUENO" in rendimiento:
+    if not suficiente and vistas < 100:
+        propuestas.append("⏳ Esperar 24-48h antes de decidir (algoritmo aún distribuyendo)")
+        propuestas.append("📱 Hacer cross-post YA a TikTok/IG (share sheet) para acelerar")
+        propuestas.append("💬 Publicar comentario SEO fijado con CTA (tracción inicial)")
+        propuestas.append("🔗 Compartir en Telegram propio para forzar primeras vistas")
+    elif "EXCELENTE" in rendimiento or "BUENO" in rendimiento:
         propuestas.append("🎬 Hacer secuela con mismo tema/hook")
         propuestas.append("📱 Cross-post a TikTok + IG Reels (share sheet)")
         propuestas.append("📝 Post web relacionado profundo")
@@ -2579,7 +2593,7 @@ def _tool_analizar_short_viral(args):
 
 def _tool_generar_thumbnail_video(args):
     """Genera thumbnail top-1: intenta Nano Banana, fallback SDXL."""
-    import requests, datetime, json as _j, sys as _sys_tb, subprocess as _sp
+    import requests, datetime, json as _j, sys as _sys_tb, subprocess as _sp, pathlib
     vid = (args.get("video_id") or "").strip()
     if not vid: return "ERROR: falta video_id"
     fecha = args.get("fecha") or datetime.date.today().isoformat()
