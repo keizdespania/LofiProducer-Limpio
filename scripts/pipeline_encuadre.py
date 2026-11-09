@@ -421,7 +421,7 @@ def main():
     else:
         _run("generar_blogs_blogger.py", [fecha], 600, 1)
     _run("generar_redes.py", [fecha], 300, 1)
-    _run("generar_redes_cruzadas.py", [fecha], 60, 1)  # 2026-11-09: redes cruzadas largo+shorts+posts
+    _run("generar_redes_cruzadas_llm.py", [fecha], 300, 1)  # 2026-11-09: redes cruzadas largo+shorts+posts
 
     # YouTube (escalonado, sin fechas pasadas)
     ahora = datetime.datetime.now()
