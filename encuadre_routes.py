@@ -233,17 +233,26 @@ HTML_FACTORY = """<!DOCTYPE html>
     
         <!-- VISTA PIPELINE LIVE -->
         <div id="view-live" class="hidden grid-cols-1 gap-4">
-            <div class="glass rounded-xl p-4 flex justify-between items-center">
-                <div>
-                    <h3 class="font-bold text-lg text-green-400"><i class="fa-solid fa-terminal mr-2"></i>Consola del Sistema</h3>
-                    <p class="text-xs text-zinc-400">Ejecuta el pipeline y observa a los agentes trabajar.</p>
+            <div class="glass rounded-2xl p-4">
+                <div class="flex justify-between items-center mb-3 flex-wrap gap-2">
+                    <h3 class="font-bold text-sm text-red-400"><i class="fa-solid fa-terminal mr-2"></i>Pipeline Live · Logs en directo</h3>
+                    <div class="flex gap-2 flex-wrap">
+                        <select id="live-log-select" onchange="liveCambiarLog()" class="bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs text-white" style="min-width:200px"></select>
+                        <button onclick="liveRefrescar()" class="bg-zinc-800 hover:bg-zinc-700 px-3 py-1 rounded text-xs">🔄 Refresh</button>
+                        <label class="flex items-center gap-1 text-xs text-zinc-400 cursor-pointer"><input type="checkbox" id="live-auto" checked onchange="liveToggleAuto()"> Auto</label>
+                    </div>
                 </div>
-                <button onclick="iniciarPipeline()" id="btn-run-pipeline" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-bold shadow-lg transition">
-                    <i class="fa-solid fa-play mr-2"></i>Ejecutar Pipeline
-                </button>
-            </div>
-            <div class="glass rounded-xl p-4 bg-black border border-zinc-800">
-                <pre id="terminalLogs" class="text-xs mono text-green-400 whitespace-pre-wrap h-[60vh] overflow-y-auto" style="font-family: 'JetBrains Mono', monospace;">Esperando inicio del pipeline...</pre>
+                <div class="flex gap-2 mb-3 flex-wrap">
+                    <button onclick="liveLanzarPipeline()" class="bg-green-600 hover:bg-green-500 px-3 py-1.5 rounded text-xs font-semibold"><i class="fa-solid fa-play mr-1"></i>Lanzar pipeline</button>
+                    <button onclick="liveLanzarCustom()" class="bg-orange-600 hover:bg-orange-500 px-3 py-1.5 rounded text-xs font-semibold"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Custom</button>
+                    <button onclick="liveMatar()" class="bg-red-700 hover:bg-red-600 px-3 py-1.5 rounded text-xs font-semibold"><i class="fa-solid fa-stop mr-1"></i>Matar</button>
+                </div>
+                <div id="live-activos" class="text-xs mb-2"></div>
+                <pre id="live-terminal" class="text-[11px] mono text-green-400 bg-black rounded p-3 overflow-y-auto" style="font-family:'JetBrains Mono',monospace;height:60vh;white-space:pre-wrap;word-break:break-all">Esperando logs...</pre>
+                <div class="flex justify-between items-center mt-2 text-[10px] text-zinc-500">
+                    <span id="live-meta">—</span>
+                    <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="live-scroll" checked> Auto-scroll</label>
+                </div>
             </div>
         </div>
 
@@ -326,7 +335,7 @@ HTML_FACTORY = """<!DOCTYPE html>
                 if (tab) tab.className = t === v ? "tab-active text-sm font-semibold pb-2 px-2 whitespace-nowrap" : "text-zinc-400 hover:text-white text-sm font-semibold pb-2 px-2 whitespace-nowrap";
             });
             if (v === 'monetizacion') document.getElementById('view-monetizacion').classList.add('grid');
-            if (v === 'live') document.getElementById('view-live').classList.add('grid');
+            if (v === 'live') { document.getElementById('view-live').classList.add('grid'); liveInit(); }
             if (v === 'analytics') { document.getElementById('view-analytics').classList.add('grid'); cargarCloudflareStats(); }
             if (v === 'ab') document.getElementById('view-ab').classList.add('grid');
             if (v === 'calendario') document.getElementById('view-calendario').classList.add('grid');
@@ -727,6 +736,81 @@ HTML_FACTORY = """<!DOCTYPE html>
             chat.scrollTop = chat.scrollHeight;
         }
 
+
+        // ═══ LIVE LOGS UNIVERSAL ═══
+        let _liveTimer = null;
+        let _liveLogActual = 'pipeline.log';
+
+        function liveInit() {
+            liveCargarLista();
+            liveIniciarAuto();
+        }
+
+        function liveCargarLista() {
+            fetch('/api/encuadre/logs/list').then(r=>r.json()).then(d => {
+                const sel = document.getElementById('live-log-select');
+                const cur = _liveLogActual;
+                const logs = (d.logs || []).slice(0, 30);
+                sel.innerHTML = logs.map(l => '<option value="' + l.name + '"' + (l.name===cur?' selected':'') + '>' + l.name + ' · ' + Math.round(l.size/1024) + 'KB</option>').join('') || '<option value="">(sin logs)</option>';
+                const act = document.getElementById('live-activos');
+                if (d.pipelines_activos && d.pipelines_activos.length) {
+                    act.innerHTML = '<span class="bg-green-600/20 text-green-400 px-2 py-0.5 rounded">🔴 ' + d.pipelines_activos.length + ' pipeline(s) corriendo</span>';
+                } else {
+                    act.innerHTML = '<span class="text-zinc-500">Sin pipelines activos</span>';
+                }
+            }).catch(e => console.warn('liveLista:', e));
+        }
+
+        function liveCambiarLog() {
+            _liveLogActual = document.getElementById('live-log-select').value;
+            liveRefrescar();
+        }
+
+        function liveRefrescar() {
+            if (!_liveLogActual) return;
+            fetch('/api/encuadre/logs/tail?name=' + encodeURIComponent(_liveLogActual) + '&n=300')
+                .then(r=>r.json()).then(d => {
+                    if (d.error) { document.getElementById('live-terminal').textContent = 'Error: ' + d.error; return; }
+                    const term = document.getElementById('live-terminal');
+                    term.textContent = d.content || '(vacio)';
+                    if (document.getElementById('live-scroll').checked) term.scrollTop = term.scrollHeight;
+                    document.getElementById('live-meta').textContent = d.name + ' · ' + Math.round(d.size/1024) + 'KB · ' + new Date(d.mtime*1000).toLocaleTimeString();
+                }).catch(e => console.warn('liveTail:', e));
+        }
+
+        function liveToggleAuto() {
+            if (document.getElementById('live-auto').checked) liveIniciarAuto();
+            else if (_liveTimer) { clearInterval(_liveTimer); _liveTimer = null; }
+        }
+
+        function liveIniciarAuto() {
+            if (_liveTimer) clearInterval(_liveTimer);
+            liveRefrescar();
+            _liveTimer = setInterval(() => {
+                if (location.hash !== '#live') return;
+                liveRefrescar();
+                liveCargarLista();
+            }, 3000);
+        }
+
+        function liveLanzarPipeline() {
+            if (!confirm('¿Lanzar pipeline del dia?')) return;
+            fetch('/api/encuadre/run_pipeline', {method:'POST'}).then(r=>r.json()).then(d => {
+                if (d.status === 'ok' || d.ok) { mostrarToast('✅ Pipeline lanzado', 'bg-green-600'); _liveLogActual = 'pipeline_web.log'; liveCargarLista(); liveIniciarAuto(); }
+                else mostrarToast('❌ ' + (d.msg||d.error||'error'), 'bg-red-600');
+            });
+        }
+
+        function liveLanzarCustom() { location.hash = '#crear'; }
+
+        function liveMatar() {
+            if (!confirm('¿Matar TODOS los pipelines en curso?')) return;
+            fetch('/api/encuadre/kill_pipeline', {method:'POST'}).then(r=>r.json()).then(d => {
+                mostrarToast(d.ok ? '✅ Matados: ' + (d.matados||0) : '❌ ' + (d.error||'error'), d.ok ? 'bg-green-600' : 'bg-red-600');
+                setTimeout(liveCargarLista, 800);
+            });
+        }
+
     </script>
 
     <!-- DIOS FAB + PANEL -->
@@ -745,6 +829,60 @@ HTML_FACTORY = """<!DOCTYPE html>
     </div>
 </body>
 </html>"""
+
+
+# === LOGS EN VIVO (2026-11-09) ===
+LOGS_DIR = ROOT / "data" / "logs"
+
+
+@encuadre_bp.route("/api/encuadre/kill_pipeline", methods=["POST"])
+def api_kill_pipeline():
+    import subprocess as _sp
+    try:
+        _sp.run(["pkill", "-9", "-f", "pipeline_encuadre"], capture_output=True, timeout=10)
+        _sp.run(["pkill", "-9", "-f", "pipeline_internacional"], capture_output=True, timeout=10)
+        return jsonify({"ok": True, "matados": 1})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@encuadre_bp.route("/api/encuadre/logs/list")
+def api_logs_list():
+    import subprocess as _sp
+    items = []
+    if LOGS_DIR.exists():
+        for f in LOGS_DIR.glob("*.log"):
+            try:
+                st = f.stat()
+                items.append({"name": f.name, "size": st.st_size, "mtime": st.st_mtime})
+            except: pass
+    items.sort(key=lambda x: -x["mtime"])
+    activos = []
+    try:
+        r = _sp.run(["pgrep", "-af", "pipeline_"], capture_output=True, text=True, timeout=5)
+        for line in r.stdout.splitlines():
+            if "pgrep" not in line: activos.append(line.strip()[:200])
+    except: pass
+    return jsonify({"logs": items, "pipelines_activos": activos})
+
+
+@encuadre_bp.route("/api/encuadre/logs/tail")
+def api_logs_tail():
+    from flask import request as _req
+    name = _req.args.get("name", "")
+    n = int(_req.args.get("n", "200"))
+    if not name or ".." in name or "/" in name:
+        return jsonify({"error": "name invalido"}), 400
+    p = LOGS_DIR / name
+    if not p.exists():
+        return jsonify({"error": "log no existe"}), 404
+    try:
+        import subprocess as _sp
+        r = _sp.run(["tail", "-n", str(min(n, 500)), str(p)], capture_output=True, text=True, timeout=10)
+        return jsonify({"name": name, "content": r.stdout, "size": p.stat().st_size, "mtime": p.stat().st_mtime})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @encuadre_bp.route("/encuadre")
 def vista_encuadre(): return Response(HTML_FACTORY, mimetype='text/html')
