@@ -1,4 +1,4 @@
-import json, threading, subprocess, glob, os
+import json, threading, subprocess, glob, os, pathlib
 from pathlib import Path
 from flask import Blueprint, jsonify, request, send_from_directory, Response
 
@@ -908,10 +908,16 @@ def api_pipeline_status():
 
 @encuadre_bp.route("/api/encuadre/fechas")
 def api_encuadre_fechas():
+    """Devuelve SOLO fechas YYYY-MM-DD con produccion_{fecha}.json (sin cruzadas ni mierdas)."""
+    import glob, re
     OUT = ROOT / "output" / "encuadre"
-    fechas = [Path(a).stem.replace("redes_", "") for a in glob.glob(str(OUT / "redes_*.json"))]
-    fechas += [Path(a).stem.replace("produccion_", "") for a in glob.glob(str(OUT / "produccion_*.json"))]
-    return jsonify({"fechas": sorted(list(set(fechas)), reverse=True)})
+    fechas = []
+    for f in sorted(glob.glob(str(OUT / "produccion_*.json")), reverse=True):
+        # Extraer solo YYYY-MM-DD del nombre
+        m = re.match(r'produccion_(\d{4}-\d{2}-\d{2})\.json', pathlib.Path(f).name)
+        if m:
+            fechas.append(m.group(1))
+    return jsonify({"fechas": fechas})
 
 @encuadre_bp.route("/api/encuadre/datos/<fecha>")
 def api_encuadre_datos(fecha):
