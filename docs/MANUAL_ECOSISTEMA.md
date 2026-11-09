@@ -2,7 +2,7 @@
 > Autogenerado desde `dios.TOOLS`. No editar a mano. Actualizado 2026-11-09.
 
 ## 1. ARQUITECTURA
-- Cerebro: `scripts/dios.py` (49 tools, ReAct, memoria SQLite)
+- Cerebro: `scripts/dios.py` (51 tools, ReAct, memoria SQLite)
 - Memoria: `brain/dios_memoria.py` (workspace + episodios + costes + fallos)
 - Manual: `docs/MANUAL_ECOSISTEMA.md` (este fichero)
 - Motor LLM: Groq (gpt-oss-120b) → Gemini 3.8 (cascada 8 modelos)
@@ -13,7 +13,7 @@
 ## 2. PIPELINE DIARIO (cron 06:00)
 `recolector` → `transcribir_groq` → `analista_fase1` → `sintetizador` → `fase2_produccion` → `voz_edge` → `director_arte` (80 seg, 8 estilos) → `render_robusto` → `factory_shorts` → `generar_web_v3` + `dossier` → `mkdocs build` → `git push` → YouTube 20:00.
 
-## 3. TODAS TUS TOOLS (49)
+## 3. TODAS TUS TOOLS (51)
 > Usa `listar_mis_tools` en cualquier momento para ver la lista viva.
 
 ### FS / Shell (5)
@@ -87,6 +87,10 @@
 - **delegar_tareas_paralelas**: Delega múltiples tareas de investigación o análisis a OmniRoute en paralelo para ahorrar tiempo. Úsala cuando necesites leer varios archivos
 - **pedir_a_especialista**: Delegar tarea a un sub-agente especializado. Roles: guionista, seo, auditor, traductor, musico.
 
+### Otros (2)
+- **auto_regenerar_manual**: Regenera docs/MANUAL_ECOSISTEMA.md desde el estado actual de TOOLS. Usalo tras crear tools nuevas.
+- **crear_nueva_tool**: Crea una tool nueva persistente. Recibe nombre (snake_case), descripcion, codigo_funcion (def _tool_NOMBRE(args): ...) y parametros_json (di
+
 ## 4. MEMORIA (SQLite en data/agent/)
 | Fichero | Qué guarda | Tool para consultarlo |
 |---|---|---|
@@ -148,3 +152,23 @@ Flujo obligatorio para arreglar el repo:
 
 ## 13. REGLAS CON EL USUARIO
 Pushback si dudas · `py_compile` tras .py · leer antes de modificar · backup antes de zona sagrada · NUNCA borrar sin OK · 3+ parches → reescribir · env vars para tokens · `python3 -u` en Termux.
+
+## 14. CÓMO ACTUALIZAR ESTE MANUAL
+Autogenerado desde `dios.TOOLS`. Para regenerar:
+```bash
+python3 scripts/gen_manual.py
+```
+O pídeselo a Dios: `# auto_regenerar_manual`.
+
+## 15. CÓMO CREAR UNA TOOL NUEVA (auto)
+Usa `crear_nueva_tool` con:
+- `nombre`: snake_case (ej: `saludar`)
+- `descripcion`: qué hace
+- `codigo_funcion`: cuerpo Python, ej:
+```python
+def _tool_saludar(args):
+    return f'Hola {args.get("nombre", "mundo")}'
+```
+- `parametros_json`: schema JSON, ej `{"nombre":{"type":"string"}}`
+
+Flujo: sandbox → validación → Telegram confirm → regenera manual → disponible próxima ejecución.

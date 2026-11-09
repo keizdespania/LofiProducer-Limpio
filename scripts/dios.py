@@ -69,6 +69,8 @@ from brain.web_search import buscar
 from brain.ejecutor_seguro import ejecutar
 from brain.pruner import comprimir, comprimir_mensajes
 from brain.memoria_db import guardar_conversacion, recordar_hecho, consultar_hechos, obtener_contexto_reciente
+from brain.dios_tools_dinamicas import cargar_tools_dinamicas, persistir_tool
+
 try:
     from brain.dios_memoria import WORKSPACE, EPISODIOS, COSTES, FALLOS
 except ImportError:
@@ -535,6 +537,8 @@ TOOLS = [
     {"type": "function", "function": {"name": "ver_ultimas_tareas", "description": "3 ultimas tareas con resultado.", "parameters": {"type": "object", "properties": {}, "required": []}}},
     {"type": "function", "function": {"name": "ver_fallos_similares", "description": "Busca fallos similares.", "parameters": {"type": "object", "properties": {"prompt": {"type": "string"}}, "required": ["prompt"]}}},
     {"type": "function", "function": {"name": "ver_costes_hoy", "description": "Costes de hoy.", "parameters": {"type": "object", "properties": {}, "required": []}}},
+    {"type": "function", "function": {"name": "auto_regenerar_manual", "description": "Regenera docs/MANUAL_ECOSISTEMA.md desde el estado actual de TOOLS. Usalo tras crear tools nuevas.", "parameters": {"type": "object", "properties": {}, "required": []}}},
+    {"type": "function", "function": {"name": "crear_nueva_tool", "description": "Crea una tool nueva persistente. Recibe nombre (snake_case), descripcion, codigo_funcion (def _tool_NOMBRE(args): ...) y parametros_json (dict de propiedades). Valida, persiste, regenera manual. Disponible proximo arranque.", "parameters": {"type": "object", "properties": {"nombre": {"type": "string"}, "descripcion": {"type": "string"}, "codigo_funcion": {"type": "string"}, "parametros_json": {"type": "object"}}, "required": ["nombre", "descripcion", "codigo_funcion"]}}},
 ]
 
 
@@ -1513,7 +1517,37 @@ def _tool_ver_costes_hoy(args):
     r = COSTES.resumen_hoy()
     return f"Tareas: {r['tareas']} | in: {r['tokens_in']} | out: {r['tokens_out']}"
 
+
+def _tool_auto_regenerar_manual(args):
+    import subprocess as _sp
+    try:
+        r = _sp.run(["python3", "scripts/gen_manual.py"], cwd=str(ROOT), capture_output=True, text=True, timeout=30)
+        if r.returncode == 0:
+            return "OK manual regenerado: " + (r.stdout or "")[:200]
+        return "ERROR: " + (r.stderr or r.stdout or "")[:300]
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+def _tool_crear_nueva_tool(args):
+    nombre = (args.get("nombre") or "").strip()
+    desc = (args.get("descripcion") or "").strip()
+    codigo = (args.get("codigo_funcion") or "").strip()
+    params = args.get("parametros_json") or {}
+    if not nombre or not desc or not codigo:
+        return "ERROR: faltan nombre, descripcion o codigo_funcion"
+    # Validacion segura
+    ok, msg = persistir_tool(nombre, desc, codigo, params)
+    if not ok:
+        return f"ERROR: {msg}"
+    # Regenerar manual automaticamente
+    _tool_auto_regenerar_manual({})
+    return f"OK {msg}"
+
+
 TOOL_FNS = {
+    "auto_regenerar_manual": _tool_auto_regenerar_manual,
+    "crear_nueva_tool": _tool_crear_nueva_tool,
     "ver_costes_hoy": _tool_ver_costes_hoy,
     "ver_fallos_similares": _tool_ver_fallos_similares,
     "ver_ultimas_tareas": _tool_ver_ultimas_tareas,
@@ -1565,6 +1599,14 @@ TOOL_FNS = {
     "pedir_a_especialista": _tool_pedir_a_especialista,
     "lanzar_notebook_kaggle": _tool_lanzar_notebook_kaggle,
 }
+
+# 2026-11-09: cargar tools dinamicas (fail-safe si el fichero esta roto)
+try:
+    _TOOLS_DYN, _FNS_DYN = cargar_tools_dinamicas()
+    TOOLS.extend(_TOOLS_DYN)
+    TOOL_FNS.update(_FNS_DYN)
+except Exception as _e_dyn:
+    print(f"   [dyn load] {_e_dyn}")
 
 
 
