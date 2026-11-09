@@ -414,10 +414,17 @@ def api_jarvis_chat():
         if "[dios] Tarea completada. Resumen:" in r.stdout:
             respuesta = r.stdout.split("[dios] Tarea completada. Resumen:")[-1].strip()
         elif r.stdout.strip():
-            respuesta = r.stdout.strip()[-1500:]
+            respuesta = r.stdout.strip()[-3000:]
         else:
-            respuesta = "Sin respuesta (stderr: " + (r.stderr[:200] if r.stderr else "nada") + ")"
-        return jsonify({"status":"ok","respuesta":respuesta,"raw_len":len(r.stdout)})
+            respuesta = "Sin respuesta"
+        return jsonify({
+            "status":"ok",
+            "respuesta":respuesta,
+            "raw_len":len(r.stdout),
+            "stdout_tail": r.stdout[-1500:] if r.stdout else "",
+            "stderr_tail": r.stderr[-800:] if r.stderr else "",
+            "rc": r.returncode
+        })
     except _sp.TimeoutExpired:
         return jsonify({"status":"error","msg":"Timeout 180s"}), 504
     except Exception as e:

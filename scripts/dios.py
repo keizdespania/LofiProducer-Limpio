@@ -80,14 +80,18 @@ TTL_HORAS = 48
 
 
 def _leer_key() -> str:
+    """2026-11-09: prefiere GROQ_API_KEY (OmniRoute lleva dias 401). Cascada."""
     env = ROOT / ".env"
     if not env.exists():
         raise SystemExit("Falta .env")
-    for line in env.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if line.startswith("OMNIROUTE_API_KEY="):
-            return line.split("=", 1)[1].strip().strip('"').strip("'")
-    raise SystemExit("Falta OMNIROUTE_API_KEY en .env")
+    lines = env.read_text(encoding="utf-8").splitlines()
+    # Preferencia: GROQ_API_KEY -> GROQ_API_KEY_2 -> OMNIROUTE_API_KEY
+    for prefix in ("GROQ_API_KEY=", "GROQ_API_KEY_2=", "GROQ_API_KEY_3=", "GROQ_API_KEY_4=", "OMNIROUTE_API_KEY="):
+        for line in lines:
+            line = line.strip()
+            if line.startswith(prefix):
+                return line.split("=", 1)[1].strip().strip('"').strip("'")
+    raise SystemExit("Falta GROQ_API_KEY u OMNIROUTE_API_KEY en .env")
 
 
 def _cargar_memoria() -> dict:
@@ -1458,16 +1462,34 @@ def _call_llm(api_key, messages, force_no_tools=False):
 
     # ═══ CASCADA GROQ DIRECTA (4 cuentas) → OmniRoute → especialistas ═══
     # Primero 4 Groq directas (4x cuota). Si todas fallan → OmniRoute. Ultimo recurso especialistas.
+    # 2026-11-09: FORZAR lectura del .env (os.environ puede tener keys viejas exportadas)
     claves_groq = []
     modelos_groq = []
+    _env_path = ROOT / ".env"
+    _env_lines = _env_path.read_text().splitlines() if _env_path.exists() else []
+    def _env_only(name):
+        for line in _env_lines:
+            ls = line.strip()
+            if ls.startswith(f"{name}="):
+                v = ls.split("=", 1)[1].strip().strip('"').strip("'")
+                # Sanity check para keys: deben empezar por gsk_ y ser ~56 chars
+                if name.startswith("GROQ_API_KEY") and not (v.startswith("gsk_") and 40 <= len(v) <= 200):
+                    return ""
+                return v
+        return ""
+
     for k_name, m_name in [("GROQ_API_KEY","GROQ_MODEL_1"),("GROQ_API_KEY_2","GROQ_MODEL_2"),("GROQ_API_KEY_3","GROQ_MODEL_2"),("GROQ_API_KEY_4","GROQ_MODEL_3")]:
         try:
-            k = _leer_api_key(k_name)
+            k = _env_only(k_name)
             if k: claves_groq.append(k)
-            m = _leer_api_key(m_name)
+            m = _env_only(m_name)
             if m: modelos_groq.append(m)
         except Exception:
             pass
+    print(f"   [DEBUG] claves_groq={len(claves_groq)} modelos_groq={len(modelos_groq)}", flush=True)
+    if claves_groq:
+        k0 = claves_groq[0]
+        print(f"   [DEBUG] key0 prefijo={k0[:8]} len={len(k0)}", flush=True)
 
     # Si hay 4 Groq disponibles → usar directas
     if os.environ.get("FORCE_GEMINI") == "1":
@@ -1476,6 +1498,9 @@ def _call_llm(api_key, messages, force_no_tools=False):
         modelos_defecto = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b", "openai/gpt-oss-120b"]
         for idx, gk in enumerate(claves_groq):
             modelo = modelos_groq[idx] if idx < len(modelos_groq) else modelos_defecto[idx % len(modelos_defecto)]
+        # 2026-11-09: sanity check modelo
+        if not any(modelo.startswith(p) for p in ("openai/", "qwen/", "meta-llama/", "mistral-", "google/", "moonshotai/", "deepseek-")):
+            modelo = modelos_defecto[idx % len(modelos_defecto)]
             try:
                 payload = {"model": modelo, "messages": comprimir_mensajes(messages), "temperature": 0.2, "max_tokens": 4096}
                 if not force_no_tools:
@@ -1758,43 +1783,74 @@ def _detectar_modo(prompt: str) -> str:
 
 
 def _charla_rapida(prompt: str) -> str:
-    """Respuesta rapida para conversacion (sin tools, sin memoria pesada).
-24. VISION DE VIDEO: Tienes la herramienta `analizar_video_competencia(url)`. Usala para analizar los videos de la competencia. Descargara el video, extraera fotogramas, los analizara visualmente y BORRARA el video para no dejar basura.
-
-25. VOZ DEL DIOS: Tienes la herramienta generar_narracion(texto, nombre) que usa TU perfil de voz guardado (data/agent/voz_dios.json). Usala siempre que el usuario pida narrar un guion, un blog o un video.
-"""
+    """2026-11-09: cascada Groq directa (misma que pipeline). Cero OmniRoute."""
     import requests
-    # Limpiar prefijo !
     if prompt.startswith("!"):
         prompt = prompt[1:].strip()
-    key = _leer_api_key("OMNIROUTE_API_KEY")
     sys_prompt = (
         "Eres el Dios de la Construccion, asistente del Arquitecto KeiZ. "
         "Tienes personalidad chulesca pero servicial. Respondes CORTO, directo y con humor. "
         "NUNCA uses herramientas. NUNCA inventes que has hecho algo. "
-        "Si te piden una accion compleja (crear codigo, instalar, etc), responde: "
-        "'Para eso pidemelo como tarea de agente (sin el !)'."
+        "Si te piden una accion compleja, responde: 'Para eso pidemelo como tarea de agente (sin el !)'."
     )
-    payload = {
-        "model": "mi-groq/qwen/qwen3.8-27b",
-        "messages": [
-            {"role": "system", "content": sys_prompt},
-            {"role": "user", "content": prompt},
-        ],
-        "temperature": 0.7,
-        "max_tokens": 300,
-    }
-    try:
-        r = requests.post(
-            "http://localhost:20128/v1/chat/completions",
-            headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"},
-            json=payload, timeout=30
-        )
-        if r.status_code == 200:
-            return r.json()["choices"][0]["message"]["content"]
-        return "[Fallo Groq: HTTP " + str(r.status_code) + "]"
-    except Exception as e:
-        return "[Error de conexion: " + str(e) + "]"
+    CHROME_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+
+    # Leer keys de .env con sanity check
+    keys = []
+    modelos = []
+    env_path = ROOT / ".env"
+    if not env_path.exists():
+        return "[Error: no hay .env]"
+    for line in env_path.read_text().splitlines():
+        ls = line.strip()
+        for n in ("GROQ_API_KEY=", "GROQ_API_KEY_2=", "GROQ_API_KEY_3=", "GROQ_API_KEY_4="):
+            if ls.startswith(n):
+                v = ls.split("=", 1)[1].strip().strip('"').strip("'")
+                if v.startswith("gsk_") and 40 <= len(v) <= 200:
+                    keys.append(v)
+        for n in ("GROQ_MODEL_1=", "GROQ_MODEL_2=", "GROQ_MODEL_3="):
+            if ls.startswith(n):
+                v = ls.split("=", 1)[1].strip().strip('"').strip("'")
+                if v: modelos.append(v)
+
+    if not keys:
+        return "[Error: 0 GROQ_API_KEY validas en .env]"
+
+    modelos_defecto = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b", "openai/gpt-oss-120b"]
+    last_err = ""
+    for idx, k in enumerate(keys):
+        modelo = modelos[idx] if idx < len(modelos) else modelos_defecto[idx % len(modelos_defecto)]
+        if not any(modelo.startswith(p) for p in ("openai/", "qwen/", "meta-llama/", "mistral-", "google/")):
+            modelo = modelos_defecto[idx % len(modelos_defecto)]
+        payload = {
+            "model": modelo,
+            "messages": [
+                {"role": "system", "content": sys_prompt},
+                {"role": "user", "content": prompt},
+            ],
+            "temperature": 0.7,
+            "max_tokens": 500,
+        }
+        try:
+            r = requests.post(
+                "https://api.groq.com/openai/v1/chat/completions",
+                headers={"Authorization": f"Bearer {k}", "Content-Type": "application/json", "User-Agent": CHROME_UA},
+                json=payload, timeout=30,
+            )
+            if r.status_code == 200:
+                j = r.json()
+                msg = j.get("choices", [{}])[0].get("message", {})
+                content = (msg.get("content") or "").strip()
+                if not content and msg.get("reasoning"):
+                    content = msg["reasoning"][:400].strip()
+                if content:
+                    return content
+                last_err = f"key#{idx+1} vacia"
+            else:
+                last_err = f"key#{idx+1} HTTP {r.status_code}"
+        except Exception as e:
+            last_err = f"key#{idx+1} {str(e)[:60]}"
+    return "[Fallo Groq cascada: " + last_err + "]"
 
 
 def main() -> int:
