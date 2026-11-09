@@ -69,6 +69,11 @@ from brain.web_search import buscar
 from brain.ejecutor_seguro import ejecutar
 from brain.pruner import comprimir, comprimir_mensajes
 from brain.memoria_db import guardar_conversacion, recordar_hecho, consultar_hechos, obtener_contexto_reciente
+try:
+    from brain.dios_memoria import WORKSPACE, EPISODIOS, COSTES, FALLOS
+except ImportError:
+    sys.path.insert(0, str(ROOT / 'brain'))
+    from dios_memoria import WORKSPACE, EPISODIOS, COSTES, FALLOS
 
 MEM_FILE = ROOT / "data" / "agent" / "memoria.json"
 SANDBOX = ROOT / "sandbox"
@@ -76,6 +81,23 @@ BACKUP_DIR = ROOT / "data" / "agent" / "backups"
 OMNIROUTE_URL = "http://localhost:20128/v1/chat/completions"
 MODEL = "groq/openai/gpt-oss-120b"
 MAX_STEPS = 10
+
+TOOL_FALLBACKS = {
+    "generar_video": ["generar_video_rapido", "ensamblar_video_final"],
+    "producir_video_completo": ["producir_video", "generar_video"],
+    "buscar_en_web": ["buscar_youtube", "leer_rss"],
+    "buscar_youtube": ["buscar_en_web", "leer_rss"],
+    "producir_nicho": ["producir_video_completo"],
+    "subir_youtube": ["procesar_cola_youtube"],
+}
+
+def _guardar_resultado(prompt, resumen, tools, exito=True):
+    try:
+        WORKSPACE.anotar_tarea(prompt, resumen, tools)
+        EPISODIOS.guardar(prompt, resumen, tools, exito)
+    except Exception as e:
+        print(f"   [memoria save error] {e}")
+
 TTL_HORAS = 48
 
 
@@ -509,6 +531,10 @@ TOOLS = [
     {"type": "function", "function": {"name": "consultar_manual_ecosistema", "description": "Consulta una seccion del MANUAL_ECOSISTEMA.md (arquitectura, errores, pipelines, contratos, motores, apis, comandos, contextos, reglas). Usa seccion=todo para todo.", "parameters": {"type": "object", "properties": {"seccion": {"type": "string"}}, "required": ["seccion"]}}},
     {"type": "function", "function": {"name": "buscar_en_manual", "description": "Busca una query en MANUAL_ECOSISTEMA.md y devuelve lineas con contexto.", "parameters": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}}},
     {"type": "function", "function": {"name": "listar_mis_tools", "description": "Devuelve TODAS las tools disponibles con su descripcion. Usala cuando el usuario pregunte que puedes hacer o que tools tienes.", "parameters": {"type": "object", "properties": {}, "required": []}}},
+    {"type": "function", "function": {"name": "ver_mi_workspace", "description": "Devuelve workspace: ultima tarea y tools usadas.", "parameters": {"type": "object", "properties": {}, "required": []}}},
+    {"type": "function", "function": {"name": "ver_ultimas_tareas", "description": "3 ultimas tareas con resultado.", "parameters": {"type": "object", "properties": {}, "required": []}}},
+    {"type": "function", "function": {"name": "ver_fallos_similares", "description": "Busca fallos similares.", "parameters": {"type": "object", "properties": {"prompt": {"type": "string"}}, "required": ["prompt"]}}},
+    {"type": "function", "function": {"name": "ver_costes_hoy", "description": "Costes de hoy.", "parameters": {"type": "object", "properties": {}, "required": []}}},
 ]
 
 
@@ -1469,7 +1495,29 @@ def _tool_evaluar_produccion(args):
     return f"ERROR: tool evaluar_produccion sin handler real"
 
 
+
+def _tool_ver_mi_workspace(args):
+    return WORKSPACE.compacto() or "Workspace vacio"
+
+def _tool_ver_ultimas_tareas(args):
+    ult = EPISODIOS.ultimas(3)
+    if not ult: return "Sin tareas previas"
+    return "\n".join([f"- {u['prompt'][:80]} -> {(u['resultado'] or '')[:100]}" for u in ult])
+
+def _tool_ver_fallos_similares(args):
+    fs = FALLOS.similares(args.get("prompt", ""))
+    if not fs: return "Sin fallos similares"
+    return "\n".join([f"- {f['tool']}: {f['error']}" for f in fs])
+
+def _tool_ver_costes_hoy(args):
+    r = COSTES.resumen_hoy()
+    return f"Tareas: {r['tareas']} | in: {r['tokens_in']} | out: {r['tokens_out']}"
+
 TOOL_FNS = {
+    "ver_costes_hoy": _tool_ver_costes_hoy,
+    "ver_fallos_similares": _tool_ver_fallos_similares,
+    "ver_ultimas_tareas": _tool_ver_ultimas_tareas,
+    "ver_mi_workspace": _tool_ver_mi_workspace,
     "evaluar_produccion": _tool_evaluar_produccion,
     "crear_nicho": _tool_crear_nicho,
     "ensamblar_video_largo": _tool_ensamblar_video_largo,
@@ -1912,6 +1960,13 @@ def main() -> int:
         print(f"[dios] {n} backups viejos limpiados")
 
     contexto = _contexto_proyecto(prompt)
+    try:
+        _ws = WORKSPACE.compacto()
+        if _ws: contexto += "\n\n=== MEMORIA ===\n" + _ws
+        _ult = EPISODIOS.ultimas(1)
+        if _ult: contexto += "\nUltima: " + _ult[0]["prompt"][:80]
+    except Exception as _e:
+        print(f"   [mem load] {_e}")
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT + "\n\n=== CONTEXTO ===\n" + contexto},
         {"role": "user", "content": prompt},
@@ -1950,6 +2005,7 @@ def main() -> int:
             print("\n[dios] Tarea completada. Resumen:")
             print(resumen[:1500])
             guardar_conversacion(prompt, resumen[:2000], step)
+            _guardar_resultado(prompt, resumen, [], exito=True)
             return 0
 
         for tc in tool_calls:
@@ -2000,6 +2056,18 @@ def main() -> int:
                     result = TOOL_FNS[fn](args)
                 except Exception as e:
                     result = f"ERROR: {e}"
+            if str(result).startswith("ERROR") and fn in TOOL_FALLBACKS:
+                for _alt in TOOL_FALLBACKS[fn]:
+                    if _alt not in TOOL_FNS: continue
+                    print(f"     [fallback] {fn} -> {_alt}")
+                    try:
+                        _r2 = TOOL_FNS[_alt](args)
+                        if not str(_r2).startswith("ERROR"):
+                            result = _r2; break
+                    except Exception: continue
+            if str(result).startswith("ERROR"):
+                try: FALLOS.guardar(prompt, fn, str(result)[:300])
+                except: pass
 
             print(f"     <- {str(result)[:150]}")
             messages.append({
