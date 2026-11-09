@@ -191,6 +191,14 @@ def _publicar_web(fecha):
         return False
 
 def main():
+    # 2026-11-09: regenerar manual primero (refleja todo lo actual)
+    import subprocess as _sp_man
+    try:
+        _sp_man.run([sys.executable, "scripts/gen_manual.py"], cwd=str(ROOT), timeout=60, check=False, capture_output=True)
+        print("   [manual] regenerado", flush=True)
+    except Exception as _e_man:
+        print(f"   [manual] {_e_man}", flush=True)
+
     # 2026-11-09: limpieza diaria primero (reset total <ayer)
     import subprocess as _sp_limp
     try:

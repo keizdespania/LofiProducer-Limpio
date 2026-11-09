@@ -1,147 +1,238 @@
-import sys, pathlib
-sys.path.insert(0, "scripts"); sys.path.insert(0, "brain")
-import dios
+#!/usr/bin/env python3
+"""gen_manual.py v3 - Manual unificado compacto. Auto-escanea ecosistema real.
+Optimizado para tokens: 1 línea por elemento, agrupado por categoría."""
+import sys, pathlib, json, subprocess, datetime, re
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts")); sys.path.insert(0, str(ROOT / "brain"))
 
-# Agrupar tools por categoría (heurística por nombre)
-CATS = {
-    "FS / Shell": ["ejecutar_comando", "read_file", "write_file", "validate_file", "promote_file"],
-    "Búsqueda web": ["buscar_en_web", "buscar_youtube", "leer_rss", "buscar_repositorio"],
-    "Vídeo": ["generar_video", "generar_video_rapido", "producir_video", "producir_video_completo",
-             "ensamblar_video_largo", "ensamblar_video_final", "analizar_video_competencia", "subir_youtube"],
-    "Audio/Imagen": ["generar_cancion_kaggle", "generar_narracion", "generar_imagen"],
-    "Blog/Redes": ["publicar_blog_completo", "crear_blog_top", "publicar_en_redes", "procesar_cola_youtube",
-                  "generar_informe_editorial"],
-    "Sistema": ["estado_sistema", "sanar_sistema", "instalar_dependencia", "notificar_movil"],
-    "Kaggle": ["lanzar_pipeline_kaggle", "lanzar_notebook_kaggle"],
-    "Canales": ["list_canales", "crear_nicho", "producir_nicho", "evaluar_produccion"],
-    "Memoria": ["recordar_hecho", "consultar_hechos", "documentar_aprendizaje", "leer_documentacion",
-               "ver_mi_workspace", "ver_ultimas_tareas", "ver_fallos_similares", "ver_costes_hoy"],
-    "Manual": ["consultar_manual_ecosistema", "buscar_en_manual", "listar_mis_tools"],
-    "Delegación": ["delegar_tareas_paralelas", "pedir_a_especialista", "consultar_manual_python"],
-}
+def _docstring(path, max_len=100):
+    """Primera línea del docstring del módulo."""
+    try:
+        txt = pathlib.Path(path).read_text(encoding="utf-8", errors="ignore")[:500]
+        m = re.search(r'"""(.*?)"""', txt, re.DOTALL)
+        if m:
+            line = m.group(1).strip().split("\n")[0].strip()
+            if line: return line[:max_len]
+    except: pass
+    return ""
 
-TODAS = {t["function"]["name"]: t["function"].get("description", "") for t in dios.TOOLS}
+def _scripts():
+    """Dict {nombre: descripción} de scripts/*.py."""
+    d = {}
+    for f in sorted((ROOT/"scripts").glob("*.py")):
+        if f.name.startswith("_"): continue
+        d[f.stem] = _docstring(f)
+    return d
 
-# Asignar cada tool a su categoría
-asignadas = {}
-for cat, tools in CATS.items():
-    for t in tools:
-        if t in TODAS: asignadas[t] = cat
-# Las que no encajen → Otros
-for t in TODAS:
-    if t not in asignadas: asignadas[t] = "Otros"
+def _brain():
+    d = {}
+    for f in sorted((ROOT/"brain").glob("*.py")):
+        if f.name.startswith("_"): continue
+        d[f.stem] = _docstring(f)
+    return d
 
-# Construir manual
+def _contratos():
+    out = []
+    for f in sorted((ROOT/"data"/"agent").glob("*contract*.json")):
+        try:
+            d = json.loads(f.read_text())
+            v = d.get("version", "?")
+            nom = d.get("nombre", f.stem)[:60]
+            out.append(f"{f.name} v{v}: {nom}")
+        except: pass
+    return out
+
+def _endpoints():
+    """Endpoints Flask agrupados por prefijo."""
+    out = {}
+    try:
+        txt = (ROOT/"encuadre_routes.py").read_text()
+        for m in re.finditer(r'@encuadre_bp\.route\(["\']([^"\']+)', txt):
+            ep = m.group(1)
+            grupo = ep.split("/")[2] if ep.startswith("/api/") and len(ep.split("/")) > 2 else "otros"
+            out.setdefault(grupo, []).append(ep)
+    except: pass
+    return out
+
+def _crons():
+    try:
+        r = subprocess.run(["crontab", "-l"], capture_output=True, text=True, timeout=5)
+        return [l for l in r.stdout.splitlines() if l.strip() and not l.startswith("#")]
+    except: return []
+
+def _tools_por_categoria():
+    import dios
+    TODAS = {t["function"]["name"]: t["function"].get("description", "")[:90] for t in dios.TOOLS}
+    CATS = {
+        "FS": ["ejecutar_comando","read_file","write_file","validate_file","promote_file"],
+        "Web": ["buscar_en_web","buscar_youtube","leer_rss","buscar_repositorio"],
+        "Video": ["generar_video","generar_video_rapido","producir_video","producir_video_completo","ensamblar_video_largo","ensamblar_video_final","analizar_video_competencia","subir_youtube"],
+        "Audio/Img": ["generar_cancion_kaggle","generar_narracion","generar_imagen"],
+        "Blog/Redes": ["publicar_blog_completo","crear_blog_top","publicar_en_redes","procesar_cola_youtube","generar_informe_editorial"],
+        "Sistema": ["estado_sistema","sanar_sistema","instalar_dependencia","notificar_movil","ejecutar_limpieza"],
+        "Kaggle": ["lanzar_pipeline_kaggle","lanzar_notebook_kaggle"],
+        "Canales": ["list_canales","crear_nicho","producir_nicho","evaluar_produccion"],
+        "Memoria": ["recordar_hecho","consultar_hechos","documentar_aprendizaje","leer_documentacion","ver_mi_workspace","ver_ultimas_tareas","ver_fallos_similares","ver_costes_hoy"],
+        "Auto/Manual": ["consultar_manual_ecosistema","buscar_en_manual","listar_mis_tools","auto_regenerar_manual","crear_nueva_tool","escanear_ecosistema"],
+        "Delegación": ["delegar_tareas_paralelas","pedir_a_especialista","consultar_manual_python"],
+    }
+    asignadas = {}
+    for cat, lst in CATS.items():
+        for t in lst:
+            if t in TODAS: asignadas[t] = cat
+    for t in TODAS:
+        if t not in asignadas: asignadas[t] = "Otros"
+    grupos = {}
+    for t, cat in asignadas.items():
+        grupos.setdefault(cat, []).append(t)
+    return grupos, TODAS
+
+# ═══════════════════════════════════════════
 md = []
 md.append("# MANUAL ECOSISTEMA LOFIPRODUCER")
-md.append("> Autogenerado desde `dios.TOOLS`. No editar a mano. Actualizado 2026-11-09.\n")
+md.append(f"> Auto-generado: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}. NO editar a mano.")
+md.append(f"> Regenerar: `python3 scripts/gen_manual.py` o pedir a Dios: `# auto_regenerar_manual`\n")
 
-md.append("## 1. ARQUITECTURA")
-md.append("- Cerebro: `scripts/dios.py` (%d tools, ReAct, memoria SQLite)" % len(TODAS))
-md.append("- Memoria: `brain/dios_memoria.py` (workspace + episodios + costes + fallos)")
-md.append("- Manual: `docs/MANUAL_ECOSISTEMA.md` (este fichero)")
-md.append("- Motor LLM: Groq (gpt-oss-120b) → Gemini 3.8 (cascada 8 modelos)")
-md.append("- Detectives: `brain/investigador_redes.py` (5 fuentes)")
-md.append("- Web: `web_dashboard.py` :8001 + `encuadre_routes.py` Factory OS")
-md.append("- Cola: `data/agent/cola_publicacion.db`\n")
+# 1. ARQUITECTURA
+scripts = _scripts(); brain = _brain(); contratos = _contratos()
+endpoints = _endpoints(); crons = _crons()
+grupos_tools, TODAS_TOOLS = _tools_por_categoria()
 
+md.append("## 1. ARQUITECTURA (6 capas)")
+md.append(f"- **Cerebro**: scripts/dios.py ({len(TODAS_TOOLS)} tools, ReAct, SQLite memoria)")
+md.append("- **Detective**: brain/investigador_redes.py (YouTube x2 + Trends + Reddit + HN)")
+md.append("- **Web**: web_dashboard.py :8001 + encuadre_routes.py (Factory OS)")
+md.append("- **Cola**: data/agent/cola_publicacion.db (SQLite FIFO + publish_at)")
+md.append("- **Motores**: ACE-Step / Sherpa / SDXL / Wan / LTX / FFmpeg / YouTube / Blogger")
+md.append(f"- **Infra**: Kaggle T4 x2 + Cloudflare Pages + GitHub + OAuth")
+md.append(f"- **Inventario**: {len(scripts)} scripts · {len(brain)} brain · {len(contratos)} contratos · {sum(len(v) for v in endpoints.values())} endpoints · {len(crons)} crons\n")
+
+# 2. PIPELINE DIARIO
 md.append("## 2. PIPELINE DIARIO (cron 06:00)")
-md.append("`recolector` → `transcribir_groq` → `analista_fase1` → `sintetizador` → `fase2_produccion` → `voz_edge` → `director_arte` (80 seg, 8 estilos) → `render_robusto` → `factory_shorts` → `generar_web_v3` + `dossier` → `mkdocs build` → `git push` → YouTube 20:00.\n")
+md.append("`limpieza_pipeline` → `recolector` → `transcribir_groq` → `analista_fase1` → `sintetizador` → `fase2_produccion` → `voz_edge` → `director_arte` (80 seg) → `render_robusto` → `factory_shorts` → `generar_web_v3` + `dossier` → `actualizar_web_index` → `mkdocs build` → `git push` → YouTube 20:00\n")
 
-md.append("## 3. TODAS TUS TOOLS (%d)" % len(TODAS))
-md.append("> Usa `listar_mis_tools` en cualquier momento para ver la lista viva.\n")
-for cat in CATS:
-    tools_cat = [t for t, c in asignadas.items() if c == cat]
-    if not tools_cat: continue
-    md.append("### " + cat + " (" + str(len(tools_cat)) + ")")
-    for t in sorted(tools_cat):
-        desc = TODAS.get(t, "")[:140]
-        md.append("- **" + t + "**: " + desc)
-    md.append("")
-otros = [t for t, c in asignadas.items() if c == "Otros"]
-if otros:
-    md.append("### Otros (" + str(len(otros)) + ")")
-    for t in sorted(otros): md.append("- **" + t + "**: " + TODAS.get(t, "")[:140])
-    md.append("")
-
-md.append("## 4. MEMORIA (SQLite en data/agent/)")
-md.append("| Fichero | Qué guarda | Tool para consultarlo |")
-md.append("|---|---|---|")
-md.append("| `dios_workspace.json` | última tarea, tools usadas | `ver_mi_workspace` |")
-md.append("| `dios_episodios.db` | historial de tareas con resultado | `ver_ultimas_tareas` |")
-md.append("| `dios_costes.db` | tokens in/out por tarea | `ver_costes_hoy` |")
-md.append("| `dios_fallos.db` | tools que fallaron y por qué | `ver_fallos_similares(prompt)` |")
-md.append("")
-md.append("Estas DBs se inyectan **automáticamente** en el prompt (compacto, ~200 tokens). No hace falta consultarlas salvo que el usuario pregunte explícitamente.\n")
-
-md.append("## 5. TOOL FALLBACK (automático)")
-md.append("Si una tool falla, Dios prueba alternativas antes de rendirse:")
-for k, v in dios.TOOL_FALLBACKS.items():
-    md.append("- `" + k + "` → " + ", ".join("`" + x + "`" for x in v))
+# 3. CONTRATOS
+md.append(f"## 3. CONTRATOS ({len(contratos)})")
+for c in contratos: md.append(f"- `{c}`")
 md.append("")
 
-md.append("## 6. REFLECTION LOOP")
-md.append("Cada 3 pasos sin éxito, Dios recibe: *'Reflexion: N pasos sin éxito. USA OTRA tool o di por qué no puedes.'* → evita bucles infinitos.\n")
+# 4. SCRIPTS CLAVE (compacto: solo los >5KB o con nombre crítico)
+md.append(f"## 4. SCRIPTS ({len(scripts)} en scripts/)")
+CRITICOS = ["pipeline_encuadre","dios","encuadre_routes","generar_web_v3","generar_web_dossier","generar_imagenes_web","render_robusto","director_arte","director_fotografia","fase2_produccion","sintetizador","analista_fase1","recolector","voz_edge","subir_youtube","publicar_blogger_encuadre","factory_shorts","limpieza_pipeline","gen_manual","rollback","smoke_test","watchdog_pipeline","cola_youtube_auto","indexar_busqueda","cloudflare_stats","agente_ltx_biblioteca"]
+for name in CRITICOS:
+    if name in scripts:
+        d = scripts[name][:80] or "(sin docstring)"
+        md.append(f"- `{name}.py`: {d}")
+OTROS = [n for n in scripts if n not in CRITICOS]
+if OTROS: md.append(f"- *Y {len(OTROS)} scripts más* (usar `escanear_ecosistema('scripts')`)\n")
 
-md.append("## 7. AUTO-REPARACIÓN (promote_file)")
-md.append("Flujo obligatorio para arreglar el repo:")
-md.append("1. `read_file` — inspeccionar")
-md.append("2. `write_file` — escribir a `sandbox/`")
-md.append("3. `validate_file` — comprobar que parsea")
-md.append("4. `promote_file` — **pide confirmación por Telegram + timeout 5 min**")
+# 5. BRAIN
+md.append(f"## 5. BRAIN ({len(brain)} módulos)")
+for name in ["especialistas","dios_memoria","dios_tools_dinamicas","investigador_redes","ejecutor_seguro","llm_gemini","web_search","memoria_db","pruner"]:
+    if name in brain:
+        md.append(f"- `{name}.py`: {brain[name][:80] or '(sin doc)'}")
+md.append("")
+
+# 6. TOOLS (agrupadas)
+md.append(f"## 6. TOOLS ({len(TODAS_TOOLS)})")
+for cat in ["FS","Web","Video","Audio/Img","Blog/Redes","Sistema","Kaggle","Canales","Memoria","Auto/Manual","Delegación","Otros"]:
+    if cat not in grupos_tools: continue
+    tools_cat = grupos_tools[cat]
+    md.append(f"**{cat}** ({len(tools_cat)}): " + ", ".join(f"`{t}`" for t in tools_cat))
+md.append("")
+
+# 7. ENDPOINTS
+md.append(f"## 7. ENDPOINTS Factory ({sum(len(v) for v in endpoints.values())})")
+for grupo, eps in endpoints.items():
+    md.append(f"- `{grupo}`: " + ", ".join(eps[:8]) + ("..." if len(eps) > 8 else ""))
+md.append("")
+
+# 8. CRONS
+md.append(f"## 8. CRONS ACTIVOS ({len(crons)})")
+for c in crons: md.append(f"- `{c}`")
+md.append("")
+
+# 9. MEMORIA
+md.append("## 9. MEMORIA DIOS (data/agent/)")
+md.append("- `dios_workspace.json` → `ver_mi_workspace`")
+md.append("- `dios_episodios.db` → `ver_ultimas_tareas`")
+md.append("- `dios_costes.db` → `ver_costes_hoy`")
+md.append("- `dios_fallos.db` → `ver_fallos_similares`")
+md.append("Se inyecta auto ~200 tokens en prompt. No consultar salvo petición.\n")
+
+# 10. AUTO-REPARACIÓN
+md.append("## 10. AUTO-REPARACIÓN")
+md.append("1. `read_file` → inspeccionar")
+md.append("2. `write_file` → sandbox/")
+md.append("3. `validate_file` → ast.parse")
+md.append("4. `promote_file` → **Telegram confirm + timeout 5min**")
 md.append("5. `documentar_aprendizaje` + `recordar_hecho`")
-md.append("**NUNCA** escribir directo al repo. **NUNCA** promote_file sin validate_file.\n")
+md.append("NUNCA escribir directo al repo. NUNCA promote sin validate.\n")
 
-md.append("## 8. ERRORES CONOCIDOS")
-md.append("| Error | Fix |")
-md.append("|---|---|")
-md.append("| OmniRoute 401 | cascada Groq directa (`_charla_rapida` ya lo hace) |")
-md.append("| Groq 429 | 4 keys + retry 5s |")
-md.append("| YouTube invalid_grant | `scripts/reautorizar_youtube.py` |")
-md.append("| mkdocs 404 imágenes | hook `web/hooks/copy_media.py` |")
-md.append("| SDXL refusals | filtro 'lo siento' en `generar_imagen.py` |")
-md.append("| Fatiga visual | 8 estilos + seed determinista |")
-md.append("| OOM 73f LTX | bajar a 49f |")
-md.append("| libcudart.so.12 | LD_LIBRARY_PATH + dataset |")
-md.append("| wildcards no expanden | `_expand_globs` en `ejecutor_seguro` |")
+# 11. ERRORES CONOCIDOS
+md.append("## 11. ERRORES CONOCIDOS")
+ERRORES = [
+    ("OmniRoute 401","cascada Groq directa"),
+    ("Groq 429","4 keys + retry 5s"),
+    ("YT invalid_grant","reautorizar_youtube.py"),
+    ("mkdocs 404","hook copy_media"),
+    ("SDXL refusals","filtro 'lo siento'"),
+    ("fatiga visual","8 estilos + seed"),
+    ("OOM 73f LTX","bajar a 49f"),
+    ("libcudart.so.12","LD_LIBRARY_PATH + dataset"),
+    ("wildcards no expanden","_expand_globs en ejecutor"),
+    ("render_work 399MB/día","fix en render_robusto"),
+]
+for e, f in ERRORES: md.append(f"- {e} → {f}")
 md.append("")
 
-md.append("## 9. REGLAS FRODO")
-md.append("#3 heredoc <50L · #5 py_compile · #7 no push sin OK · #8 no rehacer · #11 $HOME/tmp · #13 no sed URLs · #18 2 fallos → parar · #20 3+ parches → reescribir · #35 Groq>OmniRoute · #39 User-Agent Chrome · #77 python3 -u.\n")
+# 12. REGLAS FRODO
+md.append("## 12. REGLAS FRODO (críticas)")
+md.append("#3 heredoc<50L · #5 py_compile · #7 no push sin OK · #8 no rehacer · #11 $HOME/tmp · #13 no sed URLs · #18 2 fallos→parar · #20 3+parches→reescribir · #35 Groq>OmniRoute · #39 User-Agent Chrome · #77 python3 -u\n")
 
-md.append("## 10. ESTRUCTURA")
-md.append("`scripts/` (pipeline, dios, generar_*) · `brain/` (48 agentes, memoria) · `web/docs/` (blog MkDocs) · `web/dashboard/` (Factory OS) · `output/encuadre/` (producción diaria) · `data/agent/` (DBs, contratos) · `config/` (nichos.json) · `docs/` (este manual).\n")
+# 13. CONTEXTOS DEL DÍA
+md.append("## 13. CONTEXTOS DÍA (output/encuadre/)")
+md.append("`produccion_{f}` (18 escenas+guion+shorts) · `seo_{f}` (título+desc+tags) · `redes_{f}` (textos por red) · `dossier_enriquecido_{f}` (top3+citas+medios) · `timeline_{f}` · `video_largo_{f}.mp4` · `short_{1..4}_{f}.mp4` · `podcast_{f}.mp3` · `custom_request_{f}.json`\n")
 
-md.append("## 11. CONTEXTOS DEL DÍA")
-md.append("`produccion_{f}` · `seo_{f}` · `redes_{f}` · `dossier_enriquecido_{f}` · `timeline_{f}` · `video_largo_{f}.mp4` · `short_{1..4}_{f}.mp4` · `podcast_{f}.mp3` · `custom_request_{f}.json`.\n")
+# 14. APIS EXTERNAS
+md.append("## 14. APIS")
+md.append("- **Groq**: `GROQ_API_KEY(_2,_3,_4)` → gpt-oss-120b (primario)")
+md.append("- **Gemini**: `GEMINI_API_KEY` → gemini-3.8-flash (cascada 8 modelos)")
+md.append("- **Cloudflare**: `CLOUDFLARE_API_TOKEN` + `ACCOUNT_ID` → SDXL, Pages, Analytics")
+md.append("- **Kaggle**: `KAGGLE_USERNAME` / `KAGGLE_KEY` (2 cuentas)")
+md.append("- **YouTube/Blogger**: `data/youtube_encuadre_token.json` (refresh obligatorio)\n")
 
-md.append("## 12. APIS")
-md.append("- Groq: `GROQ_API_KEY(_2,_3,_4)` → gpt-oss-120b")
-md.append("- Gemini: `GEMINI_API_KEY` → gemini-3.8-flash (cascada 8 modelos)")
-md.append("- Cloudflare: `CLOUDFLARE_API_TOKEN` + `ACCOUNT_ID` → AI/SDXL, Pages, Analytics")
-md.append("- YouTube: `data/youtube_encuadre_token.json` (refresh obligatorio)\n")
+# 15. COMANDOS CRÍTICOS
+md.append("## 15. COMANDOS CRÍTICOS")
+cmds = [
+    "sv restart keiz-web",
+    "python3 scripts/dios.py \"tu peticion\"",
+    "python3 scripts/pipeline_encuadre.py",
+    "python3 scripts/limpieza_pipeline.py --dry-run",
+    "python3 scripts/gen_manual.py",
+    "python3 scripts/rollback.py snapshot|listar|rollback <tag>",
+    "python3 scripts/smoke_test.py",
+    "curl http://127.0.0.1:8001/api/dashboard",
+]
+for c in cmds: md.append(f"- `{c}`")
+md.append("")
 
-md.append("## 13. REGLAS CON EL USUARIO")
-md.append("Pushback si dudas · `py_compile` tras .py · leer antes de modificar · backup antes de zona sagrada · NUNCA borrar sin OK · 3+ parches → reescribir · env vars para tokens · `python3 -u` en Termux.\n")
+# 16. LIMPIEZA
+md.append("## 16. LIMPIEZA (piloto automático)")
+md.append("Ejecutada al inicio del pipeline + cron domingos 05:00:")
+md.append("- **Borra**: <ayer + `render_work/`, `clips/`, `audios/`, `musica_temp/`, `web/site/`, `web/web/`, `.tmp.mp4`")
+md.append("- **Protege**: `data/agent/`, `config/`, `scripts/`, `brain/`, `web/dashboard/`, `output/videos/biblioteca/` (LTX), `output/nichos/`")
+md.append("- **Rolling 2 días**: mantiene HOY + AYER\n")
 
-md.append("## 14. CÓMO ACTUALIZAR ESTE MANUAL")
-md.append("Autogenerado desde `dios.TOOLS`. Para regenerar:")
-md.append("```bash")
-md.append("python3 scripts/gen_manual.py")
-md.append("```")
-md.append("O pídeselo a Dios: `# auto_regenerar_manual`.\n")
+# 17. INVENTARIO
+md.append("## 17. INVENTARIO (auto)")
+md.append(f"- {len(scripts)} scripts · {len(brain)} brain · {len(contratos)} contratos")
+md.append(f"- {sum(len(v) for v in endpoints.values())} endpoints · {len(crons)} crons · {len(TODAS_TOOLS)} tools")
+md.append(f"- Generado: {datetime.datetime.now().isoformat()[:19]}\n")
 
-md.append("## 15. CÓMO CREAR UNA TOOL NUEVA (auto)")
-md.append("Usa `crear_nueva_tool` con:")
-md.append("- `nombre`: snake_case (ej: `saludar`)")
-md.append("- `descripcion`: qué hace")
-md.append("- `codigo_funcion`: cuerpo Python, ej:")
-md.append("```python")
-md.append("def _tool_saludar(args):")
-md.append("    return f'Hola {args.get(\"nombre\", \"mundo\")}'")
-md.append("```")
-md.append("- `parametros_json`: schema JSON, ej `{\"nombre\":{\"type\":\"string\"}}`\n")
-md.append("Flujo: sandbox → validación → Telegram confirm → regenera manual → disponible próxima ejecución.\n")
+# 18. REGLAS CON USUARIO
+md.append("## 18. REGLAS CON USUARIO")
+md.append("Pushback si dudas · leer antes de modificar · backup zona sagrada · NUNCA borrar sin OK · 3+ parches → reescribir · env vars para tokens · `python3 -u` en Termux\n")
 
-pathlib.Path("docs/MANUAL_ECOSISTEMA.md").write_text("\n".join(md), encoding="utf-8")
-print("OK manual:", len(md), "líneas |", len(TODAS), "tools |", len(CATS), "categorías")
+pathlib.Path(ROOT/"docs"/"MANUAL_ECOSISTEMA.md").write_text("\n".join(md), encoding="utf-8")
+print(f"OK manual: {len(md)} líneas | {len(scripts)} scripts | {len(brain)} brain | {len(contratos)} contratos | {len(TODAS_TOOLS)} tools | ~{len(chr(10).join(md))//4} tokens")
