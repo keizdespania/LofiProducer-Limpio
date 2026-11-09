@@ -293,7 +293,8 @@ window.addEventListener('unhandledrejection', function(e) {
     __showError('Promise: ' + (e.reason && e.reason.message ? e.reason.message : String(e.reason)), '', 0);
 });
 </script>
-<script>let fechaActual = "";
+<script>alert("JS VIVO 2026");
+let fechaActual = "";
 
 function $safe(id, prop, val) { var el = document.getElementById(id); if (el) { try { el[prop] = val; } catch(e){} } }
 function $safeStyle(id, prop, val) { var el = document.getElementById(id); if (el) { try { el.style[prop] = val; } catch(e){} } }
