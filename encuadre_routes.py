@@ -347,24 +347,26 @@ function cargarPublicar() {
 
     // ══ LARGO ══
     if (d.largo) {
-      html += _cardPublicar('largo', 0, '🎬 VÍDEO LARGO', d.largo.titulo, d.largo.link_yt, d.largo.link_post, d.largo.redes, '#dc2626');
+      var _vp_largo = '/output/encuadre/video_largo_' + fechaActual + '.mp4';
+      html += _cardPublicar('largo', 0, '🎬 VÍDEO LARGO', d.largo.titulo, d.largo.link_yt, d.largo.link_post, d.largo.redes, '#dc2626', _vp_largo);
     }
 
     // ══ SHORTS ══
     (d.shorts || []).forEach(function(s, i){
-      html += _cardPublicar('short', i, '📱 SHORT ' + s.num + ' · ' + (s.tipo || '').toUpperCase(), s.titulo || s.hook, s.link_yt, s.link_largo, s.redes, '#ea580c');
+      var _vp_s = '/output/encuadre/short_' + s.num + '_' + fechaActual + '.mp4';
+      html += _cardPublicar('short', i, '📱 SHORT ' + s.num + ' · ' + (s.tipo || '').toUpperCase(), s.titulo || s.hook, s.link_yt, s.link_largo, s.redes, '#ea580c', _vp_s);
     });
 
     // ══ POSTS ══
     (d.posts || []).forEach(function(p, i){
-      html += _cardPublicar('post', i, '📄 ' + (p.tipo || 'POST').toUpperCase(), p.titulo, p.url, p.link_short, p.redes, '#7c3aed');
+      html += _cardPublicar('post', i, '📄 ' + (p.tipo || 'POST').toUpperCase(), p.titulo, p.url, p.link_short, p.redes, '#7c3aed', '');
     });
 
     root.innerHTML = html;
   }).catch(function(e){ root.innerHTML = '<div style="color:#ef4444;font-size:11px">Error: ' + e.message + '</div>'; });
 }
 
-function _cardPublicar(kind, idx, titulo, subtitulo, linkPrincipal, linkCruzado, redes, color) {
+function _cardPublicar(kind, idx, titulo, subtitulo, linkPrincipal, linkCruzado, redes, color, videoPath) {
   var uid = kind + '_' + idx;
   var html = '<div class="glass" style="border-radius:10px;overflow:hidden;border-left:3px solid ' + color + '">';
   html += '<div style="padding:10px;cursor:pointer" onclick="toggleRedes(\'' + uid + '\')">';
@@ -416,11 +418,15 @@ function copiarTexto(id) {
   }
 }
 
-function abrirRed(red, textareaId) {
+function abrirRed(red, textareaId, videoPath) {
   var el = document.getElementById(textareaId);
   var texto = el ? el.value : '';
-  fetch('/api/encuadre/abrir_app', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({red: red, texto: texto})})
-    .then(function(){ mostrarToast('🚀 ' + red + ' abierto', 'bg-blue-600'); });
+  mostrarToast('⏳ Abriendo...', 'bg-blue-600');
+  fetch('/api/encuadre/abrir_app', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({red: red, texto: texto, video_path: videoPath || ''})})
+    .then(function(r){ return r.json(); }).then(function(d){
+      if (d.ok) mostrarToast(d.accion === 'share_sheet' ? '📋 Texto copiado + share sheet' : '🚀 ' + red, 'bg-green-600');
+      else mostrarToast('❌ ' + (d.error || ''), 'bg-red-600');
+    });
 }
 
 function _esc(s) { return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -996,29 +1002,47 @@ def api_publicar_datos(fecha):
 # === ABRIR APP (Android intent + clipboard) ===
 @encuadre_bp.route("/api/encuadre/abrir_app", methods=["POST"])
 def api_abrir_app():
+    """Comparte: copia texto + abre app con vídeo (termux-share) o URL."""
+    import subprocess as _sp
     data = request.get_json() or {}
     red = (data.get("red") or "").lower()
     texto = data.get("texto", "")
+    video_path = data.get("video_path", "")
     clip = False
+
     if texto:
         try:
-            subprocess.run(["termux-clipboard-set", texto], timeout=5, check=False)
+            _sp.run(["termux-clipboard-set", texto], timeout=5, check=False)
             clip = True
-        except Exception:
-            pass
+        except: pass
+
+    # Si hay vídeo real → share sheet nativo (mejor UX que deep link)
+    if video_path:
+        vp = ROOT / video_path.lstrip("/")
+        if vp.exists():
+            try:
+                _sp.Popen(["termux-share", "-a", "send", "-c", "video/mp4", str(vp)],
+                         stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
+                return jsonify({"ok": True, "accion": "share_sheet", "video": video_path, "clipboard": clip})
+            except Exception as e:
+                return jsonify({"ok": False, "error": f"termux-share: {e}"}), 500
+
+    # Sin vídeo: abrir app con deep link
     links = {
         "tiktok": "snssdk1128://",
         "instagram": "instagram://app",
         "threads": "barcelona://",
         "x": "twitter://",
         "youtube": "vnd.youtube://",
-        "youtube_studio": "https://studio.youtube.com/",
+        "youtube_comunidad": "https://www.youtube.com/@somoselencuadre.oficial/community",
+        "linkedin": "linkedin://",
         "blogger": "https://www.blogger.com/",
     }
     url = links.get(red, "https://www." + red + ".com/")
     try:
-        subprocess.run(["termux-open", url], timeout=5, check=False)
-        return jsonify({"ok": True, "red": red, "clipboard": clip, "url": url})
+        _sp.Popen(["termux-open-url", url] if url.startswith("http") else ["termux-open", url],
+                 stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
+        return jsonify({"ok": True, "accion": "app_abierta", "red": red, "url": url, "clipboard": clip})
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
 
