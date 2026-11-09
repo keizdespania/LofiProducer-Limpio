@@ -265,7 +265,35 @@ HTML_FACTORY = """<!DOCTYPE html>
     </div>
 
     <script>
-        let fechaActual = "";
+// 2026-11-09: capturador de errores JS visible en Android (sin DevTools)
+window.__factoryErrors = [];
+function __showError(msg, src, line) {
+    try {
+        var box = document.getElementById('__err_box');
+        if (!box) {
+            box = document.createElement('div');
+            box.id = '__err_box';
+            box.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#7f1d1d;color:#fff;padding:8px;font-family:monospace;font-size:11px;max-height:40vh;overflow:auto;border-bottom:3px solid #ef4444;';
+            box.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><strong>🚨 ERROR JS</strong><button onclick="document.getElementById(\'__err_box\').remove()" style="background:#ef4444;border:none;color:#fff;padding:2px 8px;border-radius:4px;cursor:pointer;">✕</button></div><div id="__err_list"></div>';
+            document.body.appendChild(box);
+        }
+        var list = document.getElementById('__err_list');
+        var item = document.createElement('div');
+        item.style.cssText = 'border-top:1px solid #991b1b;padding:4px 0;word-break:break-all;';
+        item.textContent = '• ' + msg + '  (' + (src||'').split('/').pop() + ':' + line + ')';
+        list.appendChild(item);
+        window.__factoryErrors.push({msg: msg, line: line});
+    } catch(e) {}
+}
+window.onerror = function(msg, src, line, col, err) {
+    __showError(msg, src, line);
+    return false;
+};
+window.addEventListener('unhandledrejection', function(e) {
+    __showError('Promise: ' + (e.reason && e.reason.message ? e.reason.message : String(e.reason)), '', 0);
+});
+</script>
+<script>let fechaActual = "";
 
 function $safe(id, prop, val) { var el = document.getElementById(id); if (el) { try { el[prop] = val; } catch(e){} } }
 function $safeStyle(id, prop, val) { var el = document.getElementById(id); if (el) { try { el.style[prop] = val; } catch(e){} } }
