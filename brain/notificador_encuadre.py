@@ -52,6 +52,37 @@ def publicar_podcast(titulo, url):
     msg = f"🎧 <b>Podcast del día</b>\n\n<b>{_escapar(titulo[:200])}</b>\n\n▶️ {url}"
     return _canal(msg)
 
+def publicar_programacion(tipo, titulo, cuando, url_yt="", url_post="", url_largo="", num=None, fecha=""):
+    """Notifica al canal @somoselencuadre la programación de un vídeo/short.
+    Sin throttle (permite ráfaga de programaciones). Dedupe por (tipo+fecha+num)
+    para evitar duplicados si el pipeline se relanza.
+    tipo: 'largo' | 'short'
+    cuando: datetime con la hora de publicación
+    """
+    import datetime as _dt
+    from notificador_top1 import _debe_enviar, _post, CANAL_PUBLICO
+
+    hora_str = cuando.strftime("%H:%M") if isinstance(cuando, _dt.datetime) else str(cuando)
+    dedupe = f"prog_{tipo}_{fecha}_{num or 0}"
+
+    if tipo == "largo":
+        msg = f"🎬 <b>HOY {hora_str} · El Encuadre</b>\n\n"
+        msg += f"<b>{_escapar(titulo[:200])}</b>\n\n"
+        if url_yt:   msg += f"▶️ Ver: {url_yt}\n"
+        if url_post: msg += f"📄 Análisis: {url_post}\n"
+        msg += f"\n💬 @somoselencuadre"
+    elif tipo == "short":
+        msg = f"📱 <b>HOY {hora_str} · Short {num}</b>\n\n"
+        msg += f"{_escapar(titulo[:200])}\n\n"
+        if url_yt:    msg += f"▶️ Ver: {url_yt}\n"
+        if url_largo: msg += f"🎬 Análisis: {url_largo}\n"
+        msg += f"\n💬 @somoselencuadre"
+    else:
+        return False
+
+    return _debe_enviar("canal_prog", CANAL_PUBLICO, dedupe_key=dedupe, throttle_override=1) and _post(CANAL_PUBLICO, msg)
+
+
 # ═══════════════════════════════════════════════════════════
 # ALERTAS → CHAT PRIVADO
 # ═══════════════════════════════════════════════════════════

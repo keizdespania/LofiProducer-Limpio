@@ -494,6 +494,20 @@ def main():
                 print(f"   💬 Comentario largo: {str(_res_c)[:120]}", flush=True)
             except Exception as _e:
                 print(f"   ⚠️ Comentario largo falló: {_e}", flush=True)
+            # Notificación canal programación
+            try:
+                from notificador_encuadre import publicar_programacion
+                _r_prog = publicar_programacion(
+                    tipo="largo",
+                    titulo=_sl.get("titulo", f"Vídeo Largo {fecha}"),
+                    cuando=pub_v,
+                    url_yt=f"https://youtu.be/{_vid_largo}",
+                    url_post=f"https://elencuadre.pages.dev/analisis/{fecha}-largo/",
+                    fecha=fecha,
+                )
+                print(f"   📢 Canal prog largo: {'✅' if _r_prog else '⚠️'}", flush=True)
+            except Exception as _e:
+                print(f"   ⚠️ Notif prog largo: {_e}", flush=True)
 
     for i, short in enumerate(shorts):
         num = i+1
@@ -519,6 +533,23 @@ def main():
                     print(f"   💬 Comentario short {num}: {str(_res_s)[:120]}", flush=True)
                 except Exception as _e:
                     print(f"   ⚠️ Comentario short {num} falló: {_e}", flush=True)
+                # Notificación canal programación
+                try:
+                    from notificador_encuadre import publicar_programacion
+                    try:    _url_largo = f"https://youtu.be/{_vid_largo}" if _vid_largo else ""
+                    except NameError: _url_largo = ""
+                    _r_prog_s = publicar_programacion(
+                        tipo="short",
+                        titulo=_ss.get("titulo", f"Short {num} {fecha}"),
+                        cuando=pub_at,
+                        url_yt=f"https://youtu.be/{_vid_short}",
+                        url_largo=_url_largo,
+                        num=num,
+                        fecha=fecha,
+                    )
+                    print(f"   📢 Canal prog short {num}: {'✅' if _r_prog_s else '⚠️'}", flush=True)
+                except Exception as _e:
+                    print(f"   ⚠️ Notif prog short {num}: {_e}", flush=True)
 
     # [2026-11-04] ELIMINADO: _run("community_manager_auto.py", [fecha], 300, 1)
     # [2026-11-04] ELIMINADO: _run("detector_tendencias_vivas.py", [fecha], 300, 1)
