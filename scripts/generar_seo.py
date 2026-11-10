@@ -113,7 +113,7 @@ def _shorts(prod):
             "num": i + 1,
             "tipo": tipo,
             "titulo": f"{emoji} {titulo_txt}",
-            "descripcion": f"{guion}\n\n🔔 Suscríbete.\n\n#Shorts #AnálisisMediático #ElEncuadre",
+            "descripcion": f"{guion}\n\n🔔 Suscríbete.\n📩 Dossier diario: https://t.me/somoselencuadre\n🌐 Web: https://elencuadre.pages.dev\n\n#Shorts #AnálisisMediático #ElEncuadre",
             "hashtags": "#Shorts #AnálisisMediático #ElEncuadre",
         })
     return shorts
@@ -130,6 +130,8 @@ def _descripcion(titulo, capitulos):
         desc += f"{_fmt_ts(ts)} {label}\n"
     desc += "\n━━━━━━━━━━━━━━━━━━━━\n🔔 SUSCRÍBETE para aprender a leer entre líneas.\n━━━━━━━━━━━━━━━━━━━━\n\n"
     desc += "📌 Somos El Encuadre. Análisis técnico del relato mediático.\n\n"
+    desc += "📩 Dossier diario en Telegram: https://t.me/somoselencuadre\n"
+    desc += "🌐 Web: https://elencuadre.pages.dev\n\n"
     desc += "#AnálisisMediático #Framing #ElEncuadre"
     return desc
 
