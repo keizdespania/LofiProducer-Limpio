@@ -2479,7 +2479,7 @@ def _tool_publicar_comentario_youtube(args):
         if n3: comentario += f"  🔵 {n3[:140]}{'…' if len(n3)>140 else ''}\n"
         comentario += "\n"
     comentario += f"📊 Análisis completo: {post_url}\n"
-    comentario += f"📩 Dossier diario en Telegram: {tg_url}\n\n"
+    comentario += f"📩 Dossier diario en Telegram: {tg_url}\n📌 LinkedIn: https://www.linkedin.com/in/somos-el-encuadre-undefined-62058a44a/\n\n"
     comentario += "💬 ¿Tú qué opinas? ¿Has detectado estas técnicas en los medios que lees?\n\n"
     comentario += "#ElEncuadre #AnálisisMediático #Framing #SesgosCognitivos #Medios #Prensa"
     
@@ -2549,6 +2549,7 @@ def _tool_publicar_comentario_short(args):
     if link_post and link_post != link_largo:
         comentario += f"📊 Post completo: {link_post}\n"
     comentario += "\n💬 ¿Has visto esto en los medios que lees?\n\n"
+    comentario += "📌 LinkedIn: https://www.linkedin.com/in/somos-el-encuadre-undefined-62058a44a/\n\n"
     comentario += "#ElEncuadre #Shorts #AnálisisMediático #Framing #Prensa"
 
     try:
