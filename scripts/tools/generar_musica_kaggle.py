@@ -11,8 +11,8 @@ def generar_musica_kaggle(estilo_prompt, cantidad=1, duracion=240, lyrics="", vo
         "inference_steps": 8, "shift": 3.0, "use_cot_caption": True,
         "lm_temperature": 0.85, "lm_cfg_scale": 2.0, "lm_top_p": 0.9,
         "output_format": "mp3", "mp3_bitrate": 128,
-        "synth_model": "acestep-v15-xl-turbo-Q4_K_M",
-        "lm_model": "acestep-5Hz-lm-1.7B-Q8_0",
+        "synth_model": "acestep-v15-xl-turbo-Q4_K_M.gguf",
+        "lm_model": "acestep-5Hz-lm-1.7B-Q8_0.gguf",
         "adapter": "", "adapter_scale": 1.0,
     }
     nb = """CAPTIONS_LIST = __CAPTIONS__
