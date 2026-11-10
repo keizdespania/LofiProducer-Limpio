@@ -376,6 +376,7 @@ function _cardPublicar(kind, idx, titulo, subtitulo, linkPrincipal, linkCruzado,
   html += '</div>';
   html += '<div style="font-size:10px;color:#a1a1aa;margin-top:4px">' + _esc((subtitulo || '').slice(0, 100)) + '</div>';
   if (linkPrincipal) html += '<div style="font-size:10px;margin-top:4px"><a href="' + linkPrincipal + '" target="_blank" style="color:#60a5fa;text-decoration:none">🔗 ' + linkPrincipal + '</a></div>';
+    if (linkCruzado) html += '<div style="font-size:10px;margin-top:2px"><a href="' + linkCruzado + '" target="_blank" style="color:#a78bfa;text-decoration:none">🔀 ' + linkCruzado + '</a></div>';
   html += '</div>';
   html += '<div id="redes_' + uid + '" style="display:none;border-top:1px solid #27272a;padding:10px">';
 

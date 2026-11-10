@@ -64,12 +64,29 @@ def subir(video, titulo, descripcion="", tags=None, privacidad=None, publish_at=
         method="POST")
     session = urllib.request.urlopen(req).headers.get("Location")
 
-    # 2. Subir el fichero entero
+    # 2. Subir por chunks (8 MB) — evita cargar 348 MB en RAM
+    CHUNK = 8 * 1024 * 1024
+    offset = 0
+    r = None
     with open(video, "rb") as f:
-        cuerpo = f.read()
-    req2 = urllib.request.Request(session, data=cuerpo, method="PUT",
-        headers={"Content-Type": mime, "Content-Length": str(size)})
-    r = json.loads(urllib.request.urlopen(req2, timeout=600).read())
+        while offset < size:
+            chunk = f.read(CHUNK)
+            if not chunk: break
+            req2 = urllib.request.Request(session, data=chunk, method="PUT",
+                headers={"Content-Type": mime,
+                         "Content-Range": f"bytes {offset}-{offset+len(chunk)-1}/{size}"})
+            try:
+                r = json.loads(urllib.request.urlopen(req2, timeout=600).read())
+                offset = size  # completado
+            except urllib.error.HTTPError as _e:
+                if _e.code == 308:  # resumable, seguir
+                    rng = _e.headers.get("Range") or ""
+                    m_rng = rng.replace("bytes=", "").split("-")
+                    offset = int(m_rng[-1]) + 1 if m_rng and m_rng[-1].isdigit() else offset + len(chunk)
+                    continue
+                raise
+    if r is None:
+        raise RuntimeError("chunked upload: r None al final")
     # 2026-11-09: PASO 3 - programar publishAt si aplica
     if publish_at and r.get("id"):
         try:
