@@ -57,6 +57,9 @@ EXT_BORRAR = {".mp4", ".mp3", ".wav", ".m4a", ".webm", ".png", ".jpg", ".jpeg", 
 
 def _es_protegida(path):
     rp = str(path.relative_to(ROOT)).replace("\\", "/")
+    # FIX flash5b: NUNCA borrar JSONs de output/encuadre
+    if rp.startswith("output/encuadre/") and rp.endswith(".json"):
+        return True
     for prot in PROTEGIDAS:
         if rp == prot or rp.startswith(prot + "/"):
             return True

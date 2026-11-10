@@ -23,6 +23,17 @@ def _load(fecha):
         except: pass
     return data
 
+def _primer_comentario_short(hook, link_largo, link_post, fecha):
+    """Genera primer_comentario YouTube para un short (cross-traffic)."""
+    txt = f"🔥 {(hook or '').strip()[:180]}\n\n"
+    if link_largo: txt += f"🎬 El análisis completo del día: {link_largo}\n"
+    if link_post and link_post != link_largo:
+        txt += f"📊 Post completo: {link_post}\n"
+    txt += "\n💬 ¿Has visto esto en los medios que lees?\n\n"
+    txt += "#ElEncuadre #Shorts #AnálisisMediático #Framing #Prensa"
+    return txt
+
+
 def _link_yt(video_id):
     return f"https://youtu.be/{video_id}" if video_id else None
 
@@ -99,6 +110,7 @@ def _build(fecha):
                 "hashtags": r.get("hashtags", ""),
                 "titulo": r.get("titulo", tit_s) if red == "youtube" else None,
                 "tags": r.get("tags", []) if red == "youtube" else [],
+                "primer_comentario": _primer_comentario_short(tit_s, yt_largo, post_largo, fecha) if red == "youtube" else None,
             }
             if red == "youtube":
                 redes_s[red]["primer_comentario"] = r.get("primer_comentario", "")
