@@ -693,19 +693,23 @@
     "tiempo_por_cancion_t4x2": "~30s con turbo, ~3min con base"
   },
   "estado_actual": {
-    "ultimo_test_fecha": "2026-11-10",
+    "ultimo_test_fecha": "2026-11-10_hardcore",
     "ultimo_test_resultados": {
-      "genero": "synthwave",
-      "batch_config": "lm_batch_size=4 synth_batch_size=2",
-      "pistas_generadas": 8,
-      "tiempo_total_s": 665,
-      "tiempo_lm_s": 34,
-      "tiempo_synth_por_pista_s": 138,
-      "md5_unicos": 8,
-      "bitrate_verificado": "128 kbps",
-      "duracion_verificada": "239.86-240s",
-      "gpu_utilizada": "1 de 2 T4 (2a idle 100%)",
-      "hallazgo_critico": "modelos en .gguf (sin extension → FATAL)"
+      "genero": "6 generos distintos (lofi, synthwave, cinematic, jazz, trap, phonk)",
+      "batch_config": "lm_batch_size=1 synth_batch_size=1, 6 paralelos (3/GPU)",
+      "pistas_solicitadas": 6,
+      "synth_ok": 5,
+      "mp3_recuperados": 2,
+      "tiempo_total_s": 215.4,
+      "tiempo_lm_s": 59.3,
+      "tiempo_synth_paralelo_s": 69.0,
+      "vram_pico_gpu0_mb": 14669,
+      "vram_pico_gpu1_mb": 10443,
+      "veredicto": "TECHO_ALCANZADO_CON_BUGS",
+      "hallazgo_critico_1": "3 procesos por GPU saturan GPU0 (98.3%) → 1 OOM aleatorio",
+      "hallazgo_critico_2": "RACE CONDITION: todos los synth corren en cwd=/kaggle/working/ y sobrescriben requestNN.mp3 → solo sobreviven los 2 ultimos",
+      "hallazgo_critico_3": "GPU1 tenia 4.5GB margen (round-robin i%2 = mala distribucion)",
+      "rate_real_sin_bugs_estimado": "~260 MP3/hora de 2min = 8.6h audio/hora"
     },
     "capacidades_verificadas": [
       "Batch 4x2 = 8 pistas distintas en 1 lote (~11 min)",
@@ -715,7 +719,10 @@
       "LD_LIBRARY_PATH=/kaggle/working/build OBLIGATORIO",
       "source .ipynb debe ser string con saltos (lista sin \\n → SyntaxError)",
       "os._exit(0) rompe papermill (NO usar)",
-      "extiende el .tgz en /kaggle/working/ con {build, models} directos"
+      "extiende el .tgz en /kaggle/working/ con {build, models} directos",
+      "6 generos distintos en un solo kernel sin conflictos",
+      "Synth paralelo reduce 828s secuencial a 69s (12x)",
+      "LM 9.9s por cancion de 2 min"
     ],
     "limitaciones_conocidas": [
       "Solo 1 GPU T4 usada, la 2a idle",
@@ -755,13 +762,13 @@
   "roadmap_pendiente": [
     {
       "prio": 1,
-      "tarea": "Paralelizar ace-synth en 2 GPUs (CUDA_VISIBLE_DEVICES)",
-      "impacto": "2x velocidad"
+      "tarea": "Pipeline final con los 3 fixes + SYNTH_PER_GPU=2",
+      "impacto": "~180 MP3/hora estable"
     },
     {
       "prio": 2,
-      "tarea": "Test limite 4 procesos en paralelo (2 por GPU)",
-      "impacto": "4x velocidad si no OOM"
+      "tarea": "Test 4 por GPU para confirmar si escala o no",
+      "impacto": "techo real definitivo"
     },
     {
       "prio": 3,
@@ -802,6 +809,42 @@
       "prio": 10,
       "tarea": "Detector tendencias YouTube diario",
       "impacto": "que generar"
+    }
+  ],
+  "limitaciones_conocidas": [
+    "3 procesos por GPU = TECHO. 1 OOM aleatorio por lote",
+    "RACE CONDITION: ace-synth escribe mp3 al cwd, no al directorio del request",
+    "Falta cwd aislado por proceso synth",
+    "Falta detectar OOM y reintentar en GPU con mas margen",
+    "Sin curaduria automatica (no PMI score aun)",
+    "Sin masterizacion LUFS",
+    "Sin generacion de video ni SEO"
+  ],
+  "fixes_prioritarios_pipeline": [
+    {
+      "prio": 1,
+      "fix": "cwd aislado: os.makedirs(WORK/mp3_out/song_id) + cwd=ese_directorio para cada synth",
+      "razon": "evitar race condition de MP3"
+    },
+    {
+      "prio": 2,
+      "fix": "SYNTH_PER_GPU=2 por defecto (VRAM ~9.7GB/GPU, margen 5GB)",
+      "razon": "estabilidad > velocidad"
+    },
+    {
+      "prio": 3,
+      "fix": "Balanceo dinamico: asignar GPU a proceso segun VRAM libre actual, no round-robin",
+      "razon": "GPU0 se satura antes que GPU1"
+    },
+    {
+      "prio": 4,
+      "fix": "Retry automatico en GPU con mas VRAM si OOM",
+      "razon": "1 fallo de 6 es recuperable"
+    },
+    {
+      "prio": 5,
+      "fix": "Bajar duracion a 120s para lotes masivos (138s→70s por pista)",
+      "razon": "duplicar throughput"
     }
   ]
 }
