@@ -5,17 +5,44 @@ hide:
 
 <div class="holo-hero">
   <h1>El Archivo del Anti-Medio</h1>
-  <p>Todo nuestro arsenal. 51 análisis publicados. Sin filtros, con enlaces verificables.</p>
+  <p>Todo nuestro arsenal. 54 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (51)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (10)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (14)</button>
-  <button class="holo-filter-btn" data-filter="mediano">Medianos (8)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (54)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (11)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (15)</button>
+  <button class="holo-filter-btn" data-filter="mediano">Medianos (9)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-10-mediano-tutorial/'" data-category="mediano">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    <img src="/media/imagenes/post_2026-11-10_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Cómo detectar la técnica: Sensacionalismo y polarización</h3>
+    <p>Analisis tutorial: Cómo detectar la técnica: Sensacionalismo y polarización</p>
+    <div class="holo-meta"><span>📅 2026-11-10</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-10-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    <img src="/media/imagenes/post_2026-11-10_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El Encuadre: El TS admite que 180.000 hijos de supuestos 'ni</h3>
+    <p>Analisis largo: El Encuadre: El TS admite que 180.000 hijos de supuestos 'ni</p>
+    <div class="holo-meta"><span>📅 2026-11-10</span></div>
+    
+    <a href="https://www.eldiario.es/política/sanchez-pide-justicia-investigue-pagos-koldo-garcia-mintiera-gobierno_1_13650855.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · eldiario.es</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-10-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    <img src="/media/imagenes/post_2026-11-10_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Dossier del día: El Encuadre: El TS admite que 180.000 hijos de supuestos 'ni</h3>
+    <p>Dossier ejecutivo: El Encuadre: El TS admite que 180.000 hijos de supuestos 'nietos' podrán votar c</p>
+    <div class="holo-meta"><span>📅 2026-11-10</span></div>
+    
+    <a href="https://www.eldiario.es/política/sanchez-pide-justicia-investigue-pagos-koldo-garcia-mintiera-gobierno_1_13650855.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · eldiario.es</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-09-mediano-quirurgico/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     <img src="/media/imagenes/post_2026-11-09_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
