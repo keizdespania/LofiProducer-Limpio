@@ -1,0 +1,42 @@
+{
+  "version": "1.1",
+  "fecha": "2026-11-10",
+  "nombre": "ACEStep 1.5 XL Turbo",
+  "fichero_ejecucion": "scripts/tools/generar_musica_kaggle.py",
+  "kernel_kaggle": "lofiproducer/acestep-runtime",
+  "destino_github": "keizdespania/LofiProducer-Limpio",
+  "modelos": [
+    "acestep-v15-xl-turbo-Q4_K_M.gguf",
+    "acestep-5Hz-lm-1.7B-Q8_0.gguf",
+    "Qwen3-Embedding-0.6B-Q8_0.gguf",
+    "vae-BF16.gguf"
+  ],
+  "fases_ejecucion": [
+    "1. Extraer acestep-runtime.tgz en /kaggle/working/",
+    "2. Configurar LD_LIBRARY_PATH apuntando a /kaggle/working/build (ah\u00ed est\u00e1n los .so)",
+    "3. Ejecutar ace-lm (blueprint)",
+    "4. Ejecutar ace-synth (render MP3)",
+    "5. Backup autom\u00e1tico a GitHub en output/musica/",
+    "6. Matar kernel con os._exit(0) para no gastar cuota"
+  ],
+  "parametros_default": {
+    "instrumental": true,
+    "inference_steps": 6,
+    "guidance_scale": 1.0,
+    "shift": 3.0,
+    "duration": 60,
+    "bpm": 90,
+    "mp3_bitrate": 128
+  },
+  "reglas": [
+    "Regla #11: Usar $HOME/tmp para preparar el push.",
+    "Regla #18: Si falla 2 veces, pausar.",
+    "Kaggle NO descomprime el .tgz autom\u00e1ticamente, usar tar -xzf.",
+    "Las librer\u00edas .so est\u00e1n en build/, setear LD_LIBRARY_PATH=/kaggle/working/build es OBLIGATORIO."
+  ],
+  "no_hacer": [
+    "No compilar en caliente (usar dataset).",
+    "No generar m\u00e1s de 10 pistas por ejecuci\u00f3n.",
+    "No dejar el kernel vivo tras generar el MP3 (usar os._exit(0))."
+  ]
+}
