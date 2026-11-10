@@ -664,7 +664,8 @@ def main():
         except Exception as _e:
             print(f"   ⚠️ Fallback a resumen simple: {_e}", flush=True)
             r = publicar_pipeline_completado(pub_count, n_short, n_post)
-            if r.get("ok"):
+            _ok1 = (r is True) or (isinstance(r, dict) and r.get("ok"))
+            if _ok1:
                 print(f"   ✅ Resumen simple enviado ({pub_count} análisis, {n_short} shorts)")
 
         # Avisar de vídeos subidos en privado (API YouTube no auditada)
@@ -672,7 +673,8 @@ def main():
             try:
                 from notificador_encuadre import avisar_videos_privados
                 r2 = avisar_videos_privados(_VIDEOS_SUBIDOS)
-                if r2.get("ok"):
+                _ok2 = (r2 is True) or (isinstance(r2, dict) and r2.get("ok"))
+                if _ok2:
                     print(f"   ✅ Aviso YouTube Studio enviado ({len(_VIDEOS_SUBIDOS)} vídeos)")
                 else:
                     print(f"   ⚠️ Aviso YouTube falló")

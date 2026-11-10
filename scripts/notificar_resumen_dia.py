@@ -179,11 +179,13 @@ def main():
             n_posts=0,  # se actualiza con pub_count del pipeline
             metrics=metrics,
         )
-        if r.get("ok"):
+        _ok = (r is True) or (isinstance(r, dict) and r.get("ok"))
+        if _ok:
             print(f"✅ Resumen enviado a Telegram")
             return True
         else:
-            print(f"⚠️ Telegram: {r.get('error', 'desconocido')}")
+            _err = r.get("error", "desconocido") if isinstance(r, dict) else str(r)
+            print(f"⚠️ Telegram: {_err}")
             return False
     except Exception as e:
         print(f"❌ Error Telegram: {e}")
