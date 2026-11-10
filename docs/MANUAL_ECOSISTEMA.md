@@ -1,5 +1,5 @@
 # MANUAL ECOSISTEMA LOFIPRODUCER
-> Auto-generado: 2026-11-09 15:00. NO editar a mano.
+> Auto-generado: 2026-11-10 06:00. NO editar a mano.
 > Regenerar: `python3 scripts/gen_manual.py` o pedir a Dios: `# auto_regenerar_manual`
 
 ## 1. ARQUITECTURA (6 capas)
@@ -9,7 +9,7 @@
 - **Cola**: data/agent/cola_publicacion.db (SQLite FIFO + publish_at)
 - **Motores**: ACE-Step / Sherpa / SDXL / Wan / LTX / FFmpeg / YouTube / Blogger
 - **Infra**: Kaggle T4 x2 + Cloudflare Pages + GitHub + OAuth
-- **Inventario**: 226 scripts · 29 brain · 41 contratos · 37 endpoints · 8 crons
+- **Inventario**: 230 scripts · 30 brain · 41 contratos · 37 endpoints · 8 crons
 
 ## 2. PIPELINE DIARIO (cron 06:00)
 `limpieza_pipeline` → `recolector` → `transcribir_groq` → `analista_fase1` → `sintetizador` → `fase2_produccion` → `voz_edge` → `director_arte` (80 seg) → `render_robusto` → `factory_shorts` → `generar_web_v3` + `dossier` → `actualizar_web_index` → `mkdocs build` → `git push` → YouTube 20:00
@@ -57,7 +57,7 @@
 - `web_dashboard_contract.json v1.0: web_dashboard_contract`
 - `youtube_contract.json v2.1: Contrato YouTube API v3 (upload + programación + refresh)`
 
-## 4. SCRIPTS (226 en scripts/)
+## 4. SCRIPTS (230 en scripts/)
 - `pipeline_encuadre.py`: pipeline_encuadre.py - Orquestador Maestro Definitivo (Blindado).
 - `dios.py`: (sin docstring)
 - `generar_web_v3.py`: generar_web_v3.py - Anti-medio: 1 post largo + 1 mediano/día con técnicas reales
@@ -83,9 +83,9 @@
 - `indexar_busqueda.py`: Indexa output/ y web/docs/ en SQLite FTS5 para búsqueda full-text.
 - `cloudflare_stats.py`: cloudflare_stats.py - Lee Web Analytics (RUM) vía GraphQL.
 - `agente_ltx_biblioteca.py`: Agente LTX Biblioteca - Genera clips de 6s Top-1 con crossfade, en lotes de 20.
-- *Y 201 scripts más* (usar `escanear_ecosistema('scripts')`)
+- *Y 205 scripts más* (usar `escanear_ecosistema('scripts')`)
 
-## 5. BRAIN (29 módulos)
+## 5. BRAIN (30 módulos)
 - `especialistas.py`: Sub-agentes especializados con combos de OmniRoute por rol.
 - `dios_memoria.py`: (sin doc)
 - `dios_tools_dinamicas.py`: dios_tools_dinamicas.py - Carga tools desde data/agent/dios_tools_dinamicas.py.
@@ -182,9 +182,9 @@ Ejecutada al inicio del pipeline + cron domingos 05:00:
 - **Rolling 2 días**: mantiene HOY + AYER
 
 ## 17. INVENTARIO (auto)
-- 226 scripts · 29 brain · 41 contratos
+- 230 scripts · 30 brain · 41 contratos
 - 37 endpoints · 8 crons · 76 tools
-- Generado: 2026-11-09T15:00:05
+- Generado: 2026-11-10T06:00:17
 
 ## 17b. RECIPES (tareas comunes, pasos exactos)
 - **Añadir nicho**: editar config/nichos.json + crear output/nichos/<id>/canal.json + verificar con list_canales

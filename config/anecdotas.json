@@ -253,8 +253,8 @@
       "id": 33,
       "categoria": "medico",
       "texto": "Mi cuñado Manolo me dijo: 'El doctor me dijo que el estrés era mi nuevo tratamiento'. 'Y el doctor añadió: 'Solo si lo miras como una noticia de última hora''. La medicina es la última noticia que no quieres leer.",
-      "usada": false,
-      "fecha_usada": null
+      "usada": true,
+      "fecha_usada": "2026-11-10T06:09:03.349915"
     },
     {
       "id": 34,
