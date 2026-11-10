@@ -5,10 +5,10 @@
     "parallel": 5
   },
   "tiempos": {
-    "extract_s": 77.7,
-    "lm_s": 211.3,
+    "extract_s": 78.0,
+    "lm_s": 209.2,
     "synth_s": 21.8,
-    "total_s": 310.8
+    "total_s": 309.0
   },
   "resultados": {
     "mp3_vivos": 0,
@@ -21,31 +21,13 @@
   "veredicto": "FALLO",
   "detalles": [
     {
-      "song": "c04",
-      "gpu": 0,
-      "ok": false,
-      "mp3": 0,
-      "took": 0.2,
-      "attempt": 1,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
-    },
-    {
-      "song": "c04",
-      "gpu": 0,
-      "ok": false,
-      "mp3": 0,
-      "took": 0.1,
-      "attempt": 2,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
-    },
-    {
       "song": "c01",
       "gpu": 0,
       "ok": false,
       "mp3": 0,
       "took": 0.2,
       "attempt": 1,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c01",
@@ -54,7 +36,7 @@
       "mp3": 0,
       "took": 0.1,
       "attempt": 2,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c05",
@@ -63,7 +45,7 @@
       "mp3": 0,
       "took": 0.2,
       "attempt": 1,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c05",
@@ -72,25 +54,7 @@
       "mp3": 0,
       "took": 0.1,
       "attempt": 2,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
-    },
-    {
-      "song": "c03",
-      "gpu": 0,
-      "ok": false,
-      "mp3": 0,
-      "took": 0.2,
-      "attempt": 1,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
-    },
-    {
-      "song": "c03",
-      "gpu": 0,
-      "ok": false,
-      "mp3": 0,
-      "took": 0.1,
-      "attempt": 2,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c02",
@@ -99,7 +63,7 @@
       "mp3": 0,
       "took": 0.2,
       "attempt": 1,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c02",
@@ -108,7 +72,43 @@
       "mp3": 0,
       "took": 0.1,
       "attempt": 2,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
+    },
+    {
+      "song": "c04",
+      "gpu": 0,
+      "ok": false,
+      "mp3": 0,
+      "took": 0.2,
+      "attempt": 1,
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
+    },
+    {
+      "song": "c04",
+      "gpu": 0,
+      "ok": false,
+      "mp3": 0,
+      "took": 0.1,
+      "attempt": 2,
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
+    },
+    {
+      "song": "c03",
+      "gpu": 0,
+      "ok": false,
+      "mp3": 0,
+      "took": 0.2,
+      "attempt": 1,
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
+    },
+    {
+      "song": "c03",
+      "gpu": 0,
+      "ok": false,
+      "mp3": 0,
+      "took": 0.1,
+      "attempt": 2,
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c06",
@@ -117,7 +117,7 @@
       "mp3": 0,
       "took": 0.2,
       "attempt": 1,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c06",
@@ -126,7 +126,7 @@
       "mp3": 0,
       "took": 0.1,
       "attempt": 2,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c08",
@@ -135,7 +135,7 @@
       "mp3": 0,
       "took": 0.2,
       "attempt": 1,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c08",
@@ -144,25 +144,7 @@
       "mp3": 0,
       "took": 0.1,
       "attempt": 2,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
-    },
-    {
-      "song": "c09",
-      "gpu": 0,
-      "ok": false,
-      "mp3": 0,
-      "took": 0.2,
-      "attempt": 1,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
-    },
-    {
-      "song": "c09",
-      "gpu": 0,
-      "ok": false,
-      "mp3": 0,
-      "took": 0.1,
-      "attempt": 2,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c07",
@@ -171,7 +153,7 @@
       "mp3": 0,
       "took": 0.2,
       "attempt": 1,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c07",
@@ -180,16 +162,34 @@
       "mp3": 0,
       "took": 0.1,
       "attempt": 2,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
+    },
+    {
+      "song": "c09",
+      "gpu": 0,
+      "ok": false,
+      "mp3": 0,
+      "took": 0.2,
+      "attempt": 1,
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
+    },
+    {
+      "song": "c09",
+      "gpu": 0,
+      "ok": false,
+      "mp3": 0,
+      "took": 0.1,
+      "attempt": 2,
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c10",
       "gpu": 0,
       "ok": false,
       "mp3": 0,
-      "took": 0.2,
+      "took": 0.1,
       "attempt": 1,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     },
     {
       "song": "c10",
@@ -198,7 +198,7 @@
       "mp3": 0,
       "took": 0.1,
       "attempt": 2,
-      "err": "=0\n[Request] dit: steps=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models models\n"
+      "err": "s=8 guidance=0.0 shift=3.0\n[Request] task_type: text2music\n[Request] solver: euler (stork_substeps=10)\n[Request] lm_mode: generate\n[Request] output_format: mp3\n[Request] synth_model: acestep-v15-xl-turbo-Q4_K_M.gguf\n[Request] lm_model: acestep-5Hz-lm-1.7B-Q8_0.gguf\n[Request] audio_codes: (present)\n[Ace-Synth] Batch: 1 request(s)\n[Ace-Synth] FATAL: cannot scan --models /kaggle/working/build/models\n"
     }
   ]
 }
