@@ -1,5 +1,5 @@
 {
-  "version": "2.0",
+  "version": "2.1",
   "fecha": "2026-11-10",
   "nombre": "ACEStep 1.5 XL Turbo - Manual de Produccion",
   "proposito": "Manual de accion. Lee la seccion que necesites. NO interpretes, COPIA los valores del genero.",
@@ -637,6 +637,22 @@
       "duration": 600,
       "vocal_language": "unknown",
       "caption": "meditation music, singing bowl, drone pad, soft flute, deeply relaxing, mindfulness and yoga, healing frequency"
+    },
+    "boyband_90s_balada": {
+      "bpm": 100,
+      "timesignature": "4",
+      "keyscale": "Ab major",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "90s boyband pop ballad, harmonized male vocals, romantic and heartfelt, tight vocal harmonies, slick 90s production, Backstreet Boys and Boyz II Men style, big emotional chorus, a cappella bridge"
+    },
+    "boyband_90s_uptempo": {
+      "bpm": 108,
+      "timesignature": "4",
+      "keyscale": "G major",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "90s boyband pop, up-tempo dance-pop, harmonized male vocals, energetic and catchy, tight vocal harmonies, NSYNC and Backstreet Boys style, infectious chorus, danceable groove, syncopated drums"
     }
   },
   "pipeline_keiZ_productions": {
@@ -675,5 +691,117 @@
     "github_destino": "output/musica/",
     "duracion_maxima_por_llamada": 600,
     "tiempo_por_cancion_t4x2": "~30s con turbo, ~3min con base"
-  }
+  },
+  "estado_actual": {
+    "ultimo_test_fecha": "2026-11-10",
+    "ultimo_test_resultados": {
+      "genero": "synthwave",
+      "batch_config": "lm_batch_size=4 synth_batch_size=2",
+      "pistas_generadas": 8,
+      "tiempo_total_s": 665,
+      "tiempo_lm_s": 34,
+      "tiempo_synth_por_pista_s": 138,
+      "md5_unicos": 8,
+      "bitrate_verificado": "128 kbps",
+      "duracion_verificada": "239.86-240s",
+      "gpu_utilizada": "1 de 2 T4 (2a idle 100%)",
+      "hallazgo_critico": "modelos en .gguf (sin extension → FATAL)"
+    },
+    "capacidades_verificadas": [
+      "Batch 4x2 = 8 pistas distintas en 1 lote (~11 min)",
+      "MP3 128kbps exactos, duracion 240s exacta",
+      "Upload GitHub 201 OK para 8 archivos",
+      "Registry acepta modelos con .gguf",
+      "LD_LIBRARY_PATH=/kaggle/working/build OBLIGATORIO",
+      "source .ipynb debe ser string con saltos (lista sin \\n → SyntaxError)",
+      "os._exit(0) rompe papermill (NO usar)",
+      "extiende el .tgz en /kaggle/working/ con {build, models} directos"
+    ],
+    "limitaciones_conocidas": [
+      "Solo 1 GPU T4 usada, la 2a idle",
+      "ace-synth secuencial (138s x N)",
+      "El motor NO tiene multi-GPU nativo",
+      "Archivos reales: requestNN.mp3 (loteN+variacionN)",
+      "Sin curaduria automatica (no PMI score aun)",
+      "Sin masterizacion LUFS",
+      "Sin generacion de video ni SEO"
+    ]
+  },
+  "scripts_actuales": {
+    "scripts/tools/generar_musica_kaggle.py": {
+      "funciones": [
+        "generar_musica_kaggle",
+        "generar_por_genero"
+      ],
+      "kernel_id_fijo": "lofiproducer/acestep-generator",
+      "params": [
+        "estilo_prompt",
+        "cantidad",
+        "duracion",
+        "lyrics",
+        "vocal_language",
+        "bpm",
+        "keyscale",
+        "timesignature",
+        "lm_batch_size",
+        "synth_batch_size"
+      ]
+    },
+    "$HOME/tmp/test2.py": {
+      "proposito": "Test exhaustivo 8 pistas synthwave",
+      "kernel_id": "lofiproducer/acestep-test-exhaustivo"
+    }
+  },
+  "roadmap_pendiente": [
+    {
+      "prio": 1,
+      "tarea": "Paralelizar ace-synth en 2 GPUs (CUDA_VISIBLE_DEVICES)",
+      "impacto": "2x velocidad"
+    },
+    {
+      "prio": 2,
+      "tarea": "Test limite 4 procesos en paralelo (2 por GPU)",
+      "impacto": "4x velocidad si no OOM"
+    },
+    {
+      "prio": 3,
+      "tarea": "Curaduria automatica PMI score (top 20%)",
+      "impacto": "calidad YouTube"
+    },
+    {
+      "prio": 4,
+      "tarea": "Masterizacion LUFS -14 con ffmpeg loudnorm",
+      "impacto": "estandar plataformas"
+    },
+    {
+      "prio": 5,
+      "tarea": "Pipeline video 1h (loop visuales originales)",
+      "impacto": "monetizacion"
+    },
+    {
+      "prio": 6,
+      "tarea": "Generador SEO (titulo A/B, desc, tags, hashtags)",
+      "impacto": "CTR 4%"
+    },
+    {
+      "prio": 7,
+      "tarea": "Cron diario 04:00 UTC publicacion escalonada",
+      "impacto": "anti-slop"
+    },
+    {
+      "prio": 8,
+      "tarea": "LoRA training estilo unico del canal",
+      "impacto": "diferenciacion"
+    },
+    {
+      "prio": 9,
+      "tarea": "NeuTTS clonacion voz creador",
+      "impacto": "podcast/monologo"
+    },
+    {
+      "prio": 10,
+      "tarea": "Detector tendencias YouTube diario",
+      "impacto": "que generar"
+    }
+  ]
 }
