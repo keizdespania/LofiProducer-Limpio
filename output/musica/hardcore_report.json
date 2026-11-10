@@ -1,0 +1,73 @@
+{
+  "config": {
+    "songs": 6,
+    "duration": 120,
+    "synth_per_gpu": 3,
+    "paralelo_total": 6
+  },
+  "tiempos": {
+    "extract_s": 82.3,
+    "lm_s": 59.3,
+    "synth_s": 69.0,
+    "total_s": 215.4
+  },
+  "resultados": {
+    "synth_ok": 5,
+    "mp3": 2,
+    "fail": 1
+  },
+  "vram": {
+    "gpu0_peak_mb": 14669,
+    "gpu1_peak_mb": 10443,
+    "samples": 64
+  },
+  "rate": {
+    "mp3_per_hour": 104.3,
+    "min_audio_per_hour": 208.6
+  },
+  "veredicto": "TECHO_ALCANZADO",
+  "detalles": [
+    {
+      "song": "s2_synthwave",
+      "gpu": 1,
+      "ok": true,
+      "took": 36.9,
+      "err": ""
+    },
+    {
+      "song": "s6_phonk",
+      "gpu": 1,
+      "ok": true,
+      "took": 37.6,
+      "err": ""
+    },
+    {
+      "song": "s1_lofi",
+      "gpu": 0,
+      "ok": true,
+      "took": 40.2,
+      "err": ""
+    },
+    {
+      "song": "s5_trap",
+      "gpu": 0,
+      "ok": false,
+      "took": 41.4,
+      "err": "hed_graph_compute+0x12)[0x7e048516f232]\n/kaggle/working/build/ace-synth(+0x67804)[0x5be699163804]\n/kaggle/working/build/ace-synth(+0x68522)[0x5be699164522]\n/kaggle/working/build/ace-synth(+0xc76a)[0x5be69910876a]\n/lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca)[0x7e0484ba81ca]\n/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b)[0x7e0484ba828b]\n/kaggle/working/build/ace-synth(+0xd025)[0x5be699109025]\n"
+    },
+    {
+      "song": "s4_jazz",
+      "gpu": 1,
+      "ok": true,
+      "took": 60.5,
+      "err": ""
+    },
+    {
+      "song": "s3_cinematic",
+      "gpu": 0,
+      "ok": true,
+      "took": 67.9,
+      "err": ""
+    }
+  ]
+}
