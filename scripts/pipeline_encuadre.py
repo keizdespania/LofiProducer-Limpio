@@ -78,7 +78,7 @@ def _subir_youtube(archivo, titulo, desc, tags=None, publish_at=None, retries=3)
     except Exception as _e:
         print(f"   ❌ Token refresh falló: {_e}. Ejecuta scripts/reautorizar_youtube.py", flush=True)
         print(f"   ⚠️ Saltando subida a YouTube (token inválido)", flush=True)
-        return False
+        return None
     for intento in range(retries):
         try:
             r = subir(archivo, titulo, desc, tags=tags, privacidad="private", publish_at=publish_at, token_file=TOKEN_ENC)
@@ -88,11 +88,11 @@ def _subir_youtube(archivo, titulo, desc, tags=None, publish_at=None, retries=3)
                 "video_id": r['id'],
                 "tipo": "video_largo" if "largo" in str(archivo) else "short"
             })
-            return True
+            return r['id']
         except Exception as e:
             print(f"⚠️ YouTube falló (intento {intento+1}/{retries}): {e}")
             time.sleep(5)
-    return False
+    return None
 
 async def _gen_voz(txt, salida):
     c = edge_tts.Communicate(txt, "es-ES-AlvaroNeural", rate="-5%")
@@ -471,18 +471,29 @@ def main():
 
     if not _video_ok:
         print(f"   ⚠️ Saltando subida YouTube (vídeo no válido)", flush=True)
-    elif _score >= _umbral:
-        print(f"   Viralidad {_score}/100 >= {_umbral} -> PUBLICAR YouTube", flush=True)
+    elif _video_ok:
+        # Regla: 1 largo/día SIEMPRE (viralidad solo decide priority, no existencia)
+        if _score >= _umbral:
+            print(f"   Viralidad {_score}/100 >= {_umbral} -> PUBLICAR YouTube (priority alta)", flush=True)
+        else:
+            print(f"   Viralidad {_score}/100 < {_umbral} -> publicar igual (1 largo/día garantizado)", flush=True)
+            try:
+                _cola = ROOT / "data" / "agent" / "cola_evergreen.jsonl"
+                _cola.parent.mkdir(parents=True, exist_ok=True)
+                with open(_cola, "a") as f:
+                    f.write(json.dumps({"fecha": fecha, "score": _score, "video": str(video_path)}) + "\n")
+            except Exception as e: print(f"   cola error: {e}", flush=True)
         _sl = _seo.get("largo", {})
-        _subir_youtube(str(video_path), _sl.get("titulo", f"Vídeo Largo {fecha}"), _sl.get("descripcion", "Análisis completo."), tags=_sl.get("tags"), publish_at=pub_v.strftime('%Y-%m-%dT%H:%M:%SZ'))
-    else:
-        print(f"   Viralidad {_score}/100 < {_umbral} -> NO publicar (cola evergreen)", flush=True)
-        try:
-            _cola = ROOT / "data" / "agent" / "cola_evergreen.jsonl"
-            _cola.parent.mkdir(parents=True, exist_ok=True)
-            with open(_cola, "a") as f:
-                f.write(json.dumps({"fecha": fecha, "score": _score, "video": str(video_path)}) + "\n")
-        except Exception as e: print(f"   cola error: {e}", flush=True)
+        _vid_largo = _subir_youtube(str(video_path), _sl.get("titulo", f"Vídeo Largo {fecha}"), _sl.get("descripcion", "Análisis completo."), tags=_sl.get("tags"), publish_at=pub_v.strftime('%Y-%m-%dT%H:%M:%SZ'))
+        if _vid_largo:
+            try:
+                import sys as _sys_pc
+                _sys_pc.path.insert(0, str(ROOT / "scripts"))
+                from dios import _tool_publicar_comentario_youtube as _pc_largo
+                _res_c = _pc_largo({"video_id": _vid_largo, "fecha": fecha})
+                print(f"   💬 Comentario largo: {str(_res_c)[:120]}", flush=True)
+            except Exception as _e:
+                print(f"   ⚠️ Comentario largo falló: {_e}", flush=True)
 
     for i, short in enumerate(shorts):
         num = i+1
@@ -498,7 +509,16 @@ def main():
                 _hoy_short = _hoy_short + datetime.timedelta(days=1)
             pub_at = max(_hoy_short, ahora + datetime.timedelta(hours=1))
             _ss = next((s for s in _seo.get("shorts", []) if s.get("num") == num), {})
-            _subir_youtube(str(s_path), _ss.get("titulo", f"Short {num} {fecha}"), _ss.get("descripcion", "Análisis rápido."), publish_at=pub_at.strftime('%Y-%m-%dT%H:%M:%SZ'))
+            _vid_short = _subir_youtube(str(s_path), _ss.get("titulo", f"Short {num} {fecha}"), _ss.get("descripcion", "Análisis rápido."), publish_at=pub_at.strftime('%Y-%m-%dT%H:%M:%SZ'))
+            if _vid_short:
+                try:
+                    import sys as _sys_pcs
+                    _sys_pcs.path.insert(0, str(ROOT / "scripts"))
+                    from dios import _tool_publicar_comentario_short as _pc_short
+                    _res_s = _pc_short({"video_id": _vid_short, "fecha": fecha, "num": num})
+                    print(f"   💬 Comentario short {num}: {str(_res_s)[:120]}", flush=True)
+                except Exception as _e:
+                    print(f"   ⚠️ Comentario short {num} falló: {_e}", flush=True)
 
     # [2026-11-04] ELIMINADO: _run("community_manager_auto.py", [fecha], 300, 1)
     # [2026-11-04] ELIMINADO: _run("detector_tendencias_vivas.py", [fecha], 300, 1)
