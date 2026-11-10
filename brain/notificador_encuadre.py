@@ -32,7 +32,7 @@ def publicar_analisis(titulo, slug, resumen="", url_fuente="", nicho="el_encuadr
     msg += f"\n\n🔗 {url}"
     if url_fuente:
         msg += f"\n📎 Fuente: {url_fuente}"
-    return _canal(msg)
+    return _canal(msg, throttle_override=1)
 
 def publicar_dossier(titulo, slug, resumen="", url_fuente=""):
     url = f"https://elencuadre.pages.dev/analisis/{slug}/"
@@ -40,7 +40,7 @@ def publicar_dossier(titulo, slug, resumen="", url_fuente=""):
     if resumen:
         msg += f"\n\n{_escapar(resumen[:300])}"
     msg += f"\n\n🔗 {url}"
-    return _canal(msg)
+    return _canal(msg, throttle_override=1)
 
 def publicar_short(titulo, url_youtube=None, url_tiktok=None):
     msg = f"📱 <b>Nuevo short</b>\n\n<b>{_escapar(titulo[:200])}</b>"

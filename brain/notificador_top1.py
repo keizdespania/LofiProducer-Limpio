@@ -96,10 +96,11 @@ def resumen_diario(texto_html):
         CHAT_PRIVADO, texto_html
     )
 
-def publicar_canal(texto_html, disable_preview=False):
-    """Contenido para el canal público @somoselencuadre. Dedupe 24h, throttle 30min."""
+def publicar_canal(texto_html, disable_preview=False, throttle_override=None):
+    """Contenido para el canal público @somoselencuadre. Dedupe 24h, throttle 30min por defecto."""
+    _ventana = throttle_override if throttle_override is not None else 1800
     return _debe_enviar("canal_post", CANAL_PUBLICO, dedupe_key=texto_html[:150],
-                        throttle_override=1800) and _post(
+                        throttle_override=_ventana) and _post(
         CANAL_PUBLICO, texto_html, disable_preview=disable_preview
     )
 
