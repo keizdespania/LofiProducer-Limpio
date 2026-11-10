@@ -1,42 +1,679 @@
 {
-  "version": "1.1",
+  "version": "2.0",
   "fecha": "2026-11-10",
-  "nombre": "ACEStep 1.5 XL Turbo",
-  "fichero_ejecucion": "scripts/tools/generar_musica_kaggle.py",
-  "kernel_kaggle": "lofiproducer/acestep-runtime",
-  "destino_github": "keizdespania/LofiProducer-Limpio",
-  "modelos": [
-    "acestep-v15-xl-turbo-Q4_K_M.gguf",
-    "acestep-5Hz-lm-1.7B-Q8_0.gguf",
-    "Qwen3-Embedding-0.6B-Q8_0.gguf",
-    "vae-BF16.gguf"
+  "nombre": "ACEStep 1.5 XL Turbo - Manual de Produccion",
+  "proposito": "Manual de accion. Lee la seccion que necesites. NO interpretes, COPIA los valores del genero.",
+  "reglas_para_la_ia": [
+    "REGLA #0: Si el genero que buscas esta en 'generos', COPIA sus valores tal cual. No improvises.",
+    "REGLA #1: Si no esta, usa 'lofi_hiphop' como base y cambia solo el 'caption'.",
+    "REGLA #2: SIEMPRE usa los valores de 'parametros_fijos'. No los modifiques nunca.",
+    "REGLA #3: Para instrumental, pon lyrics='[Instrumental]'. NUNCA 'instrumental: True' (no existe en el motor).",
+    "REGLA #4: Para generar varias versiones, sube 'lm_batch_size' a 4 y 'synth_batch_size' a 2. Multiplica por 8 variaciones con 1 sola llamada.",
+    "REGLA #5: Si el genero tiene vocal_language != 'unknown', la cancion LLEVA VOCES. Si quieres instrumental puro, cambia a 'unknown' y lyrics='[Instrumental]'."
   ],
-  "fases_ejecucion": [
-    "1. Extraer acestep-runtime.tgz en /kaggle/working/",
-    "2. Configurar LD_LIBRARY_PATH apuntando a /kaggle/working/build (ah\u00ed est\u00e1n los .so)",
-    "3. Ejecutar ace-lm (blueprint)",
-    "4. Ejecutar ace-synth (render MP3)",
-    "5. Backup autom\u00e1tico a GitHub en output/musica/",
-    "6. Matar kernel con os._exit(0) para no gastar cuota"
-  ],
-  "parametros_default": {
-    "instrumental": true,
-    "inference_steps": 6,
-    "guidance_scale": 1.0,
+  "parametros_fijos": {
+    "task_type": "text2music",
+    "solver": "euler",
+    "inference_steps": 8,
     "shift": 3.0,
-    "duration": 60,
-    "bpm": 90,
-    "mp3_bitrate": 128
+    "use_cot_caption": true,
+    "lm_temperature": 0.85,
+    "lm_cfg_scale": 2.0,
+    "lm_top_p": 0.9,
+    "output_format": "mp3",
+    "mp3_bitrate": 128,
+    "synth_model": "acestep-v15-xl-turbo-Q4_K_M",
+    "lm_model": "acestep-5Hz-lm-1.7B-Q8_0",
+    "adapter": "",
+    "adapter_scale": 1.0
   },
-  "reglas": [
-    "Regla #11: Usar $HOME/tmp para preparar el push.",
-    "Regla #18: Si falla 2 veces, pausar.",
-    "Kaggle NO descomprime el .tgz autom\u00e1ticamente, usar tar -xzf.",
-    "Las librer\u00edas .so est\u00e1n en build/, setear LD_LIBRARY_PATH=/kaggle/working/build es OBLIGATORIO."
-  ],
-  "no_hacer": [
-    "No compilar en caliente (usar dataset).",
-    "No generar m\u00e1s de 10 pistas por ejecuci\u00f3n.",
-    "No dejar el kernel vivo tras generar el MP3 (usar os._exit(0))."
-  ]
+  "parametros_opcionales_avanzados": {
+    "lm_batch_size": {
+      "defecto": 1,
+      "recomendado_produccion": 4,
+      "que_hace": "Genera N variaciones de letra/estructura en una sola llamada"
+    },
+    "synth_batch_size": {
+      "defecto": 1,
+      "recomendado_produccion": 2,
+      "que_hace": "Genera N variaciones de audio por cada letra del LM"
+    },
+    "lm_top_k": {
+      "defecto": 0,
+      "recomendado_produccion": 50,
+      "que_hace": "Limita vocabulario del LM. 0=off"
+    },
+    "lm_negative_prompt": {
+      "defecto": "",
+      "ejemplo": "off-key vocals, off tempo, distorted clipping",
+      "que_hace": "Le dice al LM lo que NO quiere"
+    },
+    "task_type": {
+      "defecto": "text2music",
+      "otros": [
+        "cover",
+        "repaint",
+        "lego",
+        "extract",
+        "complete"
+      ],
+      "que_hace": "Cambia el modo de operacion. cover=versionar, repaint=arreglar trozo, lego=añadir pista, extract=separar stems"
+    },
+    "audio_cover_strength": {
+      "defecto": 1.0,
+      "recomendado_cover": "0.6-0.8",
+      "que_hace": "Solo en cover/repaint: cuanto contexto del audio origen usar"
+    },
+    "repainting_start": {
+      "defecto": 0,
+      "ejemplo": 30,
+      "que_hace": "Segundo de inicio a repintar (solo task_type=repaint)"
+    },
+    "repainting_end": {
+      "defecto": -1,
+      "ejemplo": 45,
+      "que_hace": "Segundo de fin (-1=hasta el final)"
+    },
+    "track": {
+      "defecto": "",
+      "valores": [
+        "vocals",
+        "drums",
+        "bass",
+        "guitar",
+        "keyboard"
+      ],
+      "que_hace": "Solo en lego/extract: que pista añadir o separar"
+    },
+    "adapter": {
+      "defecto": "",
+      "uso": "Nombre del LoRA en adapters/ (sin .gguf)",
+      "que_hace": "Aplica tu estilo entrenado"
+    },
+    "adapter_scale": {
+      "defecto": 1.0,
+      "rango": "0.5-1.5",
+      "que_hace": "Fuerza del LoRA"
+    },
+    "audio_codes": {
+      "defecto": "",
+      "uso": "IDs FSQ separados por coma (avanzado)",
+      "que_hace": "Si no esta vacio, SALTA el LM y va directo al DiT"
+    }
+  },
+  "generos": {
+    "lofi_hiphop": {
+      "bpm": 75,
+      "timesignature": "4",
+      "keyscale": "A minor",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "lo-fi hip hop, dusty drums, jazz piano chords, warm vinyl crackle, melancholic and nostalgic, tape saturation, 90s boom bap feel"
+    },
+    "chillhop": {
+      "bpm": 82,
+      "timesignature": "4",
+      "keyscale": "D major",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "chillhop, jazzy piano, warm sub bass, soft drums, relaxed and cozy, tape hiss, study music vibe"
+    },
+    "jazzhop": {
+      "bpm": 78,
+      "timesignature": "4",
+      "keyscale": "F major",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "jazzhop, upright bass, brushed drums, rhodes piano, smooth and laid back, intimate lounge atmosphere, vintage jazz samples"
+    },
+    "sleep_ambient": {
+      "bpm": 60,
+      "timesignature": "4",
+      "keyscale": "C major",
+      "duration": 600,
+      "vocal_language": "unknown",
+      "caption": "ambient sleep music, soft synth pads, gentle piano, subtle field recordings, ethereal and calm, wide reverb, meditation and sleep focus"
+    },
+    "synthwave": {
+      "bpm": 100,
+      "timesignature": "4",
+      "keyscale": "E minor",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "80s synthwave, analog synthesizers, driving bassline, gated reverb drums, nostalgic and cinematic, neon-lit atmosphere, retro-futuristic"
+    },
+    "vaporwave": {
+      "bpm": 75,
+      "timesignature": "4",
+      "keyscale": "A major",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "vaporwave, slowed samples, reverb-drenched synth, dreamy and nostalgic, VHS tape aesthetic, 80s mall music, hazy and surreal"
+    },
+    "phonk": {
+      "bpm": 135,
+      "timesignature": "4",
+      "keyscale": "F# minor",
+      "duration": 180,
+      "vocal_language": "unknown",
+      "caption": "phonk, cowbell melody, distorted 808 bass, aggressive drums, dark and menacing, Memphis rap vibe, lo-fi grit and horror atmosphere"
+    },
+    "citypop": {
+      "bpm": 108,
+      "timesignature": "4",
+      "keyscale": "B major",
+      "duration": 240,
+      "vocal_language": "ja",
+      "caption": "80s japanese city pop, funky bass, clean electric guitar, bright synth, smooth and romantic, Tokyo night drive, polished production"
+    },
+    "boom_bap": {
+      "bpm": 90,
+      "timesignature": "4",
+      "keyscale": "A minor",
+      "duration": 180,
+      "vocal_language": "en",
+      "caption": "boom bap hip hop, hard-hitting drums, chopped soul sample, punchy kick and snare, gritty and confident, 90s east coast, dusty vinyl"
+    },
+    "trap": {
+      "bpm": 140,
+      "timesignature": "4",
+      "keyscale": "G minor",
+      "duration": 180,
+      "vocal_language": "en",
+      "caption": "trap, hard 808 bass, rapid hi-hats, dark synth melody, aggressive and confident, modern trap production, Atlanta style"
+    },
+    "drill": {
+      "bpm": 142,
+      "timesignature": "4",
+      "keyscale": "F minor",
+      "duration": 180,
+      "vocal_language": "en",
+      "caption": "UK drill, sliding 808 bass, dark piano melody, syncopated drums, menacing and cold, London street atmosphere"
+    },
+    "latin_trap": {
+      "bpm": 130,
+      "timesignature": "4",
+      "keyscale": "D minor",
+      "duration": 180,
+      "vocal_language": "es",
+      "caption": "latin trap, reggaeton drums, dark synth, 808 bass, urban and swagger, Puerto Rican vibe, modern latin trap production"
+    },
+    "conscious_rap": {
+      "bpm": 88,
+      "timesignature": "4",
+      "keyscale": "C minor",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "conscious hip hop, jazzy sample, warm bass, storytelling flow, positive and reflective, will smith style, uplifting soulful vibe"
+    },
+    "reggaeton": {
+      "bpm": 95,
+      "timesignature": "4",
+      "keyscale": "A minor",
+      "duration": 180,
+      "vocal_language": "es",
+      "caption": "reggaeton, dembow rhythm, perreo bass, catchy synth hook, sensual and party, modern latin urban, Bad Bunny style production"
+    },
+    "dembow": {
+      "bpm": 118,
+      "timesignature": "4",
+      "keyscale": "G major",
+      "duration": 180,
+      "vocal_language": "es",
+      "caption": "dembow, fast reggaeton rhythm, heavy kick, dembow pattern, energetic and infectious, dominican street party vibe"
+    },
+    "cumbia": {
+      "bpm": 95,
+      "timesignature": "4",
+      "keyscale": "C major",
+      "duration": 240,
+      "vocal_language": "es",
+      "caption": "cumbia, accordion, guacharaca, driving bass, festive and danceable, classic colombian cumbia, warm analog recording"
+    },
+    "salsa": {
+      "bpm": 190,
+      "timesignature": "4",
+      "keyscale": "F major",
+      "duration": 240,
+      "vocal_language": "es",
+      "caption": "salsa, brass section, piano montuno, timbales and congas, energetic and passionate, classic new york salsa dura, live band feel"
+    },
+    "bachata": {
+      "bpm": 130,
+      "timesignature": "4",
+      "keyscale": "A minor",
+      "duration": 240,
+      "vocal_language": "es",
+      "caption": "bachata, requinto guitar, bongo, güira, romantic and sensual, dominican bachata, modern production with reverb"
+    },
+    "corridos_tumbados": {
+      "bpm": 100,
+      "timesignature": "4",
+      "keyscale": "G minor",
+      "duration": 240,
+      "vocal_language": "es",
+      "caption": "corridos tumbados, requinto, tuba bass, charchetas, mexican regional, street storytelling, modern sierreno production"
+    },
+    "pop": {
+      "bpm": 118,
+      "timesignature": "4",
+      "keyscale": "C major",
+      "duration": 210,
+      "vocal_language": "en",
+      "caption": "modern pop, catchy hook, bright synths, punchy drums, uplifting and radio-friendly, polished production, top 40 style"
+    },
+    "pop_latino": {
+      "bpm": 100,
+      "timesignature": "4",
+      "keyscale": "A minor",
+      "duration": 210,
+      "vocal_language": "es",
+      "caption": "latin pop, reggaeton-influenced beat, catchy hook, warm synth, romantic and danceable, reggaeton-pop fusion"
+    },
+    "kpop": {
+      "bpm": 120,
+      "timesignature": "4",
+      "keyscale": "E major",
+      "duration": 210,
+      "vocal_language": "ko",
+      "caption": "k-pop, bright synths, punchy drums, catchy hook, energetic and polished, korean idol group production, dynamic arrangement"
+    },
+    "jpop": {
+      "bpm": 128,
+      "timesignature": "4",
+      "keyscale": "D major",
+      "duration": 210,
+      "vocal_language": "ja",
+      "caption": "j-pop, bright synth, driving drums, catchy hook, anime opening energy, japanese idol production, upbeat and colorful"
+    },
+    "indie_pop": {
+      "bpm": 112,
+      "timesignature": "4",
+      "keyscale": "G major",
+      "duration": 210,
+      "vocal_language": "en",
+      "caption": "indie pop, jangly guitar, warm bass, soft drums, dreamy and intimate, bedroom pop aesthetic, lo-fi charm"
+    },
+    "rnb": {
+      "bpm": 88,
+      "timesignature": "4",
+      "keyscale": "F minor",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "contemporary R&B, smooth bass, warm keys, soft drums, sensual and intimate, modern slow jam, polished production"
+    },
+    "neo_soul": {
+      "bpm": 78,
+      "timesignature": "4",
+      "keyscale": "C minor",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "neo soul, rhodes piano, warm bass, brushed drums, laid back and soulful, Erykah Badu style, live-band feel"
+    },
+    "classic_soul": {
+      "bpm": 92,
+      "timesignature": "4",
+      "keyscale": "G major",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "classic soul, motown drums, horns, warm bass, passionate and timeless, 60s motown style, analog recording"
+    },
+    "gospel": {
+      "bpm": 90,
+      "timesignature": "4",
+      "keyscale": "C major",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "gospel, hammond organ, choir, driving drums, uplifting and spiritual, black church tradition, powerful vocal arrangement"
+    },
+    "funk": {
+      "bpm": 108,
+      "timesignature": "4",
+      "keyscale": "E minor",
+      "duration": 210,
+      "vocal_language": "en",
+      "caption": "funk, slap bass, syncopated drums, wah guitar, groovy and infectious, 70s funk, tight rhythm section"
+    },
+    "house": {
+      "bpm": 124,
+      "timesignature": "4",
+      "keyscale": "A minor",
+      "duration": 300,
+      "vocal_language": "unknown",
+      "caption": "deep house, groovy bassline, four-on-the-floor drums, soulful vocal chops, uplifting and energetic, club-ready production"
+    },
+    "tech_house": {
+      "bpm": 126,
+      "timesignature": "4",
+      "keyscale": "F minor",
+      "duration": 300,
+      "vocal_language": "unknown",
+      "caption": "tech house, rolling bassline, tight drums, percussive groove, minimal and hypnotic, modern club production"
+    },
+    "techno": {
+      "bpm": 135,
+      "timesignature": "4",
+      "keyscale": "A minor",
+      "duration": 300,
+      "vocal_language": "unknown",
+      "caption": "techno, driving kick, hypnotic arpeggio, dark and industrial, Berlin club atmosphere, minimal and relentless"
+    },
+    "trance": {
+      "bpm": 138,
+      "timesignature": "4",
+      "keyscale": "E major",
+      "duration": 300,
+      "vocal_language": "unknown",
+      "caption": "uplifting trance, soaring lead, euphoric breakdown, driving bassline, emotional and euphoric, classic trance production"
+    },
+    "dubstep": {
+      "bpm": 140,
+      "timesignature": "4",
+      "keyscale": "F minor",
+      "duration": 180,
+      "vocal_language": "unknown",
+      "caption": "dubstep, heavy wobble bass, half-time drums, aggressive and dark, modern bass music, skrillex style production"
+    },
+    "dnb": {
+      "bpm": 174,
+      "timesignature": "4",
+      "keyscale": "G minor",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "drum and bass, rolling breakbeat, sub bass, atmospheric pads, energetic and driving, liquid dnb, jungle vibe"
+    },
+    "afrobeats": {
+      "bpm": 105,
+      "timesignature": "4",
+      "keyscale": "F major",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "afrobeats, catchy percussion, warm bass, melodic vocals, joyful and danceable, nigerian afrobeat, burna boy style"
+    },
+    "amapiano": {
+      "bpm": 115,
+      "timesignature": "4",
+      "keyscale": "A minor",
+      "duration": 300,
+      "vocal_language": "unknown",
+      "caption": "amapiano, log drum bass, soft percussion, deep house influence, laid back and hypnotic, south african groove"
+    },
+    "classic_rock": {
+      "bpm": 120,
+      "timesignature": "4",
+      "keyscale": "E major",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "classic rock, distorted guitars, driving drums, powerful bass, anthemic and timeless, 70s stadium rock"
+    },
+    "indie_rock": {
+      "bpm": 132,
+      "timesignature": "4",
+      "keyscale": "A major",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "indie rock, jangly guitar, tight drums, warm bass, energetic and raw, garage band vibe, alternative production"
+    },
+    "punk": {
+      "bpm": 170,
+      "timesignature": "4",
+      "keyscale": "D major",
+      "duration": 180,
+      "vocal_language": "en",
+      "caption": "punk rock, fast drums, distorted guitar, snarling vocals, raw and rebellious, 70s punk, DIY production"
+    },
+    "heavy_metal": {
+      "bpm": 140,
+      "timesignature": "4",
+      "keyscale": "E minor",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "heavy metal, double kick drums, distorted guitars, powerful vocal, aggressive and epic, NWOBHM style, classic metal production"
+    },
+    "metalcore": {
+      "bpm": 160,
+      "timesignature": "4",
+      "keyscale": "F minor",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "metalcore, breakdowns, screaming vocals, clean chorus, aggressive and melodic, modern metal production"
+    },
+    "post_rock": {
+      "bpm": 80,
+      "timesignature": "4",
+      "keyscale": "C minor",
+      "duration": 360,
+      "vocal_language": "unknown",
+      "caption": "post rock, clean guitar, crescendo, atmospheric pads, epic and emotional, explosions in the sky style"
+    },
+    "shoegaze": {
+      "bpm": 100,
+      "timesignature": "4",
+      "keyscale": "A major",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "shoegaze, wall of distorted guitar, ethereal vocals, driving drums, dreamy and hazy, my bloody valentine style"
+    },
+    "cinematic_epic": {
+      "bpm": 90,
+      "timesignature": "4",
+      "keyscale": "D minor",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "cinematic orchestral, sweeping strings, powerful brass, epic percussion, heroic and emotional, blockbuster film score"
+    },
+    "piano_solo": {
+      "bpm": 70,
+      "timesignature": "4",
+      "keyscale": "A minor",
+      "duration": 300,
+      "vocal_language": "unknown",
+      "caption": "solo piano, emotional and intimate, neoclassical, soft dynamics, close-mic recording, ludovico einaudi style"
+    },
+    "acoustic_guitar": {
+      "bpm": 85,
+      "timesignature": "4",
+      "keyscale": "G major",
+      "duration": 300,
+      "vocal_language": "unknown",
+      "caption": "fingerstyle acoustic guitar, warm and intimate, folk-inspired, natural room reverb, soft and contemplative"
+    },
+    "classical_orchestral": {
+      "bpm": 100,
+      "timesignature": "4",
+      "keyscale": "C major",
+      "duration": 300,
+      "vocal_language": "unknown",
+      "caption": "classical orchestral, full symphony, strings, woodwinds, brass, majestic and timeless, beethoven and mozart style"
+    },
+    "baroque": {
+      "bpm": 120,
+      "timesignature": "4",
+      "keyscale": "D major",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "baroque, harpsichord, strings, counterpoint, elegant and refined, bach style composition, period instruments"
+    },
+    "smooth_jazz": {
+      "bpm": 90,
+      "timesignature": "4",
+      "keyscale": "F major",
+      "duration": 300,
+      "vocal_language": "unknown",
+      "caption": "smooth jazz, rhodes piano, upright bass, brushed drums, warm and intimate, late-night lounge, kenny g style saxophone"
+    },
+    "bebop": {
+      "bpm": 180,
+      "timesignature": "4",
+      "keyscale": "Bb major",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "bebop, fast walking bass, saxophone solo, piano comping, virtuosic and swinging, charlie parker style"
+    },
+    "blues": {
+      "bpm": 90,
+      "timesignature": "4",
+      "keyscale": "E major",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "blues, delta slide guitar, harmonica, shuffling drums, raw and soulful, muddy waters style, 12-bar form"
+    },
+    "lo_fi_soul": {
+      "bpm": 80,
+      "timesignature": "4",
+      "keyscale": "A minor",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "lofi soul, warm vinyl crackle, mellow jazz piano, smooth soulful saxophone, laid back intimate groove, duet young female and older male rapper"
+    },
+    "folk": {
+      "bpm": 95,
+      "timesignature": "4",
+      "keyscale": "G major",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "folk, acoustic guitar, fiddle, warm harmonies, storytelling and authentic, appalachian tradition, wooden-room recording"
+    },
+    "country": {
+      "bpm": 100,
+      "timesignature": "4",
+      "keyscale": "G major",
+      "duration": 210,
+      "vocal_language": "en",
+      "caption": "country, acoustic guitar, pedal steel, driving drums, heartfelt and storytelling, nashville production, modern country"
+    },
+    "reggae": {
+      "bpm": 75,
+      "timesignature": "4",
+      "keyscale": "A minor",
+      "duration": 240,
+      "vocal_language": "en",
+      "caption": "roots reggae, one-drop drums, dub bass, skanking guitar, laid-back and spiritual, bob marley style, jamaican vibe"
+    },
+    "celtic": {
+      "bpm": 110,
+      "timesignature": "4",
+      "keyscale": "D major",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "celtic folk, fiddle, tin whistle, bodhrán, lively and ancient, irish traditional, pub session feel"
+    },
+    "flamenco": {
+      "bpm": 180,
+      "timesignature": "4",
+      "keyscale": "E phrygian",
+      "duration": 240,
+      "vocal_language": "es",
+      "caption": "flamenco, spanish guitar, palmas, cajon, passionate and fiery, andalusian tradition, raw and emotional"
+    },
+    "bollywood": {
+      "bpm": 100,
+      "timesignature": "4",
+      "keyscale": "C major",
+      "duration": 240,
+      "vocal_language": "hi",
+      "caption": "bollywood, sitar, tabla, lush strings, romantic and cinematic, indian film music, a.r. rahman style"
+    },
+    "gamelan": {
+      "bpm": 60,
+      "timesignature": "4",
+      "keyscale": "B major",
+      "duration": 300,
+      "vocal_language": "unknown",
+      "caption": "gamelan, bronze metallophone, gongs, hypnotic and meditative, balinese tradition, cyclical pattern"
+    },
+    "chiptune": {
+      "bpm": 140,
+      "timesignature": "4",
+      "keyscale": "C major",
+      "duration": 180,
+      "vocal_language": "unknown",
+      "caption": "chiptune, 8-bit synth, NES-style, retro arcade, upbeat and nostalgic, video game music"
+    },
+    "anime_ost": {
+      "bpm": 130,
+      "timesignature": "4",
+      "keyscale": "E minor",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "anime opening, bright synth, driving drums, epic strings, energetic and emotional, japanese anime ost, joe hisaishi style"
+    },
+    "videogame_epic": {
+      "bpm": 100,
+      "timesignature": "4",
+      "keyscale": "D minor",
+      "duration": 300,
+      "vocal_language": "unknown",
+      "caption": "epic video game soundtrack, full orchestra, choir, powerful percussion, heroic and immersive, skyrim and zelda style"
+    },
+    "lofi_christmas": {
+      "bpm": 70,
+      "timesignature": "4",
+      "keyscale": "C major",
+      "duration": 240,
+      "vocal_language": "unknown",
+      "caption": "lofi christmas, jazzy piano, sleigh bells, warm vinyl crackle, cozy and nostalgic, holiday study music"
+    },
+    "children_music": {
+      "bpm": 110,
+      "timesignature": "4",
+      "keyscale": "C major",
+      "duration": 180,
+      "vocal_language": "en",
+      "caption": "children music, playful melody, ukulele, glockenspiel, cheerful and innocent, kids educational songs, simple and warm"
+    },
+    "asmr_ambient": {
+      "bpm": 55,
+      "timesignature": "4",
+      "keyscale": "C major",
+      "duration": 600,
+      "vocal_language": "unknown",
+      "caption": "asmr ambient, soft rain, distant piano, gentle synth pad, ultra relaxing, sleep and meditation, binaural recording"
+    },
+    "meditation": {
+      "bpm": 50,
+      "timesignature": "4",
+      "keyscale": "C major",
+      "duration": 600,
+      "vocal_language": "unknown",
+      "caption": "meditation music, singing bowl, drone pad, soft flute, deeply relaxing, mindfulness and yoga, healing frequency"
+    }
+  },
+  "pipeline_keiZ_productions": {
+    "objetivo": "Detectar lo mas viral de musica en YouTube, generar equivalente mejorado con ACEStep, montar video original, SEO extremo y subir diario. Canal: KeiZ Productions. Cubre TODOS los generos.",
+    "cron_sugerido": "0 4 * * * (4am UTC, baja demanda GPU Kaggle)",
+    "fases_diarias": [
+      "1. DETECTAR: scrapear YouTube Trending Music + top search 'music 2026' + Shorts virales del nicho",
+      "2. ELEGIR genero de la biblioteca del contrato (rotar, no repetir 2 dias)",
+      "3. GENERAR 8 variaciones con lm_batch_size=4 + synth_batch_size=2 (mismo caption, seed=-1)",
+      "4. SELECCIONAR top 2 con PMI score (descartar resto)",
+      "5. MASTERIZAR a LUFS -14 con ffmpeg loudnorm",
+      "6. VIDEO: si <5min usar LTX 2.3, si >1h loop visual con ffmpeg (assets propios)",
+      "7. MINIATURA con SDXL (prompt_thumbnail.py + estilo El Encuadre)",
+      "8. SEO EXTREMO: titulo A/B, descripcion 500 palabras, tags 500 chars, hashtags, capítulos",
+      "9. SUBIR a YouTube con publish_at escalonado (1 video/2 dias)",
+      "10. NOTIFICAR a Telegram con link + metricas esperadas"
+    ],
+    "reglas_anti_slop": [
+      "NUNCA subir mas de 1 video cada 48h por canal",
+      "Cada video aporta valor visual original (no solo audio + imagen fija)",
+      "Descripcion incluye tracklist si es >30min",
+      "Divulgar uso de IA en descripcion (requerido por YouTube)",
+      "Variar generos semanalmente, no repetir el mismo en 5 dias"
+    ],
+    "metricas_objetivo": {
+      "rpm_objetivo": "3-8 USD (sleep/ambient/lofi son los nichos top)",
+      "ctr_minimo": "4%",
+      "retencion_minima": "45% (videos largos) / 70% (shorts)",
+      "tiempo_hasta_monetizacion": "60-90 dias con 2-3 videos/semana"
+    }
+  },
+  "recursos": {
+    "kernel_kaggle": "lofiproducer/acestep-runtime",
+    "runtime_extraido": "/kaggle/working/{build,models}",
+    "LD_LIBRARY_PATH_obligatorio": "/kaggle/working/build",
+    "github_destino": "output/musica/",
+    "duracion_maxima_por_llamada": 600,
+    "tiempo_por_cancion_t4x2": "~30s con turbo, ~3min con base"
+  }
 }
