@@ -1,0 +1,115 @@
+{
+  "fases": {
+    "arranque": 1794317521.7280095,
+    "extraccion_s": 78.1,
+    "lm_0": 34.3,
+    "synth_0": 551.3
+  },
+  "metricas": {
+    "tgz_bytes": 5877965179,
+    "so_files": 12,
+    "models_files": 5,
+    "gpu_antes": "Tesla T4, 15360, 0, 14912, 0\nTesla T4, 15360, 0, 14912, 0",
+    "lm_jsons_0": [
+      "request.json",
+      "request0.json",
+      "request1.json",
+      "request2.json",
+      "request3.json"
+    ],
+    "total_mp3": 8,
+    "md5_unicos": 8,
+    "tiempo_total_s": 665.1,
+    "gpu_despues": "Tesla T4, 15360, 0, 14912, 0\nTesla T4, 15360, 0, 14912, 0"
+  },
+  "mp3_analysis": [
+    {
+      "duration_s": 239.86,
+      "bitrate_kbps": 128.0,
+      "size_bytes": 3837696,
+      "codec": "mp3",
+      "sample_rate": 48000,
+      "channels": 2,
+      "file": "request00.mp3",
+      "md5": "bcbaa6929545ab681476e7e25f68245f",
+      "md5_unique": true
+    },
+    {
+      "duration_s": 239.86,
+      "bitrate_kbps": 128.0,
+      "size_bytes": 3837696,
+      "codec": "mp3",
+      "sample_rate": 48000,
+      "channels": 2,
+      "file": "request01.mp3",
+      "md5": "c770475c0642f4ac8e2faba65bd6a04a",
+      "md5_unique": true
+    },
+    {
+      "duration_s": 240.0,
+      "bitrate_kbps": 128.0,
+      "size_bytes": 3840000,
+      "codec": "mp3",
+      "sample_rate": 48000,
+      "channels": 2,
+      "file": "request10.mp3",
+      "md5": "720e3b05d1ef04ffc32949fd54d91ce7",
+      "md5_unique": true
+    },
+    {
+      "duration_s": 240.0,
+      "bitrate_kbps": 128.0,
+      "size_bytes": 3840000,
+      "codec": "mp3",
+      "sample_rate": 48000,
+      "channels": 2,
+      "file": "request11.mp3",
+      "md5": "fd49b2a2f65140e1ca258b9e9e9d420d",
+      "md5_unique": true
+    },
+    {
+      "duration_s": 240.0,
+      "bitrate_kbps": 128.0,
+      "size_bytes": 3840000,
+      "codec": "mp3",
+      "sample_rate": 48000,
+      "channels": 2,
+      "file": "request20.mp3",
+      "md5": "a51220a64ec73c2475c7aa5ace3c0550",
+      "md5_unique": true
+    },
+    {
+      "duration_s": 240.0,
+      "bitrate_kbps": 128.0,
+      "size_bytes": 3840000,
+      "codec": "mp3",
+      "sample_rate": 48000,
+      "channels": 2,
+      "file": "request21.mp3",
+      "md5": "bd3716752ff6995686117baebfff258b",
+      "md5_unique": true
+    },
+    {
+      "duration_s": 240.0,
+      "bitrate_kbps": 128.0,
+      "size_bytes": 3840000,
+      "codec": "mp3",
+      "sample_rate": 48000,
+      "channels": 2,
+      "file": "request30.mp3",
+      "md5": "3f988715a476d19e91497fd208483837",
+      "md5_unique": true
+    },
+    {
+      "duration_s": 240.0,
+      "bitrate_kbps": 128.0,
+      "size_bytes": 3840000,
+      "codec": "mp3",
+      "sample_rate": 48000,
+      "channels": 2,
+      "file": "request31.mp3",
+      "md5": "ca997c81a646f7019f4e350a49309387",
+      "md5_unique": true
+    }
+  ]
+}
