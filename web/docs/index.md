@@ -13,6 +13,33 @@ hide:
 <h2 class="holo-section-title">Últimos Análisis</h2>
 
 <div class="holo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-10-mediano-tutorial/'">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    <img src="/media/imagenes/post_2026-11-10_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Cómo detectar la técnica: Sensacionalismo y polarización</h3>
+    <p>Analisis tutorial: Cómo detectar la técnica: Sensacionalismo y polarización</p>
+    <div class="holo-meta"><span>📅 2026-11-10</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-10-largo/'">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    <img src="/media/imagenes/post_2026-11-10_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El Encuadre: El TS admite que 180.000 hijos de supuestos 'ni</h3>
+    <p>Analisis largo: El Encuadre: El TS admite que 180.000 hijos de supuestos 'ni</p>
+    <div class="holo-meta"><span>📅 2026-11-10</span></div>
+    
+    <a href="https://www.eldiario.es/política/sanchez-pide-justicia-investigue-pagos-koldo-garcia-mintiera-gobierno_1_13650855.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · eldiario.es</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-10-dossier-v2/'">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    <img src="/media/imagenes/post_2026-11-10_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Dossier del día: El Encuadre: El TS admite que 180.000 hijos de supuestos 'ni</h3>
+    <p>Dossier ejecutivo: El Encuadre: El TS admite que 180.000 hijos de supuestos 'nietos' podrán votar c</p>
+    <div class="holo-meta"><span>📅 2026-11-10</span></div>
+    
+    <a href="https://www.eldiario.es/política/sanchez-pide-justicia-investigue-pagos-koldo-garcia-mintiera-gobierno_1_13650855.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · eldiario.es</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-09-mediano-quirurgico/'">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     <img src="/media/imagenes/post_2026-11-09_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
@@ -30,33 +57,6 @@ hide:
     <div class="holo-meta"><span>📅 2026-11-09</span></div>
     
     <a href="https://www.lavanguardia.com/política/20261108/11679248/sanchez-advierte-pp-vox-gobiernan-plegaran-trump-tragan.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · lavanguardia.com</a>
-  </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-09-dossier-v2/'">
-    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="/media/imagenes/post_2026-11-09_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
-    <h3>Dossier del día: El Encuadre: Nvidia abre una investigación a su consejero de</h3>
-    <p>Dossier ejecutivo: El Encuadre: Nvidia abre una investigación a su consejero delegado sobre su rela</p>
-    <div class="holo-meta"><span>📅 2026-11-09</span></div>
-    
-    <a href="https://www.lavanguardia.com/política/20261108/11679248/sanchez-advierte-pp-vox-gobiernan-plegaran-trump-tragan.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · lavanguardia.com</a>
-  </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-08-mediano-medio_crudo/'">
-    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
-    <img src="/media/imagenes/post_2026-11-08_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
-    <h3>Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la ilusión de dinamismo y inevitabilidad</h3>
-    <p>Analisis medio_crudo: Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la i</p>
-    <div class="holo-meta"><span>📅 2026-11-08</span></div>
-    
-    <a href="https://www.lemonde.fr/politique/article/2026/11/08/presidentielle-2027-en-meeting-au-bourget-jean-luc-melenchon-s-attelle-a-mobiliser-sa-base-tout-en-elargissant-son-electorat_6808387_823448.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · lemonde.fr</a>
-  </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-08-largo/'">
-    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
-    <img src="/media/imagenes/post_2026-11-08_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
-    <h3>El Encuadre: El presidente de Israel encarga formar gobierno</h3>
-    <p>Analisis largo: El Encuadre: El presidente de Israel encarga formar gobierno</p>
-    <div class="holo-meta"><span>📅 2026-11-08</span></div>
-    
-    <a href="https://www.elespanol.com/espana/política/20261108/ayuso-mafia-sindical-haciendo-campana-amo-sanchez-secuestra-servicios-publicos/1003744449012_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
   </div>
   <a href="glosario/" class="holo-card">
     <div class="holo-badge badge-guide">📚 Guía Definitiva</div>
