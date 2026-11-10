@@ -180,7 +180,7 @@ body{font-family:Inter,system-ui,sans-serif;background:#09090b;color:#f4f4f5;mar
 
 <div id="toastContainer" style="position:fixed;top:16px;right:16px;z-index:200"></div>
 
-<script src="/encuadre/factory.js?v=2"></script>
+<script src="/encuadre/factory.js?v=3"></script>
 
 <!-- Modal universal (agentes/guion/lightbox) -->
 <div id="bigModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:center;justify-content:center;padding:16px" onclick="if(event.target.id==='bigModal')cerrarModal()">
@@ -392,7 +392,8 @@ function _cardPublicar(kind, idx, titulo, subtitulo, linkPrincipal, linkCruzado,
     html += '<strong style="font-size:11px;color:#fbbf24;text-transform:uppercase">' + red.replace('_', ' ') + '</strong>';
     html += '<div style="display:flex;gap:4px">';
     html += '<button onclick="copiarTexto(\'' + rid + '\')" style="font-size:10px;background:#16a34a;padding:2px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">📋</button>';
-    html += '<button onclick="abrirRed(\'' + red + '\', \'' + rid + '\')" style="font-size:10px;background:#2563eb;padding:2px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">🚀</button>';
+    html += '<button onclick="abrirRed(\'' + red + '\', \'' + rid + '\', \'' + (videoPath || '') + '\', false)" style="font-size:10px;background:#2563eb;padding:2px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer">🚀</button>';
+    if (videoPath) html += '<button onclick="abrirRed(\'' + red + '\', \'' + rid + '\', \'' + videoPath + '\', true)" style="font-size:10px;background:#7c3aed;padding:2px 6px;border-radius:4px;color:#fff;border:none;cursor:pointer;margin-left:2px">🎥</button>';
     html += '</div></div>';
     html += '<textarea id="' + rid + '" readonly style="width:100%;background:#18181b;border:1px solid #3f3f46;border-radius:4px;padding:6px;color:#d4d4d8;font-size:10px;font-family:monospace;resize:vertical;min-height:60px">' + _esc(full) + '</textarea>';
     html += '</div>';
@@ -425,11 +426,11 @@ function _img_from_video(vp) {
   if (m) return '/output/encuadre/social/' + m[2] + '_short_' + m[1] + '.png';
   return '';
 }
-function abrirRed(red, textareaId, videoPath) {
+function abrirRed(red, textareaId, videoPath, forceShare) {
   var el = document.getElementById(textareaId);
   var texto = el ? el.value : '';
   mostrarToast('⏳ Abriendo...', 'bg-blue-600');
-  fetch('/api/encuadre/abrir_app', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({red: red, texto: texto, video_path: videoPath || '', imagen_path: _img_from_video(videoPath)})})
+  fetch('/api/encuadre/abrir_app', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({red: red, texto: texto, video_path: videoPath || '', imagen_path: _img_from_video(videoPath), force_share: !!forceShare})})
     .then(function(r){ return r.json(); }).then(function(d){
       if (d.ok) mostrarToast(d.accion === 'share_sheet' ? '📋 Texto copiado + share sheet' : '🚀 ' + red, 'bg-green-600');
       else mostrarToast('❌ ' + (d.error || ''), 'bg-red-600');
@@ -1023,6 +1024,27 @@ def api_abrir_app():
     texto = (data.get('texto') or '').strip()
     video_path = (data.get('video_path') or '').strip()
     imagen_path = (data.get('imagen_path') or '').strip()
+    force_share = bool(data.get('force_share', False))
+
+    # 2026-11-09: si force_share=true, SIEMPRE share sheet (video o imagen)
+    if force_share:
+        if video_path:
+            vp = ROOT / video_path.lstrip('/')
+            if vp.exists():
+                try:
+                    _sp.Popen(['termux-share', '-a', 'send', '-c', 'video/mp4', str(vp)], stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
+                    return jsonify({'ok': True, 'accion': 'force_share_video', 'red': red, 'video': video_path, 'clipboard': clip})
+                except Exception as e:
+                    return jsonify({'ok': False, 'error': 'termux-share: ' + str(e)}), 500
+        if imagen_path:
+            ip = ROOT / imagen_path.lstrip('/')
+            if ip.exists():
+                try:
+                    _sp.Popen(['termux-share', '-a', 'send', '-c', 'image/png', str(ip)], stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
+                    return jsonify({'ok': True, 'accion': 'force_share_image', 'red': red, 'imagen': imagen_path, 'clipboard': clip})
+                except Exception as e:
+                    return jsonify({'ok': False, 'error': 'termux-share: ' + str(e)}), 500
+        return jsonify({'ok': False, 'error': 'force_share sin video/imagen'}), 400
 
     # 1. Clipboard siempre
     clip = False
