@@ -2449,19 +2449,39 @@ def _tool_publicar_comentario_youtube(args):
     prod_path = ROOT / "output" / "encuadre" / f"produccion_{fecha}.json"
     seo = _j.loads(seo_path.read_text()) if seo_path.exists() else {}
     prod = _j.loads(prod_path.read_text()) if prod_path.exists() else {}
-    titulo = (seo.get("largo") or {}).get("titulo", "")
-    dossier = prod.get("dossier") or {}
-    tema = dossier.get("titular_brutal", "")[:100]
+    titulo_video = (seo.get("largo") or {}).get("titulo", "").strip()
+    _denr_path = ROOT / "output" / "encuadre" / f"dossier_{fecha}_enriquecido.json"
+    denr = _j.loads(_denr_path.read_text()) if _denr_path.exists() else {}
+    dossier = (denr.get("dossier") or prod.get("dossier") or {})
+    top3 = denr.get("top3") or {}
+    resumen = (dossier.get("resumen_ejecutivo") or "").strip()
+    import re as _re_pfx
+    _m_pfx = _re_pfx.match(r"^Hoy hemos auditado \d+ medios?(?: de comunicación)?\. El tema central es:\s*", resumen)
+    if _m_pfx:
+        resumen = resumen[_m_pfx.end():]
+    n1 = str(top3.get("noticia_1", "")).strip()
+    n2 = str(top3.get("noticia_2", "")).strip()
+    n3 = str(top3.get("noticia_3", "")).strip()
     
     # Comentario top-1: pregunta + CTA + link cruzado + hashtags
     post_url = f"https://elencuadre.pages.dev/analisis/{fecha}-largo/"
+    tg_url = "https://t.me/somoselencuadre"
     comentario = extra + ("\n\n" if extra else "")
-    comentario += f"📊 ANÁLISIS COMPLETO: {post_url}\n\n"
-    if tema:
-        comentario += f"🎯 Hoy analizamos: {tema}\n\n"
+    comentario += f"🎬 EL ENCUADRE · Análisis del {fecha}\n\n"
+    if titulo_video:
+        comentario += f"🎯 Hoy: {titulo_video}\n\n"
+    if resumen:
+        comentario += f"📋 Qué revela el análisis:\n{resumen}\n\n"
+    if n1 or n2 or n3:
+        comentario += "📌 Auditamos 19 medios. Frentes del día:\n"
+        if n1: comentario += f"  🟠 {n1[:140]}{'…' if len(n1)>140 else ''}\n"
+        if n2: comentario += f"  🟡 {n2[:140]}{'…' if len(n2)>140 else ''}\n"
+        if n3: comentario += f"  🔵 {n3[:140]}{'…' if len(n3)>140 else ''}\n"
+        comentario += "\n"
+    comentario += f"📊 Análisis completo: {post_url}\n"
+    comentario += f"📩 Dossier diario en Telegram: {tg_url}\n\n"
     comentario += "💬 ¿Tú qué opinas? ¿Has detectado estas técnicas en los medios que lees?\n\n"
-    comentario += "📩 Recibe el dossier diario en Telegram: https://t.me/somoselencuadre\n\n"
-    comentario += "#ElEncuadre #AnálisisMediático #Framing #SesgosCognitivos"
+    comentario += "#ElEncuadre #AnálisisMediático #Framing #SesgosCognitivos #Medios #Prensa"
     
     # Obtener token
     try:
@@ -2496,6 +2516,70 @@ def _tool_publicar_comentario_youtube(args):
         fijado = False
     
     return f"OK comentario publicado en {vid}{' y fijado' if fijado else ''}\nID: {cid}\n\n{comentario[:400]}"
+
+
+def _tool_publicar_comentario_short(args):
+    """Comentario cross-traffic para un short: hook + link largo + link post + CTA."""
+    import requests, datetime, json as _j, sys as _sys_cm
+    vid = (args.get("video_id") or "").strip()
+    if not vid: return "ERROR: falta video_id"
+    fecha = args.get("fecha") or datetime.date.today().isoformat()
+    if fecha == "hoy": fecha = datetime.date.today().isoformat()
+    num = int(args.get("num") or 1)
+    extra = (args.get("texto_extra") or "").strip()
+
+    rc_path = ROOT / "output" / "encuadre" / f"redes_{fecha}_cruzadas.json"
+    if not rc_path.exists(): return f"ERROR: no existe {rc_path.name}"
+    try: rc = _j.loads(rc_path.read_text())
+    except Exception as e: return f"ERROR: {e}"
+    shorts = rc.get("shorts") or []
+    if num < 1 or num > len(shorts): return f"ERROR: short {num} fuera de rango ({len(shorts)})"
+    sh = shorts[num-1]
+
+    body = (sh.get("hook") or "").strip() or (sh.get("titulo") or "").strip()
+    link_largo = (sh.get("link_largo") or "").strip()
+    link_post = (sh.get("link_post") or "").strip()
+    if not link_largo:
+        link_largo = ((rc.get("largo") or {}).get("link_yt") or "").strip()
+
+    comentario = extra + ("\n\n" if extra else "")
+    comentario += f"🔥 {body}\n\n"
+    if link_largo:
+        comentario += f"🎬 El análisis completo del día: {link_largo}\n"
+    if link_post and link_post != link_largo:
+        comentario += f"📊 Post completo: {link_post}\n"
+    comentario += "\n💬 ¿Has visto esto en los medios que lees?\n\n"
+    comentario += "#ElEncuadre #Shorts #AnálisisMediático #Framing #Prensa"
+
+    try:
+        _sys_cm.path.insert(0, str(ROOT / "scripts"))
+        from subir_youtube import token
+        access = token("data/youtube_encuadre_token.json")
+    except Exception as e:
+        return f"ERROR token: {e}"
+
+    try:
+        r = requests.post(
+            "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet",
+            headers={"Authorization": f"Bearer {access}", "Content-Type": "application/json"},
+            json={"snippet": {"videoId": vid, "topLevelComment": {"snippet": {"textOriginal": comentario}}}},
+            timeout=30
+        )
+        if r.status_code != 200:
+            return f"ERROR insert HTTP {r.status_code}: {r.text[:300]}"
+        cid = r.json()["snippet"]["topLevelComment"]["id"]
+    except Exception as e:
+        return f"ERROR insert: {e}"
+
+    try:
+        requests.post(
+            f"https://www.googleapis.com/youtube/v3/comments/setModerationStatus?id={cid}&moderationStatus=published",
+            headers={"Authorization": f"Bearer {access}"}, timeout=20
+        )
+    except Exception:
+        pass
+
+    return f"OK comentario short {num} publicado en {vid}\nID: {cid}\n\n{comentario[:400]}"
 
 
 def _tool_analizar_short_viral(args):
@@ -2818,6 +2902,7 @@ TOOL_FNS = {
     "generar_thumbnail_video": _tool_generar_thumbnail_video,
     "analizar_short_viral": _tool_analizar_short_viral,
     "publicar_comentario_youtube": _tool_publicar_comentario_youtube,
+    "publicar_comentario_short": _tool_publicar_comentario_short,
     "rollback_listar": _tool_rollback_listar,
     "rollback_snapshot": _tool_rollback_snapshot,
     "reindexar_busqueda": _tool_reindexar_busqueda,
