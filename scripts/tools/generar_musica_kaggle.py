@@ -108,7 +108,7 @@ print("=== FIN OK ===", flush=True)
     except: pass
     nb = nb.replace("@@TOKEN@@", token)
     nb = nb.replace("__CAPTIONS__", json.dumps([estilo_prompt] * cantidad))
-    nb = nb.replace("__REQ_BASE__", json.dumps(req))
+    nb = nb.replace("__REQ_BASE__", repr(req))
     nb = nb.replace("__DURACION__", str(duracion))
     nb = nb.replace("__BPM__", str(bpm))
     nb = nb.replace("__KEYSCALE__", json.dumps(keyscale))
