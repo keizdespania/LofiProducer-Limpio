@@ -31,11 +31,23 @@ def _run(cmd, timeout=300, desc=""):
         return False
 
 def _kenburns(tipo, dur):
-    fps, frames = 25, max(int(dur * 25), 10)
-    if tipo == "hook": return f"zoompan=z='min(zoom+0.002,1.15)':d={frames}:s=1920x1080:fps=25"
-    if tipo == "dato": return f"zoompan=z='min(zoom+0.003,1.20)':d={frames}:s=1920x1080:fps=25"
-    if tipo in ("explicacion","contraste","cierre"): return f"zoompan=z='if(lte(zoom,1.0),1.12,max(1.001,zoom-0.0012))':d={frames}:s=1920x1080:fps=25"
-    return f"zoompan=z='min(zoom+0.0015,1.12)':d={frames}:s=1920x1080:fps=25"
+    """Ken Burns sincronizado: zoom lineal 1.0→z_final en TODA la duración.
+    Sin techo prematuro → movimiento absoluto hasta el último frame."""
+    fps = 25
+    frames = max(int(dur * fps), 10)
+    # Zoom objetivo por tipo
+    if tipo == "hook":
+        z_ini, z_fin = 1.0, 1.15   # zoom-in (revelar detalle)
+    elif tipo == "dato":
+        z_ini, z_fin = 1.0, 1.20   # zoom-in agresivo (énfasis)
+    elif tipo in ("explicacion", "contraste", "cierre"):
+        z_ini, z_fin = 1.10, 1.00  # zoom-out suave (respirar)
+    else:
+        z_ini, z_fin = 1.0, 1.12   # zoom-in suave
+    step = (z_fin - z_ini) / max(frames - 1, 1)
+    # Expresión lineal basada en 'on' (output frame number, 0..frames-1)
+    z_expr = f"{z_ini}+{step:.8f}*on"
+    return f"zoompan=z='{z_expr}':d={frames}:s=1920x1080:fps={fps}"
 
 def main():
     WORK.mkdir(parents=True, exist_ok=True)
@@ -66,7 +78,7 @@ def main():
             if not img.exists(): print(f"❌ Falta imagen {n}"); sys.exit(1)
             
             kb = _kenburns(tipo, dur)
-            cmd = [FFMPEG,"-y","-hide_banner","-loglevel","error","-loop","1","-i",str(img),"-t",str(dur),
+            cmd = [FFMPEG,"-y","-hide_banner","-loglevel","error","-loop","1","-framerate","25","-i",str(img),"-t",str(dur),
                 "-vf",f"scale=2560:1440:force_original_aspect_ratio=increase,crop=2560:1440,{kb},scale=1920:1080,format=yuv420p",
                 "-an","-c:v","libx264","-preset","ultrafast","-crf","24","-tune","stillimage",str(clip)]
             if not _run(cmd, 240, f"clip {n:03d} {tipo}"):
