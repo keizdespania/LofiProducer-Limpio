@@ -19,9 +19,14 @@ def _preparar_assets(fecha, dest):
     faltan = []
     for item in tl:
         n = item["id"]
-        for ext in ("mp4", "png"):
-            src = MEDIA / f"escena_{n:02d}.{ext}"
-            if src.exists(): shutil.copy2(src, dest / src.name)
+        for src, dst_name in [
+            (MEDIA / f"escena_{n:02d}.mp4", f"escena_{n:02d}.mp4"),
+            (MEDIA / f"escena_{n:02d}.png", f"escena_{n:02d}.png"),
+            (MEDIA / f"seg_{n:03d}_{fecha}.png", f"escena_{n:02d}.png"),
+            (MEDIA / f"seg_{n:03d}.png", f"escena_{n:02d}.png"),
+        ]:
+            if src.exists():
+                shutil.copy2(src, dest / dst_name); break
         mus = MUSICA / f"escena_{n:02d}.mp3"
         if mus.exists(): shutil.copy2(mus, dest / mus.name)
         else: faltan.append(f"escena_{n:02d}.mp3")
@@ -38,6 +43,10 @@ def _preparar_assets(fecha, dest):
             shutil.copy2(src, dest / f"{f}.mp4")
             print(f"  {f}.mp4 <- {src.name}", flush=True)
     shutil.copy2(OUT / f"timeline_{fecha}.json", dest / "timeline.json")
+    lut_src = ROOT / "assets" / "luts" / "cinematic_teal_orange.png"
+    if lut_src.exists():
+        shutil.copy2(lut_src, dest / "cinematic.cube.png")
+        print(f"  LUT <- {lut_src.name}", flush=True)
     if faltan: print(f"⚠️ Faltan {len(faltan)} audios: {faltan[:3]}")
     return dest
 
@@ -80,9 +89,14 @@ def _subir_dataset(assets_dir, dataset_slug):
     return True
 
 
-def _renderizar_kernel(fecha):
-    """Lee template y lo sube como kernel."""
-    tpl = (ROOT / "scripts" / "kernel_render_encuadre.py").read_text()
+def _renderizar_kernel(fecha, top1=False):
+    """Lee template y lo sube como kernel. top1 usa versión con haldclut+60fps."""
+    name = "kernel_render_encuadre_top1.py" if top1 else "kernel_render_encuadre.py"
+    p = ROOT / "scripts" / name
+    if not p.exists():
+        print(f"[orq] ⚠️ {name} no existe, usando base", flush=True)
+        p = ROOT / "scripts" / "kernel_render_encuadre.py"
+    tpl = p.read_text()
     # Inyectar FECHA + GITHUB_TOKEN reales (como Wan)
     import re as _re
     _env = (ROOT / ".env").read_text()
@@ -115,7 +129,7 @@ def _descargar(slug, fecha, dest):
     r = output_kernel(slug)
     files = r.get("files", []) if isinstance(r, dict) else []
     print(f"[orq] outputs: {[f.get('name','?') for f in files]}")
-    target = OUT / f"video_largo_{fecha}_kaggle.mp4"
+    target = OUT / f"video_largo_{fecha}.mp4"
     for f in files:
         if f.get("name", "").endswith(".mp4"):
             url = f.get("url") or f.get("downloadUrl")
@@ -150,7 +164,7 @@ def _limpiar_kaggle(dataset_slug, kernel_slug, borrar_dataset=True):
             print(f"[cleanup] delete error: {e}", flush=True)
 
 
-def main(fecha, dataset_slug=None, borrar_dataset=True):
+def main(fecha, dataset_slug=None, borrar_dataset=True, top1=False):
     global DS_OWNER, DS_SLUG
     if not dataset_slug:
         dataset_slug = f"{DS_OWNER}/{DS_SLUG}"
@@ -161,26 +175,33 @@ def main(fecha, dataset_slug=None, borrar_dataset=True):
         assets = _preparar_assets(fecha, tmp / "assets")
         if not _subir_dataset(assets, dataset_slug):
             print("[orq] FALLO subir dataset"); return
-        if not _renderizar_kernel(fecha):
+        if not _renderizar_kernel(fecha, top1=top1):
             print("[orq] FALLO push_kernel"); return
         if not _esperar_fin(KERNEL_SLUG):
             print("[orq] FALLO o timeout"); return
-        print("[orq] esperando subida a GitHub...", flush=True)
-        sys.path.insert(0, str(ROOT / "scripts"))
-        from descargar_y_borrar_github import main as _dl_git
-        _dl_git(prefijo=f"render_{fecha}", destino_dir="output/encuadre", timeout_min=55)
-        target = OUT / f"render_{fecha}.mp4"
-        if target.exists():
-            video = OUT / f"video_largo_{fecha}_kaggle.mp4"
-            target.rename(video)
-            print(f"[orq] COMPLETADO {video}")
+        print("[orq] descargando directo desde Kaggle (sin GitHub)...", flush=True)
+        video = _descargar(KERNEL_SLUG, fecha, OUT)
+        if video and video.exists():
+            print(f"[orq] COMPLETADO {video}", flush=True)
             exito = True
         else:
-            print("[orq] SIN VIDEO")
+            print("[orq] SIN VIDEO — fallback GitHub (si el vídeo es <100MB podría funcionar)", flush=True)
+            try:
+                sys.path.insert(0, str(ROOT / "scripts"))
+                from descargar_y_borrar_github import main as _dl_git
+                _dl_git(prefijo=f"render_{fecha}", destino_dir="output/encuadre", timeout_min=55)
+                target = OUT / f"render_{fecha}.mp4"
+                if target.exists():
+                    target.rename(OUT / f"video_largo_{fecha}.mp4")
+                    exito = True
+            except Exception as _e:
+                print(f"[orq] Fallback GitHub: {_e}", flush=True)
     finally:
         # SIEMPRE: parar kernel y borrar dataset (salvo que falle y quieras debug)
         _limpiar_kaggle(dataset_slug, KERNEL_SLUG, borrar_dataset=borrar_dataset and exito)
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "2026-10-29")
+    fecha_arg = sys.argv[1] if len(sys.argv) > 1 else "2026-10-29"
+    top1_arg = "--top1" in sys.argv
+    main(fecha_arg, top1=top1_arg)
