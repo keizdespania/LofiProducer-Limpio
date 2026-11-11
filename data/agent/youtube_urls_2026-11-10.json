@@ -1,6 +1,10 @@
 {
   "fecha": "2026-11-10",
-  "largo": null,
+  "largo": {
+    "titulo": "OkDiario: Otra treta de Sofía Puente permitirá que el 29-N voten ",
+    "video_id": "fUW-WCzmXPI",
+    "tipo": "video_largo"
+  },
   "shorts": [
     {
       "titulo": "🟠 180.000 menores, hijos de supuestos nietos, ya pueden...",

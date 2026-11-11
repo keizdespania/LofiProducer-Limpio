@@ -634,6 +634,13 @@ def _enviar_sugerencia(sid, s):
 
 def _post_buttons(texto, kb):
     import urllib.request, urllib.parse, json as _j
+    # Filtro: silenciar si el contenido del día ya está completo (salvo alertas críticas)
+    try:
+        from digest_diario import contenido_completo_hoy
+        if contenido_completo_hoy() and not texto.startswith("🚨"):
+            return None
+    except Exception:
+        pass
     try:
         data = urllib.parse.urlencode({"chat_id": CHAT_PRIVADO, "text": texto[:4000],
                                        "parse_mode": "HTML", "reply_markup": _j.dumps(kb)}).encode()
