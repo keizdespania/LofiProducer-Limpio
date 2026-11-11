@@ -82,7 +82,7 @@ def _extraer_frases(ass_path):
     return frases
 
 
-def _fusionar_a_segmentos(frases, duracion_audio, cada_seg=8.5):
+def _fusionar_a_segmentos(frases, duracion_audio, cada_seg=7.0):
     """Corta el audio en trozos exactos de 8.5s, ignorando los saltos del ASS."""
     if not frases or duracion_audio <= 0:
         return []
