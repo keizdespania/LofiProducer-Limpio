@@ -5,86 +5,110 @@
       "id": "avCMw6sGKSE",
       "titulo": "El Jincho - Freestyle 'EL REGRESO' (Videoclip Oficial)",
       "canal": "EL JINCHO LA GENTE FUERTE",
-      "vistas": 102968,
-      "likes": 5557,
+      "vistas": 103650,
+      "likes": 5574,
       "fuente": "youtube_trending"
     },
     {
       "id": "8L0CzL2V72c",
       "titulo": "Grand Theft Auto VI - Features Trailer | PS5 Games",
       "canal": "PlayStation",
-      "vistas": 3494966,
-      "likes": 105037,
+      "vistas": 3534864,
+      "likes": 105666,
       "fuente": "youtube_trending"
     },
     {
       "id": "_yl5ELcmugI",
       "titulo": "Grand Theft Auto VI: Pre-Load Now",
       "canal": "Rockstar Games",
-      "vistas": 6461026,
-      "likes": 379720,
+      "vistas": 6540565,
+      "likes": 381825,
       "fuente": "youtube_trending"
     },
     {
       "id": "YakxpNny6Gk",
       "titulo": "Maki, María Artés - Mil y Una Noches (Lyrics/Letra) \"mil y una noche tu y yo\"",
       "canal": "BangersOnly",
-      "vistas": 135455,
-      "likes": 1485,
+      "vistas": 138323,
+      "likes": 1501,
       "fuente": "youtube_trending"
     },
     {
       "id": "uOqkc8bqDmE",
       "titulo": "Maxton Hall - Temporada 3 | Tráiler Oficial | Prime Video",
       "canal": "Amazon Prime Video España",
-      "vistas": 74245,
-      "likes": 666,
+      "vistas": 74584,
+      "likes": 667,
       "fuente": "youtube_trending"
     },
     {
       "id": "a-b_2mAk-WU",
       "titulo": "ME HICE MILLONARIO JUGANDO A LOS BOLOS",
       "canal": "Rubius Z",
-      "vistas": 2265109,
-      "likes": 61262,
+      "vistas": 2281395,
+      "likes": 61538,
       "fuente": "youtube_trending"
     },
     {
       "id": "WU95JtFAseY",
       "titulo": "MENTIRA",
       "canal": "El Americano 4KT - Topic",
-      "vistas": 95096,
-      "likes": 3667,
+      "vistas": 96966,
+      "likes": 3714,
       "fuente": "youtube_trending"
     },
     {
       "id": "6hzMSQMGEQE",
       "titulo": "Rockstar suelta el último tráiler y DATOS de GTA 6",
       "canal": "AlexWhite",
-      "vistas": 85204,
-      "likes": 2639,
+      "vistas": 86481,
+      "likes": 2650,
       "fuente": "youtube_trending"
     },
     {
       "id": "RnRSBrrytaY",
       "titulo": "en este juego tienes que estafar a clientes de verdad - scam with your friends",
       "canal": "rickyedit",
-      "vistas": 560407,
-      "likes": 13276,
+      "vistas": 562233,
+      "likes": 13285,
       "fuente": "youtube_trending"
     },
     {
       "id": "xWNIrOTJ6VA",
       "titulo": "LNGSHOT - ‘Bananas’ Official Music Video",
       "canal": "MORE VISION",
-      "vistas": 1296421,
-      "likes": 150909,
+      "vistas": 1317259,
+      "likes": 151976,
       "fuente": "youtube_trending"
     }
   ],
   "trends": [
     {
+      "keyword": "ozempic ceguera",
+      "fuente": "google_trends_rss"
+    },
+    {
+      "keyword": "aceite",
+      "fuente": "google_trends_rss"
+    },
+    {
+      "keyword": "once caldas - atlético nacional",
+      "fuente": "google_trends_rss"
+    },
+    {
+      "keyword": "anthropic",
+      "fuente": "google_trends_rss"
+    },
+    {
       "keyword": "mañana 11 de noviembre abre mercadona",
+      "fuente": "google_trends_rss"
+    },
+    {
+      "keyword": "trasvase tajo-segura",
+      "fuente": "google_trends_rss"
+    },
+    {
+      "keyword": "misil de crucero",
       "fuente": "google_trends_rss"
     },
     {
@@ -92,35 +116,11 @@
       "fuente": "google_trends_rss"
     },
     {
+      "keyword": "cuba",
+      "fuente": "google_trends_rss"
+    },
+    {
       "keyword": "ola de frío",
-      "fuente": "google_trends_rss"
-    },
-    {
-      "keyword": "copa colombia",
-      "fuente": "google_trends_rss"
-    },
-    {
-      "keyword": "internacional de bogotá - américa",
-      "fuente": "google_trends_rss"
-    },
-    {
-      "keyword": "juegos ps plus extra noviembre 2026",
-      "fuente": "google_trends_rss"
-    },
-    {
-      "keyword": "centro nacional de inteligencia",
-      "fuente": "google_trends_rss"
-    },
-    {
-      "keyword": "76ers - celtics",
-      "fuente": "google_trends_rss"
-    },
-    {
-      "keyword": "ue tavernes valencia cf",
-      "fuente": "google_trends_rss"
-    },
-    {
-      "keyword": "knicks - bucks",
       "fuente": "google_trends_rss"
     }
   ],
@@ -159,55 +159,55 @@
   "hackernews": [
     {
       "titulo": "After 7 months, Glasswing overwelms maintainers with underwhelming findings",
-      "score": 333,
-      "fuente": "hackernews"
-    },
-    {
-      "titulo": "Scion is back and is going to sell a kei truck in America",
-      "score": 373,
+      "score": 348,
       "fuente": "hackernews"
     },
     {
       "titulo": "A great old-timey game-programming hack (2013)",
-      "score": 49,
+      "score": 63,
+      "fuente": "hackernews"
+    },
+    {
+      "titulo": "Scion is back and is going to sell a kei truck in America",
+      "score": 388,
       "fuente": "hackernews"
     },
     {
       "titulo": ".name Grandfathered",
-      "score": 723,
+      "score": 729,
       "fuente": "hackernews"
     },
     {
       "titulo": "Smart home devices should work without the internet",
-      "score": 775,
+      "score": 788,
       "fuente": "hackernews"
     },
     {
       "titulo": "To deter bioterrorism, U.S. imposes new rules on ordering synthetic DNA",
-      "score": 12,
+      "score": 21,
       "fuente": "hackernews"
     },
     {
       "titulo": "Six Math Essentials by Terence Tao",
-      "score": 165,
+      "score": 171,
       "fuente": "hackernews"
     },
     {
       "titulo": "Starlink Mini 2",
-      "score": 304,
+      "score": 317,
       "fuente": "hackernews"
     },
     {
       "titulo": "Announcing .NET 11",
-      "score": 69,
+      "score": 85,
       "fuente": "hackernews"
     },
     {
       "titulo": "Hacking the Meta Ray-Ban smartglasses",
-      "score": 68,
+      "score": 74,
       "fuente": "hackernews"
     }
   ],
   "nichos": "ia_news",
-  "ts": "2026-11-11T05:07:09.112619"
+  "ts": "2026-11-11T05:37:23.585876"
 }
