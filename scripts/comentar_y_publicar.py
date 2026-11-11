@@ -79,10 +79,16 @@ def main():
     # Publicar el post principal
     if url:
         try:
-            from notificador_encuadre import publicar_analisis, publicar_dossier, publicar_short, publicar_podcast
+            from notificador_encuadre import publicar_analisis, publicar_dossier, publicar_short, publicar_podcast, publicar_mediano, _extraer_tecnicas_cortas
             slug = url.rstrip("/").split("/")[-1]
-            if tipo == "analisis":
-                r = publicar_analisis(titulo, slug, "", url_fuente)
+            import re as _re_cp, datetime as _dt_cp
+            _m_fecha = _re_cp.match(r"(\d{4}-\d{2}-\d{2})", slug)
+            _fecha_cp = _m_fecha.group(1) if _m_fecha else _dt_cp.date.today().isoformat()
+
+            if "mediano" in slug or tipo == "mediano":
+                from notificador_encuadre import publicar_mediano, _extraer_tecnicas_cortas
+                _tec = _extraer_tecnicas_cortas(_fecha_cp)
+                r = publicar_mediano(titulo, slug, tecnicas=_tec)
             elif tipo == "dossier":
                 r = publicar_dossier(titulo, slug, "", url_fuente)
             elif tipo == "short":
@@ -90,13 +96,10 @@ def main():
             elif tipo == "podcast":
                 r = publicar_podcast(titulo, url)
             else:
-                from notificador_encuadre import _post
-                r = _post("sendMessage", {
-                    "chat_id": _env("TELEGRAM_CHANNEL_ID"),
-                    "text": f"*{titulo}*\n\n🔗 {url}",
-                    "parse_mode": "Markdown"
-                })
-            print(f"{'✅' if r.get('ok') else '❌'} Post principal publicado")
+                r = publicar_analisis(titulo, slug, "", url_fuente)
+
+            _ok_r = (r is True) or (isinstance(r, dict) and r.get("ok"))
+            print(f"{'✅' if _ok_r else '❌'} Post principal publicado")
         except Exception as e:
             print(f"❌ {e}")
 

@@ -16,6 +16,70 @@ from notificador_top1 import (
     _post, TOKEN,
 )
 
+
+# ═══════════════════════════════════════════════════════════
+# HELPERS SEO + CROSS-TRAFFIC (flash5 telegram)
+# ═══════════════════════════════════════════════════════════
+_CROSS_URLS = {
+    "web":      "https://elencuadre.pages.dev",
+    "yt":       "https://youtube.com/@somoselencuadre.oficial",
+    "tiktok":   "https://tiktok.com/@somoselencuadre",
+    "ig":       "https://instagram.com/somoselencuadre",
+    "x":        "https://x.com/SomosElEncuadre",
+    "threads":  "https://threads.net/@somoselencuadre",
+    "linkedin": "https://www.linkedin.com/in/somos-el-encuadre-undefined-62058a44a/",
+    "telegram": "https://t.me/somoselencuadre",
+}
+_CROSS_HTML = (
+    f'🌐 <a href="{_CROSS_URLS["web"]}">Web</a> · '
+    f'▶️ <a href="{_CROSS_URLS["yt"]}">YouTube</a> · '
+    f'📱 <a href="{_CROSS_URLS["tiktok"]}">TikTok</a> · '
+    f'📷 <a href="{_CROSS_URLS["ig"]}">Instagram</a> · '
+    f'🐦 <a href="{_CROSS_URLS["x"]}">X</a> · '
+    f'🧵 <a href="{_CROSS_URLS["threads"]}">Threads</a> · '
+    f'💼 <a href="{_CROSS_URLS["linkedin"]}">LinkedIn</a> · '
+    f'📩 <a href="{_CROSS_URLS["telegram"]}">Telegram</a>'
+)
+
+def _extraer_tecnicas_cortas(fecha, max_items=3):
+    """Extrae técnicas cortas (tag-like, <40 chars) del dossier enriquecido."""
+    import json as _j, pathlib as _p
+    _root = _p.Path(__file__).resolve().parent.parent
+    p = _root / "output" / "encuadre" / f"dossier_{fecha}_enriquecido.json"
+    if not p.exists(): return ""
+    try:
+        d = _j.loads(p.read_text()).get("dossier") or {}
+    except: return ""
+    tecnicas = d.get("tecnicas_manipulacion") or []
+    if isinstance(tecnicas, str): tecnicas = [tecnicas]
+    vistos = set(); cortas = []
+    for tt in tecnicas:
+        if not isinstance(tt, str): continue
+        tt = tt.strip()
+        if not tt or len(tt) > 40: continue
+        key = tt.lower()
+        if key in vistos: continue
+        vistos.add(key); cortas.append(key)
+        if len(cortas) >= max_items: break
+    return ", ".join(cortas)
+
+def _acortar_smart(texto, max_chars):
+    """Corta en último . ! ? dentro del rango, o en palabra + elipsis."""
+    texto = (texto or "").strip()
+    if len(texto) <= max_chars: return texto
+    minimo = int(max_chars * 0.6)
+    mejor = -1
+    for ch in ".!?":
+        pos = texto.rfind(ch, minimo, max_chars)
+        if pos > mejor: mejor = pos
+    if mejor >= minimo:
+        return texto[:mejor+1].strip()
+    corte = texto[:max_chars].rstrip()
+    sp = corte.rfind(' ')
+    return (corte[:sp] if sp > minimo else corte).rstrip('.,;:') + "…"
+
+# ═══════════════════════════════════════════════════════════
+
 def _escapar(texto):
     if not texto: return ""
     return (str(texto).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
@@ -26,20 +90,24 @@ def _escapar(texto):
 
 def publicar_analisis(titulo, slug, resumen="", url_fuente="", nicho="el_encuadre", imagen=None):
     url = f"https://elencuadre.pages.dev/analisis/{slug}/"
-    msg = f"📰 <b>Nuevo análisis</b>\n\n<b>{_escapar(titulo[:200])}</b>"
+    msg = f"📰 <b>NUEVO ARTÍCULO</b>\n\n"
+    msg += f"<b>{_escapar(titulo[:180])}</b>\n\n"
     if resumen:
-        msg += f"\n\n{_escapar(resumen[:300])}"
-    msg += f"\n\n🔗 {url}"
+        msg += f"{_escapar(_acortar_smart(resumen, 240))}\n\n"
+    msg += f"🔗 <b>Leer completo:</b> {url}\n"
     if url_fuente:
-        msg += f"\n📎 Fuente: {url_fuente}"
+        msg += f"📎 <b>Fuente:</b> {url_fuente}\n"
+    msg += f"\n{_CROSS_HTML}"
     return _canal(msg, throttle_override=1)
 
 def publicar_dossier(titulo, slug, resumen="", url_fuente=""):
     url = f"https://elencuadre.pages.dev/analisis/{slug}/"
-    msg = f"📁 <b>Dossier del día</b>\n\n<b>{_escapar(titulo[:200])}</b>"
+    msg = f"📁 <b>DOSSIER DEL DÍA</b>\n\n"
+    msg += f"<b>{_escapar(titulo[:180])}</b>\n\n"
     if resumen:
-        msg += f"\n\n{_escapar(resumen[:300])}"
-    msg += f"\n\n🔗 {url}"
+        msg += f"{_escapar(_acortar_smart(resumen, 240))}\n\n"
+    msg += f"🔗 <b>Dossier completo:</b> {url}\n"
+    msg += f"\n{_CROSS_HTML}"
     return _canal(msg, throttle_override=1)
 
 def publicar_short(titulo, url_youtube=None, url_tiktok=None):
@@ -48,16 +116,27 @@ def publicar_short(titulo, url_youtube=None, url_tiktok=None):
     if url_tiktok: msg += f"\n🎵 TikTok: {url_tiktok}"
     return _canal(msg)
 
+
+
+def publicar_mediano(titulo, slug, tecnicas=""):
+    """Análisis técnico (mediano) al canal público. SEO + cross-traffic."""
+    url = f"https://elencuadre.pages.dev/analisis/{slug}/"
+    msg = f"🔍 <b>ANÁLISIS TÉCNICO</b>\n\n"
+    msg += f"<b>{_escapar(titulo[:180])}</b>\n\n"
+    if tecnicas:
+        msg += f"📖 <b>Técnicas analizadas:</b> {_escapar(tecnicas)}\n\n"
+    msg += f"🔗 <b>Leer:</b> {url}\n\n"
+    msg += _CROSS_HTML
+    return _canal(msg, throttle_override=1)
+
+
 def publicar_podcast(titulo, url):
     msg = f"🎧 <b>Podcast del día</b>\n\n<b>{_escapar(titulo[:200])}</b>\n\n▶️ {url}"
     return _canal(msg)
 
-def publicar_programacion(tipo, titulo, cuando, url_yt="", url_post="", url_largo="", num=None, fecha=""):
+def publicar_programacion(tipo, titulo, cuando, url_yt="", url_post="", url_largo="", num=None, fecha="", tecnicas=""):
     """Notifica al canal @somoselencuadre la programación de un vídeo/short.
-    Sin throttle (permite ráfaga de programaciones). Dedupe por (tipo+fecha+num)
-    para evitar duplicados si el pipeline se relanza.
-    tipo: 'largo' | 'short'
-    cuando: datetime con la hora de publicación
+    Sin throttle (permite ráfaga). Dedupe por (tipo+fecha+num). SEO + cross-traffic.
     """
     import datetime as _dt
     from notificador_top1 import _debe_enviar, _post, CANAL_PUBLICO
@@ -67,16 +146,17 @@ def publicar_programacion(tipo, titulo, cuando, url_yt="", url_post="", url_larg
 
     if tipo == "largo":
         msg = f"🎬 <b>HOY {hora_str} · El Encuadre</b>\n\n"
-        msg += f"<b>{_escapar(titulo[:200])}</b>\n\n"
-        if url_yt:   msg += f"▶️ Ver: {url_yt}\n"
-        if url_post: msg += f"📄 Análisis: {url_post}\n"
-        msg += f"\n💬 @somoselencuadre"
+        msg += f"<b>{_escapar(titulo[:180])}</b>\n\n"
+        if tecnicas: msg += f"🔍 <b>Técnicas:</b> {_escapar(tecnicas)}\n\n"
+        if url_yt:   msg += f"▶️ <b>Vídeo:</b> {url_yt}\n"
+        if url_post: msg += f"📄 <b>Análisis:</b> {url_post}\n"
+        msg += f"\n{_CROSS_HTML}"
     elif tipo == "short":
         msg = f"📱 <b>HOY {hora_str} · Short {num}</b>\n\n"
-        msg += f"{_escapar(titulo[:200])}\n\n"
-        if url_yt:    msg += f"▶️ Ver: {url_yt}\n"
-        if url_largo: msg += f"🎬 Análisis: {url_largo}\n"
-        msg += f"\n💬 @somoselencuadre"
+        msg += f"{_escapar(_acortar_smart(titulo, 160))}\n\n"
+        if url_largo: msg += f"🎬 <b>Largo:</b> {url_largo}\n"
+        if url_yt:    msg += f"📊 <b>Short:</b> {url_yt}\n"
+        msg += f"\n{_CROSS_HTML}"
     else:
         return False
 

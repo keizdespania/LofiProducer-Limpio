@@ -496,7 +496,7 @@ def main():
                 print(f"   ⚠️ Comentario largo falló: {_e}", flush=True)
             # Notificación canal programación
             try:
-                from notificador_encuadre import publicar_programacion
+                from notificador_encuadre import publicar_programacion, _extraer_tecnicas_cortas
                 _r_prog = publicar_programacion(
                     tipo="largo",
                     titulo=_sl.get("titulo", f"Vídeo Largo {fecha}"),
@@ -504,6 +504,7 @@ def main():
                     url_yt=f"https://youtu.be/{_vid_largo}",
                     url_post=f"https://elencuadre.pages.dev/analisis/{fecha}-largo/",
                     fecha=fecha,
+                    tecnicas=_extraer_tecnicas_cortas(fecha),
                 )
                 print(f"   📢 Canal prog largo: {'✅' if _r_prog else '⚠️'}", flush=True)
             except Exception as _e:
