@@ -1,5 +1,5 @@
 # MANUAL ECOSISTEMA LOFIPRODUCER
-> Auto-generado: 2026-11-10 06:00. NO editar a mano.
+> Auto-generado: 2026-11-11 06:00. NO editar a mano.
 > Regenerar: `python3 scripts/gen_manual.py` o pedir a Dios: `# auto_regenerar_manual`
 
 ## 1. ARQUITECTURA (6 capas)
@@ -9,12 +9,13 @@
 - **Cola**: data/agent/cola_publicacion.db (SQLite FIFO + publish_at)
 - **Motores**: ACE-Step / Sherpa / SDXL / Wan / LTX / FFmpeg / YouTube / Blogger
 - **Infra**: Kaggle T4 x2 + Cloudflare Pages + GitHub + OAuth
-- **Inventario**: 230 scripts · 30 brain · 41 contratos · 37 endpoints · 8 crons
+- **Inventario**: 233 scripts · 30 brain · 42 contratos · 37 endpoints · 10 crons
 
 ## 2. PIPELINE DIARIO (cron 06:00)
 `limpieza_pipeline` → `recolector` → `transcribir_groq` → `analista_fase1` → `sintetizador` → `fase2_produccion` → `voz_edge` → `director_arte` (80 seg) → `render_robusto` → `factory_shorts` → `generar_web_v3` + `dossier` → `actualizar_web_index` → `mkdocs build` → `git push` → YouTube 20:00
 
-## 3. CONTRATOS (41)
+## 3. CONTRATOS (42)
+- `acestep_1.5_contract.json v2.1: ACEStep 1.5 XL Turbo - Manual de Produccion`
 - `acestep_contract.json v1.5: acestep_contract`
 - `biblioteca_contract.json v1.0: Contrato Biblioteca de Producción - Somos El Encuadre`
 - `blogger_contract.json v3.0: blogger_contract`
@@ -57,7 +58,7 @@
 - `web_dashboard_contract.json v1.0: web_dashboard_contract`
 - `youtube_contract.json v2.1: Contrato YouTube API v3 (upload + programación + refresh)`
 
-## 4. SCRIPTS (230 en scripts/)
+## 4. SCRIPTS (233 en scripts/)
 - `pipeline_encuadre.py`: pipeline_encuadre.py - Orquestador Maestro Definitivo (Blindado).
 - `dios.py`: (sin docstring)
 - `generar_web_v3.py`: generar_web_v3.py - Anti-medio: 1 post largo + 1 mediano/día con técnicas reales
@@ -83,7 +84,7 @@
 - `indexar_busqueda.py`: Indexa output/ y web/docs/ en SQLite FTS5 para búsqueda full-text.
 - `cloudflare_stats.py`: cloudflare_stats.py - Lee Web Analytics (RUM) vía GraphQL.
 - `agente_ltx_biblioteca.py`: Agente LTX Biblioteca - Genera clips de 6s Top-1 con crossfade, en lotes de 20.
-- *Y 205 scripts más* (usar `escanear_ecosistema('scripts')`)
+- *Y 208 scripts más* (usar `escanear_ecosistema('scripts')`)
 
 ## 5. BRAIN (30 módulos)
 - `especialistas.py`: Sub-agentes especializados con combos de OmniRoute por rol.
@@ -115,7 +116,7 @@
 - `otros`: /ui-podcast/<path:filename>, /encuadre/factory.js, /encuadre
 - `cms`: /api/cms/files, /api/cms/read, /api/cms/save, /api/cms/delete, /api/cms/build
 
-## 8. CRONS ACTIVOS (8)
+## 8. CRONS ACTIVOS (10)
 - `0 6 * * * cd ~/LofiProducer && python3 scripts/pipeline_encuadre.py >> data/logs/pipeline.log 2>&1`
 - `0 7 * * 1,4 cd ~/LofiProducer && python3 scripts/pipeline_internacional.py >> data/logs/pipeline_intl.log 2>&1`
 - `0 * * * * cd ~/LofiProducer && python3 scripts/liberar_cola.py >> data/logs/cola.log 2>&1`
@@ -124,6 +125,8 @@
 - `0 4 * * 0 cd ~/LofiProducer && python3 scripts/cazar_links_musica.py --tipo largo --mantener >> data/logs/cazar.log 2>&1`
 - `*/15 * * * * cd ~/LofiProducer && python3 scripts/watchdog_pipeline.py >> data/logs/watchdog.log 2>&1`
 - `0 5 * * 0 cd ~/LofiProducer && python3 scripts/limpieza_inteligente.py >> data/logs/limpieza.log 2>&1`
+- `0 13 * * * cd ~/LofiProducer && python3 scripts/digest_diario.py >> data/logs/digest.log 2>&1`
+- `*/30 * * * * cd ~/LofiProducer && python3 scripts/kaggle_cleanup.py >> data/logs/kaggle_cleanup.log 2>&1`
 
 ## 9. MEMORIA DIOS (data/agent/)
 - `dios_workspace.json` → `ver_mi_workspace`
@@ -182,9 +185,9 @@ Ejecutada al inicio del pipeline + cron domingos 05:00:
 - **Rolling 2 días**: mantiene HOY + AYER
 
 ## 17. INVENTARIO (auto)
-- 230 scripts · 30 brain · 41 contratos
-- 37 endpoints · 8 crons · 76 tools
-- Generado: 2026-11-10T06:00:17
+- 233 scripts · 30 brain · 42 contratos
+- 37 endpoints · 10 crons · 76 tools
+- Generado: 2026-11-11T06:00:08
 
 ## 17b. RECIPES (tareas comunes, pasos exactos)
 - **Añadir nicho**: editar config/nichos.json + crear output/nichos/<id>/canal.json + verificar con list_canales
