@@ -95,7 +95,7 @@ def _subir_youtube(archivo, titulo, desc, tags=None, publish_at=None, retries=3)
     return None
 
 async def _gen_voz(txt, salida):
-    c = edge_tts.Communicate(txt, "es-ES-AlvaroNeural", rate="-5%")
+    c = edge_tts.Communicate(txt, "es-ES-AlvaroNeural", rate="+15%", pitch="-20Hz")
     with open(salida, "wb") as f:
         async for ch in c.stream():
             if ch["type"] == "audio": f.write(ch["data"])

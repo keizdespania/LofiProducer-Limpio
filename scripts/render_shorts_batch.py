@@ -16,7 +16,7 @@ FECHA = sys.argv[1] if len(sys.argv) > 1 else datetime.date.today().isoformat()
 PROHIBIDAS = ["muert", "muerte", "sangre", "tragedia", "saqueo", "víctima", "asesin", "fallecid"]
 
 async def _gen_voz(texto, salida):
-    c = edge_tts.Communicate(texto, "es-ES-AlvaroNeural", rate="-5%")
+    c = edge_tts.Communicate(texto, "es-ES-AlvaroNeural", rate="+15%", pitch="-20Hz")
     with open(salida, "wb") as f:
         async for ch in c.stream():
             if ch["type"] == "audio": f.write(ch["data"])
