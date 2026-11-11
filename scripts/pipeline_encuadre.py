@@ -225,6 +225,19 @@ def _marcar_step(fecha, step):
 def _ya_hecho(fecha, step):
     return step in _leer_resume(fecha)
 
+def _run_resume(fecha, step, script, args=None, timeout=900, retries=2):
+    """Ejecuta _run(script) solo si step NO está hecho. Marca tras éxito."""
+    if _ya_hecho(fecha, step):
+        print(f"   ⏭️  [{step}] ya hecho (resume) → saltando {script}", flush=True)
+        return True
+    print(f"   ▶️  [{step}] {script}", flush=True)
+    ok = _run(script, args, timeout, retries)
+    if ok:
+        _marcar_step(fecha, step)
+    return ok
+
+
+
 def main():
     # 2026-11-09: regenerar manual primero (refleja todo lo actual)
     import subprocess as _sp_man
@@ -434,7 +447,7 @@ def main():
     # generar_podcast.py ya se ejecuta en pasos (no duplicar)
     _run("generar_web_v3.py", [fecha], 900, 1)
     _run("generar_web_dossier.py", [fecha], 600, 1)
-    _run("generar_seo.py", [fecha], 300, 1)  # SEO explícito (2026-11-04)
+    _run_resume(fecha, "seo", "generar_seo.py", [fecha], 300, 1)  # SEO explícito (2026-11-04)
     _run("generar_titulo_seo.py", [fecha, "video_largo"], 120, 1)  # A/B título (2026-11-04)
     _run("verificar_alucinaciones.py", [fecha], 120, 1)
     _publicar_web(fecha)
@@ -448,7 +461,7 @@ def main():
         _run("generar_blogs_blogger.py", [fecha], 600, 1)
     _run("generar_redes.py", [fecha], 300, 1)
     _run("generar_imagenes_sociales.py", [fecha], 600, 1)  # 8 imagenes SDXL redes
-    _run("generar_redes_cruzadas_llm.py", [fecha], 300, 1)  # 2026-11-09: redes cruzadas largo+shorts+posts
+    _run_resume(fecha, "redes_cruzadas", "generar_redes_cruzadas_llm.py", [fecha], 300, 1)  # 2026-11-09: redes cruzadas largo+shorts+posts
 
     # RESUME: si ya completado hoy, saltar
     _resume = _leer_resume(fecha)
