@@ -445,11 +445,11 @@ def main():
     print("\n" + "="*60 + "\nPUBLICACIÓN MASIVA\n" + "="*60, flush=True)
     # ===== NUEVO FLUJO WEB (v3 + dossier + verificación + publicación) =====
     # generar_podcast.py ya se ejecuta en pasos (no duplicar)
-    _run("generar_web_v3.py", [fecha], 900, 1)
-    _run("generar_web_dossier.py", [fecha], 600, 1)
+    _run_resume(fecha, "web_v3", "generar_web_v3.py", [fecha], 900, 1)
+    _run_resume(fecha, "web_dossier", "generar_web_dossier.py", [fecha], 600, 1)
     _run_resume(fecha, "seo", "generar_seo.py", [fecha], 300, 1)  # SEO explícito (2026-11-04)
-    _run("generar_titulo_seo.py", [fecha, "video_largo"], 120, 1)  # A/B título (2026-11-04)
-    _run("verificar_alucinaciones.py", [fecha], 120, 1)
+    _run_resume(fecha, "titulo_ab", "generar_titulo_seo.py", [fecha, "video_largo"], 120, 1)  # A/B título (2026-11-04)
+    _run_resume(fecha, "verificar_aluc", "verificar_alucinaciones.py", [fecha], 120, 1)
     _publicar_web(fecha)
     # ===== FIN NUEVO FLUJO WEB =====
     
@@ -459,8 +459,8 @@ def main():
         _run("generar_blogs_blogger.py", [fecha], 600, 1)
     else:
         _run("generar_blogs_blogger.py", [fecha], 600, 1)
-    _run("generar_redes.py", [fecha], 300, 1)
-    _run("generar_imagenes_sociales.py", [fecha], 600, 1)  # 8 imagenes SDXL redes
+    _run_resume(fecha, "redes_por_red", "generar_redes.py", [fecha], 300, 1)
+    _run_resume(fecha, "imagenes_sociales", "generar_imagenes_sociales.py", [fecha], 600, 1)  # 8 imagenes SDXL redes
     _run_resume(fecha, "redes_cruzadas", "generar_redes_cruzadas_llm.py", [fecha], 300, 1)  # 2026-11-09: redes cruzadas largo+shorts+posts
 
     # RESUME: si ya completado hoy, saltar
@@ -620,10 +620,10 @@ def main():
     import datetime as _dt
     if _dt.date.today().weekday() == 6:
         print("\n[domingo] Feedback loop + meta-agentes...", flush=True)
-        _run("analytics_youtube.py", None, 600, 1)
-        _run("auto_ajuste_prompts.py", None, 600, 1)
-        _run("rotador_ab.py", None, 300, 1)
-        _run("meta_agentes_semanal.py", None, 900, 1)
+        _run_resume(fecha, "analytics_yt", "analytics_youtube.py", None, 600, 1)
+        _run_resume(fecha, "auto_ajuste", "auto_ajuste_prompts.py", None, 600, 1)
+        _run_resume(fecha, "rotador_ab", "rotador_ab.py", None, 300, 1)
+        _run_resume(fecha, "meta_agentes", "meta_agentes_semanal.py", None, 900, 1)
 
     print(f"\n✅ PIPELINE MASIVO {fecha} COMPLETADO CON ÉXITO")
     # Marcar pipeline como completado (para recuperación)
