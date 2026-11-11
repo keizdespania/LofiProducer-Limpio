@@ -200,6 +200,31 @@ def _publicar_web(fecha):
         print(f"   ⚠️ git exception: {e}", flush=True)
         return False
 
+
+# ═══════════════════════════════════════════════════════
+# RESUME HELPERS (flash3)
+# ═══════════════════════════════════════════════════════
+_RESUME_HELPERS = True
+
+def _checkpoint_path(fecha):
+    return ROOT / "output" / "encuadre" / f"pipeline_resume_{fecha}.json"
+
+def _leer_resume(fecha):
+    p = _checkpoint_path(fecha)
+    if not p.exists(): return {}
+    try: return json.loads(p.read_text())
+    except: return {}
+
+def _marcar_step(fecha, step):
+    p = _checkpoint_path(fecha)
+    state = _leer_resume(fecha)
+    state[step] = datetime.datetime.now().isoformat()
+    try: p.parent.mkdir(parents=True, exist_ok=True); p.write_text(json.dumps(state, indent=2))
+    except: pass
+
+def _ya_hecho(fecha, step):
+    return step in _leer_resume(fecha)
+
 def main():
     # 2026-11-09: regenerar manual primero (refleja todo lo actual)
     import subprocess as _sp_man
@@ -249,6 +274,7 @@ def main():
                 return
 
     video_path = OUT / f"video_largo_{fecha}.mp4"
+    _marcar_step(fecha, "render_largo")
     if not video_path.exists():
         print("\n🛑 PIPELINE DETENIDO: El vídeo largo no se generó.", flush=True)
         return
@@ -424,6 +450,14 @@ def main():
     _run("generar_imagenes_sociales.py", [fecha], 600, 1)  # 8 imagenes SDXL redes
     _run("generar_redes_cruzadas_llm.py", [fecha], 300, 1)  # 2026-11-09: redes cruzadas largo+shorts+posts
 
+    # RESUME: si ya completado hoy, saltar
+    _resume = _leer_resume(fecha)
+    if "completado" in _resume:
+        print(f"   ⏭️  Pipeline {fecha} ya completado (resume). Saliendo.", flush=True)
+        return
+    if _resume:
+        print(f"   🔄 Resume activo: steps hechos = {list(_resume.keys())}", flush=True)
+
     # YouTube (escalonado, sin fechas pasadas)
     ahora = datetime.datetime.now()
     hoy_dt = datetime.datetime.strptime(fecha, '%Y-%m-%d')
@@ -559,6 +593,7 @@ def main():
         subprocess.run(["termux-notification", "-t", "🎬 Encuadre " + fecha, "-c", "Pipeline completado.", "--priority", "high"], check=False)
     except: pass
 
+    _marcar_step(fecha, "completado")
     state = {"fecha": fecha, "completado": True, "video": str(video_path)}
     (OUT / f"pipeline_{fecha}.json").write_text(json.dumps(state, indent=2))
     # CAPA 4: Post-producción inteligente
@@ -683,18 +718,19 @@ def main():
                 else:
                     print(f"   ❌ Falló: {slug} — {r.get('error', 'desconocido')[:100]}")
 
-        # Resumen del pipeline (2026-11-04: usa notificar_resumen_dia con datos ricos)
+        _marcar_step(fecha, "subida_youtube")
+        # Resumen del pipeline
         n_short = len([s for s in (ROOT / "output" / "encuadre").glob(f"short_*_{fecha}.mp4") if "_with_logo" not in s.name])
         n_post = pub_count
         try:
             import subprocess as _sp
             _sp.run(
-                [sys.executable, str(ROOT / "scripts" / "notificar_resumen_dia.py"), fecha],
+                [sys.executable, str(ROOT / "scripts" / "digest_diario.py"), fecha],
                 cwd=str(ROOT), timeout=120, check=False
             )
-            print(f"   ✅ Resumen rico enviado (via notificar_resumen_dia.py)", flush=True)
+            print(f"   ✅ Digest diario enviado", flush=True)
         except Exception as _e:
-            print(f"   ⚠️ Fallback a resumen simple: {_e}", flush=True)
+            print(f"   ⚠️ Digest falló: {_e}", flush=True)
             r = publicar_pipeline_completado(pub_count, n_short, n_post)
             _ok1 = (r is True) or (isinstance(r, dict) and r.get("ok"))
             if _ok1:
