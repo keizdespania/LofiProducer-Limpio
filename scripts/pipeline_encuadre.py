@@ -259,6 +259,27 @@ def main():
     fecha = datetime.date.today().isoformat()
     print(f"🚀 INICIANDO PIPELINE MASIVO - {fecha}", flush=True)
 
+
+def _render_largo_pipeline(fecha):
+    """Render largo con cascada: Kaggle TOP1 → Kaggle básico → local."""
+    video = OUT / f"video_largo_{fecha}.mp4"
+
+    print("\n" + "="*60 + "\n🎬 INTENTO 1: Kaggle TOP 1 (haldclut+60fps+p7)\n" + "="*60, flush=True)
+    ok = _run("renderizar_en_kaggle.py", [fecha, "--top1"], 2400, 1)
+    if ok and video.exists() and video.stat().st_size > 5_000_000:
+        print(f"✅ Kaggle TOP1 OK ({video.stat().st_size//1024//1024}MB)", flush=True)
+        return True
+
+    print("\n" + "="*60 + "\n🎬 INTENTO 2: Kaggle básico (nvenc cq20)\n" + "="*60, flush=True)
+    ok = _run("renderizar_en_kaggle.py", [fecha], 2400, 1)
+    if ok and video.exists() and video.stat().st_size > 5_000_000:
+        print(f"✅ Kaggle básico OK ({video.stat().st_size//1024//1024}MB)", flush=True)
+        return True
+
+    print("\n" + "="*60 + "\n🎬 INTENTO 3: LOCAL (fallback)\n" + "="*60, flush=True)
+    return _run("render_robusto.py", [fecha], 1800, 1)
+
+
     pasos = [
         ("recolector.py", None, 1200, False),
         ("filtro_seguridad.py", [fecha], 300, False),
@@ -272,13 +293,16 @@ def main():
         ("generar_imagenes_web.py", [fecha], 600, False),
         ("voz_edge.py", None, 600, False),
         ("director_arte.py", [fecha], 2400, False),  # 2026-11-04: fusionado (72 imgs + timeline)
-        ("render_robusto.py", [fecha], 1800, False),
+        ("__RENDER_LARGO__", [fecha], 2400, False),
         ("generar_podcast.py", [fecha], 600, True),  # podcast (2026-11-04)
         ("sincronizar_podcasts.py", [], 120, True),  # 2026-11-09: feed+index+copy robusto
     ]
 
     for script, args, t, opcional in pasos:
-        exito = _run(script, args, t)
+        if script == "__RENDER_LARGO__":
+            exito = _render_largo_pipeline(fecha)
+        else:
+            exito = _run(script, args, t)
         if not exito:
             if opcional:
                 print(f"⚠️ {script} falló definitivamente (opcional). Continuando...", flush=True)
