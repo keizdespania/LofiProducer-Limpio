@@ -1,5 +1,5 @@
 # MANUAL ECOSISTEMA LOFIPRODUCER
-> Auto-generado: 2026-11-11 06:00. NO editar a mano.
+> Auto-generado: 2026-11-11 06:28. NO editar a mano.
 > Regenerar: `python3 scripts/gen_manual.py` o pedir a Dios: `# auto_regenerar_manual`
 
 ## 1. ARQUITECTURA (6 capas)
@@ -187,7 +187,7 @@ Ejecutada al inicio del pipeline + cron domingos 05:00:
 ## 17. INVENTARIO (auto)
 - 233 scripts · 30 brain · 42 contratos
 - 37 endpoints · 10 crons · 76 tools
-- Generado: 2026-11-11T06:00:08
+- Generado: 2026-11-11T06:28:19
 
 ## 17b. RECIPES (tareas comunes, pasos exactos)
 - **Añadir nicho**: editar config/nichos.json + crear output/nichos/<id>/canal.json + verificar con list_canales
