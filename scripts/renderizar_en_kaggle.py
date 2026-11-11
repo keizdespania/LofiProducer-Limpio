@@ -68,15 +68,16 @@ def _subir_dataset(assets_dir, dataset_slug):
         "title": f"Encuadre Assets {_suffix}",
         "id": dataset_slug,
         "licenses": [{"name": "CC0-1.0"}],
+        "isPrivate": False,  # PÚBLICO: permite montarlo desde cuenta 2 si rota
     }
     (assets_dir / "dataset-metadata.json").write_text(json.dumps(meta, indent=2))
     # 1. Create (solo crea metadata, no sube contenido real con CLI 2.2.4)
-    r = subprocess.run(["kaggle", "datasets", "create", "-p", str(assets_dir), "--dir-mode", "zip"],
+    r = subprocess.run(["kaggle", "datasets", "create", "-p", str(assets_dir), "--dir-mode", "zip", "--public"],
                        capture_output=True, text=True, timeout=300, env=_env_kaggle())
     print(f"[orq] create exit={r.returncode}")
     # 2. Version SIEMPRE (esto es lo que sube el zip real)
     print("[orq] subiendo version real (zip)...")
-    r = subprocess.run(["kaggle", "datasets", "version", "-p", str(assets_dir), "-m", "upload", "--dir-mode", "zip"],
+    r = subprocess.run(["kaggle", "datasets", "version", "-p", str(assets_dir), "-m", "upload", "--dir-mode", "zip", "--public"],
                        capture_output=True, text=True, timeout=1800, env=_env_kaggle())
     out = (r.stdout or "") + (r.stderr or "")
     print(f"[orq] kaggle exit={r.returncode}")
