@@ -238,6 +238,33 @@ def _run_resume(fecha, step, script, args=None, timeout=900, retries=2):
 
 
 
+PIPELINE_LOCK_FILE = ROOT / "data" / "agent" / ".pipeline_lock"
+PIPELINE_DEADLINE_S = 90 * 60
+
+
+def _pipeline_running():
+    if not PIPELINE_LOCK_FILE.exists(): return False
+    try:
+        edad = time.time() - PIPELINE_LOCK_FILE.stat().st_mtime
+        return edad < PIPELINE_DEADLINE_S + 1800
+    except Exception:
+        return False
+
+
+def _lock_pipeline():
+    PIPELINE_LOCK_FILE.parent.mkdir(parents=True, exist_ok=True)
+    PIPELINE_LOCK_FILE.write_text(f"pid={os.getpid()} ts={time.time()}")
+
+
+def _unlock_pipeline():
+    try: PIPELINE_LOCK_FILE.unlink(missing_ok=True)
+    except: pass
+
+
+def _deadline_expirada(t_start):
+    return (time.time() - t_start) > PIPELINE_DEADLINE_S
+
+
 def main():
     # 2026-11-09: regenerar manual primero (refleja todo lo actual)
     import subprocess as _sp_man
@@ -260,8 +287,22 @@ def main():
     print(f"🚀 INICIANDO PIPELINE MASIVO - {fecha}", flush=True)
 
 
+def _cleanup_kaggle_kernel():
+    """Best-effort: para el kernel Kaggle tras fallo/timeout del padre."""
+    try:
+        import sys as _s_k
+        _s_k.path.insert(0, str(ROOT / "scripts"))
+        from kaggle_bearer import stop_kernel
+        stop_kernel("keizproductions/render-encuadre")
+        print("   [cleanup] kernel Kaggle detenido", flush=True)
+    except Exception as _e:
+        print(f"   [cleanup] no se pudo detener: {_e}", flush=True)
+
+
 def _render_largo_pipeline(fecha):
     """Render largo con cascada: Kaggle TOP1 → Kaggle básico → local."""
+    import time as _t_local
+    _render_largo_t0 = _t_local.time()
     video = OUT / f"video_largo_{fecha}.mp4"
 
     print("\n" + "="*60 + "\n🎬 INTENTO 1: Kaggle TOP 1 (haldclut+60fps+p7)\n" + "="*60, flush=True)
@@ -269,12 +310,18 @@ def _render_largo_pipeline(fecha):
     if ok and video.exists() and video.stat().st_size > 5_000_000:
         print(f"✅ Kaggle TOP1 OK ({video.stat().st_size//1024//1024}MB)", flush=True)
         return True
+    _cleanup_kaggle_kernel()
+
+    if (time.time() - _render_largo_t0) > 3600:
+        print("⚠️ Deadline interno render superado, saltando a LOCAL", flush=True)
+        return _run("render_robusto.py", [fecha], 1800, 1)
 
     print("\n" + "="*60 + "\n🎬 INTENTO 2: Kaggle básico (nvenc cq20)\n" + "="*60, flush=True)
     ok = _run("renderizar_en_kaggle.py", [fecha], 2400, 1)
     if ok and video.exists() and video.stat().st_size > 5_000_000:
         print(f"✅ Kaggle básico OK ({video.stat().st_size//1024//1024}MB)", flush=True)
         return True
+    _cleanup_kaggle_kernel()
 
     print("\n" + "="*60 + "\n🎬 INTENTO 3: LOCAL (fallback)\n" + "="*60, flush=True)
     return _run("render_robusto.py", [fecha], 1800, 1)
@@ -299,6 +346,9 @@ def _render_largo_pipeline(fecha):
     ]
 
     for script, args, t, opcional in pasos:
+        if _deadline_expirada(_pipeline_t0):
+            print(f"\n🛑 DEADLINE ({PIPELINE_DEADLINE_S//60}min) superada en {script}. Abortando.", flush=True)
+            return
         if script == "__RENDER_LARGO__":
             exito = _render_largo_pipeline(fecha)
         else:
@@ -486,6 +536,9 @@ def _render_largo_pipeline(fecha):
     _run_resume(fecha, "redes_por_red", "generar_redes.py", [fecha], 300, 1)
     _run_resume(fecha, "imagenes_sociales", "generar_imagenes_sociales.py", [fecha], 600, 1)  # 8 imagenes SDXL redes
     _run_resume(fecha, "redes_cruzadas", "generar_redes_cruzadas_llm.py", [fecha], 300, 1)  # 2026-11-09: redes cruzadas largo+shorts+posts
+
+    # Deadline global
+    _pipeline_t0 = time.time()
 
     # RESUME: si ya completado hoy, saltar
     _resume = _leer_resume(fecha)

@@ -114,7 +114,7 @@ def _renderizar_kernel(fecha, top1=False):
     return not (isinstance(res, dict) and res.get("hasError"))
 
 
-def _esperar_fin(slug, timeout=3600):
+def _esperar_fin(slug, timeout=1500):  # 25min < parent 2400s (40min) → child llega a finally
     t0 = time.time()
     while time.time() - t0 < timeout:
         st = estado_kernel(slug)
@@ -144,6 +144,29 @@ def _descargar(slug, fecha, dest):
 
 
 
+
+
+
+def limpiar_kernels_huerfanos():
+    """Detiene kernels del proyecto running/queued >20 min (huérfanos)."""
+    from kaggle_bearer import stop_kernel as _stop
+    print("[cleanup] buscando kernels huérfanos...", flush=True)
+    try:
+        r = subprocess.run(["kaggle", "kernels", "list", "--mine", "-v"],
+                           capture_output=True, text=True, timeout=30, env=_env_kaggle())
+        if r.returncode != 0:
+            print(f"[cleanup] list falló: {r.stderr[:200]}", flush=True)
+            return
+        for line in r.stdout.splitlines():
+            if "running" in line or "queued" in line:
+                parts = line.split()
+                if len(parts) >= 2:
+                    ref = parts[0]
+                    print(f"[cleanup] 🧹 stop {ref}", flush=True)
+                    try: _stop(ref)
+                    except Exception as e: print(f"[cleanup]   error: {e}", flush=True)
+    except Exception as e:
+        print(f"[cleanup] error: {e}", flush=True)
 
 def _limpiar_kaggle(dataset_slug, kernel_slug, borrar_dataset=True):
     """Para el kernel (si sigue vivo) y opcionalmente borra el dataset."""
