@@ -1,0 +1,1032 @@
+[
+  {
+    "id": 1,
+    "inicio": 0.0,
+    "fin": 4.0,
+    "tipo_visual": "imagen",
+    "tipo_escena": "hook",
+    "concepto_visual": "Newspaper laid flat, red price tags replacing headlines, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_001_2026-11-11.png",
+    "texto": "Mira, te lo voy a decir claro desde el principio. Los medios no informan. Venden."
+  },
+  {
+    "id": 2,
+    "inicio": 7.04,
+    "fin": 14.07,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Crowd silhouette swallowing red November 11th calendar, cinematic noir, deep shadows, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_002_2026-11-11.png",
+    "texto": "Y tú, y yo, y todos, nos lo tragamos. Hasta este 11 de noviembre de"
+  },
+  {
+    "id": 3,
+    "inicio": 14.07,
+    "fin": 21.11,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Silhouette standing before a vast, dark sewer system, cinematic noir, deep shadows, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_003_2026-11-11.png",
+    "texto": "2026. Somos El Encuadre. Y vamos a abrir la cloaca. Te voy a enseñar las"
+  },
+  {
+    "id": 4,
+    "inicio": 21.11,
+    "fin": 28.14,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A determined face staring directly into the lens, intense eye contact, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_004_2026-11-11.png",
+    "texto": "técnicas que han usado hoy. Quédate, porque esto te va a cambiar la forma de"
+  },
+  {
+    "id": 5,
+    "inicio": 28.14,
+    "fin": 34.14,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A pharmacist in white coat staring at a framed pharmacy sign, muted light, editorial illustration, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_005_2026-11-11.png",
+    "texto": "leer el periódico. El farmacéutico José me miró y dijo: \"El cartel de la farmacia"
+  },
+  {
+    "id": 6,
+    "inicio": 35.18,
+    "fin": 41.18,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "Pharmacy counter, pharmacist holding pill bottle, customer pointing finger, 70s film archive, faded warm colors, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_006_2026-11-11.png",
+    "texto": "dice 'Todo lo que necesitas, sin receta'\". Yo le dije: \"¡Entonces la receta es la"
+  },
+  {
+    "id": 7,
+    "inicio": 42.21,
+    "fin": 48.21,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A doctor holding a pill bottle, neon cyberpunk, magenta and cyan, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_007_2026-11-11.png",
+    "texto": "mejor publicidad! \". La venta sin receta es la mejor propaganda médica. Mira. Es una"
+  },
+  {
+    "id": 8,
+    "inicio": 49.25,
+    "fin": 56.29,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Crowd walking on a conveyor belt, red price tags on collars, cinematic noir, high contrast, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_008_2026-11-11.png",
+    "texto": "ironía brutal. Nos venden la libertad. — Pero nos controlan a base de venderla. Oye,"
+  },
+  {
+    "id": 9,
+    "inicio": 56.29,
+    "fin": 62.29,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A man's face trapped in a glowing neon cage, hand reaching out, neon cyberpunk, magenta and cyan, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_009_2026-11-11.png",
+    "texto": "fíjate bien en eso. El que te dice \"no necesitas permiso\", te tiene más atado"
+  },
+  {
+    "id": 10,
+    "inicio": 63.32,
+    "fin": 70.36,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Pill bottle on counter, single dramatic shadow, minimalist product shot, muted palette, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_010_2026-11-11.png",
+    "texto": "que nadie. Porque si no necesitas receta, no necesitas dudar. No necesitas pensar. Solo tienes"
+  },
+  {
+    "id": 11,
+    "inicio": 70.36,
+    "fin": 77.39,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Person plugging in power cable, vintage television flickering to life, 70s film archive, faded warm colors, dust specks, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_011_2026-11-11.png",
+    "texto": "que comprar. Y pagar. Y seguir comprando. Ahora conecta el cable. Esto no es solo"
+  },
+  {
+    "id": 12,
+    "inicio": 77.39,
+    "fin": 84.43,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Table of colorful pills, glossy surface hiding dark hollow beneath, minimalist product shot, dramatic single shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_012_2026-11-11.png",
+    "texto": "de pastillas. Es el juego de siempre. Te muestran la superficie. Te venden la apariencia."
+  },
+  {
+    "id": 13,
+    "inicio": 84.43,
+    "fin": 91.43,
+    "tipo_visual": "imagen",
+    "tipo_escena": "contraste",
+    "concepto_visual": "A blind man holding a guide’s hand, walking through foggy city streets, cinematic noir, deep shadows, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_013_2026-11-11.png",
+    "texto": "Y tú crees que decides. Mientras te guían por la mano. Como un ciego a"
+  },
+  {
+    "id": 14,
+    "inicio": 91.46,
+    "fin": 98.5,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Smoky hands manipulating smoke to look like solid gold, cinematic noir, high contrast, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_014_2026-11-11.png",
+    "texto": "otro. Oye, somos expertos en esto. En disfrazar la manipulación de normalidad. En vender humo"
+  },
+  {
+    "id": 15,
+    "inicio": 98.5,
+    "fin": 105.54,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A news anchor behind glass handing wrapped package to camera, 70s film archive, faded warm colors, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_015_2026-11-11.png",
+    "texto": "como aire puro. Los medios hacen lo mismo. Te dan la noticia empaquetada. Con el"
+  },
+  {
+    "id": 16,
+    "inicio": 105.54,
+    "fin": 108.54,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "macro human eye reflecting chaos, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_016_2026-11-11.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 17,
+    "inicio": 105.54,
+    "fin": 112.57,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand discarding an empty candy wrapper, vibrant neon lighting, cyberpunk aesthetic, shallow depth of field, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_017_2026-11-11.png",
+    "texto": "sabor que les interesa. Sin que veas el envase vacío. Te dicen qué sentir. Y"
+  },
+  {
+    "id": 18,
+    "inicio": 112.57,
+    "fin": 119.61,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A tablet displaying a digital prescription, neon cyberpunk, magenta and cyan, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_018_2026-11-11.png",
+    "texto": "tú sientes. Sin preguntar por qué. Es la receta perfecta. Sin efectos secundarios visibles. Solo"
+  },
+  {
+    "id": 19,
+    "inicio": 119.61,
+    "fin": 126.64,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A consumer surrounded by pulsing neon ads, face lit by magenta glow, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_019_2026-11-11.png",
+    "texto": "dependencia. Y consumo. Y silencio. Porque dudar es incómodo. Y comprar es fácil. Así funciona"
+  },
+  {
+    "id": 20,
+    "inicio": 126.64,
+    "fin": 133.68,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A politician shaking hands with a consumer holding a dreamy shopping bag, bright studio lights, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_020_2026-11-11.png",
+    "texto": "todo. La política te vende promesas. La publicidad te vende sueños. Y tú crees que"
+  },
+  {
+    "id": 21,
+    "inicio": 133.68,
+    "fin": 140.71,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A person holding several heavy golden chains, theatrical stage lighting, cinematic noir, high contrast, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_021_2026-11-11.png",
+    "texto": "eliges. Cuando solo estás eligiendo entre varias cadenas doradas. Es un teatro. Y somos el"
+  },
+  {
+    "id": 22,
+    "inicio": 140.71,
+    "fin": 147.75,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Crowd, ticket booth, stage set, man speaking calmly without anger, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_022_2026-11-11.png",
+    "texto": "público. Y la taquilla. Y el decorado. Oye, no lo digo con rabia. Lo digo"
+  },
+  {
+    "id": 23,
+    "inicio": 147.75,
+    "fin": 154.79,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A man rubbing tired eyes, holding a crumpled script, same old actors, cinematic noir, deep shadows, closed-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_023_2026-11-11.png",
+    "texto": "con cansancio. Porque es el mismo truco. Cambian los actores. — Pero el guion es"
+  },
+  {
+    "id": 24,
+    "inicio": 154.79,
+    "fin": 161.82,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A man in a gray suit smiling while gripping a red leash, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_024_2026-11-11.png",
+    "texto": "idéntico. Te hacen creer que eres libre. Para que no preguntes. Para que no mires"
+  },
+  {
+    "id": 25,
+    "inicio": 161.82,
+    "fin": 168.86,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand forcing a tiny bitter pill into a mouth, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_025_2026-11-11.png",
+    "texto": "debajo. Para que aceptes lo que te dan. Como una pastilla amarga. Que crees que"
+  },
+  {
+    "id": 26,
+    "inicio": 168.86,
+    "fin": 175.86,
+    "tipo_visual": "imagen",
+    "tipo_escena": "contraste",
+    "concepto_visual": "Patient in hospital bed, blurred doctor silhouettes moving chess pieces in background, editorial illustration, muted palette, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_026_2026-11-11.png",
+    "texto": "te cura. — Pero solo te adormece. Y mientras duermes, ellos mueven las piezas. Sin"
+  },
+  {
+    "id": 27,
+    "inicio": 175.89,
+    "fin": 182.93,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Hands turning a doorknob slowly, shadows lengthening across the floor, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_027_2026-11-11.png",
+    "texto": "que te enteres. Sin que notes el cambio. Hasta que ya es tarde. Hasta que"
+  },
+  {
+    "id": 28,
+    "inicio": 182.93,
+    "fin": 189.96,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A weary figure holding a heavy bill, deep shadows swallowing the background, cinematic noir, high contrast, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_028_2026-11-11.png",
+    "texto": "el daño está hecho. Y solo queda pagar la cuenta. Siempre al final. Siempre tú."
+  },
+  {
+    "id": 29,
+    "inicio": 189.96,
+    "fin": 197.0,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A person holding a camera lens facing the viewer, shallow depth of field, cinematic lighting, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_029_2026-11-11.png",
+    "texto": "Y te voy a enseñar por qué esto importa. Quédate. Vamos a ver qué dicen"
+  },
+  {
+    "id": 30,
+    "inicio": 197.0,
+    "fin": 203.0,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A journalist at a desk, HuffPost Spain headline visible, documentary photojournalism, natural light, subtle grain, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_030_2026-11-11.png",
+    "texto": "los medios hoy. Fíjate en HuffPost Spain, que publicó «Tras la calle, el Congreso: la"
+  },
+  {
+    "id": 31,
+    "inicio": 204.04,
+    "fin": 211.07,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Diputados debating intensely around a wooden table, red housing documents, cinematic noir, deep shadows, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_031_2026-11-11.png",
+    "texto": "presión sobre la vivienda pasa a los diputados con la votación de los decretos del"
+  },
+  {
+    "id": 32,
+    "inicio": 211.07,
+    "fin": 214.07,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "clock with no hands, empty room, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_032_2026-11-11.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 33,
+    "inicio": 211.07,
+    "fin": 217.07,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "Government officials facing street protest pressure, red banners, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_033_2026-11-11.png",
+    "texto": "Gobierno tras la huelga». El titular indica que la presión de la calle se traslada"
+  },
+  {
+    "id": 34,
+    "inicio": 218.11,
+    "fin": 223.11,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "A legislative chamber with 53 empty chairs, stark fluorescent lighting, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_034_2026-11-11.png",
+    "texto": "al Congreso, — pero no menciona la cifra de detenciones de 53 que aparecen en"
+  },
+  {
+    "id": 35,
+    "inicio": 225.14,
+    "fin": 232.18,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A stack of official incident reports, red stamps, dim newsroom desk, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_035_2026-11-11.png",
+    "texto": "el extracto de Europa Press. Tampoco se habla de las 1. 044 incidencias que se"
+  },
+  {
+    "id": 36,
+    "inicio": 232.18,
+    "fin": 239.21,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Crowds recording with phones, Congress of Delegates building exterior, documentary photojournalism, natural light, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_036_2026-11-11.png",
+    "texto": "registraron en todo el país. Además, el contexto que se ofrece es el Congreso de"
+  },
+  {
+    "id": 37,
+    "inicio": 239.21,
+    "fin": 246.25,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Argentine flag waving in wind, empty housing block in fog, cinematic noir, deep shadows, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_037_2026-11-11.png",
+    "texto": "la Nación Argentina, una referencia que no tiene relación con la huelga de vivienda en"
+  },
+  {
+    "id": 38,
+    "inicio": 246.25,
+    "fin": 252.25,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "Newsroom desk with red \"HUELGA\" headline, scattered papers, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_038_2026-11-11.png",
+    "texto": "España. Fíjate en Europa Press, que publicó un extracto con datos concretos: «La huelga general"
+  },
+  {
+    "id": 39,
+    "inicio": 253.29,
+    "fin": 260.32,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Crowd of police in riot gear detaining protesters, chaotic wet streets, cinematic noir, high contrast, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_039_2026-11-11.png",
+    "texto": "del 11 de noviembre… deja un balance de 53 detenidos y 1.044 incidencias en toda"
+  },
+  {
+    "id": 40,
+    "inicio": 260.32,
+    "fin": 265.32,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "A man's face obscured by a newspaper headline, red circle around \"Spain\", cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_040_2026-11-11.png",
+    "texto": "España». Se detallan 39 detenciones. Se omite la cifra de detenciones en Cataluña ni País"
+  },
+  {
+    "id": 41,
+    "inicio": 267.36,
+    "fin": 273.36,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "Editorial desk with newspaper headlines, red pen circling specific dates, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_041_2026-11-11.png",
+    "texto": "Vasco. Fíjate en El Independiente, que publicó «Pedraz esperará a las elecciones para decidir si"
+  },
+  {
+    "id": 42,
+    "inicio": 274.39,
+    "fin": 280.39,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A crumpled newspaper headline on a desk, harsh overhead light, deep shadows, cinematic noir, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_042_2026-11-11.png",
+    "texto": "imputa al ex número dos de Cerdán en el ‘caso cloacas’». El titular no menciona"
+  },
+  {
+    "id": 43,
+    "inicio": 281.43,
+    "fin": 288.46,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Crowd holding empty placards, silent protest, cinematic noir, high contrast, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_043_2026-11-11.png",
+    "texto": "la huelga de vivienda ni la cifra de detenciones. No se menciona la cifra de"
+  },
+  {
+    "id": 44,
+    "inicio": 288.46,
+    "fin": 295.5,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Fifty-three detainees standing in line, red strike banners, dark industrial background, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_044_2026-11-11.png",
+    "texto": "53 detenidos ni las 1.044 incidencias. Tampoco se habla del contexto de la huelga de"
+  },
+  {
+    "id": 45,
+    "inicio": 295.5,
+    "fin": 302.54,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Three television screens displaying conflicting news feeds, red price tags glowing, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_045_2026-11-11.png",
+    "texto": "hambre. Tres medios, tres versiones, un mismo día. ¿Cuál es la verdad? La verdad es"
+  },
+  {
+    "id": 46,
+    "inicio": 302.54,
+    "fin": 307.54,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "A wall of data screens showing 53 arrests and 1,044 incidents, minimalist product shot, dramatic single shadow, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_046_2026-11-11.png",
+    "texto": "la que ofrece datos concretos: 53 detenidos y 1.044 incidencias, con un desglose territorial que"
+  },
+  {
+    "id": 47,
+    "inicio": 309.57,
+    "fin": 316.61,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A stark government ministry building facade, dark shadows, red stamp on document, cinematic noir, deep shadows, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_047_2026-11-11.png",
+    "texto": "muestra que la represión no se limitó a Madrid. Esa cifra, proveniente del Ministerio del"
+  },
+  {
+    "id": 48,
+    "inicio": 316.61,
+    "fin": 319.61,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "hourglass draining sand, dramatic single beam, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_048_2026-11-11.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 49,
+    "inicio": 316.61,
+    "fin": 323.61,
+    "tipo_visual": "imagen",
+    "tipo_escena": "contraste",
+    "concepto_visual": "A single interior thermometer glowing on a dark shelf, minimalist product shot, dramatic single shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_049_2026-11-11.png",
+    "texto": "Interior, es la única medida cuantificable disponible. Los demás medios, aunque cubren la temática, eligen"
+  },
+  {
+    "id": 50,
+    "inicio": 323.64,
+    "fin": 330.68,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Empty congressional chamber, dramatic shadows, political intrigue, cinematic noir, deep shadows, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_050_2026-11-11.png",
+    "texto": "centrar la narrativa en el Congreso, en la política interna o en temas ajenos, dejando"
+  },
+  {
+    "id": 51,
+    "inicio": 330.68,
+    "fin": 337.71,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Police baton striking a protester's shoulder, crowd in background, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_051_2026-11-11.png",
+    "texto": "de lado la realidad de la represión policial. Europa Press, al usar el contexto de"
+  },
+  {
+    "id": 52,
+    "inicio": 337.71,
+    "fin": 344.75,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A protestor seated peacefully on a wet street, surrounded by empty chairs, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_052_2026-11-11.png",
+    "texto": "la huelga de hambre, coloca la protesta dentro de una tradición de lucha no violenta"
+  },
+  {
+    "id": 53,
+    "inicio": 344.75,
+    "fin": 351.75,
+    "tipo_visual": "imagen",
+    "tipo_escena": "contraste",
+    "concepto_visual": "Journalist reviewing police data next to newspaper, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_053_2026-11-11.png",
+    "texto": "y, al mismo tiempo, aporta los datos de la policía. El Independiente, por su parte,"
+  },
+  {
+    "id": 54,
+    "inicio": 351.79,
+    "fin": 358.82,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Crowded town hall, politicians debating local issues, ignoring social crisis outside, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_054_2026-11-11.png",
+    "texto": "se centra en la política local sin hacer referencia al fenómeno social que está en"
+  },
+  {
+    "id": 55,
+    "inicio": 358.82,
+    "fin": 365.86,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A reporter checking a red agenda, neon cyberpunk, magenta glow, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_055_2026-11-11.png",
+    "texto": "marcha. ¿Por qué este medio cuenta esto HOY? La respuesta puede estar en la agenda"
+  },
+  {
+    "id": 56,
+    "inicio": 365.86,
+    "fin": 372.89,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A journalist holding a microphone towards a crowd, red legislative building background, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_056_2026-11-11.png",
+    "texto": "editorial: HuffPost busca conectar la presión de la calle con la acción legislativa; Europa Press"
+  },
+  {
+    "id": 57,
+    "inicio": 372.89,
+    "fin": 379.93,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A journalist and politician reviewing data charts, Spanish newspaper on desk, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_057_2026-11-11.png",
+    "texto": "quiere informar con cifras; El Independiente sigue su línea de cubrir temas de interés político"
+  },
+  {
+    "id": 58,
+    "inicio": 379.93,
+    "fin": 386.96,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand holding a magnifying glass over a fragmented newspaper, distorting specific words, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_058_2026-11-11.png",
+    "texto": "local. Cada medio, con su propio filtro, decide qué fragmento de la realidad resaltar y"
+  },
+  {
+    "id": 59,
+    "inicio": 386.96,
+    "fin": 394.0,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A row of fifty-three handcuffs hanging on a cold metal bar, deep shadows, cinematic noir, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_059_2026-11-11.png",
+    "texto": "qué dejar en la sombra. En conclusión, la verdad está en los números: 53 detenidos"
+  },
+  {
+    "id": 60,
+    "inicio": 394.0,
+    "fin": 401.04,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A single red pin on a map, surrounded by gray static, minimalist product shot, dramatic single shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_060_2026-11-11.png",
+    "texto": "y 1.044 incidencias. El resto es interpretación. Y la pregunta que queda es: ¿cuál historia"
+  },
+  {
+    "id": 61,
+    "inicio": 401.04,
+    "fin": 408.07,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Two politicians' faces blurred in memory, red parliamentary benches, cinematic noir, deep shadows, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_061_2026-11-11.png",
+    "texto": "queremos que se quede en la memoria del público? ¿La de los diputados y los"
+  },
+  {
+    "id": 62,
+    "inicio": 408.07,
+    "fin": 415.11,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Citizens confronting police repression, debris on wet asphalt, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_062_2026-11-11.png",
+    "texto": "decretos, o la de los ciudadanos que se enfrentan a la represión? ¿Por qué este"
+  },
+  {
+    "id": 63,
+    "inicio": 415.11,
+    "fin": 422.14,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A reporter holding a microphone with a million dollar sign, neon cyberpunk, magenta and cyan, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_063_2026-11-11.png",
+    "texto": "medio cuenta esto HOY? Ahora la pregunta del millón: ¿por qué nos lo creemos? Primero,"
+  },
+  {
+    "id": 64,
+    "inicio": 422.14,
+    "fin": 425.14,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "chalk outline on dark floor, single spotlight, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_064_2026-11-11.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 65,
+    "inicio": 422.14,
+    "fin": 429.18,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "neon cyberpunk, magenta and cyan, shallow depth, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_065_2026-11-11.png",
+    "texto": "la forma en que se presenta la historia. El 11N se reporta con 53 detenidos"
+  },
+  {
+    "id": 66,
+    "inicio": 429.18,
+    "fin": 435.18,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "An empty street at night with neon lights, cinematic, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_066_2026-11-11.png",
+    "texto": "y 1.044 incidencias. El titular suena a alarma: “¡Caos en la calle! ” y el"
+  },
+  {
+    "id": 67,
+    "inicio": 436.21,
+    "fin": 443.25,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "editorial illustration, muted palette, cross-hatching, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_067_2026-11-11.png",
+    "texto": "texto se queda en los números. No se explica que el motivo sea el acceso"
+  },
+  {
+    "id": 68,
+    "inicio": 443.25,
+    "fin": 450.29,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A newspaper headline about housing, salary negotiation text crossed out with red marker, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_068_2026-11-11.png",
+    "texto": "a la vivienda ni se menciona la negociación salarial. El lector recibe una imagen de"
+  },
+  {
+    "id": 69,
+    "inicio": 450.29,
+    "fin": 457.32,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Empty news desk with crumpled paper, blurred newspaper headline, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_069_2026-11-11.png",
+    "texto": "un país en crisis, sin contexto. Al leer eso, tu cerebro asume que la situación"
+  },
+  {
+    "id": 70,
+    "inicio": 457.32,
+    "fin": 464.36,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand placing a red frame over a blurred newspaper headline, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_070_2026-11-11.png",
+    "texto": "es peor de lo que realmente es. Ese es el truco de enmarcar la información"
+  },
+  {
+    "id": 71,
+    "inicio": 464.36,
+    "fin": 471.39,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand clutching a smartphone, glowing data streams flowing into fingers, neon cyberpunk, magenta and cyan, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_071_2026-11-11.png",
+    "texto": "para que tu mente acepte una versión sin cuestionar. Segundo, la acumulación de datos del"
+  },
+  {
+    "id": 72,
+    "inicio": 471.39,
+    "fin": 478.43,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "neon cyberpunk, magenta and cyan, shallow depth, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_072_2026-11-11.png",
+    "texto": "mismo punto de vista. El artículo enumera 39 detenciones: 15 en Madrid, 11 en Andalucía,"
+  },
+  {
+    "id": 73,
+    "inicio": 478.43,
+    "fin": 483.43,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "neon cyberpunk, magenta and cyan, shallow depth, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_073_2026-11-11.png",
+    "texto": "7 en la Comunidad Valenciana y otras en zonas lejanas. Al ver cada cifra, tu"
+  },
+  {
+    "id": 74,
+    "inicio": 485.46,
+    "fin": 492.5,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "editorial illustration, muted palette, cross-hatching, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_074_2026-11-11.png",
+    "texto": "cerebro piensa: “hay consenso, todos están de acuerdo”. — Pero todas vienen del mismo informe"
+  },
+  {
+    "id": 75,
+    "inicio": 492.5,
+    "fin": 499.5,
+    "tipo_visual": "imagen",
+    "tipo_escena": "contraste",
+    "concepto_visual": "documentary photojournalism, natural light, subtle grain, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_075_2026-11-11.png",
+    "texto": "del Ministerio del Interior. No hay voces distintas, no hay cifras contrastantes. Al apilar datos"
+  },
+  {
+    "id": 76,
+    "inicio": 499.54,
+    "fin": 506.57,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand turning pages of a thick book, fragile pages, editorial illustration, muted palette, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_076_2026-11-11.png",
+    "texto": "similares, la historia parece más sólida de lo que realmente es. Es como leer una"
+  },
+  {
+    "id": 77,
+    "inicio": 506.57,
+    "fin": 513.61,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Ten identical men in matching suits nodding together, sterile office, minimalist product shot, dramatic shadow, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_077_2026-11-11.png",
+    "texto": "encuesta donde los 10 expertos son del mismo despacho; tu cerebro acepta el “consenso” sin"
+  },
+  {
+    "id": 78,
+    "inicio": 513.61,
+    "fin": 520.64,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A diverse crowd viewed through a cracked mirror, fear in their eyes, cinematic noir, high contrast, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_078_2026-11-11.png",
+    "texto": "sospechar de la falta de diversidad. Tercero, el miedo que se cuela en la palabra."
+  },
+  {
+    "id": 79,
+    "inicio": 520.64,
+    "fin": 527.68,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Police officers in riot gear standing tense, cinematic noir, deep shadows, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_079_2026-11-11.png",
+    "texto": "Cuando el texto menciona “incidencias” y “detenciones”, se evoca la imagen de la policía en"
+  },
+  {
+    "id": 80,
+    "inicio": 527.68,
+    "fin": 530.68,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "clock with no hands, empty room, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_080_2026-11-11.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 81,
+    "inicio": 527.68,
+    "fin": 534.71,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "An empty street at night with neon lights, cinematic, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_081_2026-11-11.png",
+    "texto": "la calle, de la violencia y del peligro. El lector, sin saberlo, se prepara para"
+  },
+  {
+    "id": 82,
+    "inicio": 534.71,
+    "fin": 541.75,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "neon cyberpunk, magenta and cyan, shallow depth, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_082_2026-11-11.png",
+    "texto": "una amenaza. Ese miedo, incluso sin pruebas concretas, mueve la opinión. Es como en un"
+  },
+  {
+    "id": 83,
+    "inicio": 541.75,
+    "fin": 548.79,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "cinematic noir, high contrast, wet streets at night, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_083_2026-11-11.png",
+    "texto": "anuncio de seguros: “Un coche sin seguro puede costarte la vida”. El miedo vende la"
+  },
+  {
+    "id": 84,
+    "inicio": 548.79,
+    "fin": 555.82,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "neon cyberpunk, magenta and cyan, shallow depth, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_084_2026-11-11.png",
+    "texto": "idea de que algo terrible está a la vuelta de la esquina, y tu mente"
+  },
+  {
+    "id": 85,
+    "inicio": 555.82,
+    "fin": 562.86,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Blurred news headlines fading into sharp reality, hand holding phone, neon cyberpunk, magenta cyan, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_085_2026-11-11.png",
+    "texto": "acepta la idea sin comprobarla. Ahora, después de haber visto cómo se manipulan las noticias,"
+  },
+  {
+    "id": 86,
+    "inicio": 562.86,
+    "fin": 567.86,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "Hand holding a red pen circling a specific keyword, muted palette, editorial illustration, cross-hatching, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_086_2026-11-11.png",
+    "texto": "pregúntate mañana: 1. ¿Dice la palabra clave o la esconde? 2. ¿Dice el dato o"
+  },
+  {
+    "id": 87,
+    "inicio": 569.89,
+    "fin": 576.93,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Journalist's hand circling source name in red ink, newspaper close-up, documentary photojournalism, natural light, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_087_2026-11-11.png",
+    "texto": "solo la emoción? 3. ¿Dice la fuente o solo la versión? Estas preguntas son tu"
+  },
+  {
+    "id": 88,
+    "inicio": 576.93,
+    "fin": 583.96,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A translucent shield deflecting distorted signals, protecting a calm eye, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_088_2026-11-11.png",
+    "texto": "escudo contra la manipulación. Si las respondes con honestidad, tendrás una visión más clara de"
+  },
+  {
+    "id": 89,
+    "inicio": 583.96,
+    "fin": 591.0,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "documentary photojournalism, natural light, subtle grain, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_089_2026-11-11.png",
+    "texto": "lo que realmente sucede. Como el farmacéutico José, que no lee el BOE y, —"
+  },
+  {
+    "id": 90,
+    "inicio": 591.0,
+    "fin": 598.0,
+    "tipo_visual": "imagen",
+    "tipo_escena": "contraste",
+    "concepto_visual": "editorial illustration, muted palette, cross-hatching, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_090_2026-11-11.png",
+    "texto": "sin embargo, te lanza la frase “Todo lo que necesitas, sin receta”, yo también me"
+  },
+  {
+    "id": 91,
+    "inicio": 598.04,
+    "fin": 605.07,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "cinematic noir, high contrast, wet streets at night, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_091_2026-11-11.png",
+    "texto": "encontré mirando aquel cartel y pensando: “¿Qué me está diciendo realmente? ”. Ese momento, tan"
+  },
+  {
+    "id": 92,
+    "inicio": 605.07,
+    "fin": 612.11,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "neon cyberpunk, magenta and cyan, shallow depth, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_092_2026-11-11.png",
+    "texto": "sencillo, encierra la misma trampa de la que nos alimentamos a diario: la ilusión de"
+  },
+  {
+    "id": 93,
+    "inicio": 612.11,
+    "fin": 619.14,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Dystopian industrial cityscape, massive automated machinery, lone silhouette, cinematic noir, deep shadows, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_093_2026-11-11.png",
+    "texto": "que lo que No es tu culpa. El sistema está diseñado así. Cada día, los"
+  },
+  {
+    "id": 94,
+    "inicio": 619.14,
+    "fin": 626.18,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Hands manipulating a digital filter, neon cyberpunk, magenta and cyan, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_094_2026-11-11.png",
+    "texto": "medios, las redes, los algoritmos, se encargan de filtrar, de priorizar, de silenciar. Nos venden"
+  },
+  {
+    "id": 95,
+    "inicio": 626.18,
+    "fin": 633.21,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Two identical glossy masks, one smiling, one blank, minimalist product shot, dramatic single shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_095_2026-11-11.png",
+    "texto": "una versión pulida, una versión que nos hace sentir que ya sabemos todo. — Pero"
+  },
+  {
+    "id": 96,
+    "inicio": 633.21,
+    "fin": 636.21,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "chalk outline on dark floor, single spotlight, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_096_2026-11-11.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 97,
+    "inicio": 633.21,
+    "fin": 640.25,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A person opening eyes wide, pausing, asking, wide shot, documentary photojournalism, natural light, subtle grain, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_097_2026-11-11.png",
+    "texto": "tú puedes cambiarlo. Puedes abrir los ojos, puedes hacer una pausa, puedes preguntar. Mañana, cuando"
+  },
+  {
+    "id": 98,
+    "inicio": 640.25,
+    "fin": 646.25,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "cinematic noir, high contrast, wet streets at night, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_098_2026-11-11.png",
+    "texto": "veas un titular, pregúntate: ¿dice la palabra clave o la esconde? ¿Dice el dato o"
+  },
+  {
+    "id": 99,
+    "inicio": 647.29,
+    "fin": 654.32,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "70s film archive, faded warm colors, dust specks, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_099_2026-11-11.png",
+    "texto": "solo la emoción? ¿Dice la fuente o solo la versión? Esas tres preguntas son tu"
+  },
+  {
+    "id": 100,
+    "inicio": 654.32,
+    "fin": 661.36,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "cinematic noir, high contrast, wet streets at night, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_100_2026-11-11.png",
+    "texto": "escudo. Son la llave que te permite entrar en la habitación donde se cuecen las"
+  },
+  {
+    "id": 101,
+    "inicio": 661.36,
+    "fin": 668.39,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "minimalist product shot, dramatic single shadow, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_101_2026-11-11.png",
+    "texto": "noticias. No son trucos, son herramientas. Y lo mejor es que no necesitas un título"
+  },
+  {
+    "id": 102,
+    "inicio": 668.39,
+    "fin": 675.43,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A university student’s curious face illuminated by soft desk lamp, editorial illustration, muted palette, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_102_2026-11-11.png",
+    "texto": "universitario para usarlas; solo un poco de curiosidad y ganas de no ser manipulado. Si"
+  },
+  {
+    "id": 103,
+    "inicio": 675.43,
+    "fin": 682.46,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cierre",
+    "concepto_visual": "A hand pressing a glowing share icon, fading into dark mist, neon cyberpunk, magenta and cyan, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_103_2026-11-11.png",
+    "texto": "te ha servido, comparte. — Pero no te lo creas todo. Si te ha servido,"
+  }
+]
