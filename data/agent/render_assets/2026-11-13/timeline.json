@@ -1,0 +1,952 @@
+[
+  {
+    "id": 1,
+    "inicio": 0.0,
+    "fin": 4.0,
+    "tipo_visual": "imagen",
+    "tipo_escena": "hook",
+    "concepto_visual": "A journalist's face split between truth and commerce, red price tag in eye, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_001_2026-11-13.png",
+    "texto": "Mira, te lo voy a decir claro desde el principio. Los medios no informan. Venden. Y tú,"
+  },
+  {
+    "id": 2,
+    "inicio": 7.04,
+    "fin": 14.08,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A silhouette standing before a massive screen, wide shot, cinematic noir, deep shadows, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_002_2026-11-13.png",
+    "texto": "y yo, y todos, nos lo tragamos. Hasta este 13 de noviembre de 2026. Somos El Encuadre."
+  },
+  {
+    "id": 3,
+    "inicio": 14.08,
+    "fin": 21.12,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A gloved hand pulling open a rusted sewer grate, murky water rising, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_003_2026-11-13.png",
+    "texto": "Y vamos a abrir la cloaca. Te voy a enseñar las técnicas que han usado hoy. Quédate,"
+  },
+  {
+    "id": 4,
+    "inicio": 21.12,
+    "fin": 28.16,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Professor in white lab coat holding open newspaper, intense gaze, editorial illustration, muted palette, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_004_2026-11-13.png",
+    "texto": "porque esto te va a cambiar la forma de leer el periódico. El profesor Gómez, con bata"
+  },
+  {
+    "id": 5,
+    "inicio": 28.16,
+    "fin": 35.2,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Scientist in lab coat pointing at microscope, sterile white room, editorial illustration, muted palette, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_005_2026-11-13.png",
+    "texto": "de laboratorio, me preguntó: “¿Has visto la nueva regla? ” Yo le respondí: “Sí, la leí en"
+  },
+  {
+    "id": 6,
+    "inicio": 35.2,
+    "fin": 42.24,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Woman holding small bulletin, pointing to algorithm diagram, neon cyberpunk, magenta and cyan, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_006_2026-11-13.png",
+    "texto": "el boletín”. Me preguntó si la entendía. Me contestó: “Claro, es tan simple como un algoritmo”. La"
+  },
+  {
+    "id": 7,
+    "inicio": 42.24,
+    "fin": 49.28,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A chalkboard filled with complex equations, white chalk dust floating, editorial illustration, muted palette, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_007_2026-11-13.png",
+    "texto": "pizarra nunca olvida el error. Me recuerda que a veces lo evidente se esconde tras fórmulas elegantes."
+  },
+  {
+    "id": 8,
+    "inicio": 49.28,
+    "fin": 56.32,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A teacher gesturing confidently at a blackboard, confused students looking away, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_008_2026-11-13.png",
+    "texto": "Los que enseñan creen que todo es claro, — pero la práctica muestra lo contrario. En política,"
+  },
+  {
+    "id": 9,
+    "inicio": 56.32,
+    "fin": 63.36,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A ruler hiding sharp tricks on a desk, media logos blurred in background, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_009_2026-11-13.png",
+    "texto": "los discursos son como esa regla: suenan lógicos, — pero ocultan trucos. Los medios venden la apariencia"
+  },
+  {
+    "id": 10,
+    "inicio": 63.36,
+    "fin": 69.36,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "White lab coats draped over headlines, medical instruments, editorial illustration, muted palette, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_010_2026-11-13.png",
+    "texto": "de claridad, mientras manipulan la percepción del público. Cada titular es una bata blanca, prometiendo ciencia, —"
+  },
+  {
+    "id": 11,
+    "inicio": 70.4,
+    "fin": 77.44,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Politician gesturing theatrically to empty seats, dark spotlight, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_011_2026-11-13.png",
+    "texto": "pero a veces es puro teatro. Los políticos se convierten en profesores que explican sin que nadie"
+  },
+  {
+    "id": 12,
+    "inicio": 77.44,
+    "fin": 84.48,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A teacher pointing at a chalkboard, students repeating formulas, cinematic noir, deep shadows, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_012_2026-11-13.png",
+    "texto": "vea la pizarra. Y el ciudadano, como estudiante, repite fórmulas sin preguntar quién escribe la ecuación. Mira,"
+  },
+  {
+    "id": 13,
+    "inicio": 84.48,
+    "fin": 91.52,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A citizen's face overlaid with glowing code, final number highlighted, neon cyberpunk, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_013_2026-11-13.png",
+    "texto": "cuando el algoritmo decide, el ciudadano solo ve el número final. Oye, la diferencia entre ciencia y"
+  },
+  {
+    "id": 14,
+    "inicio": 91.52,
+    "fin": 98.52,
+    "tipo_visual": "imagen",
+    "tipo_escena": "contraste",
+    "concepto_visual": "A scientist in a pristine white lab coat, beaker exploding with sparks, editorial illustration, muted palette, cross-hatching, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_014_2026-11-13.png",
+    "texto": "política es la etiqueta del laboratorio. Fíjate que la bata siempre está impecable, aunque el experimento explote."
+  },
+  {
+    "id": 15,
+    "inicio": 98.56,
+    "fin": 105.6,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Politician pointing at floating invisible variables, TV studio, cinematic noir, deep shadows, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_015_2026-11-13.png",
+    "texto": "Los partidos prometen fórmulas infalibles, — pero el resultado siempre incluye variables ocultas. En la tele, el"
+  },
+  {
+    "id": 16,
+    "inicio": 105.6,
+    "fin": 108.6,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "static TV noise with faint silhouette, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_016_2026-11-13.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 17,
+    "inicio": 105.6,
+    "fin": 112.64,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Presenter gesturing like a teacher, no blackboard, audience clapping, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_017_2026-11-13.png",
+    "texto": "presentador actúa como profesor, — pero sin pizarra ni ecuaciones. El público aplaude la claridad, sin preguntar"
+  },
+  {
+    "id": 18,
+    "inicio": 112.64,
+    "fin": 119.64,
+    "tipo_visual": "imagen",
+    "tipo_escena": "contraste",
+    "concepto_visual": "A gloved hand ink-stained signing a document, heavy oak desk, deep shadows, cinematic noir, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_018_2026-11-13.png",
+    "texto": "quién escribe los axiomas. Y mientras tanto, la verdadera regla se escribe en los despachos, no en"
+  },
+  {
+    "id": 19,
+    "inicio": 119.68,
+    "fin": 126.72,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Two men in suits pointing at a whiteboard with math equations, minimalist product shot, dramatic single shadow, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_019_2026-11-13.png",
+    "texto": "los boletines. Los analistas de opinión venden la idea de que el voto es una ecuación sencilla."
+  },
+  {
+    "id": 20,
+    "inicio": 126.72,
+    "fin": 133.75,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A single student wiping cold sweat from a forehead, blurred blackboard behind, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_020_2026-11-13.png",
+    "texto": "— Pero la realidad tiene más incógnitas que cualquier examen sorpresa. Así, la manipulación se disfraza de"
+  },
+  {
+    "id": 21,
+    "inicio": 133.75,
+    "fin": 140.79,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Child writing same phrase repeatedly on chalkboard, teacher watching, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_021_2026-11-13.png",
+    "texto": "educación, y la educación se vuelve propaganda. No es magia, es la repetición de patrones que nunca"
+  },
+  {
+    "id": 22,
+    "inicio": 140.79,
+    "fin": 147.83,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A cracked white facade with a magnifying glass revealing hidden fissures, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_022_2026-11-13.png",
+    "texto": "cuestionamos. Por eso, el humor sirve de lupa para descubrir la grieta en la fachada. Y ahora,"
+  },
+  {
+    "id": 23,
+    "inicio": 147.83,
+    "fin": 154.87,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand holding a magnifying glass over a contract, neon cyberpunk, magenta and cyan, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_023_2026-11-13.png",
+    "texto": "con esa lupa, vamos a desmontar el truco del día. Y te voy a enseñar por qué"
+  },
+  {
+    "id": 24,
+    "inicio": 154.87,
+    "fin": 160.87,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A reporter pointing at a newspaper headline, newsroom chaos, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_024_2026-11-13.png",
+    "texto": "esto importa. Quédate. Vamos a ver qué dicen los medios hoy. Fíjate en El Mundo, que publicó:"
+  },
+  {
+    "id": 25,
+    "inicio": 161.91,
+    "fin": 167.91,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "Two men shaking hands in a dim office, Spanish flag, intense eye contact, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_025_2026-11-13.png",
+    "texto": "«Óscar López impulsó desde Moncloa la reunión de Sánchez con su chófer que dejó asombrada a la"
+  },
+  {
+    "id": 26,
+    "inicio": 168.95,
+    "fin": 174.95,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A gloved hand holding a red marker over a newspaper clipping, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_026_2026-11-13.png",
+    "texto": "trama: \"Yo qué sé. Todo es raro\"». El titular indica una intervención directa de López. El artículo"
+  },
+  {
+    "id": 27,
+    "inicio": 175.99,
+    "fin": 183.03,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Two men in suits meeting in a dim office, clock showing 35 minutes, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_027_2026-11-13.png",
+    "texto": "menciona que la UCO señala que Sánchez se reunió 35 minutos en 2023 con el chófer detenido"
+  },
+  {
+    "id": 28,
+    "inicio": 183.03,
+    "fin": 190.07,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Men in suits arguing at Cordoba meeting, tense expressions, cinematic noir, deep shadows, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_028_2026-11-13.png",
+    "texto": "de la trama Koldo, a quien negó conocer. Se indica que la reunión tuvo lugar en Córdoba"
+  },
+  {
+    "id": 29,
+    "inicio": 190.07,
+    "fin": 197.11,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A driver's hands gripping a steering wheel, Moncloa palace in background, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_029_2026-11-13.png",
+    "texto": "en abril de 2023 y que fue a petición de Moncloa. Se añade que el chófer canalizaba"
+  },
+  {
+    "id": 30,
+    "inicio": 197.11,
+    "fin": 204.15,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Corrupt hands exchanging cash under a desk, Adif blue folder, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_030_2026-11-13.png",
+    "texto": "las mordidas en contratos de Adif. No se menciona la fecha exacta de la llamada ni el"
+  },
+  {
+    "id": 31,
+    "inicio": 204.15,
+    "fin": 211.19,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Two officials in dark suits at a table, red folders, silent tension, cinematic noir, deep shadows, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_031_2026-11-13.png",
+    "texto": "motivo concreto de la reunión. El medio no explica por qué la UCO considera que la reunión"
+  },
+  {
+    "id": 32,
+    "inicio": 211.19,
+    "fin": 214.19,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "broken mirror reflecting distorted faces, dark room, red light, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_032_2026-11-13.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 33,
+    "inicio": 211.19,
+    "fin": 218.23,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Politician gesturing dismissively, blurred Spanish newspaper masthead background, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_033_2026-11-13.png",
+    "texto": "es relevante ni detalla la respuesta de los servicios de protección del presidente. Fíjate en El Español,"
+  },
+  {
+    "id": 34,
+    "inicio": 218.23,
+    "fin": 224.23,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A cracked television screen, cinematic, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_034_2026-11-13.png",
+    "texto": "que publicó: «Sánchez inicia la campaña más tramposa de la Democracia: tras la huelga, el CIS 'fake',"
+  },
+  {
+    "id": 35,
+    "inicio": 225.27,
+    "fin": 231.27,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A crumpled newspaper headline next to scattered ballot papers, dramatic single shadow, minimalist product shot, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_035_2026-11-13.png",
+    "texto": "los hijos de la 'ley de nietos' o la 'compra' de votos con decretos sociales». El titular"
+  },
+  {
+    "id": 36,
+    "inicio": 232.31,
+    "fin": 239.35,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "macro detail close-up, extreme shallow depth of field, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_036_2026-11-13.png",
+    "texto": "acusa a Sánchez de manipular la campaña. El texto señala que el presidente maniobra para usar la"
+  },
+  {
+    "id": 37,
+    "inicio": 239.35,
+    "fin": 246.39,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Catalan police in riot gear charging, political leader gesturing angrily, parliamentary chamber, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_037_2026-11-13.png",
+    "texto": "Diputación Permanente y seguir aprobando decretos electoralistas. Se menciona la crítica a las cargas policiales que ordenó"
+  },
+  {
+    "id": 38,
+    "inicio": 246.39,
+    "fin": 253.43,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Marlaska in suit walking past red protest signs, biased poll graphic floating beside, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_038_2026-11-13.png",
+    "texto": "Marlaska durante la huelga general y la publicación de un sondeo sesgado con 17 puntos a favor"
+  },
+  {
+    "id": 39,
+    "inicio": 253.43,
+    "fin": 260.47,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A journalist's desk with a blurred ballot box, political campaign posters, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_039_2026-11-13.png",
+    "texto": "del PSOE. El medio no menciona si la campaña electoral está vinculada a la convocatoria de elecciones"
+  },
+  {
+    "id": 40,
+    "inicio": 260.47,
+    "fin": 267.51,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A stack of government documents with redacted black bars on a desk, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_040_2026-11-13.png",
+    "texto": "anticipadas ni si hay alguna respuesta oficial del Gobierno. Tampoco se detalla la relación con la “ley"
+  },
+  {
+    "id": 41,
+    "inicio": 267.51,
+    "fin": 274.55,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A journalist's finger pointing at a newspaper headline, stacked papers, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_041_2026-11-13.png",
+    "texto": "de nietos” ni la procedencia de la información sobre la compra de votos. Fíjate en OkDiario, que"
+  },
+  {
+    "id": 42,
+    "inicio": 274.55,
+    "fin": 280.55,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A suited politician holding a red rental contract, protest tents blurred background, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_042_2026-11-13.png",
+    "texto": "publicó: «El PSOE lleva a su programa electoral el contrato indefinido de alquiler que exigían los acampados"
+  },
+  {
+    "id": 43,
+    "inicio": 281.59,
+    "fin": 287.59,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "Spanish parliament chamber, red benches, empty desks, cinematic noir, dramatic single shadow, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_043_2026-11-13.png",
+    "texto": "y tumbó el Congreso». El titular indica que el PSOE incorporó una medida de alquiler indefinido. El"
+  },
+  {
+    "id": 44,
+    "inicio": 288.63,
+    "fin": 295.67,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A politician signing a document under duress, red protest signs blurred in background, cinematic noir, high contrast, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_044_2026-11-13.png",
+    "texto": "artículo menciona que la inclusión se realizó por presión y amenazas de Sumar y que la medida"
+  },
+  {
+    "id": 45,
+    "inicio": 295.67,
+    "fin": 302.71,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Empty parliamentary chamber, empty permanent committee room, cold institutional lighting, documentary photojournalism, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_045_2026-11-13.png",
+    "texto": "no había sido aprobada ni ante el Pleno del Congreso ni ante la Diputación Permanente. Se menciona"
+  },
+  {
+    "id": 46,
+    "inicio": 302.71,
+    "fin": 309.75,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Crowd of tents on Plaza de Sol, yellow \"Maricarmen\" decree papers, cinematic noir, wet streets, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_046_2026-11-13.png",
+    "texto": "que los acampados en Sol exigían dicha medida. No se indica si el decreto Maricarmen contiene otros"
+  },
+  {
+    "id": 47,
+    "inicio": 309.75,
+    "fin": 316.79,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A stack of red-stamped contracts on a desk, sharp red ink, minimalist product shot, dramatic single shadow, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_047_2026-11-13.png",
+    "texto": "puntos relevantes ni si la inclusión de este contrato ha alterado el balance del programa electoral. Tampoco"
+  },
+  {
+    "id": 48,
+    "inicio": 316.79,
+    "fin": 319.79,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "clock with no hands, empty room, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_048_2026-11-13.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 49,
+    "inicio": 316.79,
+    "fin": 323.83,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Three newspaper front pages side-by-side, contrasting headlines, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_049_2026-11-13.png",
+    "texto": "se menciona la posición del PNV ni la reacción de otros socios del gobierno. Tres medios, tres"
+  },
+  {
+    "id": 50,
+    "inicio": 323.83,
+    "fin": 330.87,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Multiple news anchors in distinct studios, identical layout, split screen, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_050_2026-11-13.png",
+    "texto": "versiones, un mismo día. ¿Cuál es la verdad? Los datos concretos son los mismos: una reunión de"
+  },
+  {
+    "id": 51,
+    "inicio": 330.87,
+    "fin": 337.91,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "neon cyberpunk, magenta and cyan, shallow depth, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_051_2026-11-13.png",
+    "texto": "35 minutos entre Sánchez y el chófer detenido de la trama Koldo, en Córdoba, solicitada por Moncloa."
+  },
+  {
+    "id": 52,
+    "inicio": 337.91,
+    "fin": 344.95,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Detective examining Adif contract files, news headline highlighted, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_052_2026-11-13.png",
+    "texto": "La UCO destaca la conexión con contratos de Adif, y el medio de El Mundo lo subraya."
+  },
+  {
+    "id": 53,
+    "inicio": 344.95,
+    "fin": 351.99,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Newspaper spread with blurred headlines and red ink splatters, editorial illustration, muted palette, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_053_2026-11-13.png",
+    "texto": "El Español se centra en la campaña electoral y la posible manipulación de votos, sin referirse directamente"
+  },
+  {
+    "id": 54,
+    "inicio": 351.99,
+    "fin": 359.03,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A man reading a newspaper headline, red circle highlighting \"indefinite rental,\" documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_054_2026-11-13.png",
+    "texto": "a la reunión. OkDiario se centra en la incorporación de una medida de alquiler indefinido, sin mencionar"
+  },
+  {
+    "id": 55,
+    "inicio": 359.03,
+    "fin": 366.07,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Journalist typing on laptop, Europa Press logo visible, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_055_2026-11-13.png",
+    "texto": "la reunión ni la trama Koldo. El contexto oficial de la agencia Europa Press añade que la"
+  },
+  {
+    "id": 56,
+    "inicio": 366.07,
+    "fin": 373.11,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Two politicians in dark suits arguing, police badge on table, cinematic noir, deep shadows, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_056_2026-11-13.png",
+    "texto": "UCO ve una “vinculación” entre el PSOE y el ex chófer, y que Sánchez apela a la"
+  },
+  {
+    "id": 57,
+    "inicio": 373.11,
+    "fin": 380.15,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Crowd of women marching, holding signs, urban street, documentary photojournalism, natural light, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_057_2026-11-13.png",
+    "texto": "movilización del voto femenino para una remontada épica. La presión de Sumar sobre el programa electoral también"
+  },
+  {
+    "id": 58,
+    "inicio": 380.15,
+    "fin": 387.19,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A newspaper clipping on a desk, red highlighter circling headline, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_058_2026-11-13.png",
+    "texto": "se menciona en el extracto de OkDiario. ¿Por qué este medio cuenta esto HOY? Cada publicación responde"
+  },
+  {
+    "id": 59,
+    "inicio": 387.19,
+    "fin": 394.23,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Newsroom desk cluttered with papers, \"El Mundo\" logo visible, intense focus, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_059_2026-11-13.png",
+    "texto": "a su línea editorial y a la necesidad de captar la atención de su audiencia. El Mundo"
+  },
+  {
+    "id": 60,
+    "inicio": 394.23,
+    "fin": 401.26,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Government officials in dark suits exchanging cash, deep shadows, cinematic noir, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_060_2026-11-13.png",
+    "texto": "busca destacar la implicación directa de la dirección del Gobierno en una trama de corrupción. El Español"
+  },
+  {
+    "id": 61,
+    "inicio": 401.26,
+    "fin": 408.26,
+    "tipo_visual": "imagen",
+    "tipo_escena": "contraste",
+    "concepto_visual": "A hand slamming a red \"DENUNCIA\" stamp on a document, deep shadows, cinematic noir, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_061_2026-11-13.png",
+    "texto": "pretende denunciar la supuesta manipulación electoral y la falta de transparencia. OkDiario, por su parte, pone el"
+  },
+  {
+    "id": 62,
+    "inicio": 408.3,
+    "fin": 415.34,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Protesters with red banners facing government officials, tense standoff, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_062_2026-11-13.png",
+    "texto": "foco en las demandas de los acampados y la respuesta del PSOE, subrayando la tensión entre el"
+  },
+  {
+    "id": 63,
+    "inicio": 415.34,
+    "fin": 422.38,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand shattering a glass prism, light splitting into distorted colors, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_063_2026-11-13.png",
+    "texto": "gobierno y las fuerzas sociales. Así, la verdad se descompone en filtros, cada uno con su propia"
+  },
+  {
+    "id": 64,
+    "inicio": 422.38,
+    "fin": 425.38,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "macro human eye reflecting chaos, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_064_2026-11-13.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 65,
+    "inicio": 422.38,
+    "fin": 429.42,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Split mirror reflecting fragmented faces, uncertain gaze, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_065_2026-11-13.png",
+    "texto": "narrativa. La pregunta queda abierta: ¿cuál de estas versiones refleja la realidad en su totalidad? ¿O todas"
+  },
+  {
+    "id": 66,
+    "inicio": 429.42,
+    "fin": 436.46,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A giant unfinished jigsaw puzzle, scattered pieces, dramatic single shadow, minimalist product shot, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_066_2026-11-13.png",
+    "texto": "son piezas de un rompecabezas que aún no se ha ensamblado? Ahora la pregunta del millón: ¿por"
+  },
+  {
+    "id": 67,
+    "inicio": 436.46,
+    "fin": 443.5,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "cinematic noir, high contrast, wet streets at night, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_067_2026-11-13.png",
+    "texto": "qué nos lo creemos? En la noticia de la reunión de Sánchez con el chófer detenido de"
+  },
+  {
+    "id": 68,
+    "inicio": 443.5,
+    "fin": 450.54,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Handwritten note reading \"35 minutes in Cordoba\", red ink, newspaper background, cinematic noir, high contrast, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_068_2026-11-13.png",
+    "texto": "la trama Koldo, la redacción se fija en la duración y el lugar: “35 minutos en Córdoba”."
+  },
+  {
+    "id": 69,
+    "inicio": 450.54,
+    "fin": 457.58,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Empty white void, single red question mark floating in center, minimalist product shot, dramatic shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_069_2026-11-13.png",
+    "texto": "No se menciona el motivo ni el contexto de la trama. Este juego de palabras crea la"
+  },
+  {
+    "id": 70,
+    "inicio": 457.58,
+    "fin": 464.62,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A woman smiling casually amidst chaotic disaster, mundane setting, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_070_2026-11-13.png",
+    "texto": "sensación de que todo es normal, de que no hay nada que preocuparse. Cuando Es la misma"
+  },
+  {
+    "id": 71,
+    "inicio": 464.62,
+    "fin": 471.66,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Hands framing a blurred protest scene through a window, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_071_2026-11-13.png",
+    "texto": "técnica de colocar la información en un marco que favorece la idea que se quiere transmitir. No"
+  },
+  {
+    "id": 72,
+    "inicio": 471.66,
+    "fin": 478.7,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Glossy presentation box opening to reveal a sealed message, minimalist product shot, dramatic single shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_072_2026-11-13.png",
+    "texto": "es un consenso, es una caja de presentación que encierra un mensaje. El mismo estilo aparece en"
+  },
+  {
+    "id": 73,
+    "inicio": 478.7,
+    "fin": 485.74,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A journalist recording a politician, red tape on microphone, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_073_2026-11-13.png",
+    "texto": "la cobertura de la campaña de Sánchez, donde se llama “la campaña más tramposa de la Democracia”"
+  },
+  {
+    "id": 74,
+    "inicio": 485.74,
+    "fin": 492.78,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand clutching a crumpled ballot, red highlighter stroke, deep shadows, cinematic noir, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_074_2026-11-13.png",
+    "texto": "y se habla de “compra” de votos y “decretos sociales”. La palabra “tramposa” y la imagen de"
+  },
+  {
+    "id": 75,
+    "inicio": 492.78,
+    "fin": 499.82,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "An insurance ad with the word \"buy\" glowing red on a dinner table, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_075_2026-11-13.png",
+    "texto": "“compra” ponen el miedo a la mesa. Cuando un anuncio de un seguro dice “no te quedes"
+  },
+  {
+    "id": 76,
+    "inicio": 499.82,
+    "fin": 506.86,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Scared consumer clutching wallet tightly, dark store aisle, cinematic noir, high contrast, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_076_2026-11-13.png",
+    "texto": "sin protección”, el miedo se convierte en una fuerza que nos impulsa a comprar. El miedo vende"
+  },
+  {
+    "id": 77,
+    "inicio": 506.86,
+    "fin": 513.9,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A politician's hollow eyes reflecting fear, dark suit, deep shadows, cinematic noir, high contrast, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_077_2026-11-13.png",
+    "texto": "y, en la política, el miedo vende votos, apoyo y silencio. La tercera técnica Al colocar la"
+  },
+  {
+    "id": 78,
+    "inicio": 513.9,
+    "fin": 520.94,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand pinning a \"president\" label onto a suit, deep shadows, cinematic noir, high contrast, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_078_2026-11-13.png",
+    "texto": "etiqueta de “presidente”, se crea una imagen de autoridad que no se cuestiona. En la vida cotidiana,"
+  },
+  {
+    "id": 79,
+    "inicio": 520.94,
+    "fin": 527.98,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A celebrity influencer pointing at camera, followers blindly swiping phones, neon cyberpunk, magenta and cyan, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_079_2026-11-13.png",
+    "texto": "un influencer que se autodenomina “el experto” hace que la gente lo siga sin analizar su credibilidad."
+  },
+  {
+    "id": 80,
+    "inicio": 527.98,
+    "fin": 530.98,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "ripple expanding in black water, top-down, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_080_2026-11-13.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 81,
+    "inicio": 527.98,
+    "fin": 535.02,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A red price tag sticking stubbornly to a t-shirt, 70s film archive, faded warm colors, dust specks, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_081_2026-11-13.png",
+    "texto": "La etiqueta se queda pegada, como el precio en una camiseta que no se mueve. No se"
+  },
+  {
+    "id": 82,
+    "inicio": 535.02,
+    "fin": 542.06,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A journalist facing a wall of three glowing question marks, deep shadows, cinematic noir, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_082_2026-11-13.png",
+    "texto": "pregunta la fuente, solo se acepta la palabra. Cierre con tres preguntas que el oyente debe hacerse"
+  },
+  {
+    "id": 83,
+    "inicio": 542.06,
+    "fin": 549.1,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A journalist hesitating before speaking, red record light blinking, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_083_2026-11-13.png",
+    "texto": "mañana: - ¿Dice la palabra clave o la esconde? - ¿Dice el dato o solo la emoción?"
+  },
+  {
+    "id": 84,
+    "inicio": 549.1,
+    "fin": 556.14,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A professor in tweed jacket squinting at a thick official gazette, red highlighter in hand, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_084_2026-11-13.png",
+    "texto": "- ¿Dice la fuente o solo la versión? Como el profesor Gómez, que no lee el BOE"
+  },
+  {
+    "id": 85,
+    "inicio": 556.14,
+    "fin": 563.18,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A person struggling against invisible chain links, wet street reflection, cinematic noir, high contrast, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_085_2026-11-13.png",
+    "texto": "y aun así se quedó atrapado en la nueva regla de la evaluación, te entiendo. Recuerdo su"
+  },
+  {
+    "id": 86,
+    "inicio": 563.18,
+    "fin": 570.22,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A person in a white lab coat looking at a glowing device, neon cyberpunk, magenta and cyan, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_086_2026-11-13.png",
+    "texto": "bata de laboratorio, su mirada de “¿has visto la última novedad? ” y yo, sin saber, ya"
+  },
+  {
+    "id": 87,
+    "inicio": 570.22,
+    "fin": 577.26,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Two people trapped in a mechanical maze, cold blue lighting, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_087_2026-11-13.png",
+    "texto": "estaba en la misma trampa que tú. No es tu culpa. El sistema está armado para que,"
+  },
+  {
+    "id": 88,
+    "inicio": 577.26,
+    "fin": 583.26,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "Crowds accepting official headlines, red markers highlighting text, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_088_2026-11-13.png",
+    "texto": "sin darnos cuenta, aceptemos la versión oficial como la única verdad. Cada normativa, cada titular, cada “expert@”"
+  },
+  {
+    "id": 89,
+    "inicio": 584.3,
+    "fin": 591.34,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand shattering a glass loop, neon fragments flying, neon cyberpunk, magenta and cyan, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_089_2026-11-13.png",
+    "texto": "está pensado para que no cuestionemos. — Pero tú puedes cambiarlo. Puedes romper el bucle, puedes abrir"
+  },
+  {
+    "id": 90,
+    "inicio": 591.34,
+    "fin": 597.34,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "Close-up of weary eyes, intense gaze, documentary photojournalism, natural light, subtle grain, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_090_2026-11-13.png",
+    "texto": "los ojos y decir “basta”. Mañana, cuando veas un titular, pregúntate: ¿dice la palabra clave o la"
+  },
+  {
+    "id": 91,
+    "inicio": 598.38,
+    "fin": 605.42,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Three distinct newspaper clippings on a desk, red circles highlighting data, source, and emotion, documentary photojournalism, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_091_2026-11-13.png",
+    "texto": "esconde? ¿Dice el dato o solo la emoción? ¿Dice la fuente o solo la versión? Son tres"
+  },
+  {
+    "id": 92,
+    "inicio": 605.42,
+    "fin": 612.46,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand gripping a metal key, fog swirling around, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_092_2026-11-13.png",
+    "texto": "preguntas que, como una llave, pueden abrir cualquier puerta de humo. Si te ha servido, comparte. —"
+  },
+  {
+    "id": 93,
+    "inicio": 612.46,
+    "fin": 619.5,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand sharing a phone screen with a friend, warm light, 70s film archive, faded colors, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_093_2026-11-13.png",
+    "texto": "Pero no te lo creas todo. Si te ha servido, comparte esto con ese amigo que todavía"
+  },
+  {
+    "id": 94,
+    "inicio": 619.5,
+    "fin": 626.54,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A person staring blankly at a glowing TV screen, three question marks floating in the air, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_094_2026-11-13.png",
+    "texto": "se cree la tele. Y recuerda las tres preguntas de siempre: ¿dice la palabra clave o la"
+  },
+  {
+    "id": 95,
+    "inicio": 626.54,
+    "fin": 633.58,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cierre",
+    "concepto_visual": "A journalist's hand hovering over a redacted document, source hidden, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_095_2026-11-13.png",
+    "texto": "esconde? ¿dice el dato o solo la emoción? ¿dice la fuente o solo la versión? Nos Nos"
+  }
+]
