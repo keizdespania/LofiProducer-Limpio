@@ -1,0 +1,15 @@
+# EYRAPID robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /*?*
+
+# Sitemaps
+Sitemap: https://eyrapid.pages.dev/sitemap.xml
+
+# Bloquear bots de scraping agresivos (opcional)
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
