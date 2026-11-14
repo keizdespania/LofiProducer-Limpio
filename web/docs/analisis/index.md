@@ -5,17 +5,71 @@ hide:
 
 <div class="holo-hero">
   <h1>El Archivo del Anti-Medio</h1>
-  <p>Todo nuestro arsenal. 57 análisis publicados. Sin filtros, con enlaces verificables.</p>
+  <p>Todo nuestro arsenal. 63 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (57)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (12)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (16)</button>
-  <button class="holo-filter-btn" data-filter="mediano">Medianos (10)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (63)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (14)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (18)</button>
+  <button class="holo-filter-btn" data-filter="mediano">Medianos (12)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-13-mediano-medio_analizado/'" data-category="mediano">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    <img src="/media/imagenes/post_2026-11-13_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Onda Cero: la tecnica del anclaje de autoridad y exclusividad</h3>
+    <p>Analisis medio_analizado: Onda Cero: la tecnica del anclaje de autoridad y exclusividad</p>
+    <div class="holo-meta"><span>📅 2026-11-13</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-13-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    <img src="/media/imagenes/post_2026-11-13_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El Encuadre: La UCO detecta un «descuadre contable» entre la</h3>
+    <p>Analisis largo: El Encuadre: La UCO detecta un «descuadre contable» entre la</p>
+    <div class="holo-meta"><span>📅 2026-11-13</span></div>
+    
+    <a href="https://okdiario.com/baleares/sant-josep-sa-talaia-pone-marcha-primer-ecosistema-operativo-patrullas-aereas-inteligentes-europa-refuerza-seguridad-nuevas-camaras-inteligentes-pantallas-digitales-20729839" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · okdiario.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-13-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    <img src="/media/imagenes/post_2026-11-13_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Dossier del día: El Encuadre: La UCO detecta un «descuadre contable» entre la</h3>
+    <p>Dossier ejecutivo: El Encuadre: La UCO detecta un «descuadre contable» entre la documentación del T</p>
+    <div class="holo-meta"><span>📅 2026-11-13</span></div>
+    
+    <a href="https://okdiario.com/baleares/sant-josep-sa-talaia-pone-marcha-primer-ecosistema-operativo-patrullas-aereas-inteligentes-europa-refuerza-seguridad-nuevas-camaras-inteligentes-pantallas-digitales-20729839" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · okdiario.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-12-mediano-cita/'" data-category="mediano">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    <img src="/media/imagenes/post_2026-11-12_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>La cita que lo cambia todo</h3>
+    <p>Analisis cita: La cita que lo cambia todo</p>
+    <div class="holo-meta"><span>📅 2026-11-12</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-12-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    <img src="/media/imagenes/post_2026-11-12_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El Encuadre: La primera huelga general por la vivienda movil</h3>
+    <p>Analisis largo: El Encuadre: La primera huelga general por la vivienda movil</p>
+    <div class="holo-meta"><span>📅 2026-11-12</span></div>
+    
+    <a href="https://www.abc.es/internacional/tres-millones-personas-salen-calles-lima-recibir-20261112014733-nt.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · abc.es</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-12-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    <img src="/media/imagenes/post_2026-11-12_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Dossier del día: El Encuadre: La primera huelga general por la vivienda movil</h3>
+    <p>Dossier ejecutivo: El Encuadre: La primera huelga general por la vivienda moviliza a millones de pe</p>
+    <div class="holo-meta"><span>📅 2026-11-12</span></div>
+    
+    <a href="https://www.abc.es/internacional/tres-millones-personas-salen-calles-lima-recibir-20261112014733-nt.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · abc.es</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-11-mediano-radar/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     <img src="/media/imagenes/post_2026-11-11_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">

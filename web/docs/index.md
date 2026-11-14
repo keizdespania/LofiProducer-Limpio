@@ -13,50 +13,50 @@ hide:
 <h2 class="holo-section-title">Últimos Análisis</h2>
 
 <div class="holo-grid">
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-10-mediano-tutorial/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-13-mediano-medio_analizado/'">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
-    <img src="/media/imagenes/post_2026-11-10_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
-    <h3>Cómo detectar la técnica: Sensacionalismo y polarización</h3>
-    <p>Analisis tutorial: Cómo detectar la técnica: Sensacionalismo y polarización</p>
-    <div class="holo-meta"><span>📅 2026-11-10</span></div>
+    <img src="/media/imagenes/post_2026-11-13_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Onda Cero: la tecnica del anclaje de autoridad y exclusividad</h3>
+    <p>Analisis medio_analizado: Onda Cero: la tecnica del anclaje de autoridad y exclusividad</p>
+    <div class="holo-meta"><span>📅 2026-11-13</span></div>
     
     <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-10-largo/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-13-largo/'">
     <div class="holo-badge badge-new">🔥 Análisis Diario</div>
-    <img src="/media/imagenes/post_2026-11-10_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
-    <h3>El Encuadre: El TS admite que 180.000 hijos de supuestos 'ni</h3>
-    <p>Analisis largo: El Encuadre: El TS admite que 180.000 hijos de supuestos 'ni</p>
-    <div class="holo-meta"><span>📅 2026-11-10</span></div>
+    <img src="/media/imagenes/post_2026-11-13_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El Encuadre: La UCO detecta un «descuadre contable» entre la</h3>
+    <p>Analisis largo: El Encuadre: La UCO detecta un «descuadre contable» entre la</p>
+    <div class="holo-meta"><span>📅 2026-11-13</span></div>
     
-    <a href="https://www.eldiario.es/política/sanchez-pide-justicia-investigue-pagos-koldo-garcia-mintiera-gobierno_1_13650855.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · eldiario.es</a>
+    <a href="https://okdiario.com/baleares/sant-josep-sa-talaia-pone-marcha-primer-ecosistema-operativo-patrullas-aereas-inteligentes-europa-refuerza-seguridad-nuevas-camaras-inteligentes-pantallas-digitales-20729839" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · okdiario.com</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-10-dossier-v2/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-13-dossier-v2/'">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="/media/imagenes/post_2026-11-10_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
-    <h3>Dossier del día: El Encuadre: El TS admite que 180.000 hijos de supuestos 'ni</h3>
-    <p>Dossier ejecutivo: El Encuadre: El TS admite que 180.000 hijos de supuestos 'nietos' podrán votar c</p>
-    <div class="holo-meta"><span>📅 2026-11-10</span></div>
+    <img src="/media/imagenes/post_2026-11-13_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Dossier del día: El Encuadre: La UCO detecta un «descuadre contable» entre la</h3>
+    <p>Dossier ejecutivo: El Encuadre: La UCO detecta un «descuadre contable» entre la documentación del T</p>
+    <div class="holo-meta"><span>📅 2026-11-13</span></div>
     
-    <a href="https://www.eldiario.es/política/sanchez-pide-justicia-investigue-pagos-koldo-garcia-mintiera-gobierno_1_13650855.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · eldiario.es</a>
+    <a href="https://okdiario.com/baleares/sant-josep-sa-talaia-pone-marcha-primer-ecosistema-operativo-patrullas-aereas-inteligentes-europa-refuerza-seguridad-nuevas-camaras-inteligentes-pantallas-digitales-20729839" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · okdiario.com</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-09-mediano-quirurgico/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-12-mediano-cita/'">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
-    <img src="/media/imagenes/post_2026-11-09_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
-    <h3>El ángulo que nadie cuenta: ¿Te cuesta encontrar casa?</h3>
-    <p>Analisis quirurgico: El ángulo que nadie cuenta: ¿Te cuesta encontrar casa?</p>
-    <div class="holo-meta"><span>📅 2026-11-09</span></div>
+    <img src="/media/imagenes/post_2026-11-12_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>La cita que lo cambia todo</h3>
+    <p>Analisis cita: La cita que lo cambia todo</p>
+    <div class="holo-meta"><span>📅 2026-11-12</span></div>
     
     <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
   </div>
-  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-09-largo/'">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='analisis/2026-11-12-largo/'">
     <div class="holo-badge badge-new">🔥 Análisis Diario</div>
-    <img src="/media/imagenes/post_2026-11-09_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
-    <h3>El Encuadre: Nvidia abre una investigación a su consejero de</h3>
-    <p>Analisis largo: El Encuadre: Nvidia abre una investigación a su consejero de</p>
-    <div class="holo-meta"><span>📅 2026-11-09</span></div>
+    <img src="/media/imagenes/post_2026-11-12_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El Encuadre: La primera huelga general por la vivienda movil</h3>
+    <p>Analisis largo: El Encuadre: La primera huelga general por la vivienda movil</p>
+    <div class="holo-meta"><span>📅 2026-11-12</span></div>
     
-    <a href="https://www.lavanguardia.com/política/20261108/11679248/sanchez-advierte-pp-vox-gobiernan-plegaran-trump-tragan.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · lavanguardia.com</a>
+    <a href="https://www.abc.es/internacional/tres-millones-personas-salen-calles-lima-recibir-20261112014733-nt.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · abc.es</a>
   </div>
   <a href="glosario/" class="holo-card">
     <div class="holo-badge badge-guide">📚 Guía Definitiva</div>
