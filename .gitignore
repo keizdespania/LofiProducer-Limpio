@@ -1,62 +1,54 @@
-# === SECRETOS ===
-.env
-*.token
-*token.json
-secrets/
-
-# === LOGS Y TEMPORALES ===
-data/logs/
-*.log
-*.part
-$HOME/tmp/
-
-# === ASSETS PESADOS (descarga on-demand) ===
-assets/models/
-kaggle_src/
-.wheels_hack/
-
-# === DATOS RUNTIME (se regeneran) ===
-output/
-data/backups/
-data/call_logs/
-data/storage.sqlite*
-data/cache/
-data/server/
-data/supervisor/
-data/agent/cola*.db
-data/musica_libre/*.mp3
-data/musica_libre/*/*.mp3
-
-# === WEB: build estático (se regenera con mkdocs) ===
-# web/media/imagenes/ (desbloqueado para posts web)
-web/media/imagenes/short_*
-web/media/imagenes/web_*
-web/web/
-
-# === PODCASTS: SÍ van a git (para RSS Spotify, 30 días) ===
-# web/docs/podcast/*.mp3  ← NO ignorar
-
-# === PYTHON ===
-__pycache__/
-*.pyc
-*.pyo
-
-# === BACKUPS DE SISTEMA ===
-*.bak*
-*.py.bak*
-.git.backup.*/
-.git.backup.*
-
-# === SISTEMA ===
-.DS_Store
-*.swp
 
 # 2026-11-04: cache TTS (no aporta, se regenera)
-data/cache_voz/
-
-# build artifact (copy_media hook)
-web/docs/media/
-web/site/media/
-
 # 2026-11-08: pool histórico por fecha
+# === ASSETS PESADOS (descarga on-demand) ===
+# === BACKUPS DE SISTEMA ===
+# === DATOS RUNTIME (se regeneran) ===
+# === LOGS Y TEMPORALES ===
+# === PODCASTS: SÍ van a git (para RSS Spotify, 30 días) ===
+# === PYTHON ===
+# === SECRETOS ===
+# === SISTEMA ===
+# === WEB: build estático (se regenera con mkdocs) ===
+# build artifact (copy_media hook)
+# web/docs/podcast/*.mp3  ← NO ignorar
+# web/media/imagenes/ (desbloqueado para posts web)
+$HOME/tmp/
+*.bak*
+*.log
+*.part
+*.py.bak*
+*.pyc
+*.pyo
+*.swp
+*.token
+*token.json
+.DS_Store
+.env
+.git.backup.*
+.git.backup.*/
+.wheels_hack/
+__pycache__/
+assets/models/
+data/agent/cola*.db
+data/backups/
+data/cache/
+data/cache_voz/
+data/call_logs/
+data/logs/
+data/musica_libre/*.mp3
+data/musica_libre/*/*.mp3
+data/server/
+data/storage.sqlite*
+data/supervisor/
+kaggle_src/
+output/
+repos/
+repos/openfile/
+secrets/
+web/docs/media/
 web/media/imagenes/seg_*
+web/media/imagenes/short_*
+web/media/imagenes/web_*
+web/site/media/
+web/web/
