@@ -43,13 +43,15 @@ BLOGGER_PAUSADO = True
 BLOGGER_DESBLOQUEO = "2026-11-11"
 
 # 2026-11-09: snapshot rollback antes de pipeline
-try:
-    import sys as _sys_snap
-    _sys_snap.path.insert(0, str(ROOT / "scripts"))
-    from rollback import snapshot as _snap
-    _snap("pre-pipeline")
-except Exception as _e:
-    print(f"   [snapshot] {_e}", flush=True)
+# 2026-11-11 FIX: movido a función. Ya NO se ejecuta al importar.
+def _snapshot_pre_pipeline():
+    try:
+        import sys as _sys_snap
+        _sys_snap.path.insert(0, str(ROOT / "scripts"))
+        from rollback import snapshot as _snap
+        _snap("pre-pipeline")
+    except Exception as _e:
+        print(f"   [snapshot] {_e}", flush=True)
 
 def _run(script, args=None, timeout=1200, retries=3):
     cmd = ["python3", f"scripts/{script}"] + (args or [])
@@ -173,7 +175,7 @@ def _publicar_web(fecha):
     # Git add + commit + push (solo ficheros web)
     try:
         import subprocess as _sp
-        _sp.run(["git", "add", "web/docs/analisis/", "web/mkdocs.yml", "web/media/imagenes/"], cwd=str(ROOT), timeout=60)
+        _sp.run(["git", "add", "web/docs/", "web/site/", "web/mkdocs.yml", "web/media/imagenes/"], cwd=str(ROOT), timeout=60)
         rc_commit = _sp.run(["git", "commit", "-m", f"content: posts web {fecha} (largo + dossier + mediano)"], cwd=str(ROOT), timeout=30, capture_output=True)
         # Rebase silencioso si remote avanzó (kernel LTX pushea clips por la noche)
         rc_pull = _sp.run(["git", "pull", "--rebase", "--autostash"], cwd=str(ROOT), timeout=60, capture_output=True, text=True)
@@ -285,6 +287,7 @@ def main():
 
     fecha = datetime.date.today().isoformat()
     print(f"🚀 INICIANDO PIPELINE MASIVO - {fecha}", flush=True)
+    return _main_impl(fecha)
 
 
 def _cleanup_kaggle_kernel():
@@ -300,33 +303,68 @@ def _cleanup_kaggle_kernel():
 
 
 def _render_largo_pipeline(fecha):
-    """Render largo con cascada: Kaggle TOP1 → Kaggle básico → local."""
+    """Render largo: lanza Kaggle en background, espera fin, descarga directo.
+    Si tarda >15 min sin vídeo, cancela y cae a local."""
     import time as _t_local
+    import subprocess as _sp_par
+    import pathlib as _p_par
+    
     _render_largo_t0 = _t_local.time()
     video = OUT / f"video_largo_{fecha}.mp4"
+    _hash_viejo = None
+    if video.exists():
+        try:
+            import hashlib as _hashlib
+            _hash_viejo = _hashlib.md5(video.read_bytes()).hexdigest()
+        except: pass
 
-    print("\n" + "="*60 + "\n🎬 INTENTO 1: Kaggle TOP 1 (haldclut+60fps+p7)\n" + "="*60, flush=True)
-    ok = _run("renderizar_en_kaggle.py", [fecha, "--top1"], 2400, 1)
-    if ok and video.exists() and video.stat().st_size > 5_000_000:
-        print(f"✅ Kaggle TOP1 OK ({video.stat().st_size//1024//1024}MB)", flush=True)
-        return True
-    _cleanup_kaggle_kernel()
-
-    if (time.time() - _render_largo_t0) > 3600:
-        print("⚠️ Deadline interno render superado, saltando a LOCAL", flush=True)
-        return _run("render_robusto.py", [fecha], 1800, 1)
-
-    print("\n" + "="*60 + "\n🎬 INTENTO 2: Kaggle básico (nvenc cq20)\n" + "="*60, flush=True)
-    ok = _run("renderizar_en_kaggle.py", [fecha], 2400, 1)
-    if ok and video.exists() and video.stat().st_size > 5_000_000:
-        print(f"✅ Kaggle básico OK ({video.stat().st_size//1024//1024}MB)", flush=True)
-        return True
-    _cleanup_kaggle_kernel()
-
-    print("\n" + "="*60 + "\n🎬 INTENTO 3: LOCAL (fallback)\n" + "="*60, flush=True)
+    # Intento 1: Kaggle TOP1 (background, poll rápido)
+    print("\n" + "="*60 + "\n🎬 INTENTO 1: Kaggle TOP 1 (fast-poll 15min max)\n" + "="*60, flush=True)
+    
+    # Lanzar renderizar_en_kaggle.py en subprocess NO bloqueante
+    _log_kaggle = OUT / f"kaggle_{fecha}.log"
+    _proc = _sp_par.Popen(
+        ["python3", "-u", "scripts/renderizar_en_kaggle.py", fecha, "--top1"],
+        cwd=str(ROOT),
+        stdout=open(_log_kaggle, "w"),
+        stderr=_sp_par.STDOUT
+    )
+    
+    _max_wait = 900  # 15 min
+    _poll_interval = 10
+    while _t_local.time() - _render_largo_t0 < _max_wait:
+        if _proc.poll() is not None:
+            # El script terminó (con o sin vídeo)
+            if video.exists() and video.stat().st_size > 5_000_000:
+                import hashlib as _hashlib2
+                _hash_nuevo = _hashlib2.md5(video.read_bytes()).hexdigest()
+                if _hash_nuevo != _hash_viejo:
+                    print(f"✅ Kaggle TOP1 OK ({video.stat().st_size//1024//1024}MB, hash nuevo)", flush=True)
+                    return True
+                else:
+                    print(f"⚠️ Kaggle devolvió vídeo viejo (hash igual)", flush=True)
+            else:
+                print(f"⚠️ Kaggle terminó pero sin vídeo. Log: {_log_kaggle}", flush=True)
+            break
+        _t_local.sleep(_poll_interval)
+    
+    # Si aún corriendo tras 15 min → cancelar
+    if _proc.poll() is None:
+        print(f"⚠️ Kaggle lleva >15 min. Cancelando y pasando a LOCAL...", flush=True)
+        try: _proc.terminate()
+        except: pass
+        try: _cleanup_kaggle_kernel()
+        except: pass
+    
+    # Intento 2: LOCAL (fallback garantizado)
+    print("\n" + "="*60 + "\n🎬 INTENTO 2: LOCAL (fallback garantizado)\n" + "="*60, flush=True)
     return _run("render_robusto.py", [fecha], 1800, 1)
 
 
+
+def _main_impl(fecha):
+    """Pipeline principal — todos los pasos reales."""
+    _pipeline_t0 = time.time()
     pasos = [
         ("recolector.py", None, 1200, False),
         ("filtro_seguridad.py", [fecha], 300, False),
@@ -538,7 +576,6 @@ def _render_largo_pipeline(fecha):
     _run_resume(fecha, "redes_cruzadas", "generar_redes_cruzadas_llm.py", [fecha], 300, 1)  # 2026-11-09: redes cruzadas largo+shorts+posts
 
     # Deadline global
-    _pipeline_t0 = time.time()
 
     # RESUME: si ya completado hoy, saltar
     _resume = _leer_resume(fecha)
@@ -684,6 +721,12 @@ def _render_largo_pipeline(fecha):
     except: pass
 
     _marcar_step(fecha, "completado")
+    # Cleanup assets de GitHub (vídeo ya descargado, no se necesitan más)
+    try:
+        print("\n" + "="*60 + "\n🧹 Limpiando assets GitHub\n" + "="*60, flush=True)
+        _run("limpiar_assets_github.py", [fecha], 120, 1)
+    except Exception as _e_clean:
+        print(f"   ⚠️ Cleanup GitHub: {_e_clean}", flush=True)
     state = {"fecha": fecha, "completado": True, "video": str(video_path)}
     (OUT / f"pipeline_{fecha}.json").write_text(json.dumps(state, indent=2))
     # CAPA 4: Post-producción inteligente

@@ -1,54 +1,32 @@
-
-# 2026-11-04: cache TTS (no aporta, se regenera)
-# 2026-11-08: pool histórico por fecha
-# === ASSETS PESADOS (descarga on-demand) ===
-# === BACKUPS DE SISTEMA ===
-# === DATOS RUNTIME (se regeneran) ===
-# === LOGS Y TEMPORALES ===
-# === PODCASTS: SÍ van a git (para RSS Spotify, 30 días) ===
-# === PYTHON ===
-# === SECRETOS ===
-# === SISTEMA ===
-# === WEB: build estático (se regenera con mkdocs) ===
-# build artifact (copy_media hook)
-# web/docs/podcast/*.mp3  ← NO ignorar
-# web/media/imagenes/ (desbloqueado para posts web)
-$HOME/tmp/
-*.bak*
+*.gguf
 *.log
-*.part
-*.py.bak*
+*.mp4
+*.onnx
 *.pyc
-*.pyo
-*.swp
-*.token
-*token.json
+*.sqlite
 .DS_Store
 .env
-.git.backup.*
-.git.backup.*/
-.wheels_hack/
+.env.backup
+.env.local
+.npm/
 __pycache__/
 assets/models/
-data/agent/cola*.db
-data/backups/
-data/cache/
-data/cache_voz/
-data/call_logs/
+assets/models/tts/*.onnx
+data/*_token.json
+data/agent/*.bak.*
+data/agent/*.db
+data/agent/*.db-*
+data/agent/ltx_assets/avatares/
 data/logs/
-data/musica_libre/*.mp3
-data/musica_libre/*/*.mp3
-data/server/
-data/storage.sqlite*
-data/supervisor/
-kaggle_src/
+data/youtube_encuadre_token.json
+dist/
+node_modules/
 output/
+output/musica/*.mp3
 repos/
 repos/openfile/
 secrets/
-web/docs/media/
-web/media/imagenes/seg_*
-web/media/imagenes/short_*
-web/media/imagenes/web_*
-web/site/media/
-web/web/
+tmp/
+web/docs/media/imagenes/seg_*.png
+web/eyrapid-root/
+web/media/imagenes/seg_*.png
