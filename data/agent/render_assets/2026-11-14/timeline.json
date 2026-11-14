@@ -1,0 +1,1022 @@
+[
+  {
+    "id": 1,
+    "inicio": 0.0,
+    "fin": 4.0,
+    "tipo_visual": "imagen",
+    "tipo_escena": "hook",
+    "concepto_visual": "A man staring intensely at a wall of TV screens, red price tags glowing, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_001_2026-11-14.png",
+    "texto": "Mira, te lo voy a decir claro desde el principio. Los medios no informan. Venden. Y"
+  },
+  {
+    "id": 2,
+    "inicio": 7.05,
+    "fin": 14.1,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Crowd of silhouettes swallowing a glowing red calendar page, cinematic noir, deep shadows, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_002_2026-11-14.png",
+    "texto": "tú, y yo, y todos, nos lo tragamos. Hasta este 14 de noviembre de 2026. Somos"
+  },
+  {
+    "id": 3,
+    "inicio": 14.1,
+    "fin": 21.15,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A hand plunges into dark, swirling sewage water, revealing hidden mechanical gears, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_003_2026-11-14.png",
+    "texto": "El Encuadre. Y vamos a abrir la cloaca. Te voy a enseñar las técnicas que han"
+  },
+  {
+    "id": 4,
+    "inicio": 21.15,
+    "fin": 28.21,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A man holding a crumpled used newspaper, looking directly into the lens, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_004_2026-11-14.png",
+    "texto": "usado hoy. Quédate, porque esto te va a cambiar la forma de leer el periódico. Manuel,"
+  },
+  {
+    "id": 5,
+    "inicio": 28.21,
+    "fin": 35.26,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A man in a suit whispering into a woman's ear, school hallway background, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_005_2026-11-14.png",
+    "texto": "el jefe de la AMPA, me susurró al oído: 'El presupuesto se duplicará'. Yo le contesté,"
+  },
+  {
+    "id": 6,
+    "inicio": 35.26,
+    "fin": 42.31,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Surgeon smiles coldly at incredulous patient, sterile white operating room, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_006_2026-11-14.png",
+    "texto": "incrédulo: '¿En serio? '. Y el director añadió, con esa sonrisa de cirujano: 'Es una optimización'."
+  },
+  {
+    "id": 7,
+    "inicio": 42.31,
+    "fin": 49.36,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A single banknote sprouting tiny green leaves, minimalist product shot, dramatic single shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_007_2026-11-14.png",
+    "texto": "El dinero crece como las expectativas. Mira. Eso no fue una reunión. Fue un trámite. Una"
+  },
+  {
+    "id": 8,
+    "inicio": 49.36,
+    "fin": 56.41,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A group of politicians smiling and nodding in unison, a red \"question mark\" shadow falling on the leader, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_008_2026-11-14.png",
+    "texto": "coreografía. Todos sonriendo. Todos asintiendo. Nadie preguntó de dónde sale ese dinero. Porque preguntar rompe el"
+  },
+  {
+    "id": 9,
+    "inicio": 56.41,
+    "fin": 63.46,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A crowd with empty wallets, full souls, red banners, cinematic noir, high contrast, wet streets, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_009_2026-11-14.png",
+    "texto": "hechizo. Quedamos todos contentos. Con la cartera vacía. — Pero con la alma llena de promesas."
+  },
+  {
+    "id": 10,
+    "inicio": 63.46,
+    "fin": 70.52,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "Woman staring into void, floating words dissolving into mist, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_010_2026-11-14.png",
+    "texto": "Fíjate bien. Vivimos en una burbuja de palabras bonitas. 'Optimización'. 'Eficiencia'. 'Primera fase'. Son anestésicos. Te"
+  },
+  {
+    "id": 11,
+    "inicio": 70.52,
+    "fin": 77.57,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A needle injecting red ink into a sleeping patient's arm, muted palette, cross-hatching, editorial illustration, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_011_2026-11-14.png",
+    "texto": "ponen una inyección de jerga y ya no sientes el dolor. No sientes que te están"
+  },
+  {
+    "id": 12,
+    "inicio": 77.57,
+    "fin": 84.62,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Theater stage, politician bowing, audience clapping, red curtains, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_012_2026-11-14.png",
+    "texto": "vendiendo humo. Lo llaman gestión. En realidad, es teatro. El director actúa. El público aplaude. Y"
+  },
+  {
+    "id": 13,
+    "inicio": 84.62,
+    "fin": 91.67,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A massive budget document transforming into colorful fireworks smoke, bright burst against black sky, cinematic noir, deep shadows, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_013_2026-11-14.png",
+    "texto": "el presupuesto se evapora en humo. Como en una fogata de fuegos artificiales. Brillo. Ruido. Y"
+  },
+  {
+    "id": 14,
+    "inicio": 91.67,
+    "fin": 98.72,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Scattered ash, woman speaking directly, documentary photojournalism, natural light, subtle grain, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_014_2026-11-14.png",
+    "texto": "ceniza. Oye. Esto no es solo de las escuelas. Es el guion de todos los días."
+  },
+  {
+    "id": 15,
+    "inicio": 98.72,
+    "fin": 104.72,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A crumpled glossy newspaper headline dissolving into empty air, deep shadows, cinematic noir, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_015_2026-11-14.png",
+    "texto": "Te venden la apariencia. La foto. El titular. La promesa vacía. Nos engañan con el envoltorio."
+  },
+  {
+    "id": 16,
+    "inicio": 105.77,
+    "fin": 108.77,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "chalk outline on dark floor, single spotlight, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_016_2026-11-14.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 17,
+    "inicio": 105.77,
+    "fin": 112.82,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "An open luxury box revealing empty void, 70s film archive, faded warm colors, dust specks, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_017_2026-11-14.png",
+    "texto": "Con la caja bonita. Dentro.. Pues nada. O menos de lo que crees. Los medios te"
+  },
+  {
+    "id": 18,
+    "inicio": 112.82,
+    "fin": 119.88,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A director pointing at a glowing screen hiding a dark room, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_018_2026-11-14.png",
+    "texto": "dicen lo que quieren que veas. No lo que hay. Te venden la película. No el"
+  },
+  {
+    "id": 19,
+    "inicio": 119.88,
+    "fin": 126.93,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A man buying a movie ticket, face illuminated by neon glow, truth ignored, neon cyberpunk, shallow depth, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_019_2026-11-14.png",
+    "texto": "rodaje. Y tú compras el billete. Porque la verdad es aburrida. Y la mentira es entretenida."
+  },
+  {
+    "id": 20,
+    "inicio": 126.93,
+    "fin": 133.98,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Giant stone words forming a fortress wall, blocking cold blue reality, cinematic noir, high contrast, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_020_2026-11-14.png",
+    "texto": "Las palabras son muros. Altos. Grandiosos. Te protegen de la realidad. De la fría realidad de"
+  },
+  {
+    "id": 21,
+    "inicio": 133.98,
+    "fin": 141.03,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Crumbling concrete walls exposing rebar, dust rising, cinematic noir, high contrast, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_021_2026-11-14.png",
+    "texto": "las cifras. De la verdad incómoda. — Pero los muros se caen. Siempre se caen. Cuando"
+  },
+  {
+    "id": 22,
+    "inicio": 141.03,
+    "fin": 148.08,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Cracked concrete slab close-up, rebar exposed, dust particles floating, documentary photojournalism, natural light, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_022_2026-11-14.png",
+    "texto": "el cemento se resquebraja. Y te voy a enseñar por qué esto importa. Quédate. Vamos a"
+  },
+  {
+    "id": 23,
+    "inicio": 148.08,
+    "fin": 154.08,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A man reading an open newspaper headline, coffee cup nearby, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_023_2026-11-14.png",
+    "texto": "ver qué dicen los medios hoy. Fíjate en El Español, que publicó el titular «Bustinduy y"
+  },
+  {
+    "id": 24,
+    "inicio": 155.13,
+    "fin": 162.18,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Two politicians in dark suits tense, red housing file on desk, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_024_2026-11-14.png",
+    "texto": "Bravo ponen en evidencia a Cuerpo: la política de vivienda de Sánchez ha sido la de"
+  },
+  {
+    "id": 25,
+    "inicio": 162.18,
+    "fin": 169.24,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Government official signing housing legislation, extreme left text highlighted, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_025_2026-11-14.png",
+    "texto": "la extrema izquierda». El texto subraya que el Ejecutivo aceptó la Ley de Vivienda de 2023"
+  },
+  {
+    "id": 26,
+    "inicio": 169.24,
+    "fin": 176.29,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A landlord holding a red rent increase notice, dark office, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_026_2026-11-14.png",
+    "texto": "y un decreto que limita las subas de los alquileres, y lo califica de intervencionista. También"
+  },
+  {
+    "id": 27,
+    "inicio": 176.29,
+    "fin": 183.34,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A politician shaking head firmly, opposing price intervention, red price tags on desk, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_027_2026-11-14.png",
+    "texto": "recuerda que, hace doce años, Cuerpo se oponía a cualquier intervención en precios. Lo que no"
+  },
+  {
+    "id": 28,
+    "inicio": 183.34,
+    "fin": 190.39,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Empty spreadsheet with missing data cells, stark white paper, minimalist product shot, dramatic single shadow, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_028_2026-11-14.png",
+    "texto": "aparece es ninguna cifra sobre el número de viviendas afectadas ni el nivel de los alquileres"
+  },
+  {
+    "id": 29,
+    "inicio": 190.39,
+    "fin": 197.44,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Split screen: dilapidated apartment vs. luxury renovation, red marker circle, minimalist product shot, dramatic single shadow, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_029_2026-11-14.png",
+    "texto": "antes y después de la medida. No se menciona el impacto concreto en los inquilinos ni"
+  },
+  {
+    "id": 30,
+    "inicio": 197.44,
+    "fin": 204.49,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A journalist checking a calendar, red ink circle on specific date, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_030_2026-11-14.png",
+    "texto": "el coste presupuestario de la normativa. ¿Y por qué este medio cuenta esto HOY? La fecha"
+  },
+  {
+    "id": 31,
+    "inicio": 204.49,
+    "fin": 211.54,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Two politicians gesturing at podiums, red tax charts, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_031_2026-11-14.png",
+    "texto": "coincide con el debate económico en el que el PP destacó su rebaja de impuestos y"
+  },
+  {
+    "id": 32,
+    "inicio": 211.54,
+    "fin": 214.54,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "red thread connecting pins on a world map, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_032_2026-11-14.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 33,
+    "inicio": 211.54,
+    "fin": 218.6,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Handshake over overflowing cash register, political opponents watching, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_033_2026-11-14.png",
+    "texto": "la recaudación récord del PSOE, un momento oportuno para criticar la agenda de Sánchez y reforzar"
+  },
+  {
+    "id": 34,
+    "inicio": 218.6,
+    "fin": 224.6,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A newspaper headline \"SMI se dispara\" on a desk, red marker highlighting text, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_034_2026-11-14.png",
+    "texto": "la narrativa de “extrema izquierda”. Pasemos a ABC, que lleva el encabezado «El SMI se dispara…"
+  },
+  {
+    "id": 35,
+    "inicio": 225.65,
+    "fin": 229.65,
+    "tipo_visual": "imagen",
+    "tipo_escena": "hook",
+    "concepto_visual": "A tired worker clutching a crumpled pay stub, minimalist product shot, dramatic single shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_035_2026-11-14.png",
+    "texto": "¿por qué mi sueldo, no? ». El artículo indica que los salarios de la mayoría de"
+  },
+  {
+    "id": 36,
+    "inicio": 232.7,
+    "fin": 239.75,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Split bar chart, workers' wages rising steeply, minimum wage flat, minimalist product shot, dramatic single shadow, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_036_2026-11-14.png",
+    "texto": "los trabajadores han crecido la mitad de lo que ha subido el Salario Mínimo Interprofesional, y"
+  },
+  {
+    "id": 37,
+    "inicio": 239.75,
+    "fin": 244.75,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "Desks with low pay slips, 34% red arrow rising, minimalist product shot, dramatic single shadow, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_037_2026-11-14.png",
+    "texto": "que el número de ocupados con nóminas bajas ha aumentado un 34 % desde 2018. Señala"
+  },
+  {
+    "id": 38,
+    "inicio": 246.8,
+    "fin": 253.85,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A worker holding a small paycheck while a massive government decree looms behind, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_038_2026-11-14.png",
+    "texto": "la paradoja de que, pese a la subida del SMI por decreto del Gobierno, la mayor"
+  },
+  {
+    "id": 39,
+    "inicio": 253.85,
+    "fin": 260.91,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Cracked wallet with scattered low-value coins on a desk, minimalist product shot, dramatic single shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_039_2026-11-14.png",
+    "texto": "parte de los sueldos sigue siendo bajo. Lo que falta son los valores exactos del SMI"
+  },
+  {
+    "id": 40,
+    "inicio": 260.91,
+    "fin": 267.96,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A single deflated coin on a minimalist white surface, dramatic single shadow, minimalist product shot, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_040_2026-11-14.png",
+    "texto": "actual y la evolución del poder adquisitivo real; tampoco se ofrecen datos sobre la inflación ni"
+  },
+  {
+    "id": 41,
+    "inicio": 267.96,
+    "fin": 275.01,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Factory worker standing on edge of threshold line, red marker circle, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_041_2026-11-14.png",
+    "texto": "sobre cuántos trabajadores se encuentran justo por encima del umbral. ¿Por qué este medio cuenta esto"
+  },
+  {
+    "id": 42,
+    "inicio": 275.01,
+    "fin": 282.06,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Opposition campaigner pointing at salary charts, opposition flag, newspaper headlines, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_042_2026-11-14.png",
+    "texto": "HOY? La publicación coincide con la campaña de la oposición sobre la política salarial y con"
+  },
+  {
+    "id": 43,
+    "inicio": 282.06,
+    "fin": 289.11,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Elderly person clutching bank card against wall of red calendar dates, minimalist product shot, dramatic single shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_043_2026-11-14.png",
+    "texto": "la proximidad de la fecha límite del 29‑N, cuando el Gobierno pretende subir las pensiones un"
+  },
+  {
+    "id": 44,
+    "inicio": 289.11,
+    "fin": 294.11,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "A single 4% statistic floating in dark void, minimalist product shot, dramatic single shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_044_2026-11-14.png",
+    "texto": "4 %. El tema del SMI sirve para alimentar la percepción de que la política económica"
+  },
+  {
+    "id": 45,
+    "inicio": 296.16,
+    "fin": 303.21,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Older politician in dark suit, European flag, deep shadows, cinematic noir, high contrast, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_045_2026-11-14.png",
+    "texto": "de Sánchez favorece a los más vulnerables sin que se traduzca en mejoras palpables. Ahora Europa"
+  },
+  {
+    "id": 46,
+    "inicio": 303.21,
+    "fin": 309.21,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "Government official signing pension document, red stamp, official press release, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_046_2026-11-14.png",
+    "texto": "Press, que informa: «El Gobierno da el “primer paso” para la subida de las pensiones de"
+  },
+  {
+    "id": 47,
+    "inicio": 310.27,
+    "fin": 317.32,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Council of Ministers table, urgent legislative documents, red stamp, political news, documentary photojournalism, natural light, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_047_2026-11-14.png",
+    "texto": "2027 aprobando su tramitación urgente». La noticia indica que el Consejo de Ministros ha aprobado la"
+  },
+  {
+    "id": 48,
+    "inicio": 317.32,
+    "fin": 320.32,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "static TV noise with faint silhouette, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_048_2026-11-14.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 49,
+    "inicio": 317.32,
+    "fin": 324.37,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A weathered hand stamping a red legal seal on a pension document, dramatic single shadow, minimalist product shot, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_049_2026-11-14.png",
+    "texto": "vía rápida para el Real Decreto de Mantenimiento del Poder Adquisitivo de las Pensiones, y cita"
+  },
+  {
+    "id": 50,
+    "inicio": 324.37,
+    "fin": 331.42,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Minister Elma Saiz speaking earnestly, podium with red accents, political press conference, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_050_2026-11-14.png",
+    "texto": "a la ministra Elma Saiz diciendo que es una prioridad que los pensionistas mantengan su poder"
+  },
+  {
+    "id": 51,
+    "inicio": 331.42,
+    "fin": 338.47,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand holding a calculator next to a 2027 calendar page, minimalist product shot, dramatic single shadow, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_051_2026-11-14.png",
+    "texto": "adquisitivo. Lo que no se indica es el porcentaje concreto de la revalorización prevista para 2027,"
+  },
+  {
+    "id": 52,
+    "inicio": 338.47,
+    "fin": 345.52,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "cinematic noir, high contrast, wet streets at night, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_052_2026-11-14.png",
+    "texto": "ni el coste estimado para las arcas públicas, ni cómo se compara con la subida del"
+  },
+  {
+    "id": 53,
+    "inicio": 345.52,
+    "fin": 350.52,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "A newspaper headline showing \"4%\" next to a calendar page for 2024, minimalist product shot, dramatic single shadow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_053_2026-11-14.png",
+    "texto": "4 % anunciada para 2024. ¿Y por qué este medio cuenta esto HOY? La decisión se"
+  },
+  {
+    "id": 54,
+    "inicio": 352.57,
+    "fin": 359.63,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A politician standing alone in a dark hall, cinematic, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_054_2026-11-14.png",
+    "texto": "produce justo después de una reunión extraordinaria del Consejo de Ministros, y el Gobierno busca mostrar"
+  },
+  {
+    "id": 55,
+    "inicio": 359.63,
+    "fin": 366.68,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "documentary photojournalism, natural light, subtle grain, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_055_2026-11-14.png",
+    "texto": "actividad antes de la votación del presupuesto de 2025. El mensaje refuerza la imagen de un"
+  },
+  {
+    "id": 56,
+    "inicio": 366.68,
+    "fin": 373.68,
+    "tipo_visual": "imagen",
+    "tipo_escena": "contraste",
+    "concepto_visual": "70s film archive, faded warm colors, dust specks, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_056_2026-11-14.png",
+    "texto": "Ejecutivo atento a los mayores, mientras que la oposición critica la falta de detalle y la"
+  },
+  {
+    "id": 57,
+    "inicio": 373.73,
+    "fin": 380.78,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "A wall of glowing television screens, cinematic, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_057_2026-11-14.png",
+    "texto": "posible carga fiscal. Tres medios, tres versiones, un mismo escenario: la gestión económica de Sánchez bajo"
+  },
+  {
+    "id": 58,
+    "inicio": 380.78,
+    "fin": 386.78,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "cinematic noir, high contrast, wet streets at night, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_058_2026-11-14.png",
+    "texto": "lupa. Cada titular enfatiza un aspecto distinto –vivienda, salario mínimo y pensiones– y, a su modo,"
+  },
+  {
+    "id": 59,
+    "inicio": 387.83,
+    "fin": 394.88,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "editorial illustration, muted palette, cross-hatching, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_059_2026-11-14.png",
+    "texto": "busca orientar la percepción pública. Lo que todos comparten es la ausencia de datos concretos que"
+  },
+  {
+    "id": 60,
+    "inicio": 394.88,
+    "fin": 401.94,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "documentary photojournalism, natural light, subtle grain, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_060_2026-11-14.png",
+    "texto": "permitan medir el impacto real de esas políticas. En definitiva, la información está ahí, — pero"
+  },
+  {
+    "id": 61,
+    "inicio": 401.94,
+    "fin": 408.99,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "macro detail close-up, extreme shallow depth of field, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_061_2026-11-14.png",
+    "texto": "siempre filtrada. La pregunta que queda es: ¿qué nos está diciendo cada medio con esas selecciones?"
+  },
+  {
+    "id": 62,
+    "inicio": 408.99,
+    "fin": 416.04,
+    "tipo_visual": "imagen",
+    "tipo_escena": "explicacion",
+    "concepto_visual": "editorial illustration, muted palette, cross-hatching, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_062_2026-11-14.png",
+    "texto": "Y, sobre todo, ¿qué nos están ocultando? ¿Te ha parecido útil este desglose? ¿Crees que falta"
+  },
+  {
+    "id": 63,
+    "inicio": 416.04,
+    "fin": 423.09,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Close-up of a hand placing a final chess piece, deep shadows, cinematic noir, high contrast, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_063_2026-11-14.png",
+    "texto": "alguna pieza clave para entender la verdadera magnitud de estas decisiones? Continuemos la conversación. Ahora la"
+  },
+  {
+    "id": 64,
+    "inicio": 423.09,
+    "fin": 426.09,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "static TV noise with faint silhouette, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_064_2026-11-14.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 65,
+    "inicio": 423.09,
+    "fin": 430.14,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand holding a newspaper clipping, red marker circling a headline, close-up detail, documentary photojournalism, natural light, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_065_2026-11-14.png",
+    "texto": "pregunta del millón: ¿por qué nos lo creemos? El primer truco es el enmarcado editorial. Cuando"
+  },
+  {
+    "id": 66,
+    "inicio": 430.14,
+    "fin": 436.14,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A newspaper headline on a desk, red pen highlighting names, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_066_2026-11-14.png",
+    "texto": "en el titular de El Español aparece “Bustinduy y Bravo ponen en evidencia a Cuerpo: la"
+  },
+  {
+    "id": 67,
+    "inicio": 437.19,
+    "fin": 444.24,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "minimalist product shot, dramatic single shadow, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_067_2026-11-14.png",
+    "texto": "política de vivienda de Sánchez ha sido la de la extrema izquierda”, el lector recibe la"
+  },
+  {
+    "id": 68,
+    "inicio": 444.24,
+    "fin": 451.3,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "wide landscape golden hour, backlit silhouette, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_068_2026-11-14.png",
+    "texto": "idea de que la política es radical y peligrosa. Ese “enmarcado” no dice nada sobre los"
+  },
+  {
+    "id": 69,
+    "inicio": 451.3,
+    "fin": 458.35,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "70s film archive, faded warm colors, dust specks, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_069_2026-11-14.png",
+    "texto": "detalles, solo coloca la palabra “extrema izquierda” delante de todo lo que se hable de vivienda."
+  },
+  {
+    "id": 70,
+    "inicio": 458.35,
+    "fin": 464.35,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "A pedestrian pointing at a gleaming luxury car, bystanders judging, 70s film archive, faded warm colors, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_070_2026-11-14.png",
+    "texto": "Es como cuando alguien en la calle te dice que un coche es “de lujo” sin"
+  },
+  {
+    "id": 71,
+    "inicio": 465.4,
+    "fin": 472.45,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "macro detail close-up, extreme shallow depth of field, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_071_2026-11-14.png",
+    "texto": "decirte su precio ni sus defectos; de inmediato asumes que es algo exclusivo y positivo. El"
+  },
+  {
+    "id": 72,
+    "inicio": 472.45,
+    "fin": 479.5,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "macro detail close-up, extreme shallow depth of field, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_072_2026-11-14.png",
+    "texto": "mismo efecto ocurre con la política: el término “extrema izquierda” se convierte en la etiqueta que"
+  },
+  {
+    "id": 73,
+    "inicio": 479.5,
+    "fin": 486.55,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "cinematic noir, high contrast, wet streets at night, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_073_2026-11-14.png",
+    "texto": "determina tu juicio. El segundo truco es la apilación de datos y expertos. En ABC se"
+  },
+  {
+    "id": 74,
+    "inicio": 486.55,
+    "fin": 493.61,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "minimalist product shot, dramatic single shadow, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_074_2026-11-14.png",
+    "texto": "lee: “El SMI se dispara… ¿por qué mi sueldo, no? Los salarios de la mayoría de"
+  },
+  {
+    "id": 75,
+    "inicio": 493.61,
+    "fin": 498.61,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "editorial illustration, muted palette, cross-hatching, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_075_2026-11-14.png",
+    "texto": "trabajadores han crecido la mitad de lo que lo ha hecho el sueldo mínimo… 34 %"
+  },
+  {
+    "id": 76,
+    "inicio": 500.66,
+    "fin": 507.71,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "macro detail close-up, extreme shallow depth of field, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_076_2026-11-14.png",
+    "texto": "el número de ocupados con nóminas bajas. ” La noticia presenta varias cifras, todas de la"
+  },
+  {
+    "id": 77,
+    "inicio": 507.71,
+    "fin": 512.71,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "neon cyberpunk, magenta and cyan, shallow depth, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_077_2026-11-14.png",
+    "texto": "misma fuente o de la misma escuela de pensamiento. Cuando ves 10 datos que parecen confirmar"
+  },
+  {
+    "id": 78,
+    "inicio": 514.76,
+    "fin": 521.81,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "minimalist product shot, dramatic single shadow, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_078_2026-11-14.png",
+    "texto": "una idea, tu cerebro piensa que hay consenso. Es como cuando en un grupo de amigos"
+  },
+  {
+    "id": 79,
+    "inicio": 521.81,
+    "fin": 528.81,
+    "tipo_visual": "imagen",
+    "tipo_escena": "contraste",
+    "concepto_visual": "Crowd repeating identical concert story, blurred faces, neon cyberpunk, magenta and cyan, shallow depth, medium shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_079_2026-11-14.png",
+    "texto": "todos repiten la misma anécdota de un concierto; aunque sea el mismo relato, la repetición te"
+  },
+  {
+    "id": 80,
+    "inicio": 528.86,
+    "fin": 531.86,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "static TV noise with faint silhouette, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_080_2026-11-14.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 81,
+    "inicio": 528.86,
+    "fin": 535.91,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A hand flipping a transparent card revealing hidden text, neon cyberpunk, magenta glow, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_081_2026-11-14.png",
+    "texto": "hace creer que es real y que no hay otra versión. El tercer truco es el"
+  },
+  {
+    "id": 82,
+    "inicio": 535.91,
+    "fin": 542.97,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A minister in a dark suit raising a finger, European flag backdrop, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_082_2026-11-14.png",
+    "texto": "apelo emocional. Europa Press anuncia: “El Consejo de Ministros ha dado el primer paso para revalorizar"
+  },
+  {
+    "id": 83,
+    "inicio": 542.97,
+    "fin": 550.02,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "wide landscape golden hour, backlit silhouette, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_083_2026-11-14.png",
+    "texto": "las pensiones en 2027 y garantizar el poder adquisitivo de los pensionistas. ” La noticia no"
+  },
+  {
+    "id": 84,
+    "inicio": 550.02,
+    "fin": 557.07,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "documentary photojournalism, natural light, subtle grain, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_084_2026-11-14.png",
+    "texto": "menciona la cuantía exacta ni los obstáculos. Solo habla de “poder adquisitivo” y “seguridad”, palabras que"
+  },
+  {
+    "id": 85,
+    "inicio": 557.07,
+    "fin": 563.07,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cita",
+    "concepto_visual": "documentary photojournalism, natural light, subtle grain, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_085_2026-11-14.png",
+    "texto": "hacen que el lector sienta esperanza y alivio. Es como cuando alguien te dice que el"
+  },
+  {
+    "id": 86,
+    "inicio": 564.12,
+    "fin": 571.17,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Car advertisement with glowing \"freedom\" text, empty wallet and fuel gauge, 70s film archive, faded warm colors, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_086_2026-11-14.png",
+    "texto": "coche que quieres “te hará sentir libre”, sin mencionar el coste ni el consumo. La emoción"
+  },
+  {
+    "id": 87,
+    "inicio": 571.17,
+    "fin": 578.22,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "editorial illustration, muted palette, cross-hatching, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_087_2026-11-14.png",
+    "texto": "se apodera del mensaje y la lógica queda relegada. Al final, antes de cerrar, hazte estas"
+  },
+  {
+    "id": 88,
+    "inicio": 578.22,
+    "fin": 583.22,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "documentary photojournalism, natural light, subtle grain, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_088_2026-11-14.png",
+    "texto": "preguntas: 1. ¿Dice la palabra clave o la esconde? 2. ¿Dice el dato o solo la"
+  },
+  {
+    "id": 89,
+    "inicio": 585.27,
+    "fin": 592.33,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "editorial illustration, muted palette, cross-hatching, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_089_2026-11-14.png",
+    "texto": "emoción? 3. ¿Dice la fuente o solo la versión? Si respondes “sí” a la primera, “no”"
+  },
+  {
+    "id": 90,
+    "inicio": 592.33,
+    "fin": 599.38,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "documentary photojournalism, natural light, subtle grain, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_090_2026-11-14.png",
+    "texto": "a la segunda y “no” a la tercera, tendrás una visión más clara de lo que"
+  },
+  {
+    "id": 91,
+    "inicio": 599.38,
+    "fin": 606.43,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "editorial illustration, muted palette, cross-hatching, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_091_2026-11-14.png",
+    "texto": "realmente se te está contando. Como Manuel, el jefe de la AMPA, que no lee el"
+  },
+  {
+    "id": 92,
+    "inicio": 606.43,
+    "fin": 613.48,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "cinematic noir, high contrast, wet streets at night, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_092_2026-11-14.png",
+    "texto": "BOE y siempre está al tanto de los presupuestos, me susurró: “El presupuesto se duplicará”. Yo"
+  },
+  {
+    "id": 93,
+    "inicio": 613.48,
+    "fin": 620.53,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "wide landscape golden hour, backlit silhouette, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_093_2026-11-14.png",
+    "texto": "le contesté: “¿En serio? ”. Y ahí, en ese instante, me di cuenta de que el"
+  },
+  {
+    "id": 94,
+    "inicio": 620.53,
+    "fin": 627.58,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "documentary photojournalism, natural light, subtle grain, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_094_2026-11-14.png",
+    "texto": "ruido del sistema era más fuerte que cualquier voz. No es tu culpa. El sistema está"
+  },
+  {
+    "id": 95,
+    "inicio": 627.58,
+    "fin": 634.63,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "documentary photojournalism, natural light, subtle grain, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_095_2026-11-14.png",
+    "texto": "diseñado así, con sus filtros, sus silencios y sus susurros. — Pero tú puedes cambiarlo. Cada"
+  },
+  {
+    "id": 96,
+    "inicio": 634.63,
+    "fin": 637.63,
+    "tipo_visual": "imagen",
+    "tipo_escena": "pattern",
+    "concepto_visual": "static TV noise with faint silhouette, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_096_2026-11-14.png",
+    "texto": "[PATTERN INTERRUPT]"
+  },
+  {
+    "id": 97,
+    "inicio": 634.63,
+    "fin": 641.69,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "Silhouette standing before glowing news feed, hand hovering to select, neon cyberpunk, magenta cyan, wide shot, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_097_2026-11-14.png",
+    "texto": "vez que la noticia llega, tienes la oportunidad de decidir qué escuchar. Mañana, cuando veas un"
+  },
+  {
+    "id": 98,
+    "inicio": 641.69,
+    "fin": 646.69,
+    "tipo_visual": "imagen",
+    "tipo_escena": "dato",
+    "concepto_visual": "A finger pointing at a newspaper headline, red marker circling missing keywords, documentary photojournalism, natural light, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_098_2026-11-14.png",
+    "texto": "titular, pregúntate: 1. ¿Dice la palabra clave o la esconde? 2. ¿Dice el dato o solo"
+  },
+  {
+    "id": 99,
+    "inicio": 648.74,
+    "fin": 655.79,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "A journalist’s hand holding a red marker, highlighting a source name, cinematic noir, deep shadows, close-up, 16:9, no text, no logos",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_099_2026-11-14.png",
+    "texto": "la emoción? 3. ¿Dice la fuente o solo la versión? Si te ha servido, comparte esto"
+  },
+  {
+    "id": 100,
+    "inicio": 655.79,
+    "fin": 662.84,
+    "tipo_visual": "imagen",
+    "tipo_escena": "default",
+    "concepto_visual": "minimalist product shot, dramatic single shadow, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_100_2026-11-14.png",
+    "texto": "con ese amigo que todavía se cree la tele. Y recuerda las tres preguntas de siempre:"
+  },
+  {
+    "id": 101,
+    "inicio": 662.84,
+    "fin": 666.84,
+    "tipo_visual": "imagen",
+    "tipo_escena": "hook",
+    "concepto_visual": "wide landscape golden hour, backlit silhouette, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_101_2026-11-14.png",
+    "texto": "¿dice la palabra clave o la esconde? ¿dice el dato o solo la emoción? ¿dice la"
+  },
+  {
+    "id": 102,
+    "inicio": 669.89,
+    "fin": 676.94,
+    "tipo_visual": "imagen",
+    "tipo_escena": "cierre",
+    "concepto_visual": "editorial illustration, muted palette, cross-hatching, 16:9, no text",
+    "imagen": "/data/data/com.termux/files/home/LofiProducer/web/media/imagenes/seg_102_2026-11-14.png",
+    "texto": "fuente o solo la versión? Nos Nos Mañana volverán a intentarlo. La única diferencia es que"
+  }
+]
