@@ -5,20 +5,47 @@ hide:
 
 <div class="holo-hero">
   <h1>El Archivo del Anti-Medio</h1>
-  <p>Todo nuestro arsenal. 63 análisis publicados. Sin filtros, con enlaces verificables.</p>
+  <p>Todo nuestro arsenal. 66 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (63)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (14)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (18)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (66)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (15)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (20)</button>
   <button class="holo-filter-btn" data-filter="mediano">Medianos (12)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-14-mediano-dossier/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier completo del dia</h3>
+    <p>Analisis dossier: Dossier completo del dia</p>
+    <div class="holo-meta"><span>📅 2026-11-14</span></div>
+    
+    <a href="https://x.com/SomosElEncuadre" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · x.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-14-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    
+    <h3>El Encuadre: Estados Unidos suspende el tráfico aéreo tras f</h3>
+    <p>Analisis largo: El Encuadre: Estados Unidos suspende el tráfico aéreo tras f</p>
+    <div class="holo-meta"><span>📅 2026-11-14</span></div>
+    
+    <a href="https://www.elespanol.com/mundo/america/eeuu/20261113/unidos-ordena-suspender-despegues-aviones-pais-razones-seguridad/1003744458255_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-14-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    
+    <h3>Dossier del día: El Encuadre: Estados Unidos suspende el tráfico aéreo tras f</h3>
+    <p>Dossier ejecutivo: El Encuadre: Estados Unidos suspende el tráfico aéreo tras fallos en los sistema</p>
+    <div class="holo-meta"><span>📅 2026-11-14</span></div>
+    
+    <a href="https://www.elespanol.com/mundo/america/eeuu/20261113/unidos-ordena-suspender-despegues-aviones-pais-razones-seguridad/1003744458255_0.html" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="holo-fuente">🔗 Ver fuente · elespanol.com</a>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-13-mediano-medio_analizado/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
-    <img src="/media/imagenes/post_2026-11-13_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    
     <h3>Onda Cero: la tecnica del anclaje de autoridad y exclusividad</h3>
     <p>Analisis medio_analizado: Onda Cero: la tecnica del anclaje de autoridad y exclusividad</p>
     <div class="holo-meta"><span>📅 2026-11-13</span></div>
@@ -27,7 +54,7 @@ hide:
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-13-largo/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis Diario</div>
-    <img src="/media/imagenes/post_2026-11-13_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    
     <h3>El Encuadre: La UCO detecta un «descuadre contable» entre la</h3>
     <p>Analisis largo: El Encuadre: La UCO detecta un «descuadre contable» entre la</p>
     <div class="holo-meta"><span>📅 2026-11-13</span></div>
@@ -36,7 +63,7 @@ hide:
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-13-dossier-v2/'" data-category="dossier">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="/media/imagenes/post_2026-11-13_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    
     <h3>Dossier del día: El Encuadre: La UCO detecta un «descuadre contable» entre la</h3>
     <p>Dossier ejecutivo: El Encuadre: La UCO detecta un «descuadre contable» entre la documentación del T</p>
     <div class="holo-meta"><span>📅 2026-11-13</span></div>
@@ -45,7 +72,7 @@ hide:
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-12-mediano-cita/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
-    <img src="/media/imagenes/post_2026-11-12_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    
     <h3>La cita que lo cambia todo</h3>
     <p>Analisis cita: La cita que lo cambia todo</p>
     <div class="holo-meta"><span>📅 2026-11-12</span></div>
@@ -54,7 +81,7 @@ hide:
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-12-largo/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis Diario</div>
-    <img src="/media/imagenes/post_2026-11-12_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    
     <h3>El Encuadre: La primera huelga general por la vivienda movil</h3>
     <p>Analisis largo: El Encuadre: La primera huelga general por la vivienda movil</p>
     <div class="holo-meta"><span>📅 2026-11-12</span></div>
@@ -63,7 +90,7 @@ hide:
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-12-dossier-v2/'" data-category="dossier">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="/media/imagenes/post_2026-11-12_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    
     <h3>Dossier del día: El Encuadre: La primera huelga general por la vivienda movil</h3>
     <p>Dossier ejecutivo: El Encuadre: La primera huelga general por la vivienda moviliza a millones de pe</p>
     <div class="holo-meta"><span>📅 2026-11-12</span></div>

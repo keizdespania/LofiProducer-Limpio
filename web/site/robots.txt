@@ -1,0 +1,26 @@
+# Somos El Encuadre - robots.txt
+User-agent: *
+Allow: /
+Disallow: /search/
+
+# Sitemap explícito
+Sitemap: https://elencuadre.pages.dev/sitemap.xml
+
+# LLMs (GPTBot, ClaudeBot, Perplexity, etc.) - permitidos
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Política de cita (Art. 32 LPI)
+# Citar titulares con enlace es bienvenido.
