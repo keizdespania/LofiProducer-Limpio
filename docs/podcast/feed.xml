@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+  <channel>
+    <title>Somos El Encuadre</title>
+    <link>https://elencuadre.pages.dev</link>
+    <description>Analisis diario de manipulacion mediatica.</description>
+    <language>es-es</language>
+    <itunes:author>Somos El Encuadre</itunes:author>
+    <itunes:category text="News"></itunes:category>
+    <itunes:explicit>false</itunes:explicit>
+  <item>
+    <title>El Encuadre - 2026-11-19</title>
+    <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>
+    <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-19.mp3" type="audio/mpeg" length="12471232"/>
+    <pubDate>Thu, 19 Nov 2026 07:00:00 +0000</pubDate>
+    <guid isPermaLink="false">2026-11-19</guid>
+    <itunes:duration>779</itunes:duration>
+  </item>
+  <item>
+    <title>El Encuadre - 2026-11-18</title>
+    <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>
+    <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-18.mp3" type="audio/mpeg" length="10739209"/>
+    <pubDate>Wed, 18 Nov 2026 07:00:00 +0000</pubDate>
+    <guid isPermaLink="false">2026-11-18</guid>
+    <itunes:duration>671</itunes:duration>
+  </item>
+  <item>
+    <title>El Encuadre - 2026-11-17</title>
+    <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>
+    <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-17.mp3" type="audio/mpeg" length="11542944"/>
+    <pubDate>Tue, 17 Nov 2026 07:00:00 +0000</pubDate>
+    <guid isPermaLink="false">2026-11-17</guid>
+    <itunes:duration>721</itunes:duration>
+  </item>
+  <item>
+    <title>El Encuadre - 2026-11-16</title>
+    <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>
+    <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-16.mp3" type="audio/mpeg" length="11515359"/>
+    <pubDate>Mon, 16 Nov 2026 07:00:00 +0000</pubDate>
+    <guid isPermaLink="false">2026-11-16</guid>
+    <itunes:duration>719</itunes:duration>
+  </item>
+  <item>
+    <title>El Encuadre - 2026-11-15</title>
+    <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>
+    <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-15.mp3" type="audio/mpeg" length="12255983"/>
+    <pubDate>Sun, 15 Nov 2026 07:00:00 +0000</pubDate>
+    <guid isPermaLink="false">2026-11-15</guid>
+    <itunes:duration>765</itunes:duration>
+  </item>
+  <item>
+    <title>El Encuadre - 2026-11-14</title>
+    <description>Analisis diario de manipulacion mediatica. Voz de Alvaro + musica CC0.</description>
+    <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-14.mp3" type="audio/mpeg" length="10824055"/>
+    <pubDate>Sat, 14 Nov 2026 07:00:00 +0000</pubDate>
+    <guid isPermaLink="false">2026-11-14</guid>
+    <itunes:duration>676</itunes:duration>
+  </item>
+  </channel>
+</rss>

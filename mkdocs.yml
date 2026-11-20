@@ -1,0 +1,147 @@
+strict: false
+site_name: Somos El Encuadre
+site_url: https://elencuadre.pages.dev/
+site_description: Análisis técnico de cómo los medios construyen tu realidad.
+
+theme:
+  custom_dir: overrides
+  name: material
+  language: es
+  logo: assets/images/logo.jpg
+  favicon: assets/images/logo.jpg
+  palette:
+    - scheme: slate
+      primary: custom
+      accent: custom
+    - scheme: default
+      primary: custom
+      accent: custom
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.indexes
+    - search.highlight
+    - search.suggest
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - announce.dismiss
+
+nav:
+  - Inicio: index.md
+  - Análisis:
+    - Índice: analisis/index.md
+    - "Dossier V2": analisis/2026-11-18-dossier-v2.md
+    - "Mediano Radar": analisis/2026-11-18-mediano-radar.md
+    - "Largo": analisis/2026-11-18-largo.md
+    - "Dossier V2": analisis/2026-11-17-dossier-v2.md
+    - "Mediano Tutorial": analisis/2026-11-17-mediano-tutorial.md
+    - "Largo": analisis/2026-11-17-largo.md
+    - "Dossier V2": analisis/2026-11-15-dossier-v2.md
+    - "Mediano Medio_Crudo": analisis/2026-11-15-mediano-medio_crudo.md
+    - "Largo": analisis/2026-11-15-largo.md
+    - "Dossier V2": analisis/2026-11-13-dossier-v2.md
+    - "Mediano Medio_Analizado": analisis/2026-11-13-mediano-medio_analizado.md
+    - "Largo": analisis/2026-11-13-largo.md
+    - "Dossier V2": analisis/2026-11-12-dossier-v2.md
+    - "Mediano Cita": analisis/2026-11-12-mediano-cita.md
+    - "Largo": analisis/2026-11-12-largo.md
+    - "Dossier V2": analisis/2026-11-11-dossier-v2.md
+    - "Mediano Radar": analisis/2026-11-11-mediano-radar.md
+    - "Largo": analisis/2026-11-11-largo.md
+    - "Dossier V2": analisis/2026-11-10-dossier-v2.md
+    - "Mediano Tutorial": analisis/2026-11-10-mediano-tutorial.md
+    - "Largo": analisis/2026-11-10-largo.md
+    - "Dossier V2": analisis/2026-11-09-dossier-v2.md
+    - "Mediano Quirurgico": analisis/2026-11-09-mediano-quirurgico.md
+    - "Largo": analisis/2026-11-09-largo.md
+    - "Dossier V2": analisis/2026-11-08-dossier-v2.md
+    - "Mediano Medio_Crudo": analisis/2026-11-08-mediano-medio_crudo.md
+    - "Largo": analisis/2026-11-08-largo.md
+    - "Dossier V2": analisis/2026-11-07-dossier-v2.md
+    - "Mediano Dossier": analisis/2026-11-07-mediano-dossier.md
+    - "Largo": analisis/2026-11-07-largo.md
+    - "Dossier V2": analisis/2026-11-06-dossier-v2.md
+    - "Mediano Medio_Analizado": analisis/2026-11-06-mediano-medio_analizado.md
+    - "Largo": analisis/2026-11-06-largo.md
+    - "Dossier V2": analisis/2026-11-05-dossier-v2.md
+    - "Mediano Cita": analisis/2026-11-05-mediano-cita.md
+    - "Largo": analisis/2026-11-05-largo.md
+    - "Dossier V2": analisis/2026-11-04-dossier-v2.md
+    - "Mediano Radar": analisis/2026-11-04-mediano-radar.md
+    - "Largo": analisis/2026-11-04-largo.md
+    - "10 31 Mediano Dossier": analisis/2026-10-31-mediano-dossier.md
+    - "Dossier V2": analisis/2026-11-03-dossier-v2.md
+    - "Mediano Tutorial": analisis/2026-11-03-mediano-tutorial.md
+    - "Largo": analisis/2026-11-03-largo.md
+    - "Dossier V2": analisis/2026-11-02-dossier-v2.md
+    - "Mediano Quirurgico": analisis/2026-11-02-mediano-quirurgico.md
+    - "Largo": analisis/2026-11-02-largo.md
+    - "El mecanismo del día (1-NOV)": analisis/2026-11-01-largo.md
+    - "Medio crudo (1-NOV)": analisis/2026-11-01-mediano-medio_crudo.md
+    - "Dossier 1-NOV": analisis/2026-11-01-dossier-v2.md
+    - "El escudo de Puente": analisis/2026-10-31-largo.md
+    - "Dossier del día": analisis/2026-10-31-dossier-v2.md
+  - Podcast: podcast/index.md
+  - Glosario: glosario.md
+
+  - Contacto: contacto.md
+  - Próximamente: proximamente.md
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/sidebar_actions.js
+  - javascripts/holo.js
+  - javascripts/analisis.js
+  - javascripts/glosario.js
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+hooks:
+  - hooks/copy_media.py
+
+plugins:
+  - search:
+      lang: es
+  - minify:
+      minify_html: true
+  - social:
+      enabled: !ENV [CI, true]
+      cards: true
+      cards_color:
+        fill: '#0a0a0f'
+        text: '#e63946'
+  - rss:
+      enabled: true
+
+use_directory_urls: true
+
+# 2026-11-09: config global web (banner, monetizacion, telegram)
+# Para activar monetización: monetizacion_activa: true + adsense_client: 'ca-pub-XXXX'
+extra:
+  generator: false
+  telegram_url: 'https://t.me/somoselencuadre'
+  telegram_label: 'Únete al canal de Telegram'
+  monetizacion_activa: false
+  adsense_client: ''
+  adsense_slot: ''
+  autor: 'Somos El Encuadre'
+  telegram_mostrar_banner: true

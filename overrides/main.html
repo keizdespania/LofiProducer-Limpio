@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  <meta name="google-site-verification" content="HzzOXanCaNUUtswNaDYt-BmyoBaCRsPV1zG-Jz-rj8A" />
+{{ super() }}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="El Encuadre">
+<meta property="og:title" content="{{ page.title if page else 'El Encuadre' }}">
+<meta property="og:description" content="{{ (page.meta.description if page and page.meta else 'Análisis técnico de medios y sesgos cognitivos') }}">
+<meta property="og:image" content="{{ config.site_url }}assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@elencuadre">
+<meta name="theme-color" content="#0a0a0f">
+{% if page and page.meta.date %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": {{ (page.title or config.site_name) | tojson }},
+  "datePublished": {{ page.meta.date | string | tojson }},
+  "dateModified": {{ (page.meta.updated or page.meta.date) | string | tojson }},
+  "author": {
+    "@type": "Organization",
+    "name": "{{ config.extra.autor }}",
+    "url": "{{ config.site_url }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ config.site_name }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ config.site_url }}assets/images/logo.jpg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ page.canonical_url or (config.site_url + page.url) }}"
+  },
+  "description": {{ (page.meta.description or config.site_description) | tojson }},
+  "inLanguage": "{{ config.theme.language or 'es' }}"
+  {% if page.meta.tags %},
+  "keywords": {{ page.meta.tags | join(', ') | tojson }}
+  {% endif %}
+}
+</script>
+{% endif %}
+{% if config.extra.monetizacion_activa and config.extra.adsense_client %}
+<link rel="preconnect" href="https://pagead2.googlesyndication.com">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ config.extra.adsense_client }}" crossorigin="anonymous"></script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+{% if config.extra.telegram_mostrar_banner and config.extra.telegram_url %}
+<div id="tg-banner" class="tg-banner" role="complementary" aria-label="Canal Telegram">
+  <div class="tg-banner__text">
+    <strong>📡 ¿Te sirve este análisis?</strong>
+    <span>Recibe el dossier diario en Telegram. Gratis, sin spam.</span>
+  </div>
+  <div class="tg-banner__actions">
+    <a href="{{ config.extra.telegram_url }}" target="_blank" rel="noopener" class="tg-banner__cta" onclick="return tgCerrarBanner()">
+      {{ config.extra.telegram_label }}
+    </a>
+    <button class="tg-banner__close" onclick="tgCerrarBanner()" aria-label="Cerrar">×</button>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+(function(){
+  var CERRADO = localStorage.getItem('tg_banner_closed_v1');
+  if (CERRADO && Date.now() - parseInt(CERRADO) < 30*24*60*60*1000) {
+    var b = document.getElementById('tg-banner');
+    if (b) b.classList.add('tg-banner--hidden');
+  }
+  window.tgCerrarBanner = function(){
+    var b = document.getElementById('tg-banner');
+    if (b) { b.classList.add('tg-banner--hidden'); localStorage.setItem('tg_banner_closed_v1', Date.now()); }
+    return true;
+  };
+})();
+</script>
+{% endblock %}
