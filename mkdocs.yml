@@ -36,6 +36,70 @@ theme:
     - announce.dismiss
 
 nav:
+  - Analisis:
+    - Indice: analisis/index.md
+    - "El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen:": analisis/2026-11-19-largo.md
+    - "Dossier del día: El Encuadre: Putin, ganador de la cumbre a ": analisis/2026-11-19-dossier-v2.md
+    - "La cita que lo cambia todo": analisis/2026-11-19-mediano-cita.md
+    - "El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu": analisis/2026-11-18-largo.md
+    - "Dossier del día: El Encuadre: Sánchez le hace los Presupuest": analisis/2026-11-18-dossier-v2.md
+    - "Radar de medios: El Encuadre: Sánchez le hace los Presupuest": analisis/2026-11-18-mediano-radar.md
+    - "El Encuadre: El CNI informó al Gobierno del riesgo de desbor": analisis/2026-11-17-largo.md
+    - "Dossier del día: El Encuadre: El CNI informó al Gobierno del": analisis/2026-11-17-dossier-v2.md
+    - "Cómo detectar la técnica: apelación al miedo (alarmismo)": analisis/2026-11-17-mediano-tutorial.md
+    - "El Encuadre: Vox roza un hito con dos escaños en Galicia y d": analisis/2026-11-16-largo.md
+    - "Dossier del día: El Encuadre: Vox roza un hito con dos escañ": analisis/2026-11-16-dossier-v2.md
+    - "El ángulo que nadie cuenta: ¡El PSOE lanza un programa de 11": analisis/2026-11-16-mediano-quirurgico.md
+    - "El Encuadre: SpaceX logra que Starship regrese a la platafor": analisis/2026-11-15-largo.md
+    - "Dossier del día: El Encuadre: SpaceX logra que Starship regr": analisis/2026-11-15-dossier-v2.md
+    - "Libertad Digital: la tecnica del descalificación mediante et": analisis/2026-11-15-mediano-medio_crudo.md
+    - "El Encuadre: Estados Unidos suspende el tráfico aéreo tras f": analisis/2026-11-14-largo.md
+    - "Dossier del día: El Encuadre: Estados Unidos suspende el trá": analisis/2026-11-14-dossier-v2.md
+    - "Dossier completo del dia": analisis/2026-11-14-mediano-dossier.md
+    - "El Encuadre: La UCO detecta un «descuadre contable» entre la": analisis/2026-11-13-largo.md
+    - "Dossier del día: El Encuadre: La UCO detecta un «descuadre c": analisis/2026-11-13-dossier-v2.md
+    - "Onda Cero: la tecnica del anclaje de autoridad y exclusivida": analisis/2026-11-13-mediano-medio_analizado.md
+    - "El Encuadre: La primera huelga general por la vivienda movil": analisis/2026-11-12-largo.md
+    - "Dossier del día: El Encuadre: La primera huelga general por ": analisis/2026-11-12-dossier-v2.md
+    - "La cita que lo cambia todo": analisis/2026-11-12-mediano-cita.md
+    - "El Encuadre: Los sindicatos llaman a España a una huelga gen": analisis/2026-11-11-largo.md
+    - "Dossier del día: El Encuadre: Los sindicatos llaman a España": analisis/2026-11-11-dossier-v2.md
+    - "Radar de medios: El Encuadre: Los sindicatos llaman a España": analisis/2026-11-11-mediano-radar.md
+    - "El Encuadre: El TS admite que 180.000 hijos de supuestos 'ni": analisis/2026-11-10-largo.md
+    - "Dossier del día: El Encuadre: El TS admite que 180.000 hijos": analisis/2026-11-10-dossier-v2.md
+    - "Cómo detectar la técnica: Sensacionalismo y polarización": analisis/2026-11-10-mediano-tutorial.md
+    - "El Encuadre: Nvidia abre una investigación a su consejero de": analisis/2026-11-09-largo.md
+    - "Dossier del día: El Encuadre: Nvidia abre una investigación ": analisis/2026-11-09-dossier-v2.md
+    - "El ángulo que nadie cuenta: ¿Te cuesta encontrar casa?": analisis/2026-11-09-mediano-quirurgico.md
+    - "El Encuadre: El presidente de Israel encarga formar gobierno": analisis/2026-11-08-largo.md
+    - "Dossier del día: El Encuadre: El presidente de Israel encarg": analisis/2026-11-08-dossier-v2.md
+    - "Le Monde: la tecnica del marco de agenda que enfatiza la mov": analisis/2026-11-08-mediano-medio_crudo.md
+    - "El Encuadre: Adif blindó el bonus a su cúpula horas antes de": analisis/2026-11-07-largo.md
+    - "Dossier del día: El Encuadre: Adif blindó el bonus a su cúpu": analisis/2026-11-07-dossier-v2.md
+    - "Dossier completo del dia": analisis/2026-11-07-mediano-dossier.md
+    - "El Encuadre: Una nueva oleada de falsas amenazas de bomba af": analisis/2026-11-06-largo.md
+    - "Dossier del día: El Encuadre: Una nueva oleada de falsas ame": analisis/2026-11-06-dossier-v2.md
+    - "Onda Cero: la tecnica del uso de la metáfora de 'resaca' par": analisis/2026-11-06-mediano-medio_analizado.md
+    - "El Encuadre: El presidente de Adif renuncia al cargo ante Ca": analisis/2026-11-05-largo.md
+    - "Dossier del día: El Encuadre: El presidente de Adif renuncia": analisis/2026-11-05-dossier-v2.md
+    - "La cita que lo cambia todo": analisis/2026-11-05-mediano-cita.md
+    - "El Encuadre: Los demócratas sacuden el mapa electoral con vi": analisis/2026-11-04-largo.md
+    - "Dossier del día: El Encuadre: Los demócratas sacuden el mapa": analisis/2026-11-04-dossier-v2.md
+    - "Radar de medios: El Encuadre: Los demócratas sacuden el mapa": analisis/2026-11-04-mediano-radar.md
+    - "El Encuadre: Feijóo: 'España está en situación de emergencia": analisis/2026-11-03-largo.md
+    - "Dossier del día: El Encuadre: Feijóo: 'España está en situac": analisis/2026-11-03-dossier-v2.md
+    - "Cómo detectar la técnica: Card Stacking": analisis/2026-11-03-mediano-tutorial.md
+    - "El Encuadre: PP y Vox suman una amplia mayoría y el PSOE se": analisis/2026-11-02-largo.md
+    - "Dossier del día: El Encuadre: PP y Vox suman una amplia mayo": analisis/2026-11-02-dossier-v2.md
+    - "El ángulo que nadie cuenta: “Adif dejó ‘en visto’ las recome": analisis/2026-11-02-mediano-quirurgico.md
+    - "El Encuadre: Santander abona este lunes 1.850 millones de eu": analisis/2026-11-01-largo.md
+    - "Dossier del día: El Encuadre: Santander abona este lunes 1.8": analisis/2026-11-01-dossier-v2.md
+    - "HuffPost Spain: la tecnica del fear appeal": analisis/2026-11-01-mediano-medio_crudo.md
+    - "El Encuadre: Sánchez aplica con Puente el 'escudo protector": analisis/2026-10-31-largo.md
+    - "Resumen del Día: 2026-10-31": analisis/2026-10-31-master.md
+    - "Dossier del día: El Encuadre: Sánchez aplica con Puente el '": analisis/2026-10-31-dossier-v2.md
+    - "Dossier Completo": analisis/2026-10-31-dossier.md
+    - "Dossier completo del dia": analisis/2026-10-31-mediano-dossier.md
   - Inicio: index.md
   - Análisis:
     - Índice: analisis/index.md
