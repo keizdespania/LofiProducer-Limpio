@@ -9,13 +9,35 @@ hide:
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (78)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (19)</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers (24)</button>
-  <button class="holo-filter-btn" data-filter="mediano">Medianos (16)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (81)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (20)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (25)</button>
+  <button class="holo-filter-btn" data-filter="mediano">Medianos (17)</button>
 </div>
 
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-19-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis Diario</div>
+    <img src="/media/imagenes/post_2026-11-19_largo_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Análisis Diario · 2026-11-19</h3>
+    <p>Análisis largo del día 19.</p>
+    <div class="holo-meta"><span>📅 2026-11-19</span></div>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-19-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    <img src="/media/imagenes/post_2026-11-19_dossier_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Dossier Ejecutivo · 2026-11-19</h3>
+    <p>Dossier ejecutivo del día 19.</p>
+    <div class="holo-meta"><span>📅 2026-11-19</span></div>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-19-mediano-cita/'" data-category="mediano">
+    <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
+    <img src="/media/imagenes/post_2026-11-19_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Análisis Mediano · 2026-11-19</h3>
+    <p>Análisis mediano del día 19.</p>
+    <div class="holo-meta"><span>📅 2026-11-19</span></div>
+  </div>
+
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-18-mediano-radar/'" data-category="mediano">
     <div class="holo-badge badge-guide">📄 Análisis Mediano</div>
     <img src="/media/imagenes/post_2026-11-18_mediano_1.png" alt="Hero" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
