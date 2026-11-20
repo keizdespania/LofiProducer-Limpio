@@ -11,6 +11,19 @@ tags:
 ---
 
 
+<!-- EE_ENRICHED_START -->
+<div class="ee-post">
+<div class="ee-breadcrumbs">
+<a href="/">Inicio</a><span>›</span><a href="/analisis/">Análisis</a><span>›</span>2026-11-16
+</div>
+<div class="ee-post-meta">
+<span class="holo-badge badge-guide">📄 Ángulo del Día</span>
+<strong>Publicado:</strong> 2026-11-16 &nbsp;·&nbsp; <strong>Tipo:</strong> Ángulo del Día
+</div>
+<div class="ee-post-layout">
+<div class="ee-post-content">
+
+<div class="ee-adsense-slot"></div>
 <h1>El PSOE lanza un programa de 114 páginas con 500 promesas!</h1>
 <p>El partido de la izquierda, con la elegancia de un vendedor de coches usados, se ha decidido a llenar la agenda de los ciudadanos con un folleto que parece un libro de la Biblia en tamaño reducido. 114 páginas, 500 promesas, y la esperanza de que la lectura de cada línea sea tan atractiva como la promesa de un café recién hecho.</p>
 <p>En un mundo donde la información se consume a la velocidad de un clic, el PSOE ha optado por la estrategia del “gran volumen” y la “gran cantidad”, con la convicción de que la mera presencia de promesas es suficiente para convencer a quienes buscan soluciones concretas.</p>
@@ -52,3 +65,15 @@ tags:
 <div style="background:#0a0a0f;border-left:4px solid #e63946;padding:1em;border-radius:6px;margin:2em 0;">
 <strong>Síguenos:</strong> <a href="https://youtube.com/@somoselencuadre.oficial">YouTube</a> · <a href="https://tiktok.com/@somoselencuadre">TikTok</a> · <a href="https://instagram.com/somoselencuadre">Instagram</a> · <a href="https://x.com/SomosElEncuadre">X</a> · <a href="https://threads.net/@somoselencuadre">Threads</a>
 </div>
+
+</div>
+
+</div>
+<div class="ee-share">
+<a href="https://twitter.com/intent/tweet?text=El ángulo que nadie cuenta: ¡El PSOE lanza un programa de 114 páginas con 500 &url=https://elencuadre.pages.dev/analisis/2026-11-16-mediano-quirurgico/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
+<a href="https://threads.net/intent/post?text=El ángulo que nadie cuenta: ¡El PSOE lanza un programa de 114 páginas con 500 +https://elencuadre.pages.dev/analisis/2026-11-16-mediano-quirurgico/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
+<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-16-mediano-quirurgico/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
+<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-16-mediano-quirurgico/&text=El ángulo que nadie cuenta: ¡El PSOE lanza un programa de 114 páginas con 500 " target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
+</div>
+</div>
+<!-- EE_ENRICHED_END -->

@@ -10,6 +10,19 @@ tags:
   - 2026-11-02
 ---
 
+<!-- EE_ENRICHED_START -->
+<div class="ee-post">
+<div class="ee-breadcrumbs">
+<a href="/">Inicio</a><span>›</span><a href="/analisis/">Análisis</a><span>›</span>2026-11-02
+</div>
+<div class="ee-post-meta">
+<span class="holo-badge badge-guide">📄 Ángulo del Día</span>
+<strong>Publicado:</strong> 2026-11-02 &nbsp;·&nbsp; <strong>Tipo:</strong> Ángulo del Día
+</div>
+<div class="ee-post-layout">
+<div class="ee-post-content">
+
+<div class="ee-adsense-slot"></div>
 <figure><img src="https://files.catbox.moe/ofpbyw.png" alt="Analisis deldía" style="width:100%;border-radius:8px;" loading="lazy"></figure>
 <h1>Adif dejó ‘en visto’ las recomendaciones de la CIAF: El arte de la negligencia estratégica</h1>
 
@@ -48,3 +61,15 @@ tags:
 <div style="background:#0a0a0f;border-left:4px solid #e63946;padding:1em;border-radius:6px;margin:2em 0;">
 <strong>Síguenos:</strong> <a href="https://youtube.com/@somoselencuadre.oficial">YouTube</a> · <a href="https://tiktok.com/@somoselencuadre">TikTok</a> · <a href="https://instagram.com/somoselencuadre">Instagram</a> · <a href="https://x.com/SomosElEncuadre">X</a> · <a href="https://threads.net/@somoselencuadre">Threads</a>
 </div>
+
+</div>
+
+</div>
+<div class="ee-share">
+<a href="https://twitter.com/intent/tweet?text=El ángulo que nadie cuenta: “Adif dejó ‘en visto’ las recomendaciones de la CI&url=https://elencuadre.pages.dev/analisis/2026-11-02-mediano-quirurgico/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
+<a href="https://threads.net/intent/post?text=El ángulo que nadie cuenta: “Adif dejó ‘en visto’ las recomendaciones de la CI+https://elencuadre.pages.dev/analisis/2026-11-02-mediano-quirurgico/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
+<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-02-mediano-quirurgico/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
+<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-02-mediano-quirurgico/&text=El ángulo que nadie cuenta: “Adif dejó ‘en visto’ las recomendaciones de la CI" target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
+</div>
+</div>
+<!-- EE_ENRICHED_END -->

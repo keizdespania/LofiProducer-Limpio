@@ -10,6 +10,19 @@ tags:
   - 2026-11-03
 ---
 
+<!-- EE_ENRICHED_START -->
+<div class="ee-post">
+<div class="ee-breadcrumbs">
+<a href="/">Inicio</a><span>›</span><a href="/analisis/">Análisis</a><span>›</span>2026-11-03
+</div>
+<div class="ee-post-meta">
+<span class="holo-badge badge-guide">📄 Ángulo del Día</span>
+<strong>Publicado:</strong> 2026-11-03 &nbsp;·&nbsp; <strong>Tipo:</strong> Ángulo del Día
+</div>
+<div class="ee-post-layout">
+<div class="ee-post-content">
+
+<div class="ee-adsense-slot"></div>
 <figure><img src="https://files.catbox.moe/ofpbyw.png" alt="Analisis deldía" style="width:100%;border-radius:8px;" loading="lazy"></figure>
 <h1>Card Stacking: El arte de contar la historia que quieres que escuche el público</h1>
 <p>En un mundo saturado de datos, la selección de la información se ha convertido en una arma de doble filo. La técnica del <strong>card stacking</strong> —una forma de presentar únicamente los hechos que favorecen una narrativa específica— se ha infiltrado en discursos políticos, campañas publicitarias y análisis de mercado. Este tutorial desglosa qué es, cómo se utiliza, ejemplos concretos, cómo detectarlo y, sobre todo, cómo combatirlo sin caer en la retórica que la condena.</p>
@@ -62,3 +75,15 @@ tags:
 <div style="background:#0a0a0f;border-left:4px solid #e63946;padding:1em;border-radius:6px;margin:2em 0;">
 <strong>Síguenos:</strong> <a href="https://youtube.com/@somoselencuadre.oficial">YouTube</a> · <a href="https://tiktok.com/@somoselencuadre">TikTok</a> · <a href="https://instagram.com/somoselencuadre">Instagram</a> · <a href="https://x.com/SomosElEncuadre">X</a> · <a href="https://threads.net/@somoselencuadre">Threads</a>
 </div>
+
+</div>
+
+</div>
+<div class="ee-share">
+<a href="https://twitter.com/intent/tweet?text=Cómo detectar la técnica: Card Stacking&url=https://elencuadre.pages.dev/analisis/2026-11-03-mediano-tutorial/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
+<a href="https://threads.net/intent/post?text=Cómo detectar la técnica: Card Stacking+https://elencuadre.pages.dev/analisis/2026-11-03-mediano-tutorial/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
+<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-03-mediano-tutorial/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
+<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-03-mediano-tutorial/&text=Cómo detectar la técnica: Card Stacking" target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
+</div>
+</div>
+<!-- EE_ENRICHED_END -->

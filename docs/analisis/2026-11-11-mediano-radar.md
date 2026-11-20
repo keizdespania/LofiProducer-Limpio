@@ -10,6 +10,19 @@ tags:
   - 2026-11-11
 ---
 
+<!-- EE_ENRICHED_START -->
+<div class="ee-post">
+<div class="ee-breadcrumbs">
+<a href="/">Inicio</a><span>›</span><a href="/analisis/">Análisis</a><span>›</span>2026-11-11
+</div>
+<div class="ee-post-meta">
+<span class="holo-badge badge-guide">📄 Ángulo del Día</span>
+<strong>Publicado:</strong> 2026-11-11 &nbsp;·&nbsp; <strong>Tipo:</strong> Ángulo del Día
+</div>
+<div class="ee-post-layout">
+<div class="ee-post-content">
+
+<div class="ee-adsense-slot"></div>
 <figure style="margin:1.5em 0;"><img src="../../media/imagenes/post_2026-11-11_mediano_1.png" alt="Radar de medios: El Encuadre: Los sindicatos llaman a España" width="832" height="480" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;" loading="eager" fetchpriority="high" decoding="async"><figcaption style="font-size:0.85em;color:#888;text-align:center;margin-top:0.5em;font-style:italic;">Radar de medios: El Encuadre: Los sindicatos llaman a España</figcaption></figure>
 <h1>El Encuadre: Los sindicatos llaman a España a una huelga general por primera vez</h1>
 <p>En un día que parecía una rutina política, la voz de los sindicatos se alzó con un eco que recorrió las calles y los parlamentos. La convocatoria a una huelga general, la primera en catorce años, se presentó como un punto de inflexión, una señal de que la tensión social ya no se puede contener sin un gesto contundente. El Gobierno, encabezado por Pedro Sánchez, se ve ante la presión de un sector que exige más que simples concesiones: exige un cambio de rumbo. Óscar Puente, figura destacada en la escena sindical, se convirtió en la personificación de esa demanda colectiva. El debate se abre, las agendas se llenan, y el escenario se prepara para un enfrentamiento que, aunque sin violencia, promete alterar el tejido social y político del país.</p>
@@ -33,3 +46,15 @@ tags:
 <div style="background:#0a0a0f;border-left:4px solid #e63946;padding:1em;border-radius:6px;margin:2em 0;">
 <strong>Síguenos:</strong> <a href="https://youtube.com/@somoselencuadre.oficial">YouTube</a> · <a href="https://tiktok.com/@somoselencuadre">TikTok</a> · <a href="https://instagram.com/somoselencuadre">Instagram</a> · <a href="https://x.com/SomosElEncuadre">X</a> · <a href="https://threads.net/@somoselencuadre">Threads</a>
 </div>
+
+</div>
+
+</div>
+<div class="ee-share">
+<a href="https://twitter.com/intent/tweet?text=Radar de medios: El Encuadre: Los sindicatos llaman a España a una &url=https://elencuadre.pages.dev/analisis/2026-11-11-mediano-radar/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
+<a href="https://threads.net/intent/post?text=Radar de medios: El Encuadre: Los sindicatos llaman a España a una +https://elencuadre.pages.dev/analisis/2026-11-11-mediano-radar/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
+<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-11-mediano-radar/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
+<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-11-mediano-radar/&text=Radar de medios: El Encuadre: Los sindicatos llaman a España a una " target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
+</div>
+</div>
+<!-- EE_ENRICHED_END -->

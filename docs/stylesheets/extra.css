@@ -1264,3 +1264,46 @@ body { font-family: var(--ee-font-sans); background: var(--ee-bg); color: var(--
   .ee-hero-titulo { font-size: 1.6rem; }
   .ee-hero-dia { padding: 1.5rem 1rem; }
 }
+
+/* ============================================================
+   POST REDISENADO - 2026-11-20
+   ============================================================ */
+.ee-post { max-width: 1200px; margin: 0 auto; }
+.ee-breadcrumbs { font-size: 0.85rem; color: var(--ee-text-muted); margin: 1rem 0 2rem; padding: 0.5rem 0; border-bottom: 1px solid var(--ee-border); }
+.ee-breadcrumbs a { color: var(--ee-red); text-decoration: none; }
+.ee-breadcrumbs a:hover { text-decoration: underline; }
+.ee-breadcrumbs span { margin: 0 0.5rem; }
+.ee-post-layout { display: grid; grid-template-columns: 1fr 280px; gap: 2.5rem; margin: 2rem 0; }
+.ee-post-content { min-width: 0; }
+.ee-post-toc { position: sticky; top: 1rem; align-self: start; background: var(--ee-surface); border: 1px solid var(--ee-border); border-radius: var(--ee-radius-md); padding: 1.2rem; font-size: 0.85rem; max-height: calc(100vh - 2rem); overflow-y: auto; }
+.ee-post-toc h4 { margin: 0 0 0.8rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ee-orange); border: none; }
+.ee-post-toc ul { list-style: none; padding: 0; margin: 0; }
+.ee-post-toc li { margin: 0.3rem 0; }
+.ee-post-toc a { color: var(--ee-text-muted); text-decoration: none; display: block; padding: 0.2rem 0.5rem; border-left: 2px solid transparent; transition: var(--ee-transition); }
+.ee-post-toc a:hover { color: var(--ee-text); border-left-color: var(--ee-red); background: var(--ee-surface-hover); }
+.ee-adsense-slot { background: var(--ee-surface); border: 1px dashed var(--ee-border); border-radius: var(--ee-radius-md); padding: 1.5rem; text-align: center; color: var(--ee-text-muted); font-size: 0.85rem; margin: 2rem 0; min-height: 100px; display: flex; align-items: center; justify-content: center; }
+.ee-adsense-slot::before { content: "📢 Espacio publicitario"; }
+.ee-cta-next { background: linear-gradient(135deg, var(--ee-bg-alt) 0%, var(--ee-surface) 100%); border: 1px solid var(--ee-red); border-radius: var(--ee-radius-lg); padding: 1.5rem 2rem; margin: 3rem 0 2rem; text-align: center; }
+.ee-cta-next-titulo { font-size: 0.85rem; color: var(--ee-red); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+.ee-cta-next h3 { margin: 0.5rem 0 1rem; font-size: 1.3rem; }
+.ee-cta-next h3 a { color: var(--ee-text); text-decoration: none; }
+.ee-cta-next h3 a:hover { color: var(--ee-red); }
+.ee-share { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; margin: 2rem 0; }
+.ee-share a { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.2rem; border-radius: var(--ee-radius-md); font-weight: 600; text-decoration: none; font-size: 0.9rem; transition: var(--ee-transition); border: 1px solid var(--ee-border); color: var(--ee-text) !important; }
+.ee-share a:hover { transform: translateY(-2px); box-shadow: var(--ee-shadow); border-bottom: 1px solid var(--ee-border) !important; }
+.ee-share-x { background: #000; }
+.ee-share-x:hover { background: #1a1a1a; }
+.ee-share-threads { background: #101010; }
+.ee-share-linkedin { background: #0a66c2; }
+.ee-share-telegram { background: #0088cc; }
+.ee-post-meta { background: var(--ee-surface); border-left: 3px solid var(--ee-orange); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: var(--ee-radius-md); font-size: 0.9rem; color: var(--ee-text-muted); }
+.ee-post-meta strong { color: var(--ee-orange); }
+@media (max-width: 1024px) {
+  .ee-post-layout { grid-template-columns: 1fr; }
+  .ee-post-toc { position: static; max-height: none; }
+}
+@media (max-width: 768px) {
+  .ee-cta-next { padding: 1.2rem; }
+  .ee-share { flex-direction: column; }
+  .ee-share a { width: 100%; justify-content: center; }
+}
