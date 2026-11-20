@@ -1307,3 +1307,38 @@ body { font-family: var(--ee-font-sans); background: var(--ee-bg); color: var(--
   .ee-share { flex-direction: column; }
   .ee-share a { width: 100%; justify-content: center; }
 }
+
+/* ============================================================
+   HEADER EDITORIAL + DRAWER + FOOTER - 2026-11-20
+   ============================================================ */
+.md-header { background: var(--ee-bg-alt) !important; border-bottom: 2px solid var(--ee-red) !important; }
+.md-header__inner { display: flex; align-items: center; gap: 1rem; padding: 0.5rem 1rem; }
+.ee-logo { display: flex !important; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--ee-text) !important; }
+.ee-logo-icon { color: var(--ee-red); font-size: 1.5rem; font-weight: 900; }
+.ee-logo-text { font-family: var(--ee-font-serif); font-size: 1.3rem; font-weight: 900; letter-spacing: 0.05em; }
+.ee-ticker-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.3rem 1rem; background: var(--ee-surface); border-radius: var(--ee-radius-md); font-size: 0.85rem; flex: 1; max-width: 500px; margin: 0 auto; overflow: hidden; }
+.ee-ticker-header-label { color: var(--ee-red); font-weight: 700; letter-spacing: 0.1em; white-space: nowrap; }
+.ee-ticker-header-sep { color: var(--ee-text-muted); }
+.ee-ticker-header-text { color: var(--ee-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.md-nav--primary { padding: 1.5rem 1rem; }
+.ee-drawer-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.3rem; }
+.ee-drawer-sub { color: var(--ee-text-muted); font-size: 0.8rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--ee-border); }
+.md-nav__title { display: none !important; }
+.md-nav__item { margin: 0.2rem 0; }
+.md-nav__link { font-family: var(--ee-font-serif) !important; font-size: 1.05rem !important; padding: 0.5rem 0.8rem !important; border-left: 3px solid transparent; transition: var(--ee-transition); }
+.md-nav__link:hover { background: var(--ee-surface) !important; border-left-color: var(--ee-red) !important; color: var(--ee-red) !important; }
+.md-nav__link--active { color: var(--ee-red) !important; border-left-color: var(--ee-red) !important; font-weight: 700 !important; }
+.ee-drawer-cta { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--ee-border); }
+.md-footer { background: var(--ee-bg-alt) !important; padding: 0 !important; }
+.ee-footer { background: var(--ee-bg-alt); border-top: 2px solid var(--ee-red); padding: 3rem 2rem 1rem; margin-top: 4rem; }
+.ee-footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; max-width: 1400px; margin: 0 auto; }
+.ee-footer-col h4 { font-family: var(--ee-font-serif); font-size: 1.05rem; margin: 0 0 1rem; color: var(--ee-orange); letter-spacing: 0.02em; }
+.ee-footer-col p { color: var(--ee-text-muted); font-size: 0.9rem; line-height: 1.5; margin: 0 0 0.5rem; }
+.ee-footer-col ul { list-style: none; padding: 0; margin: 0; }
+.ee-footer-col li { margin: 0.4rem 0; }
+.ee-footer-col a { color: var(--ee-text-muted); text-decoration: none; font-size: 0.9rem; transition: var(--ee-transition); border-bottom: none !important; }
+.ee-footer-col a:hover { color: var(--ee-red); }
+.ee-footer-bottom { text-align: center; color: var(--ee-text-muted); font-size: 0.85rem; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--ee-border); }
+.ee-footer-bottom p { margin: 0; }
+@media (max-width: 1024px) { .ee-footer-grid { grid-template-columns: repeat(2, 1fr); } .ee-ticker-header { display: none; } }
+@media (max-width: 768px) { .ee-footer-grid { grid-template-columns: 1fr; gap: 1.5rem; } .ee-footer { padding: 2rem 1rem 1rem; } .ee-logo-text { font-size: 1.1rem; } }
