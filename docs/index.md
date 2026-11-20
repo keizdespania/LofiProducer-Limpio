@@ -14,6 +14,7 @@ hide:
   <a href="/analisis/2026-11-19-largo/" class="btn-hero">Leer análisis completo →</a>
 </section>
 
+<div class="ee-adsense-slot" id="adsense-home-top" data-slot="home-top"></div>
 <section class="ee-ticker">
   <div class="ee-ticker-titulo">⚡ ÚLTIMA HORA</div>
   <ul class="ee-ticker-lista">
@@ -73,6 +74,7 @@ hide:
     <div class="holo-meta"><span>📅 2026-11-16</span></div>
   </div>
     </div>
+    <div class="ee-adsense-slot" id="adsense-home-bottom" data-slot="home-bottom"></div>
     <p style="text-align:center;margin-top:2em;">
       <a href="/analisis/" class="btn-hero">Ver los 62 análisis →</a>
     </p>

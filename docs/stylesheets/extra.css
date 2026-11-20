@@ -1342,3 +1342,17 @@ body { font-family: var(--ee-font-sans); background: var(--ee-bg); color: var(--
 .ee-footer-bottom p { margin: 0; }
 @media (max-width: 1024px) { .ee-footer-grid { grid-template-columns: repeat(2, 1fr); } .ee-ticker-header { display: none; } }
 @media (max-width: 768px) { .ee-footer-grid { grid-template-columns: 1fr; gap: 1.5rem; } .ee-footer { padding: 2rem 1rem 1rem; } .ee-logo-text { font-size: 1.1rem; } }
+
+/* ============================================================
+   COOKIE NOTICE - 2026-11-20
+   ============================================================ */
+.ee-cookie-notice { position: fixed; bottom: 0; left: 0; right: 0; background: var(--ee-surface); border-top: 2px solid var(--ee-red); padding: 1rem 1.5rem; z-index: 9999; box-shadow: 0 -4px 20px rgba(0,0,0,0.5); }
+.ee-cookie-inner { max-width: 1200px; margin: 0 auto; display: flex; gap: 1.5rem; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.ee-cookie-inner p { margin: 0; font-size: 0.9rem; color: var(--ee-text-muted); flex: 1; min-width: 250px; }
+.ee-cookie-inner a { color: var(--ee-red); }
+.ee-cookie-actions { display: flex; gap: 0.5rem; }
+.ee-cookie-btn { padding: 0.6rem 1.2rem; background: var(--ee-red); color: white; border: none; border-radius: var(--ee-radius-md); cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: var(--ee-transition); }
+.ee-cookie-btn:hover { background: var(--ee-red-hover); }
+.ee-cookie-reject { background: var(--ee-surface-hover); color: var(--ee-text); }
+.ee-cookie-reject:hover { background: var(--ee-border); }
+@media (max-width: 768px) { .ee-cookie-inner { flex-direction: column; align-items: stretch; } .ee-cookie-actions { justify-content: stretch; } .ee-cookie-btn { flex: 1; } }

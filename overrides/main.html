@@ -2,19 +2,23 @@
 
 {% block extrahead %}
   {{ super() }}
+  <link rel="preconnect" href="https://t.me" crossorigin>
+  <link rel="preconnect" href="https://x.com" crossorigin>
+  <link rel="preconnect" href="https://www.youtube.com" crossorigin>
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   {% if page and page.meta %}
     {% if page.meta.description %}
       <meta name="description" content="{{ page.meta.description }}">
       <meta property="og:description" content="{{ page.meta.description }}">
+      <meta name="twitter:description" content="{{ page.meta.description }}">
     {% endif %}
     <meta property="og:title" content="{{ page.title }}">
     <meta property="og:type" content="article">
     <meta property="og:url" content="{{ page.canonical_url }}">
+    <meta property="og:site_name" content="Somos El Encuadre">
+    <meta property="og:locale" content="es_ES">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ page.title }}">
-    {% if page.meta.description %}
-      <meta name="twitter:description" content="{{ page.meta.description }}">
-    {% endif %}
     {% if page.meta.date %}
       <script type="application/ld+json">
       {
@@ -36,4 +40,38 @@
       </script>
     {% endif %}
   {% endif %}
+  {% if page.is_homepage %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Somos El Encuadre",
+      "url": "https://elencuadre.pages.dev",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://elencuadre.pages.dev/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "inLanguage": "es-ES"
+    }
+    </script>
+  {% endif %}
+  {% if page and not page.is_homepage and page.url %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://elencuadre.pages.dev/"},
+        {"@type": "ListItem", "position": 2, "name": "Análisis", "item": "https://elencuadre.pages.dev/analisis/"},
+        {"@type": "ListItem", "position": 3, "name": {{ page.title|tojson }}, "item": {{ page.canonical_url|tojson }}}
+      ]
+    }
+    </script>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% include "partials/cookie.html" %}
+  {{ super() }}
 {% endblock %}

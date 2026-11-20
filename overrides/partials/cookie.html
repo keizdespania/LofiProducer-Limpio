@@ -1,0 +1,25 @@
+<div id="ee-cookie-notice" class="ee-cookie-notice" style="display:none;">
+  <div class="ee-cookie-inner">
+    <p>🍪 Usamos cookies técnicas y de análisis. Al continuar aceptas nuestra <a href="/privacidad/">política de privacidad</a>.</p>
+    <div class="ee-cookie-actions">
+      <button id="ee-cookie-accept" class="ee-cookie-btn">Aceptar</button>
+      <button id="ee-cookie-reject" class="ee-cookie-btn ee-cookie-reject">Solo técnicas</button>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  if (localStorage.getItem('ee-cookies')) return;
+  var el = document.getElementById('ee-cookie-notice');
+  if (!el) return;
+  el.style.display = 'block';
+  document.getElementById('ee-cookie-accept').onclick = function() {
+    localStorage.setItem('ee-cookies', 'all');
+    el.style.display = 'none';
+  };
+  document.getElementById('ee-cookie-reject').onclick = function() {
+    localStorage.setItem('ee-cookies', 'essential');
+    el.style.display = 'none';
+  };
+})();
+</script>

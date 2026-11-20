@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+  <channel>
+    <title>Somos El Encuadre - Podcast</title>
+    <link>https://elencuadre.pages.dev/podcast/</link>
+    <description>Podcast diario de El Encuadre</description>
+    <language>es-ES</language>
+    <item>
+      <title>Podcast 2026-11-19</title>
+      <link>https://elencuadre.pages.dev/podcast/2026-11-19.mp3</link>
+      <guid isPermaLink="false">https://elencuadre.pages.dev/podcast/2026-11-19.mp3</guid>
+      <pubDate>Thu, 19 Nov 2026 08:00:00 +0000</pubDate>
+      <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-19.mp3" type="audio/mpeg"/>
+    </item>
+    <item>
+      <title>Podcast 2026-11-18</title>
+      <link>https://elencuadre.pages.dev/podcast/2026-11-18.mp3</link>
+      <guid isPermaLink="false">https://elencuadre.pages.dev/podcast/2026-11-18.mp3</guid>
+      <pubDate>Wed, 18 Nov 2026 08:00:00 +0000</pubDate>
+      <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-18.mp3" type="audio/mpeg"/>
+    </item>
+    <item>
+      <title>Podcast 2026-11-17</title>
+      <link>https://elencuadre.pages.dev/podcast/2026-11-17.mp3</link>
+      <guid isPermaLink="false">https://elencuadre.pages.dev/podcast/2026-11-17.mp3</guid>
+      <pubDate>Tue, 17 Nov 2026 08:00:00 +0000</pubDate>
+      <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-17.mp3" type="audio/mpeg"/>
+    </item>
+    <item>
+      <title>Podcast 2026-11-16</title>
+      <link>https://elencuadre.pages.dev/podcast/2026-11-16.mp3</link>
+      <guid isPermaLink="false">https://elencuadre.pages.dev/podcast/2026-11-16.mp3</guid>
+      <pubDate>Mon, 16 Nov 2026 08:00:00 +0000</pubDate>
+      <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-16.mp3" type="audio/mpeg"/>
+    </item>
+    <item>
+      <title>Podcast 2026-11-15</title>
+      <link>https://elencuadre.pages.dev/podcast/2026-11-15.mp3</link>
+      <guid isPermaLink="false">https://elencuadre.pages.dev/podcast/2026-11-15.mp3</guid>
+      <pubDate>Sun, 15 Nov 2026 08:00:00 +0000</pubDate>
+      <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-15.mp3" type="audio/mpeg"/>
+    </item>
+    <item>
+      <title>Podcast 2026-11-14</title>
+      <link>https://elencuadre.pages.dev/podcast/2026-11-14.mp3</link>
+      <guid isPermaLink="false">https://elencuadre.pages.dev/podcast/2026-11-14.mp3</guid>
+      <pubDate>Sat, 14 Nov 2026 08:00:00 +0000</pubDate>
+      <enclosure url="https://elencuadre.pages.dev/podcast/2026-11-14.mp3" type="audio/mpeg"/>
+    </item>
+  </channel>
+</rss>

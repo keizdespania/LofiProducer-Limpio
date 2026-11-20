@@ -15,6 +15,7 @@ hide:
   <button class="holo-filter-btn" data-filter="angulo">Ángulos (20)</button>
 </div>
 
+<div class="ee-adsense-slot" id="adsense-index-top" data-slot="index-top"></div>
 <div class="holo-grid" id="archivo-grid">
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-19-largo/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
