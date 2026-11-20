@@ -1225,3 +1225,42 @@ body { font-family: var(--ee-font-sans); background: var(--ee-bg); color: var(--
 .md-tabs { background: var(--ee-bg-alt) !important; }
 .md-nav__link--active { color: var(--ee-red) !important; }
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+/* ============================================================
+   HOME PORTADA PERIODICO - 2026-11-20
+   ============================================================ */
+.ee-home { max-width: 1400px; margin: 0 auto; }
+.ee-hero-dia { background: linear-gradient(135deg, var(--ee-bg-alt) 0%, var(--ee-surface) 100%); border: 1px solid var(--ee-border); border-radius: var(--ee-radius-lg); padding: 2.5rem 2rem; margin: 2rem 0; text-align: center; box-shadow: var(--ee-shadow); }
+.ee-hero-badge { display: inline-block; background: var(--ee-red); color: white; padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 1.5rem; }
+.ee-hero-titulo { font-family: var(--ee-font-serif); font-size: 2.4rem; line-height: 1.2; margin: 1.5rem 0 1rem; }
+.ee-hero-titulo a { color: var(--ee-text); text-decoration: none; border-bottom: none; }
+.ee-hero-titulo a:hover { color: var(--ee-red); border-bottom: none; }
+.ee-hero-desc { color: var(--ee-text-muted); font-size: 1.15rem; margin-bottom: 1.5rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+.ee-ticker { background: var(--ee-surface); border-left: 4px solid var(--ee-red); border-radius: var(--ee-radius-md); padding: 1rem 1.5rem; margin: 2rem 0; }
+.ee-ticker-titulo { font-size: 0.85rem; font-weight: 700; color: var(--ee-red); letter-spacing: 0.15em; margin-bottom: 0.8rem; }
+.ee-ticker-lista { list-style: none; padding: 0; margin: 0; }
+.ee-ticker-lista li { padding: 0.4rem 0; border-bottom: 1px solid var(--ee-border); font-size: 0.95rem; }
+.ee-ticker-lista li:last-child { border-bottom: none; }
+.ee-ticker-lista a { color: var(--ee-text); text-decoration: none; }
+.ee-ticker-lista a:hover { color: var(--ee-red); }
+.ee-ticker-num { display: inline-block; width: 1.5rem; color: var(--ee-orange); font-weight: 700; font-size: 0.85rem; }
+.ee-main-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin: 3rem 0; }
+.ee-main-col { min-width: 0; }
+.ee-section-title { font-family: var(--ee-font-serif); font-size: 1.6rem; border-bottom: 2px solid var(--ee-red); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+.ee-sidebar { position: sticky; top: 1rem; align-self: start; }
+.ee-side-card { background: var(--ee-surface); border: 1px solid var(--ee-border); border-radius: var(--ee-radius-md); padding: 1.5rem; margin-bottom: 1.5rem; }
+.ee-side-card h3 { margin-top: 0; font-size: 1rem; color: var(--ee-orange); }
+.ee-side-list { list-style: none; padding: 0; margin: 0; }
+.ee-side-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--ee-border); font-size: 0.9rem; }
+.ee-side-list li:last-child { border-bottom: none; }
+.ee-side-list a { color: var(--ee-text); text-decoration: none; display: block; margin-bottom: 0.2rem; }
+.ee-side-list a:hover { color: var(--ee-red); }
+.ee-side-date { font-size: 0.75rem; color: var(--ee-text-muted); }
+.ee-side-stats p { margin: 0.5rem 0; color: var(--ee-text-muted); }
+.ee-side-stats strong { color: var(--ee-red); font-size: 1.2rem; }
+@media (max-width: 768px) {
+  .ee-main-layout { grid-template-columns: 1fr; }
+  .ee-sidebar { position: static; }
+  .ee-hero-titulo { font-size: 1.6rem; }
+  .ee-hero-dia { padding: 1.5rem 1rem; }
+}
