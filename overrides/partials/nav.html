@@ -1,10 +1,6 @@
-{% import "partials/nav-item.html" as item with context %}
 {% set class = "md-nav md-nav--primary" %}
 {% if "navigation.tabs" in features %}
   {% set class = class ~ " md-nav--lifted" %}
-{% endif %}
-{% if "toc.integrate" in features %}
-  {% set class = class ~ " md-nav--integrated" %}
 {% endif %}
 <nav class="{{ class }}" aria-label="{{ lang.t('nav') }}" data-md-level="0">
   <div class="ee-drawer-head">
@@ -12,50 +8,28 @@
     <span class="ee-logo-text">EL ENCUADRE</span>
   </div>
   <div class="ee-drawer-sub">El periódico anti-medios</div>
-  <label class="md-nav__title" for="__drawer">
-    <span class="md-nav__button md-logo" aria-label="{{ config.site_name }}" data-md-component="logo">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
-    </span>
-    {{ config.site_name }}
-  </label>
   <ul class="md-nav__list" data-md-scrollfix>
-    {% if config.site_name == page.title %}
-      <li class="md-nav__item md-nav__item--nested">
-        {% set _ = namespace() %}
-        {% include "partials/nav-item.html" %}
-      </li>
-    {% endif %}
     {% for nav_item in nav %}
       {% if nav_item.children %}
         <li class="md-nav__item md-nav__item--nested">
-          <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_{{ loop.index }}" {% if page.url is defined and page.url.startswith(nav_item.url) %}checked{% endif %}>
+          <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_{{ loop.index }}">
           <label class="md-nav__link" for="__nav_{{ loop.index }}">
             <span class="md-ellipsis">{{ nav_item.title }}</span>
           </label>
           <nav class="md-nav" aria-label="{{ nav_item.title }}" data-md-level="1">
-            <label class="md-nav__title" for="__nav_{{ loop.index }}">
-              {{ nav_item.title }}
-            </label>
-            <ul class="md-nav__list" data-md-scrollfix>
+            <ul class="md-nav__list">
               {% for sub in nav_item.children %}
                 {% if sub.children %}
-                  <li class="md-nav__item md-nav__item--nested">
-                    <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_{{ loop.index }}_{{ loop2.index }}">
-                    <label class="md-nav__link" for="__nav_{{ loop.index }}_{{ loop2.index }}">
-                      <span class="md-ellipsis">{{ sub.title }}</span>
-                    </label>
-                    <nav class="md-nav" aria-label="{{ sub.title }}" data-md-level="2">
-                      <ul class="md-nav__list">
-                        {% for subsub in sub.children %}
-                          <li class="md-nav__item">
-                            <a href="{{ subsub.url | url }}" class="md-nav__link">
-                              <span class="md-ellipsis">{{ subsub.title }}</span>
-                            </a>
-                          </li>
-                        {% endfor %}
-                      </ul>
-                    </nav>
+                  <li class="md-nav__item">
+                    <span class="md-nav__link" style="opacity:0.6;font-style:italic;">{{ sub.title }}</span>
                   </li>
+                  {% for subsub in sub.children %}
+                    <li class="md-nav__item">
+                      <a href="{{ subsub.url | url }}" class="md-nav__link" style="padding-left:1.5rem;">
+                        <span class="md-ellipsis">{{ subsub.title }}</span>
+                      </a>
+                    </li>
+                  {% endfor %}
                 {% else %}
                   <li class="md-nav__item">
                     <a href="{{ sub.url | url }}" class="md-nav__link">
