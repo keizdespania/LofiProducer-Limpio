@@ -39,6 +39,13 @@ nav:
   - Inicio: index.md
   - Análisis:
     - Índice: analisis/index.md
+    - "Master (31)": analisis/2026-10-31-master.md
+    - "Largo (16)": analisis/2026-11-16-largo.md
+    - "Mediano Quirúrgico (16)": analisis/2026-11-16-mediano-quirurgico.md
+    - "Dossier V2 (16)": analisis/2026-11-16-dossier-v2.md
+    - "Largo (14)": analisis/2026-11-14-largo.md
+    - "Mediano Dossier (14)": analisis/2026-11-14-mediano-dossier.md
+    - "Dossier V2 (14)": analisis/2026-11-14-dossier-v2.md
     - "Dossier V2": analisis/2026-11-18-dossier-v2.md
     - "Mediano Radar": analisis/2026-11-18-mediano-radar.md
     - "Largo": analisis/2026-11-18-largo.md
