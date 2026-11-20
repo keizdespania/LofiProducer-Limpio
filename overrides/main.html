@@ -21,8 +21,8 @@
         "@context": "https://schema.org",
         "@type": "NewsArticle",
         "headline": {{ page.title|tojson }},
-        "datePublished": {{ page.meta.date|tojson }},
-        "dateModified": {{ page.meta.date|tojson }},
+        "datePublished": {{ (page.meta.date|string)|tojson }},
+        "dateModified": {{ (page.meta.date|string)|tojson }},
         "author": {"@type": "Organization", "name": "Somos El Encuadre"},
         "publisher": {
           "@type": "Organization",
