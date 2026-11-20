@@ -203,7 +203,6 @@ plugins:
       cards_color:
         fill: '#0a0a0f'
         text: '#e63946'
-  - rss:
       enabled: true
 
 use_directory_urls: true
