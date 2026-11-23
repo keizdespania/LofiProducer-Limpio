@@ -5,18 +5,25 @@ hide:
 
 <div class="holo-hero">
 <h1>El Archivo del Anti-Medio</h1>
-<p>Todo nuestro arsenal. 64 análisis publicados. Sin filtros, con enlaces verificables.</p>
+<p>Todo nuestro arsenal. 65 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (64)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (23)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (65)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (24)</button>
   <button class="holo-filter-btn" data-filter="dossier">Dossiers (21)</button>
   <button class="holo-filter-btn" data-filter="angulo">Ángulos (20)</button>
 </div>
 
 <div class="ee-adsense-slot" id="adsense-index-top" data-slot="index-top"></div>
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-23/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis del Día</div>
+    
+    <h3>Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en beneficio propio: «Sé que l</h3>
+    <p>El titular pretende hacer de la acusación una broma, sugiriendo que el acusado actúa sin costo alguno y sin seriedad</p>
+    <div class="holo-meta"><span>📅 2026-11-23</span></div>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-22/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
     
