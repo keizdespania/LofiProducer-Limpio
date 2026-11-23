@@ -5,18 +5,32 @@ hide:
 
 <div class="holo-hero">
 <h1>El Archivo del Anti-Medio</h1>
-<p>Todo nuestro arsenal. 62 análisis publicados. Sin filtros, con enlaces verificables.</p>
+<p>Todo nuestro arsenal. 64 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos (62)</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios (21)</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (64)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (23)</button>
   <button class="holo-filter-btn" data-filter="dossier">Dossiers (21)</button>
   <button class="holo-filter-btn" data-filter="angulo">Ángulos (20)</button>
 </div>
 
 <div class="ee-adsense-slot" id="adsense-index-top" data-slot="index-top"></div>
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-22/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis del Día</div>
+    
+    <h3>Pedro Sánchez vuelve a Andalucía para activar el voto tras la polémica del baile en Sevilla</h3>
+    <p>Análisis de 1800 palabras sobre la visita de Pedro Sánchez a Andalucía, la crítica mediática al baile en Sevilla y el uso de priming y framing negativo en la campaña electoral.</p>
+    <div class="holo-meta"><span>📅 2026-11-22</span></div>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-21/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis del Día</div>
+    
+    <h3>2026 11 21</h3>
+    <p>Análisis del Día</p>
+    <div class="holo-meta"><span>📅 2026-11-21</span></div>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-19-largo/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
     <img src="/media/imagenes/post_2026-11-19_largo_1.png" alt="El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen:" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">

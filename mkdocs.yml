@@ -38,6 +38,8 @@ theme:
 nav:
   - Analisis:
     - Indice: analisis/index.md
+    - "Pedro Sánchez vuelve a Andalucía para activar el voto tras l": analisis/2026-11-22/index.md
+    - "2026 11 21": analisis/2026-11-21/index.md
     - "El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen:": analisis/2026-11-19-largo.md
     - "Dossier del día: El Encuadre: Putin, ganador de la cumbre a ": analisis/2026-11-19-dossier-v2.md
     - "La cita que lo cambia todo": analisis/2026-11-19-mediano-cita.md

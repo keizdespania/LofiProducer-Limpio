@@ -4,6 +4,19 @@ date: 2026-11-22
 description: "Análisis ejecutivo de la visita de Pedro Sánchez a Andalucía para reactivar el voto en su antiguo bastión, tras la controversia generada por su baile en Sevilla."
 ---
 
+<!-- EE_ENRICHED_START -->
+<div class="ee-post">
+<div class="ee-breadcrumbs">
+<a href="/">Inicio</a><span>›</span><a href="/analisis/">Análisis</a><span>›</span>2026-11-22
+</div>
+<div class="ee-post-meta">
+<span class="holo-badge badge-guide">📄 Angulo</span>
+<strong>Publicado:</strong> 2026-11-22 &nbsp;·&nbsp; <strong>Tipo:</strong> Angulo
+</div>
+<div class="ee-post-layout">
+<div class="ee-post-content">
+
+<div class="ee-adsense-slot"></div>
 - **Objetivo principal:** Reconectar con el electorado andaluz y revertir la pérdida de impulso tras la polémica del baile.  
 - **Ámbito geográfico:** Provincias de Sevilla, Córdoba, Granada y Málaga, tradicionales focos del PSOE.  
 - **Mensaje central:** “Unidad y progreso para Andalucía”, con énfasis en la cultura y la modernidad.  
@@ -76,3 +89,21 @@ El cumplimiento de estos indicadores permitirá al equipo de campaña ajustar r�
 La visita de Pedro Sánchez a Andalucía representa una oportunidad estratégica para revertir la pérdida de apoyo derivada de la controversia del baile y consolidar el dominio histórico del PSOE en la región. Al combinar un mensaje centrado en la cultura, el empleo y la sostenibilidad con una táctica de comunicación multicanal y el respaldo de liderazgos locales, la campaña busca no solo reparar la imagen del presidente, sino también presentar un programa concreto que responda a las demandas de los ciudadanos.
 
 Si se ejecuta con la disciplina operativa y la capacidad de adaptación descritas, la iniciativa tiene el potencial de generar un aumento significativo en la intención de voto, mejorar la percepción de liderazgo y, en última instancia, fortalecer la posición del PSOE en el panorama electoral nacional. No obstante, el éxito dependerá de la gestión eficaz de los riesgos identificados y de la capacidad del equipo para mantener una narrativa coherente y orientada a resultados durante todo el proceso.
+</div>
+<aside class="ee-post-toc">
+<h4>En este análisis</h4>
+<ul>
+<li><a href="#1-contexto-y-antecedentes">1. Contexto y antecedentes</a></li>
+<li><a href="#2-estrategia-de-campaña-y-movilización">2. Estrategia de campaña y movilización</a></li>
+<li><a href="#3-impacto-esperado-y-riesgos">3. Impacto esperado y riesgos</a></li>
+</ul>
+</aside>
+</div>
+<div class="ee-share">
+<a href="https://twitter.com/intent/tweet?text=Pedro Sánchez vuelve a Andalucía: Estrategia de movilización tras la polémica del baile&url=https://elencuadre.pages.dev/analisis/2026-11-22/angulo/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
+<a href="https://threads.net/intent/post?text=Pedro Sánchez vuelve a Andalucía: Estrategia de movilización tras la polémica del baile+https://elencuadre.pages.dev/analisis/2026-11-22/angulo/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
+<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-22/angulo/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
+<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-22/angulo/&text=Pedro Sánchez vuelve a Andalucía: Estrategia de movilización tras la polémica del baile" target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
+</div>
+</div>
+<!-- EE_ENRICHED_END -->

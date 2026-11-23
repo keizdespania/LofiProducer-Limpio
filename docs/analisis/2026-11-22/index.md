@@ -4,6 +4,19 @@ date: 2026-11-22
 description: "Análisis de 1800 palabras sobre la visita de Pedro Sánchez a Andalucía, la crítica mediática al baile en Sevilla y el uso de priming y framing negativo en la campaña electoral."
 ---
 
+<!-- EE_ENRICHED_START -->
+<div class="ee-post">
+<div class="ee-breadcrumbs">
+<a href="/">Inicio</a><span>›</span><a href="/analisis/">Análisis</a><span>›</span>2026-11-22
+</div>
+<div class="ee-post-meta">
+<span class="holo-badge badge-new">🔥 Análisis del Día</span>
+<strong>Publicado:</strong> 2026-11-22 &nbsp;·&nbsp; <strong>Tipo:</strong> Análisis del Día
+</div>
+<div class="ee-post-layout">
+<div class="ee-post-content">
+
+<div class="ee-adsense-slot"></div>
 ## Introducción
 
 ¿Te has preguntado alguna vez cómo un simple paso de baile puede convertirse en el centro de una tormenta política? En los últimos días, Pedro Sánchez, presidente del Gobierno y líder del PSOE, ha vuelto a Andalucía con la intención de reactivar la máquina electoral en un territorio que ha sido históricamente su bastión. La visita llega justo después de que su coreografía improvisada en la Feria de Abril de Sevilla provocara una avalancha de críticas, acusaciones de falta de seriedad y una oleada de memes que circulan por Twitter y TikTok. En este análisis desglosaremos, con datos concretos y fuentes verificables, cómo se está utilizando la técnica del **priming** y el **framing negativo** para moldear la percepción pública, qué impacto ha tenido el incidente en la intención de voto y qué estrategia está siguiendo Sánchez para mitigar el daño y reconquistar a los andaluces.
@@ -130,3 +143,26 @@ Estos indicadores sugieren que la estrategia de **reframing** y **refuerzo de da
 3. **La respuesta del PSOE** se basó en tres pilares: reconocimiento de la polémica, presentación de datos concretos y una campaña de reframing en redes sociales. Los primeros indicadores de la segunda fase (visita a Andalucía) muestran una ligera recuperación del sentimiento y una estabilización de la intención de voto.  
 4. **El éxito de la estrategia dependerá** de la capacidad del Gobierno para traducir los números presentados (inversión verde, creación de empleo) en percepciones de eficacia real entre los votantes. Si los indicadores económicos continúan mejorando, el impacto negativo del baile podría disiparse antes de las elecciones generales de 2027.  
 5. **Para los analistas políticos**, este caso ilustra cómo un gesto aparentemente inocuo puede ser explotado mediante técnicas de persuasión cognitiva, y cómo la rapidez y la precisión de la respuesta del propio protagonista son cruciales
+</div>
+<aside class="ee-post-toc">
+<h4>En este análisis</h4>
+<ul>
+<li><a href="#introducción">Introducción</a></li>
+<li><a href="#contexto-político-en-andalucía">Contexto político en Andalucía</a></li>
+<li><a href="#el-incidente-del-baile-en-sevilla">El incidente del baile en Sevilla</a></li>
+<li><a href="#técnicas-de-persuasión-priming-y-framing-negativo">Técnicas de persuasión: priming y framing negativo</a></li>
+<li><a href="#reacción-mediática-y-redes-sociales">Reacción mediática y redes sociales</a></li>
+<li><a href="#impacto-en-la-intención-de-voto">Impacto en la intención de voto</a></li>
+<li><a href="#estrategia-de-sánchez-y-el-retorno-a-andalucía">Estrategia de Sánchez y el retorno a Andalucía</a></li>
+<li><a href="#conclusiones">Conclusiones</a></li>
+</ul>
+</aside>
+</div>
+<div class="ee-share">
+<a href="https://twitter.com/intent/tweet?text=Pedro Sánchez vuelve a Andalucía para activar el voto tras la polémica del baile en Sevilla&url=https://elencuadre.pages.dev/analisis/2026-11-22/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
+<a href="https://threads.net/intent/post?text=Pedro Sánchez vuelve a Andalucía para activar el voto tras la polémica del baile en Sevilla+https://elencuadre.pages.dev/analisis/2026-11-22/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
+<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-22/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
+<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-22/&text=Pedro Sánchez vuelve a Andalucía para activar el voto tras la polémica del baile en Sevilla" target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
+</div>
+</div>
+<!-- EE_ENRICHED_END -->
