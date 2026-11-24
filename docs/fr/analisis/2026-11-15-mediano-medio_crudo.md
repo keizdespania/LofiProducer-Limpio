@@ -11,61 +11,63 @@ tags:
 ---
 
 
-> 🌐 [Lire l'original en espagnol](../../fr/analisis/2026-11-15-mediano-medio_crudo.md)
+> 🌐 [Lire l'original en espagnol](/analisis/2026-11-15-mediano-medio_crudo/)
 
-<!-- EE_ENRICHED_START -->
-<div class="ee-post">
-<div class="ee-breadcrumbs">
-<a href="/">Accueil</a><span>›</span><a href="/analisis/">Analyse</a><span>›</span>2026-11-15
-</div>
-<div class="ee-post-meta">
-<span class="holo-badge badge-guide">📄 Angle du Jour</span>
-<strong>Publié :</strong> 2026-11-15 &nbsp;·&nbsp; <strong>Type :</strong> Angle du Jour
-</div>
-<div class="ee-post-layout">
-<div class="ee-post-content">
+@@EEPROT0@@
+@@EEPROT1@@
+@@EEPROT2@@
+@@EEPROT3@@Inicio@@EEPROT4@@@@EEPROT5@@›@@EEPROT6@@@@EEPROT7@@Análisis@@EEPROT8@@@@EEPROT9@@›@@EEPROT10@@2026-11-15
+@@EEPROT11@@
+@@EEPROT12@@
+@@EEPROT13@@📄 Ángulo del Día@@EEPROT14@@
+@@EEPROT15@@Publicado:@@EEPROT16@@ 2026-11-15 &nbsp;·&nbsp; @@EEPROT17@@Tipo:@@EEPROT18@@ Ángulo del Día
+@@EEPROT19@@
+@@EEPROT20@@
+@@EEPROT21@@
 
-<div class="ee-adsense-slot"></div>
-<figure style="margin:1.5em 0;"><img src="../../media/imagenes/post_2026-11-15_mediano_1.png" alt="Libertad Digital: la técnica del descalificación mediante et" width="832" height="480" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;" loading="eager" fetchpriority="high" decoding="async"><figcaption style="font-size:0.85em;color:#888;text-align:center;margin-top:0.5em;font-style:italic;">Libertad Digital : la technique de la disqualification par é</figcaption></figure>
-<h1>Libertad Digital et la technique de disqualification par étiquetage négatif et contraste polarisateur</h1>
+@@EEPROT22@@@@EEPROT23@@
+@@EEPROT24@@@@EEPROT25@@@@EEPROT26@@Libertad Digital: la técnica del descalificación mediante et@@EEPROT27@@@@EEPROT28@@
+@@EEPROT29@@Libertad Digital y la técnica de descalificación mediante etiquetado negativo y contraste polarizador@@EEPROT30@@
 
-<p>Dans la tourmente de la campagne électorale du 29 novembre, les médias ne se contentent pas de transmettre de simples faits. Ils deviennent des architectes de récits, souvent construits avec la même machinerie que le gouvernement lui-même : la disqualification et le contraste polarisateur. Libertad Digital, ce journal qui est devenu le miroir de la rhétorique de l'opposition, déploie avec maestria la technique de l'étiquetage négatif pour ternir l'image du président Alberto Núñez Feijóo, tout en créant un contraste qui polarise le public autour de la gestion de Pedro Sánchez.</p>
+@@EEPROT31@@En la vorágine de la campaña electoral del 29-N, los medios no se quedan en la mera transmisión de hechos. Se convierten en arquitectos de narrativas, a menudo construidas con la misma maquinaria que el propio gobierno: la descalificación y el contraste polarizador. Libertad Digital, ese periódico que se ha convertido en un espejo de la retórica de la oposición, despliega con maestría la técnica de etiquetado negativo para empañar la figura del presidente Alberto Núñez Feijóo, mientras al mismo tiempo crea un contraste que polariza a la audiencia en torno a la gestión de Pedro Sánchez.@@EEPROT32@@
 
-<h2>Ce qu'il a dit</h2>
-<figure style="margin:1.5em 0;"><img src="../../media/imagenes/post_2026-11-15_mediano_2.png" alt="Qué dijo" width="832" height="480" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;" loading="lazy" decoding="async"><figcaption style="font-size:0.85em;color:#888;text-align:center;margin-top:0.5em;font-style:italic;">Ce qu'il a dit</figcaption></figure>
+@@EEPROT33@@Qué dijo@@EEPROT34@@
+@@EEPROT35@@@@EEPROT36@@@@EEPROT37@@Qué dijo@@EEPROT38@@@@EEPROT39@@
 
 
-<p>Le titre de Libertad Digital, « Feijóo revendique la gestion face au "gaspillage" de Sánchez et lance en Galice sa marche vers le 29-N », constitue déjà une déclaration de positionnement. L'utilisation du mot « gaspillage » comme étiquette négative résume le récit que le média souhaite faire absorber au lecteur : le gouvernement de Sánchez, selon la presse, dilapide les ressources. Ce terme ne se contente pas de disqualifier le gouvernement, il suggère également un manque de discipline budgétaire qui, selon Libertad Digital, s'oppose à la prétendue « gestion » de Feijóo.</p>
+@@EEPROT40@@El titular de Libertad Digital, «Feijóo reivindica la gestión frente al "despilfarro" de Sánchez y arranca en Galicia su camino hacia el 29-N», ya es una declaración de posicionamiento. El uso de “despilfarro” como etiqueta negativa encapsula la narrativa que el medio quiere que el lector absorba: el gobierno de Sánchez, según la prensa, está malgastando recursos. Este término no sólo descalifica al gobierno, sino que también sugiere una falta de disciplina fiscal que, en la visión de Libertad Digital, se contrapone a la supuesta “gestión” de Feijóo.@@EEPROT41@@
 
-<h2>Comment il l'a dit (citation textuelle)</h2>
+@@EEPROT42@@Cómo lo dijo (cita textual)@@EEPROT43@@
 
-<p>Dans le corps de l'article, le média ne s'arrête pas à l'abstraction. Il s'appuie sur des citations textuelles qui, sans les altérer, renforcent l'image de Feijóo en tant que leader de « la rigueur, la gestion et l'expérience ». Le président du PP lui-même a affirmé : <q>L'Espagne a besoin de « rigueur, de gestion et d'expérience »</q>. Parallèlement, Feijóo s'est proclamé défenseur des services publics avec cette phrase : <q>Le service public se défend en le gérant bien, et non en criant qu'on le défend pour ensuite le détruire</q>. La déclaration concernant le rapport entre l'effort fiscal et les services publics, <q>Faire correspondre l'effort des citoyens à des services publics corrects, c'est pour cela que vous payez des impôts</q>, ajoute une couche de justification économique à la campagne.</p>
+@@EEPROT44@@Dentro del cuerpo del artículo, el medio no se queda en la abstracción. Se apoya en citas textuales que, sin alterarlas, refuerzan la imagen de Feijóo como un líder de “rigor, gestión y experiencia”. El propio presidente del PP afirmó: @@EEPROT45@@España necesita “rigor, gestión y experiencia”@@EEPROT46@@. Al mismo tiempo, Feijóo se autoproclamó defensor de los servicios públicos con la frase: @@EEPROT47@@Lo público se defiende gestionándolo bien, no gritando que lo defiendes y después quebrando lo público@@EEPROT48@@. La declaración sobre la relación entre esfuerzo fiscal y servicios públicos, @@EEPROT49@@Corresponder el esfuerzo a la ciudadanía es tener servicios públicos en condiciones, para eso pagáis impuestos@@EEPROT50@@, añade una capa de justificación económica a la campaña.@@EEPROT51@@
 
-<h2>Ce qu'il a omis</h2>
+@@EEPROT52@@Qué omitió@@EEPROT53@@
 
-<p>Cependant, l'article omet toute mention des réalisations concrètes du gouvernement de Sánchez en matière de services publics. Il ne fait pas mention de l'augmentation de la couverture sanitaire, des programmes de logements sociaux ou des investissements dans les infrastructures qui ont bénéficié à la Galice. Aucune référence n'est faite non plus aux accords de financement de l'UE qui ont permis la mise en œuvre de projets d'énergie renouvelable. En omettant ces points, le média se concentre exclusivement sur la critique, sans offrir de contrepoids équilibré qui pourrait atténuer la polarisation.</p>
+@@EEPROT54@@La pieza editorial, sin embargo, deja de lado cualquier mención de los logros concretos del gobierno de Sánchez en los servicios públicos. No se menciona el aumento de la cobertura de la sanidad, los programas de vivienda social ni las inversiones en infraestructuras que han beneficiado a Galicia. Tampoco se hace referencia a los acuerdos de financiación de la UE que han permitido la ejecución de proyectos de energía renovable. Al omitir estos puntos, el medio se centra exclusivamente en la crítica, sin ofrecer un contrapunto equilibrado que pudiera suavizar la polarización.@@EEPROT55@@
 
-<h2>Comment le détecter</h2><p>L'lecteur attentif peut identifier la technique de disqualification dans le choix des mots et dans l'omission de données pertinentes. L'utilisation du terme « gaspillage » et l'absence de chiffres concrets sur les dépenses publiques créent un récit d'inefficacité qui ne repose sur aucune réalité. De même, le manque de mentions concernant les programmes de soutien social et les améliorations des infrastructures révèle un parti pris éditorial qui cherche à favoriser la figure de Feijóo au détriment d'une vision plus complète du paysage politique.</p>
+@@EEPROT56@@Cómo detectarlo@@EEPROT57@@
 
-<figure style="margin:1.5em 0;"><img src="../../media/imagenes/post_2026-11-15_mediano_3.png" alt="Conclusión" width="832" height="480" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;" loading="lazy" decoding="async"><figcaption style="font-size:0.85em;color:#888;text-align:center;margin-top:0.5em;font-style:italic;">Conclusion</figcaption></figure>
-<h2>Conclusion</h2>
+@@EEPROT58@@El lector atento puede identificar la técnica de descalificación en la selección de palabras y en la omisión de datos relevantes. El uso de “despilfarro” y la ausencia de cifras concretas sobre el gasto público crean una narrativa de ineficiencia que no se sustenta en la realidad. Asimismo, la falta de menciones a los programas de apoyo social y a las mejoras en la infraestructura revela un sesgo editorial que busca favorecer la figura de Feijóo a costa de una visión más completa del panorama político.@@EEPROT59@@
 
-<p>Libertad Digital, en employant la technique de la disqualification par le biais d'un étiquetage négatif et d'un contraste polarisant, démontre que l'information peut être aussi puissante que la propagande. En qualifiant le gouvernement de Sánchez de « gaspilleur » et en présentant Feijóo comme le sauveur de la gestion, le média crée une dichotomie qui simplifie la complexité de la politique en une bataille entre le « bien » et le « mal ». Cette stratégie non seulement polarise le public, mais renforce également l'idée que la seule solution viable est la proposition du PP. Dans un contexte où l'objectivité se fait de plus en plus rare, les lecteurs doivent faire preuve d'esprit critique et être conscients de la manière dont les mots et les omissions peuvent façonner la perception publique.</p>
+@@EEPROT60@@@@EEPROT61@@@@EEPROT62@@Conclusión@@EEPROT63@@@@EEPROT64@@
+@@EEPROT65@@Conclusión@@EEPROT66@@
 
-<p><strong>Vrai titre de Libertad Digital :</strong> « Feijóo revendique la gestion face au "gaspillage" de Sánchez et lance en Galice sa marche vers le 29-N »</p>
+@@EEPROT67@@Libertad Digital, al emplear la técnica de descalificación mediante etiquetado negativo y contraste polarizador, demuestra que la información puede ser tan poderosa como la propaganda. Al etiquetar el gobierno de Sánchez como “despilfarrador” y al presentar a Feijóo como el salvador de la gestión, el medio crea una dicotomía que simplifica la complejidad de la política a una batalla de “bien” contra “mal”. Esta estrategia no sólo polariza al público, sino que también refuerza la narrativa de que la única solución viable es la propuesta del PP. En un contexto donde la objetividad se vuelve cada vez más escasa, los lectores deben ser críticos y conscientes de cómo las palabras y las omisiones pueden moldear la percepción pública.@@EEPROT68@@
 
-<p><strong>Source :</strong> <a href="https://www.libertaddigital.com/espana/política/2026-11-14/feijoo-reivindica-la-gestion-frente-al-despilfarro-de-sanchez-y-arranca-en-galicia-su-camino-hacia-el-29-n-7491558/?utm_source=rss&amp;utm_medium=feed&amp;utm_campaign=Libertad+Digital%3A+Noticias+y+opini%C3%B3n+en+la+red" target="_blank" rel="noopener">Lire sur Libertad Digital</a></p>
+@@EEPROT69@@@@EEPROT70@@Titular real de Libertad Digital:@@EEPROT71@@ «Feijóo reivindica la gestión frente al "despilfarro" de Sánchez y arranca en Galicia su camino hacia el 29-N»@@EEPROT72@@
 
-<p><strong>Technique détectée :</strong> disqualification par étiquetage négatif et contraste polarisant</p>
+@@EEPROT73@@@@EEPROT74@@Fuente:@@EEPROT75@@ @@EEPROT76@@Leer en Libertad Digital@@EEPROT77@@@@EEPROT78@@
 
-<div style="background:#1a1a24;padding:1em;border-radius:8px;margin:2em 0;font-size:0.9em;"><strong>Avertissement légal :</strong> Ceci n'est pas une accusation. Il s'agit d'une autopsie. Les médias sont cités et référencés par des liens. Le droit de citation (art. 32 LPI) nous protège.</div>
-<hr>
-<div style="background:#0a0a0f;border-left:4px solid #e63946;padding:1em;border-radius:6px;margin:2em 0;">
-<strong>Suivez-nous :</strong> <a href="https://youtube.com/@somoselencuadre.oficial">YouTube</a> · <a href="https://tiktok.com/@somoselencuadre">TikTok</a> · <a href="https://instagram.com/somoselencuadre">Instagram</a> · <a href="https://x.com/SomosElEncuadre">X</a> · <a href="https://threads.net/@somoselencuadre">Threads</a>
-</div>
+@@EEPROT79@@@@EEPROT80@@Tecnica detectada:@@EEPROT81@@ descalificación mediante etiquetado negativo y contraste polarizador@@EEPROT82@@
 
-</div>
+@@EEPROT83@@@@EEPROT84@@Aviso legal:@@EEPROT85@@ Esto no es una acusacion. Es una autopsia. Los medios estan citados y enlazados. El derecho de cita (art. 32 LPI) nos ampara.@@EEPROT86@@
+@@EEPROT87@@
+@@EEPROT88@@
+@@EEPROT89@@Síguenos:@@EEPROT90@@ @@EEPROT91@@YouTube@@EEPROT92@@ · @@EEPROT93@@TikTok@@EEPROT94@@ · @@EEPROT95@@Instagram@@EEPROT96@@ · @@EEPROT97@@X@@EEPROT98@@ · @@EEPROT99@@Threads@@EEPROT100@@
+@@EEPROT101@@
 
-</div>
-</div>
-<!-- EE_ENRICHED_END -->
+@@EEPROT102@@
+
+@@EEPROT103@@
+@@EEPROT104@@
+@@EEPROT105@@
