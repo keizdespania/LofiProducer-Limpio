@@ -12,61 +12,65 @@ tags:
 
 
 
-> 🌐 [Lire l'original en espagnol](../../fr/analisis/2026-11-16-mediano-quirurgico.md)
+> 🌐 [Lire l'original en espagnol](/analisis/2026-11-16-mediano-quirurgico/)
 
-<!-- EE_ENRICHED_START -->
-<div class="ee-post">
-<div class="ee-breadcrumbs">
-<a href="/">Accueil</a><span>›</span><a href="/analisis/">Analyse</a><span>›</span>2026-11-16
-</div>
-<div class="ee-post-meta">
-<span class="holo-badge badge-guide">📄 Angle du Jour</span>
-<strong>Publié :</strong> 2026-11-16 &nbsp;·&nbsp; <strong>Type :</strong> Angle du Jour
-</div>
-<div class="ee-post-layout">
-<div class="ee-post-content">
+@@EEPROT0@@
+@@EEPROT1@@
+@@EEPROT2@@
+@@EEPROT3@@Inicio@@EEPROT4@@@@EEPROT5@@›@@EEPROT6@@@@EEPROT7@@Análisis@@EEPROT8@@@@EEPROT9@@›@@EEPROT10@@2026-11-16
+@@EEPROT11@@
+@@EEPROT12@@
+@@EEPROT13@@📄 Ángulo del Día@@EEPROT14@@
+@@EEPROT15@@Publicado:@@EEPROT16@@ 2026-11-16 &nbsp;·&nbsp; @@EEPROT17@@Tipo:@@EEPROT18@@ Ángulo del Día
+@@EEPROT19@@
+@@EEPROT20@@
+@@EEPROT21@@
 
-<div class="ee-adsense-slot"></div>
-<h1>Le PSOE lance un programme de 114 pages contenant 500 promesses !</h1>
-<p>Le parti de gauche, avec l'élégance d'un vendeur de voitures d'occasion, a décidé d'encombrer l'agenda des citoyens avec une brochure qui ressemble à une version abrégée de la Bible. 114 pages, 500 promesses, et l'espoir que la lecture de chaque ligne soit aussi attrayante que la promesse d'un café fraîchement moulu.</p>
-<p>Dans un monde où l'information est consommée à la vitesse d'un clic, le PSOE a opté pour la stratégie du « grand volume » et de la « quantité », convaincu que la simple présence de promesses suffit à convaincre ceux qui recherchent des solutions concrètes.</p>
+@@EEPROT22@@@@EEPROT23@@
+@@EEPROT24@@El PSOE lanza un programa de 114 páginas con 500 promesas!@@EEPROT25@@
+@@EEPROT26@@El partido de la izquierda, con la elegancia de un vendedor de coches usados, se ha decidido a llenar la agenda de los ciudadanos con un folleto que parece un libro de la Biblia en tamaño reducido. 114 páginas, 500 promesas, y la esperanza de que la lectura de cada línea sea tan atractiva como la promesa de un café recién hecho.@@EEPROT27@@
+@@EEPROT28@@En un mundo donde la información se consume a la velocidad de un clic, el PSOE ha optado por la estrategia del “gran volumen” y la “gran cantidad”, con la convicción de que la mera presencia de promesas es suficiente para convencer a quienes buscan soluciones concretas.@@EEPROT29@@
 
-<h2>Contexte de l'accroche : pourquoi 114 pages et 500 promesses ?</h2>
-<p>Le chiffre 114 n'est pas le fruit du hasard. En pratique, il permet d'aborder la majorité des sujets qui intéressent les citoyens sans pour autant mener à une saturation totale. Chaque page devient une fenêtre ouverte sur un avenir qui, selon le texte, sera plus juste, plus durable et plus inclusif.</p>
-<p>Le chiffre de 500 promesses, quant à lui, fonctionne comme un repère qui évoque l'ampleur. C'est une façon de donner l'impression que le parti dispose d'un programme si vaste qu'il touche à tous les aspects de la vie quotidienne, de l'éducation et de la santé jusqu'aux infrastructures et à la culture.</p>
-<p>L'accroche s'appuie sur la psychologie de la « charge cognitive ». En présentant une masse importante de données, le lecteur est séduit par l'idée que le parti déploie un effort massif, et la simple exposition à ce chiffre peut engendrer un sentiment de confiance, quand bien même la qualité de chaque promesse n'aurait pas été évaluée.</p>
+@@EEPROT30@@Contexto del hook: ¿por qué 114 páginas y 500 promesas?@@EEPROT31@@
+@@EEPROT32@@El número 114 no es arbitrario. Se trata de un número que, en la práctica, permite abarcar la mayoría de los temas que interesan a la ciudadanía sin llegar a la saturación total. Cada página se convierte en una ventana abierta a un futuro que, según el texto, será más justo, más sostenible y más inclusivo.@@EEPROT33@@
+@@EEPROT34@@La cifra de 500 promesas, por otro lado, funciona como un número de referencia que suena a magnitud. Es una forma de dar la impresión de que el partido tiene una agenda tan amplia que abarca cada aspecto de la vida cotidiana, desde la educación y la salud hasta la infraestructura y la cultura.@@EEPROT35@@
+@@EEPROT36@@El hook se apoya en la psicología de la “carga cognitiva”. Al presentar una gran cantidad de datos, el lector se siente atraído por la idea de que el partido está haciendo un esfuerzo masivo, y la mera exposición a la cifra puede generar una sensación de confianza, aún cuando la calidad de cada promesa no se ha evaluado.@@EEPROT37@@
 
-<h2>La technique utilisée : le « marathon des promesses » comme stratégie de marketing politique</h2>
-<p>La technique consiste à transformer la politique en une sorte de spectacle chiffré. Elle recourt à la répétition massive d'objectifs, chacun assorti d'un titre accrocheur et d'une brève description se voulant claire et directe.</p>
-<p>Le format s'apparente à celui d'un catalogue de produits, où chaque promesse est présentée comme un élément unique, doté de sa propre référence et d'une brève explication de son impact. Ce style facilite la mémorisation et le partage sur les réseaux sociaux, permettant ainsi aux internautes de diffuser des extraits sans avoir à lire l'intégralité du document.</p>
-<p>En outre, une hiérarchie visuelle est employée pour guider le lecteur à travers les informations : titres en gras, listes numérotées et graphiques soulignant l'envergure de chaque proposition. Le tout est combiné à un langage simple et, parfois, à un ton presque persuasif, qui cherche à faire de la lecture une expérience quasi ludique.</p><h2>Pourquoi cela fonctionne : la psychologie de l'abondance et l'illusion de contrôle</h2>
-<p>L'abondance de promesses crée une illusion de contrôle. Lorsque le public voit une liste exhaustive, il a tendance à penser que le parti a envisagé toutes les possibilités et qu'il a par conséquent le pouvoir de mettre en œuvre ses plans.</p>
-<p>Cette stratégie s'appuie également sur la « preuve sociale ». En présentant 500 promesses, elle suggère que beaucoup d'autres ont contribué à l'élaboration de l'agenda, ce qui génère un effet de légitimité collective.</p>
-<p>L'utilisation de chiffres précis, tels que 114 pages et 500 promesses, nourrit également la perception que le parti est organisé et méthodique. Le chiffre exact donne un sentiment de précision qui contraste avec le vague typique de nombreux discours politiques.</p>
-<p>Enfin, cette technique profite de la tendance du public à rechercher des solutions rapides. En proposant une liste aussi vaste, le parti se positionne comme le seul capable de répondre à tous les besoins de la société, même si la viabilité de chaque promesse n'a pas été analysée en détail.</p>
+@@EEPROT38@@La técnica usada: el “maratón de promesas” como estrategia de marketing político@@EEPROT39@@
+@@EEPROT40@@La técnica consiste en convertir la política en una especie de espectáculo de cifras. Se recurre a la repetición masiva de objetivos, cada uno con un título atractivo y una breve descripción que pretende ser clara y directa.@@EEPROT41@@
+@@EEPROT42@@El formato se asemeja al de un catálogo de productos, donde cada promesa se presenta como una pieza única, con su propio número de referencia y una breve explicación de su impacto. Este estilo facilita la memorización y la difusión en redes sociales, donde la gente puede compartir fragmentos sin necesidad de leer todo el documento.@@EEPROT43@@
+@@EEPROT44@@Además, se emplea una jerarquía visual que guía al lector a través de la información: encabezados en negrita, listas numeradas y gráficos que resaltan la magnitud de cada propuesta. Todo ello se combina con un lenguaje sencillo y, en ocasiones, con un tono casi persuasivo, que busca convertir la lectura en una experiencia casi lúdica.@@EEPROT45@@
 
-<h2>Comment la détecter : les signes d'un « programme de promesses » plutôt que d'un plan d'action</h2>
-<p>Pour reconnaître cette stratégie, il convient d'observer plusieurs indicateurs :</p>
-<ol>
-<li>Le manque de détails sur les ressources nécessaires. Si le document mentionne la promesse sans indiquer comment elle sera financée ou qui sera responsable de sa mise en œuvre, c'est le signe qu'il s'agit d'une liste d'aspirations.</li>
-<li>L'absence de délais précis. Lorsque les dates de début ou de fin sont vagues ou inexistantes, la promesse perd sa force normative.</li>
-<li>L'utilisation répétée de termes génériques tels que « améliorer », « renforcer » ou « progresser », sans spécifier de mesures ou d'indicateurs de réussite.</li>
-<li>La présence d'un style de rédaction qui s'apparente à un catalogue, avec des en-têtes mis en valeur et des listes numérotées qui facilitent une lecture superficielle.</li>
-<li>L'absence de données de suivi ou de mécanismes de reddition de comptes. Si le document n'inclut pas de plan de suivi, il se réduit à un simple discours.</li>
-</ol>
-<p>En identifiant ces caractéristiques, le lecteur peut dissocier la promesse de la politique réelle et évaluer la crédibilité des déclarations.</p>
+@@EEPROT46@@Por qué funciona: la psicología de la abundancia y la ilusión de control@@EEPROT47@@
+@@EEPROT48@@La abundancia de promesas crea una ilusión de control. Cuando el público ve una lista extensa, tiende a pensar que el partido ha considerado todas las posibilidades y que, por tanto, tiene el poder de ejecutar sus planes.@@EEPROT49@@
+@@EEPROT50@@Esta estrategia también se apoya en la “prueba social”. Al presentar 500 promesas, se sugiere que muchos otros han contribuido a la construcción de la agenda, lo que genera un efecto de legitimidad colectiva.@@EEPROT51@@
+@@EEPROT52@@El uso de números concretos, como 114 páginas y 500 promesas, también alimenta la percepción de que el partido es organizado y metódico. La cifra exacta da una sensación de precisión que contrasta con la vaguedad típica de muchos discursos políticos.@@EEPROT53@@
+@@EEPROT54@@Finalmente, la técnica se beneficia de la tendencia del público a buscar soluciones rápidas. Al ofrecer una lista tan extensa, el partido se posiciona como el único que puede cubrir todas las necesidades de la sociedad, aunque la viabilidad de cada promesa no se haya analizado en detalle.@@EEPROT55@@
 
-<h2>Conclusion percutante : la promesse comme outil, et non comme fin</h2>
-<p>En fin de compte, la stratégie du PSOE consistant à lancer un programme de 114 pages comportant 500 promesses se présente comme un acte d'audace. Il s'agit d'une tentative pour capter l'attention de citoyens de plus en plus saturés d'informations et gagnés par la défiance.</p>
-<p>Cependant, le véritable test ne sera pas la quantité de promesses, mais la qualité de leur mise en œuvre. Si le parti parvient à transformer chacune de ces promesses en actions concrètes, ce sera un cas d'école sur l'efficacité de la communication politique. Si, au contraire, les promesses restent en surface, le document se transformera en un simple exercice de rhétorique.</p>
-<p>Pour le public, la clé est de ne pas se laisser aveugler par l'ampleur des chiffres, mais d'exiger de la clarté, des ressources et des délais. Ce n'est qu'à cette condition que la promesse pourra être transformée en un véritable engagement, et non en un simple stratagème marketing.</p><div style="background:#1a1a24;padding:1em;border-radius:8px;margin:2em 0;font-size:0.9em;"><strong>Mentions légales :</strong> Ceci n'est pas une accusation. C'est une autopsie. Les médias sont cités et reliés. Le droit de citation (art. 32 LPI) nous protège.</div>
-<hr>
-<div style="background:#0a0a0f;border-left:4px solid #e63946;padding:1em;border-radius:6px;margin:2em 0;">
-<strong>Suivez-nous :</strong> <a href="https://youtube.com/@somoselencuadre.oficial">YouTube</a> · <a href="https://tiktok.com/@somoselencuadre">TikTok</a> · <a href="https://instagram.com/somoselencuadre">Instagram</a> · <a href="https://x.com/SomosElEncuadre">X</a> · <a href="https://threads.net/@somoselencuadre">Threads</a>
-</div>
+@@EEPROT56@@Cómo detectarla: señales de un “programa de promesas” en lugar de un plan de acción@@EEPROT57@@
+@@EEPROT58@@Para reconocer esta estrategia, se deben observar varios indicadores:@@EEPROT59@@
+@@EEPROT60@@
+@@EEPROT61@@La falta de detalle sobre los recursos necesarios. Si el documento menciona la promesa sin indicar cómo se financiará o quién será responsable de su ejecución, es una señal de que se trata de una lista de aspiraciones.@@EEPROT62@@
+@@EEPROT63@@La ausencia de plazos concretos. Cuando las fechas de inicio o fin son vagas o inexistentes, la promesa pierde su fuerza normativa.@@EEPROT64@@
+@@EEPROT65@@El uso repetido de términos genéricos como “mejorar”, “fortalecer” o “avanzar”, sin especificar métricas o indicadores de éxito.@@EEPROT66@@
+@@EEPROT67@@La presencia de un estilo de redacción que se asemeja a un catálogo, con encabezados destacados y listas numeradas que facilitan la lectura superficial.@@EEPROT68@@
+@@EEPROT69@@La ausencia de datos de seguimiento o mecanismos de rendición de cuentas. Si el documento no incluye un plan de monitoreo, se reduce a un mero discurso.@@EEPROT70@@
+@@EEPROT71@@
+@@EEPROT72@@Al identificar estos rasgos, el lector puede separar la promesa de la política real y evaluar la credibilidad de las declaraciones.@@EEPROT73@@
 
-</div>
+@@EEPROT74@@Cierre potente: la promesa como herramienta, no como fin@@EEPROT75@@
+@@EEPROT76@@En última instancia, la estrategia del PSOE de lanzar un programa de 114 páginas con 500 promesas se presenta como un acto de audacia. Se trata de un intento por captar la atención de una ciudadanía cada vez más saturada por la información y la desconfianza.@@EEPROT77@@
+@@EEPROT78@@Sin embargo, la verdadera prueba no será la cantidad de promesas, sino la calidad de su implementación. Si el partido logra convertir cada una de esas promesas en acciones concretas, será un caso de estudio sobre la eficacia de la comunicación política. Si, por el contrario, las promesas se quedan en la superficie, el documento se convertirá en un mero ejercicio de retórica.@@EEPROT79@@
+@@EEPROT80@@Para el público, la clave está en no dejarse llevar por la magnitud numérica, sino en exigir claridad, recursos y plazos. Solo así se podrá transformar la promesa en un compromiso real, y no en un simple truco de marketing.@@EEPROT81@@
 
-</div>
-</div>
-<!-- EE_ENRICHED_END -->
+@@EEPROT82@@@@EEPROT83@@Aviso legal:@@EEPROT84@@ Esto no es una acusacion. Es una autopsia. Los medios estan citados y enlazados. El derecho de cita (art. 32 LPI) nos ampara.@@EEPROT85@@
+@@EEPROT86@@
+@@EEPROT87@@
+@@EEPROT88@@Síguenos:@@EEPROT89@@ @@EEPROT90@@YouTube@@EEPROT91@@ · @@EEPROT92@@TikTok@@EEPROT93@@ · @@EEPROT94@@Instagram@@EEPROT95@@ · @@EEPROT96@@X@@EEPROT97@@ · @@EEPROT98@@Threads@@EEPROT99@@
+@@EEPROT100@@
+
+@@EEPROT101@@
+
+@@EEPROT102@@
+@@EEPROT103@@
+@@EEPROT104@@

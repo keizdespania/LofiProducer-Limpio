@@ -5,22 +5,29 @@ hide:
 
 <div class="holo-hero">
 <h1>El Archivo del Anti-Medio</h1>
-<p>Archivo editorial. Hemeroteca y análisis sin filtros con enlaces verificables.</p>
+<p>Todo nuestro arsenal. 66 análisis publicados. Sin filtros, con enlaces verificables.</p>
 </div>
 
 <div class="holo-filters">
-  <button class="holo-filter-btn active" data-filter="all">Todos</button>
-  <button class="holo-filter-btn" data-filter="diario">Diarios</button>
-  <button class="holo-filter-btn" data-filter="dossier">Dossiers</button>
-  <button class="holo-filter-btn" data-filter="angulo">Ángulos</button>
+  <button class="holo-filter-btn active" data-filter="all">Todos (66)</button>
+  <button class="holo-filter-btn" data-filter="diario">Diarios (25)</button>
+  <button class="holo-filter-btn" data-filter="dossier">Dossiers (21)</button>
+  <button class="holo-filter-btn" data-filter="angulo">Ángulos (20)</button>
 </div>
 
 <div class="ee-adsense-slot" id="adsense-index-top" data-slot="index-top"></div>
 <div class="holo-grid" id="archivo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-24/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis del Día</div>
+    
+    <h3>Cantante iraní recibe 74 latigazos por actuar sin hijab</h3>
+    <p>En realidad se trata de un episodio de censura extrema donde un artista es castigado brutalmente por su elección de vestimenta, reforzando la idea de que la lib</p>
+    <div class="holo-meta"><span>📅 2026-11-24</span></div>
+  </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-23/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
     
-    <h3>Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en beneficio propio: «Sé que l</h3>
+    <h3>Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en beneficio…</h3>
     <p>El titular pretende hacer de la acusación una broma, sugiriendo que el acusado actúa sin costo alguno y sin seriedad</p>
     <div class="holo-meta"><span>📅 2026-11-23</span></div>
   </div>
@@ -34,69 +41,69 @@ hide:
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-21/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
     
-    <h3>2026 11 21</h3>
-    <p>Análisis del Día</p>
+    <h3>Análisis de la apertura emocional 'eufórico' en la retórica del PP y la defensa de la Moncloa</h3>
+    <p>Desglose de la técnica de apertura emocional con el adjetivo 'eufórico' en la narrativa política actual, basada en la cobertura de La Vanguardia. Se examinan datos concretos, el contexto de la disputa</p>
     <div class="holo-meta"><span>📅 2026-11-21</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-19-largo/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
-    <img src="../media/imagenes/post_2026-11-19_largo_1.png" alt="El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen:" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-19_largo_1.png" alt="El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen:" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen:</h3>
     <p>Analisis largo: El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen:</p>
     <div class="holo-meta"><span>📅 2026-11-19</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-19-dossier-v2/'" data-category="dossier">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="../media/imagenes/post_2026-11-19_dossier_1.png" alt="Dossier del día: El Encuadre: Putin, ganador de la cumbre a " loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-19_dossier_1.png" alt="Dossier del día: El Encuadre: Putin, ganador de la cumbre a " loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Dossier del día: El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen:</h3>
     <p>Dossier ejecutivo: El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen: Trump y Xi desoyen </p>
     <div class="holo-meta"><span>📅 2026-11-19</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-19-mediano-cita/'" data-category="angulo">
     <div class="holo-badge badge-guide">📄 Ángulo del Día</div>
-    <img src="../media/imagenes/post_2026-11-19_mediano_1.png" alt="La cita que lo cambia todo" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-19_mediano_1.png" alt="La cita que lo cambia todo" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>La cita que lo cambia todo</h3>
     <p>Analisis cita: La cita que lo cambia todo</p>
     <div class="holo-meta"><span>📅 2026-11-19</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-18-largo/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
-    <img src="../media/imagenes/post_2026-11-18_largo_1.png" alt="El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-18_largo_1.png" alt="El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu</h3>
     <p>Analisis largo: El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu</p>
     <div class="holo-meta"><span>📅 2026-11-18</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-18-dossier-v2/'" data-category="dossier">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="../media/imagenes/post_2026-11-18_dossier_1.png" alt="Dossier del día: El Encuadre: Sánchez le hace los Presupuest" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-18_dossier_1.png" alt="Dossier del día: El Encuadre: Sánchez le hace los Presupuest" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Dossier del día: El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu</h3>
     <p>Dossier ejecutivo: El Encuadre: Sánchez le hace los Presupuestos a Feijóo después de cuatro años si</p>
     <div class="holo-meta"><span>📅 2026-11-18</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-18-mediano-radar/'" data-category="angulo">
     <div class="holo-badge badge-guide">📄 Ángulo del Día</div>
-    <img src="../media/imagenes/post_2026-11-18_mediano_1.png" alt="Radar de medios: El Encuadre: Sánchez le hace los Presupuest" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-18_mediano_1.png" alt="Radar de medios: El Encuadre: Sánchez le hace los Presupuest" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Radar de medios: El Encuadre: Sánchez le hace los Presupuestos a Fe</h3>
     <p>Analisis radar: Radar de medios: El Encuadre: Sánchez le hace los Presupuestos a Fe</p>
     <div class="holo-meta"><span>📅 2026-11-18</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-17-largo/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
-    <img src="../media/imagenes/post_2026-11-17_largo_1.png" alt="El Encuadre: El CNI informó al Gobierno del riesgo de desbor" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-17_largo_1.png" alt="El Encuadre: El CNI informó al Gobierno del riesgo de desbor" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>El Encuadre: El CNI informó al Gobierno del riesgo de desbor</h3>
     <p>Analisis largo: El Encuadre: El CNI informó al Gobierno del riesgo de desbor</p>
     <div class="holo-meta"><span>📅 2026-11-17</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-17-dossier-v2/'" data-category="dossier">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="../media/imagenes/post_2026-11-17_dossier_1.png" alt="Dossier del día: El Encuadre: El CNI informó al Gobierno del" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-17_dossier_1.png" alt="Dossier del día: El Encuadre: El CNI informó al Gobierno del" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Dossier del día: El Encuadre: El CNI informó al Gobierno del riesgo de desbor</h3>
     <p>Dossier ejecutivo: El Encuadre: El CNI informó al Gobierno del riesgo de desbordamiento en Canarias</p>
     <div class="holo-meta"><span>📅 2026-11-17</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-17-mediano-tutorial/'" data-category="angulo">
     <div class="holo-badge badge-guide">📄 Ángulo del Día</div>
-    <img src="../media/imagenes/post_2026-11-17_mediano_1.png" alt="Cómo detectar la técnica: apelación al miedo (alarmismo)" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-17_mediano_1.png" alt="Cómo detectar la técnica: apelación al miedo (alarmismo)" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Cómo detectar la técnica: apelación al miedo (alarmismo)</h3>
     <p>Analisis tutorial: Cómo detectar la técnica: apelación al miedo (alarmismo)</p>
     <div class="holo-meta"><span>📅 2026-11-17</span></div>
@@ -124,42 +131,42 @@ hide:
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-15-largo/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
-    <img src="../media/imagenes/post_2026-11-15_largo_1.png" alt="El Encuadre: SpaceX logra que Starship regrese a la platafor" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-15_largo_1.png" alt="El Encuadre: SpaceX logra que Starship regrese a la platafor" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>El Encuadre: SpaceX logra que Starship regrese a la platafor</h3>
     <p>Analisis largo: El Encuadre: SpaceX logra que Starship regrese a la platafor</p>
     <div class="holo-meta"><span>📅 2026-11-15</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-15-dossier-v2/'" data-category="dossier">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="../media/imagenes/post_2026-11-15_dossier_1.png" alt="Dossier del día: El Encuadre: SpaceX logra que Starship regr" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-15_dossier_1.png" alt="Dossier del día: El Encuadre: SpaceX logra que Starship regr" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Dossier del día: El Encuadre: SpaceX logra que Starship regrese a la platafor</h3>
     <p>Dossier ejecutivo: El Encuadre: SpaceX logra que Starship regrese a la plataforma tras casi un día </p>
     <div class="holo-meta"><span>📅 2026-11-15</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-15-mediano-medio_crudo/'" data-category="angulo">
     <div class="holo-badge badge-guide">📄 Ángulo del Día</div>
-    <img src="../media/imagenes/post_2026-11-15_mediano_1.png" alt="Libertad Digital: la tecnica del descalificación mediante et" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-15_mediano_1.png" alt="Libertad Digital: la tecnica del descalificación mediante et" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Libertad Digital: la tecnica del descalificación mediante etiquetado negativo y contraste polarizador</h3>
     <p>Analisis medio_crudo: Libertad Digital: la tecnica del descalificación mediante etiquetado negativo y contraste polarizado</p>
     <div class="holo-meta"><span>📅 2026-11-15</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-14-largo/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
-    <img src="../media/imagenes/post_2026-11-14_largo_1.png" alt="El Encuadre: Estados Unidos suspende el tráfico aéreo tras f" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-14_largo_1.png" alt="El Encuadre: Estados Unidos suspende el tráfico aéreo tras f" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>El Encuadre: Estados Unidos suspende el tráfico aéreo tras f</h3>
     <p>Analisis largo: El Encuadre: Estados Unidos suspende el tráfico aéreo tras f</p>
     <div class="holo-meta"><span>📅 2026-11-14</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-14-dossier-v2/'" data-category="dossier">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="../media/imagenes/post_2026-11-14_dossier_1.png" alt="Dossier del día: El Encuadre: Estados Unidos suspende el trá" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-14_dossier_1.png" alt="Dossier del día: El Encuadre: Estados Unidos suspende el trá" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Dossier del día: El Encuadre: Estados Unidos suspende el tráfico aéreo tras f</h3>
     <p>Dossier ejecutivo: El Encuadre: Estados Unidos suspende el tráfico aéreo tras fallos en los sistema</p>
     <div class="holo-meta"><span>📅 2026-11-14</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-14-mediano-dossier/'" data-category="angulo">
     <div class="holo-badge badge-guide">📄 Ángulo del Día</div>
-    <img src="../media/imagenes/post_2026-11-14_mediano_1.png" alt="Dossier completo del dia" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="/media/imagenes/post_2026-11-14_mediano_1.png" alt="Dossier completo del dia" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Dossier completo del dia</h3>
     <p>Analisis dossier: Dossier completo del dia</p>
     <div class="holo-meta"><span>📅 2026-11-14</span></div>

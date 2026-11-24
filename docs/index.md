@@ -5,67 +5,106 @@ hide:
 ---
 
 <div class="ee-home">
-  <section class="ee-hero-dia">
-    <div class="ee-hero-badge">📌 EDICIÓN 2026-11-23 · EL ENCUADRE</div>
-    <h1 class="ee-hero-titulo"><a href="/analisis/2026-11-23/angulo/">El ángulo: Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en…</a></h1>
-    <p class="ee-hero-desc">Análisis, dossier, ángulo y cobertura de noticias de la jornada del 23 de noviembre de 2026.</p>
-    <a href="/analisis/2026-11-23/angulo/" class="btn-hero">Leer análisis completo →</a>
-  </section>
-  <section class="ee-ticker">
-    <div class="ee-ticker-titulo">⚡ CLAVES DEL 23 DE NOVIEMBRE</div>
-    <ul class="ee-ticker-lista">
-      <li><a href="/analisis/2026-11-23/dossier/"><span class="ee-ticker-num">01</span> Dossier: Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en…</a></li>
-      <li><a href="/analisis/2026-11-23/"><span class="ee-ticker-num">02</span> Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en beneficio…</a></li>
-      <li><a href="/analisis/2026-11-23/pildora/"><span class="ee-ticker-num">03</span> Píldora: Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en…</a></li>
-      <li><a href="/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las/"><span class="ee-ticker-num">04</span> Sánchez agita el populismo económico y carga contra las multinacionales, el Ibex y los…</a></li>
-      <li><a href="/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de/"><span class="ee-ticker-num">05</span> Los diálogos climáticos de la ONU más extensos de la historia terminan sin acuerdo, revelando profundas divisiones</a></li>
-    </ul>
-  </section>
-  <section class="ee-main-layout">
-    <div class="ee-main-col">
-      <h2 class="ee-section-title">Publicaciones destacadas (2026-11-23)</h2>
-      <div class="holo-grid">
-        <a class="holo-card" href="/analisis/2026-11-23/angulo/" style="display:block;text-decoration:none;padding:1rem;border:1px solid rgba(0,240,255,0.22);border-radius:10px;background:rgba(10,10,18,0.85);">
-          <div class="holo-badge" style="font-size:0.75rem;opacity:0.85;">2026-11-23</div>
-          <h3 style="margin:0.4rem 0 0;font-size:1.05rem;">El ángulo: Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en…</h3>
-        </a>
-        <a class="holo-card" href="/analisis/2026-11-23/dossier/" style="display:block;text-decoration:none;padding:1rem;border:1px solid rgba(0,240,255,0.22);border-radius:10px;background:rgba(10,10,18,0.85);">
-          <div class="holo-badge" style="font-size:0.75rem;opacity:0.85;">2026-11-23</div>
-          <h3 style="margin:0.4rem 0 0;font-size:1.05rem;">Dossier: Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en…</h3>
-        </a>
-        <a class="holo-card" href="/analisis/2026-11-23/" style="display:block;text-decoration:none;padding:1rem;border:1px solid rgba(0,240,255,0.22);border-radius:10px;background:rgba(10,10,18,0.85);">
-          <div class="holo-badge" style="font-size:0.75rem;opacity:0.85;">2026-11-23</div>
-          <h3 style="margin:0.4rem 0 0;font-size:1.05rem;">Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en beneficio…</h3>
-        </a>
-        <a class="holo-card" href="/analisis/2026-11-23/pildora/" style="display:block;text-decoration:none;padding:1rem;border:1px solid rgba(0,240,255,0.22);border-radius:10px;background:rgba(10,10,18,0.85);">
-          <div class="holo-badge" style="font-size:0.75rem;opacity:0.85;">2026-11-23</div>
-          <h3 style="margin:0.4rem 0 0;font-size:1.05rem;">Píldora: Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en…</h3>
-        </a>
-        <a class="holo-card" href="/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las/" style="display:block;text-decoration:none;padding:1rem;border:1px solid rgba(0,240,255,0.22);border-radius:10px;background:rgba(10,10,18,0.85);">
-          <div class="holo-badge" style="font-size:0.75rem;opacity:0.85;">2026-11-23</div>
-          <h3 style="margin:0.4rem 0 0;font-size:1.05rem;">Sánchez agita el populismo económico y carga contra las multinacionales, el Ibex y los…</h3>
-        </a>
-        <a class="holo-card" href="/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de/" style="display:block;text-decoration:none;padding:1rem;border:1px solid rgba(0,240,255,0.22);border-radius:10px;background:rgba(10,10,18,0.85);">
-          <div class="holo-badge" style="font-size:0.75rem;opacity:0.85;">2026-11-23</div>
-          <h3 style="margin:0.4rem 0 0;font-size:1.05rem;">Los diálogos climáticos de la ONU más extensos de la historia terminan sin acuerdo, revelando profundas divisiones</h3>
-        </a>
-        <a class="holo-card" href="/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien/" style="display:block;text-decoration:none;padding:1rem;border:1px solid rgba(0,240,255,0.22);border-radius:10px;background:rgba(10,10,18,0.85);">
-          <div class="holo-badge" style="font-size:0.75rem;opacity:0.85;">2026-11-23</div>
-          <h3 style="margin:0.4rem 0 0;font-size:1.05rem;">Enorme planeta, diminuta estrella: el descubrimiento cuestiona la visión tradicional de cómo se forman los gigantes.</h3>
-        </a>
-        <a class="holo-card" href="/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac/" style="display:block;text-decoration:none;padding:1rem;border:1px solid rgba(0,240,255,0.22);border-radius:10px;background:rgba(10,10,18,0.85);">
-          <div class="holo-badge" style="font-size:0.75rem;opacity:0.85;">2026-11-23</div>
-          <h3 style="margin:0.4rem 0 0;font-size:1.05rem;">Rulo y la Contrabanda anuncia su disco más íntimo: «Nace de la máxima devastación»</h3>
-        </a>
-        <a class="holo-card" href="/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc/" style="display:block;text-decoration:none;padding:1rem;border:1px solid rgba(0,240,255,0.22);border-radius:10px;background:rgba(10,10,18,0.85);">
-          <div class="holo-badge" style="font-size:0.75rem;opacity:0.85;">2026-11-23</div>
-          <h3 style="margin:0.4rem 0 0;font-size:1.05rem;">COP31: ¿Qué viene después del colapso de las negociaciones climáticas de la ONU?</h3>
-        </a>
-        <a class="holo-card" href="/noticias/2026-11-23/006-noticia/" style="display:block;text-decoration:none;padding:1rem;border:1px solid rgba(0,240,255,0.22);border-radius:10px;background:rgba(10,10,18,0.85);">
-          <div class="holo-badge" style="font-size:0.75rem;opacity:0.85;">2026-11-23</div>
-          <h3 style="margin:0.4rem 0 0;font-size:1.05rem;"></h3>
-        </a>
-      </div>
+
+<section class="ee-hero-dia">
+  <div class="ee-hero-badge">📌 HOY EN EL ENCUADRE</div>
+  
+  <h1 class="ee-hero-titulo"><a href="/analisis/2026-11-24/">Cantante iraní recibe 74 latigazos por actuar sin hijab</a></h1>
+  <p class="ee-hero-desc">En realidad se trata de un episodio de censura extrema donde un artista es castigado brutalmente por su elección de vestimenta, reforzando la idea de que la lib</p>
+  <a href="/analisis/2026-11-24/" class="btn-hero">Leer análisis completo →</a>
+</section>
+
+<div class="ee-adsense-slot" id="adsense-home-top" data-slot="home-top"></div>
+<section class="ee-ticker">
+  <div class="ee-ticker-titulo">⚡ ÚLTIMA HORA</div>
+  <ul class="ee-ticker-lista">
+<li><a href="/analisis/2026-11-23/"><span class="ee-ticker-num">01</span> Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en benefic</a></li>
+<li><a href="/analisis/2026-11-22/"><span class="ee-ticker-num">02</span> Pedro Sánchez vuelve a Andalucía para activar el voto tras la polémica del baile</a></li>
+<li><a href="/analisis/2026-11-21/"><span class="ee-ticker-num">03</span> Análisis de la apertura emocional 'eufórico' en la retórica del PP y la defensa </a></li>
+<li><a href="/analisis/2026-11-19-largo/"><span class="ee-ticker-num">04</span> El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen:</a></li>
+<li><a href="/analisis/2026-11-19-dossier-v2/"><span class="ee-ticker-num">05</span> Dossier del día: El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen:</a></li>
+  </ul>
+</section>
+
+<div class="ee-main-layout">
+
+  <div class="ee-main-col">
+    <h2 class="ee-section-title">Más análisis</h2>
+    <div class="holo-grid">
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-19-mediano-cita/'" data-category="angulo">
+    <div class="holo-badge badge-guide">📄 Ángulo del Día</div>
+    <img src="/media/imagenes/post_2026-11-19_mediano_1.png" alt="La cita que lo cambia todo" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>La cita que lo cambia todo</h3>
+    <p>Analisis cita: La cita que lo cambia todo</p>
+    <div class="holo-meta"><span>📅 2026-11-19</span></div>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-18-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis del Día</div>
+    <img src="/media/imagenes/post_2026-11-18_largo_1.png" alt="El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu</h3>
+    <p>Analisis largo: El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu</p>
+    <div class="holo-meta"><span>📅 2026-11-18</span></div>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-18-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    <img src="/media/imagenes/post_2026-11-18_dossier_1.png" alt="Dossier del día: El Encuadre: Sánchez le hace los Presupuest" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Dossier del día: El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu</h3>
+    <p>Dossier ejecutivo: El Encuadre: Sánchez le hace los Presupuestos a Feijóo después de cuatro años si</p>
+    <div class="holo-meta"><span>📅 2026-11-18</span></div>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-18-mediano-radar/'" data-category="angulo">
+    <div class="holo-badge badge-guide">📄 Ángulo del Día</div>
+    <img src="/media/imagenes/post_2026-11-18_mediano_1.png" alt="Radar de medios: El Encuadre: Sánchez le hace los Presupuest" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Radar de medios: El Encuadre: Sánchez le hace los Presupuestos a Fe</h3>
+    <p>Analisis radar: Radar de medios: El Encuadre: Sánchez le hace los Presupuestos a Fe</p>
+    <div class="holo-meta"><span>📅 2026-11-18</span></div>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-17-largo/'" data-category="diario">
+    <div class="holo-badge badge-new">🔥 Análisis del Día</div>
+    <img src="/media/imagenes/post_2026-11-17_largo_1.png" alt="El Encuadre: El CNI informó al Gobierno del riesgo de desbor" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>El Encuadre: El CNI informó al Gobierno del riesgo de desbor</h3>
+    <p>Analisis largo: El Encuadre: El CNI informó al Gobierno del riesgo de desbor</p>
+    <div class="holo-meta"><span>📅 2026-11-17</span></div>
+  </div>
+  <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-17-dossier-v2/'" data-category="dossier">
+    <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
+    <img src="/media/imagenes/post_2026-11-17_dossier_1.png" alt="Dossier del día: El Encuadre: El CNI informó al Gobierno del" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <h3>Dossier del día: El Encuadre: El CNI informó al Gobierno del riesgo de desbor</h3>
+    <p>Dossier ejecutivo: El Encuadre: El CNI informó al Gobierno del riesgo de desbordamiento en Canarias</p>
+    <div class="holo-meta"><span>📅 2026-11-17</span></div>
+  </div>
     </div>
-  </section>
+    <div class="ee-adsense-slot" id="adsense-home-bottom" data-slot="home-bottom"></div>
+    <p style="text-align:center;margin-top:2em;">
+      <a href="/analisis/" class="btn-hero">Ver los 66 análisis →</a>
+    </p>
+  </div>
+
+  <aside class="ee-sidebar">
+    <div class="ee-side-card">
+      <h3>📡 Síguenos</h3>
+      <p>Análisis diario en Telegram sin filtros.</p>
+      <a href="https://t.me/somoselencuadre" class="btn-hero" style="display:block;text-align:center;">Unirse al canal</a>
+    </div>
+
+    <div class="ee-side-card">
+      <h3>🔥 Últimos</h3>
+      <ul class="ee-side-list">
+<li><a href="/analisis/2026-11-24/">Cantante iraní recibe 74 latigazos por actuar sin hijab</a> <span class="ee-side-date">2026-11-24</span></li>
+<li><a href="/analisis/2026-11-23/">Felipe González tira de ironía para acusar a Bono de apoyar </a> <span class="ee-side-date">2026-11-23</span></li>
+<li><a href="/analisis/2026-11-22/">Pedro Sánchez vuelve a Andalucía para activar el voto tras l</a> <span class="ee-side-date">2026-11-22</span></li>
+<li><a href="/analisis/2026-11-21/">Análisis de la apertura emocional 'eufórico' en la retórica </a> <span class="ee-side-date">2026-11-21</span></li>
+<li><a href="/analisis/2026-11-19-largo/">El Encuadre: Putin, ganador de la cumbre a tres de Shenzhen:</a> <span class="ee-side-date">2026-11-19</span></li>
+      </ul>
+    </div>
+
+    <div class="ee-side-card ee-side-stats">
+      <h3>📊 El Encuadre en cifras</h3>
+      <p><strong>66</strong> análisis publicados</p>
+      <p><strong>2026-11-24</strong> último publicado</p>
+    </div>
+  </aside>
+
+</div>
+
 </div>

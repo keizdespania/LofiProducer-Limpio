@@ -8,6 +8,19 @@ fuente_url: https://elencuadre.pages.dev/analisis/2026-11-23/
 medio: OkDiario
 ---
 
+<!-- EE_ENRICHED_START -->
+<div class="ee-post">
+<div class="ee-breadcrumbs">
+<a href="/">Inicio</a><span>›</span><a href="/analisis/">Análisis</a><span>›</span>2026-11-23
+</div>
+<div class="ee-post-meta">
+<span class="holo-badge badge-new">🔥 Análisis del Día</span>
+<strong>Publicado:</strong> 2026-11-23 &nbsp;·&nbsp; <strong>Tipo:</strong> Análisis del Día
+</div>
+<div class="ee-post-layout">
+<div class="ee-post-content">
+
+<div class="ee-adsense-slot"></div>
 **Desmontaje del encuadre**
 
 | Elemento del titular | Qué se da por hecho | Por qué es una falacia retórica | Cómo se usa la ironía para desviar |
@@ -45,3 +58,15 @@ El titular de OkDiario utiliza la ironía como herramienta de encuadre: transfor
 
 
 ![analisis clave 3](../../media/imagenes/post_2026-11-23_analisis_3.png)
+
+</div>
+
+</div>
+<div class="ee-share">
+<a href="https://twitter.com/intent/tweet?text=Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en beneficio…&url=https://elencuadre.pages.dev/analisis/2026-11-23/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
+<a href="https://threads.net/intent/post?text=Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en beneficio…+https://elencuadre.pages.dev/analisis/2026-11-23/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
+<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-23/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
+<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-23/&text=Felipe González tira de ironía para acusar a Bono de apoyar a Sánchez en beneficio…" target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
+</div>
+</div>
+<!-- EE_ENRICHED_END -->

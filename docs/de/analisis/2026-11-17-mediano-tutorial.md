@@ -11,101 +11,107 @@ tags:
 ---
 
 
-> 🌐 [Original auf Spanisch lesen](../../de/analisis/2026-11-17-mediano-tutorial.md)
+> 🌐 [Original auf Spanisch lesen](/analisis/2026-11-17-mediano-tutorial/)
 
-<!-- EE_ENRICHED_START -->
-<div class="ee-post">
-<div class="ee-breadcrumbs">
-<a href="/">Startseite</a><span>›</span><a href="/analisis/">Analyse</a><span>›</span>17.11.2026
-</div>
-<div class="ee-post-meta">
-<span class="holo-badge badge-guide">📄 Blickwinkel des Tages</span>
-<strong>Veröffentlicht:</strong> 17.11.2026 &nbsp;·&nbsp; <strong>Typ:</strong> Blickwinkel des Tages
-</div>
-<div class="ee-post-layout">
-<div class="ee-post-content">
+@@EEPROT0@@
+@@EEPROT1@@
+@@EEPROT2@@
+@@EEPROT3@@Inicio@@EEPROT4@@@@EEPROT5@@›@@EEPROT6@@@@EEPROT7@@Análisis@@EEPROT8@@@@EEPROT9@@›@@EEPROT10@@2026-11-17
+@@EEPROT11@@
+@@EEPROT12@@
+@@EEPROT13@@📄 Ángulo del Día@@EEPROT14@@
+@@EEPROT15@@Publicado:@@EEPROT16@@ 2026-11-17 &nbsp;·&nbsp; @@EEPROT17@@Tipo:@@EEPROT18@@ Ángulo del Día
+@@EEPROT19@@
+@@EEPROT20@@
+@@EEPROT21@@
 
-<div class="ee-adsense-slot"></div>
-<figure style="margin:1.5em 0;"><img src="../../media/imagenes/post_2026-11-17_mediano_1.png" alt="Cómo detectar la técnica: apelación al miedo (alarmismo)" width="832" height="480" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;" loading="eager" fetchpriority="high" decoding="async"><figcaption style="font-size:0.85em;color:#888;text-align:center;margin-top:0.5em;font-style:italic;">Wie man die Technik erkennt: Appell an die Angst (Alarmismus)</figcaption></figure>
-<h1 style="font-size: 2.5em; margin-bottom: 10px; color: #8B0000; text-transform: uppercase; letter-spacing: 2px;">Die finstere Kunst, die Kuh zu verjagen: Ein Leitfaden, um nicht manipuliert zu werden</h1>
+@@EEPROT22@@@@EEPROT23@@
+@@EEPROT24@@@@EEPROT25@@@@EEPROT26@@Cómo detectar la técnica: apelación al miedo (alarmismo)@@EEPROT27@@@@EEPROT28@@
+@@EEPROT29@@El Arte Siniestro de Asustar al Vaca: Guía para No Ser Manipulado@@EEPROT30@@
 
-    <p style="font-style: italic; font-size: 1.1em; color: #555; border-left: 4px solid #8B0000; padding-left: 15px; margin-bottom: 30px;">
-        Willkommen zur Party der Panik. Hier, wo die Logik feiern geht und die Angst sich durch das Fenster schleicht, um sich einen Drink der Verhöhnung einzuschenken. Wir sind nicht hier, um zu lernen, wie man Angst hat, sondern um zu erkennen, wer diese Angst wie kühles Wasser in der Wüste verkauft.
-    </p>
+    @@EEPROT31@@
+        Bienvenidos a la fiesta del pánico. Aquí, donde la lógica se va de juerga y el miedo se cuela por la ventana para servirse una copa de burla. No estamos aquí para aprender a tener miedo, sino para aprender a identificar a quien vende ese miedo como si fuera agua fresca en el desierto.
+    @@EEPROT32@@
 
-    <h2 style="font-size: 1.8em; color: #222; border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 30px;">1. Was soll dieser Mist? Definition eines Taschenspielertricks</h2>
-<figure style="margin:1.5em 0;"><img src="../../media/imagenes/post_2026-11-17_mediano_2.png" alt="1. ¿Qué es esta porquería? Definición de un truco de prestidigitador" width="832" height="480" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;" loading="lazy" decoding="async"><figcaption style="font-size:0.85em;color:#888;text-align:center;margin-top:0.5em;font-style:italic;">1. Was soll dieser Mist? Definition eines Taschenspielertricks</figcaption></figure>
+    @@EEPROT33@@1. ¿Qué es esta porquería? Definición de un truco de prestidigitador@@EEPROT34@@
+@@EEPROT35@@@@EEPROT36@@@@EEPROT37@@1. ¿Qué es esta porquería? Definición de un truco de prestidigitador@@EEPROT38@@@@EEPROT39@@
 
-    <p>
-        Nennen wir es beim richtigen Namen: der Appell an die Angst, oder wenn Sie einen eleganteren und weniger schmutzigen Begriff bevorzugen: Alarmismus. Das ist kein Argument. Das sind keine Daten. Das ist ein Schreien. Es ist das rhetorische Äquivalent dazu, einen Ziegelstein in ein Kaffeekränzchen zu werfen, um zu sehen, wer zuerst wegrennt. Es besteht darin, Beweise durch Bedrohung und Analyse durch Hysterie zu ersetzen.
-    </p>
-    <p>
-        In einer Welt, in der Informationen mit Lichtgeschwindigkeit reisen, während das kritische Denken hinkt, ist diese Technik zum trojanischen Pferd der Demagogie geworden. Sie sagt dir nicht „Das ist schlecht“; sie sagt dir „Das wird dich zerstören“. Der Unterschied ist gewaltig. Ersteres ist ein Werturteil, das oft diskutierbar ist; letzteres ist ein Katastrophenversprechen, das direkt deinen Überlebensinstinkt anspricht – dieses primitive Reptil im Nacken, das lieber rennt als nachzudenken.
-    </p>
-    <p>
-        Es ist ein alter Trick, so alt wie die Höhle, in der jemand „Löwe!“ schrie, während er einen Schatten an die Wand warf. Doch heute, mit digitalen Megaphonen und Algorithmen, die die Panik bis zur Raserei verstärken, hat er seine Mechanik verfeinert. Man braucht keinen echten Löwen mehr; mit einer aus dem Zusammenhang gerissenen Statistik und einer zitternden Stimme in einem dreiminütigen Video hält man die halbe Bevölkerung in Atem, bereit, jedem noch so absurden Befehl zu gehorchen.
-    </p><h2 style="font-size: 1.8em; color: #222; border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 30px;">2. Wie wird es benutzt? Die Anatomie der organisierten Panik</h2>
-    <p>
-        Das Handbuch des Panikmachers hat nicht viele Einträge, aber es wiederholt sie mit der Ausdauer eines mit Amphetaminen vollgepumpten Papageien. Erstens: Wählen Sie ein echtes Problem. Erfinden Sie das Problem nicht, das ist zu schwierig und zu leicht zu widerlegen. Nehmen Sie etwas, das den Leuten ohnehin schon Sorgen bereitet: das Klima, die Wirtschaft, die Gesundheit, die Sicherheit.
-    </p>
-    <p>
-        Zweitens: Blasen Sie die Dimensionen auf. Wenn das Risiko bei 1 % liegt, sprechen Sie von 99 %. Wenn es ein lokales Problem ist, stellen Sie es als globale Apokalypse dar. Verwenden Sie tonnenschwere Adjektiv: „unmittelbar bevorstehend“, „irreversibel“, „katastrophal“, „beispiellos“. Jedes Wort ist ein Tropfen Gift, der in die rationale Haut des Zuhörers eindringt.
-    </p>
-    <p>
-        Drittens: Eliminieren Sie Nuancen. Die Realität ist grau, voller Nuancen und Wahrscheinlichkeiten. Panikmache ist schwarz-weiß. Entweder läuft alles gut, oder alles bricht zusammen. Es gibt keinen Mittelweg. Es gibt keine schrittweisen Lösungen. Es gibt nur das sofortige, drastische Handeln – das natürlich von demjenigen angeleitet wird, der am lautesten schreit.
-    </p>
-    <p>
-        Viertens: Erschaffen Sie einen Feind oder eine einzige Ursache. Die Angst braucht einen Sündenbock. Das kann ein Unternehmen, eine politische Partei, eine Gruppe von Einwanderern oder eine neue Technologie sein. Durch die Vereinfachung der Schuldfrage wird auch die Lösung vereinfacht: „Wenn wir X beseitigen, verschwindet die Angst.“ Das ist die Logik eines Fünfjährigen, aber bei verängstigten Massen funktioniert sie hervorragend.
-    </p>
+    @@EEPROT40@@
+        Llamémoslo por su nombre real: la apelación al miedo, o si prefieren un término más elegante y menos sucio, el alarmismo. No es un argumento. No es un dato. Es un grito. Es el equivalente retórico de tirar un ladrillo a una reunión de señoras para ver quién se peina primero. Consiste en sustituir la evidencia por la amenaza, el análisis por la histeria.
+    @@EEPROT41@@
+    @@EEPROT42@@
+        En un mundo donde la información viaja a la velocidad de la luz pero el pensamiento crítico camina cojeando, esta técnica se ha convertido en el caballo de Troya de la demagogia. No te dice "esto es malo"; te dice "esto va a destruirte". La diferencia es abismal. El primero es un juicio de valor, a menudo discutible; el segundo es una promesa de catástrofe que apela directamente a tu instinto de supervivencia, ese primitivo reptiliano que llevas en la nuca y que prefiere correr antes de pensar.
+    @@EEPROT43@@
+    @@EEPROT44@@
+        Es un truco viejo, tan viejo como la caverna donde alguien gritó "¡León!" mientras enseñaba una sombra en la pared. Pero hoy, con megáfonos digitales y algoritmos que amplifican el pánico hasta la locura, ha refinado su mecánica. Ya no necesitas un león real; con una estadística mal contextualizada y una voz temblorosa en un vídeo de tres minutos, tienes a media población en vilo, lista para obedecer cualquier orden, por más absurda que sea.
+    @@EEPROT45@@
 
-    <h2 style="font-size: 1.8em; color: #222; border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 30px;">3. Echtes Beispiel: Der Zirkus der Desinformation in Echtzeit</h2>
-    <p>
-        Man muss keine Gespenster im Schrank suchen. Es reicht ein Blick auf die aktuelle politische und mediale Bühne. Denken wir daran, wie die Narrative gesteuert werden, wenn es eine Wohnungsnot gibt. Anstatt Spekulationen, unerschlossene öffentliche Grundstücke oder mangelnde Investitionen in bezahlbaren Wohnraum zu analysieren, hören wir bestimmte Stimmen rufen, dass „das System kollabiert“ und dass „normale Bürger von einer verborgenen Elite aus ihren Häusern vertrieben werden“.
-    </p>
-    <p>
-        Hier gibt es keine Daten, hier gibt es Dramaturgie. Die Angst, das Zuhause zu verlieren, wird genutzt, um extreme Maßnahmen zu rechtfertigen oder die Aufmerksamkeit von den strukturellen Ursachen abzulenken. Die Situation wird als Belagerung dargestellt, bei der der Bürger ein Soldat in einem Schützengraben gegen eine unsichtbare Armee ist. Das ist eine mächtige, aber falsche Metapher. Es ist kein Konflikt, es ist ein verzerrter Markt. Aber „Konflikt“ erzeugt mehr Angst als „Markt“, und Angst verkauft sich besser als Wirtschaft.
-    </p>
-    <p>
-        Ein weiteres klassisches Beispiel: die Verwaltung des öffentlichen Gesundheitswesens. Wenn ein Krankenhaus Wartelisten hat, spricht die rationale Version von Personalmangel, mangelnder Infrastruktur und schlechter Planung. Die Panikmache-Version spricht von „Vernachlässigung“, von „kaputten Systemen“ und davon, dass „die nächste Person, die auf einer Trage stirbt, Sie sein werden“. Selbst wenn wir explizite Begriffe über den Verlust von Menschenleben vermeiden, ist die Implikation klar: Man verkauft Ihnen die Idee, dass der Staat Ihrem Wohlbefinden den Krieg erklärt hat. Das ist eine grausame Manipulation, die die menschliche Schwachstelle ausnutzt, um Geduld in blinde Wut zu verwandeln.
-    </p><h2 style="font-size: 1.8em; color: 222; border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 30px;">4. Wie man es erkennt? Setzen Sie die Brille des Zweifels auf</h2>
-    <p>
-        Alarmismus zu erkennen erfordert eine Dosis Zynismus und eine Prise Geduld. Fragen Sie sich zuerst: Ist das eine Tatsache oder eine Projektion? Tatsachen sind messbar. Projektionen sind albtraumhafte Träume, die als Wissenschaft getarnt sind. Wenn es keine Studie, keine harten Daten, keine überprüfbare Quelle gibt, ist das Schall und Rauch.
-    </p>
-    <p>
-        Zweitens: Betrachten Sie die Quelle. Wer spricht da? Geht es um Information oder um Verkauf? Um Klicks zu generieren? Um Wahlen zu gewinnen? Eigeninteresse ist der beste Detektiv für Desinformation. Wenn jemand Geld, Macht oder Aufmerksamkeit damit gewinnt, dass er Ihnen Angst einjagt, sinkt seine Glaubwürdigkeit in den Keller.
-    </p>
-    <p>
-        Drittens: Suchen Sie nach Zwischentönen. Wenn ein Argument zu einfach ist, ist es wahrscheinlich falsch. Die Realität ist komplex. Wenn die vorgeschlagene Lösung einzigartig, drastisch und dringend ist, ist sie fast sicher darauf ausgelegt, Debatte und Beratung zu umgehen.
-    </p>
-    <p>
-        Viertens: Achten Sie auf die Sprache. Gibt es viele Ausrufezeichen? Gibt es Superlative? Ist von „noch nie dagewesen“ die Rede? Das ist eine rote Flagge. Die Geschichte ist voll von Dingen, die „noch nie dagewesen“ waren, und meistens wurden sie mit Zeit gelöst, nicht mit Panik.
-    </p>
+    @@EEPROT46@@2. ¿Cómo se usa? La anatomía del pánico organizado@@EEPROT47@@
+    @@EEPROT48@@
+        El manual del alarmista no tiene muchas entradas, pero las repite con la persistencia de un loro drogado con anfetaminas. Primero, selecciona un problema real. No invente el problema, eso es demasiado difícil y fácil de desmontar. Tome algo que ya preocupa a la gente: el clima, la economía, la salud, la seguridad.
+    @@EEPROT49@@
+    @@EEPROT50@@
+        Segundo, infle las proporciones. Si el riesgo es del 1%, hable del 99%. Si es un problema local, preséntelo como un apocalipsis global. Use adjetivos que pesen toneladas: "inminente", "irreversible", "catastrófico", "sin precedentes". Cada palabra es una gota de veneno que penetra en la piel racional del oyente.
+    @@EEPROT51@@
+    @@EEPROT52@@
+        Tercero, elimine matices. La realidad es gris, llena de matices y probabilidades. El alarmismo es blanco y negro. O todo va bien, o todo se va a caer a pedazos. No hay término medio. No hay soluciones graduales. Solo hay la acción inmediata, drástica y, por supuesto, dirigida por quien está gritando más fuerte.
+    @@EEPROT53@@
+    @@EEPROT54@@
+        Cuarto, cree un enemigo o una causa única. El miedo necesita un chivo expiatorio. Puede ser una corporación, un partido político, un grupo de inmigrantes, una tecnología nueva. Al simplificar la culpa, se simplifica también la solución: "Si eliminamos a X, el miedo desaparece". Es una lógica de niño de cinco años, pero funciona de maravilla en masas asustadas.
+    @@EEPROT55@@
 
-    <figure style="margin:1.5em 0;"><img src="../../media/imagenes/post_2026-11-17_mediano_3.png" alt="5. ¿Cómo combatirlo? La vacuna de la razón" width="832" height="480" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;" loading="lazy" decoding="async"><figcaption style="font-size:0.85em;color:#888;text-align:center;margin-top:0.5em;font-style:italic;">5. Wie man es bekämpft? Die Impfung der Vernunft</figcaption></figure>
-<h2 style="font-size: 1.8em; color: #222; border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 30px;">5. Wie man es bekämpft? Die Impfung der Vernunft</h2>
-    <p>
-        Alarmismus zu bekämpfen ist keine leichte Aufgabe. Angst macht süchtig. Aber es gibt ein Heilmittel: qualitative, langsame und langweilige Information. Lesen Sie Primärquellen. Verlassen Sie sich nicht auf Zusammenfassungen in sozialen Netzwerken. Gehen Sie zum Ursprung. Wenn ein sensationalistisches Medium sagt „X ist das Ende der Welt“, suchen Sie danach, was das offizielle technische Organ dazu sagt. Oft ist der Unterschied gewaltig.
-    </p>
-    <p>
-        Zweitens: Bilden Sie Ihr Umfeld. Sprechen Sie ruhig. Schreien Sie nicht. Der Alarmist schreit; Sie sollten flüstern. Erklären Sie die Nuancen. Zeigen Sie die Daten. Wenn Sie das nicht können, drängen Sie nicht weiter. Man kann mit niemandem vernünftig reden, der im Panikmodus ist.
-    </p>
-    <p>
-        Drittens: Üben Sie emotionale Resilienz. Akzeptieren Sie, dass Sie nicht alles kontrollieren können. Akzeptieren Sie, dass es Risiken gibt, aber dass diese nicht zwangsläufig unmittelbar oder katastrophal sind. Lernen Sie, zwischen echtem und wahrgenommenem Risiko zu unterscheiden. Die meisten Dinge, vor denen wir uns heute fürchten, sind statistisch gesehen weniger gefährlich als Autofahren oder Rauchen.
-    </p>
-    <p>
-        Schließlich: Wählen Sie mit dem Kopf, nicht mit dem verängstigten Herzen. Fordern Sie von Ihren politischen Vertretern, dass sie klar, mit Daten und ohne Drama sprechen. Wenn Sie nach Angst fragen, werden sie Ihnen Angst geben. Wenn Sie nach Wahrheit fragen, geben sie Ihnen vielleicht eine akzeptablere Version der Realität.
-    </p>
+    @@EEPROT56@@3. Ejemplo real: El circo de la desinformación en tiempo real@@EEPROT57@@
+    @@EEPROT58@@
+        No hace falta ir a buscar fantasmas en el armario. Basta con mirar hacia el escenario político y mediático actual. Pensemos en cómo se gestiona la narrativa cuando hay una crisis de vivienda. En lugar de analizar la especulación, los suelos públicos no urbanizados, o la falta de inversión en alquiler asequible, escuchamos a voces ciertas gritar que "el sistema está colapsando" y que "los ciudadanos comunes están siendo expulsados de sus hogares por una élita oculta".
+    @@EEPROT59@@
+    @@EEPROT60@@
+        Aquí no hay datos, hay dramaturgia. Se usa el miedo a perder el hogar para justificar medidas extremas o para desviar la atención de las causas estructurales. Se presenta la situación como un asedio, donde el ciudadano es un soldado en una trinchera contra un ejército invisible. Es una metáfora poderosa, pero falsa. No es una conflicto, es un mercado distorsionado. Pero "conflicto" genera más miedo que "mercado", y el miedo vende más que la economía.
+    @@EEPROT61@@
+    @@EEPROT62@@
+        Otro ejemplo clásico: la gestión de la sanidad pública. Cuando un hospital tiene listas de espera, la versión racional habla de falta de personal, de infraestructura, de planificación. La versión alarmista habla de "abandono", de "sistemas rotos", de que "la próxima persona que muera en una camilla será usted". Aunque evitemos términos explícitos sobre la pérdida de vida, la implicación es clara: le están vendiendo la idea de que el Estado le ha declarado el conflicto a su bienestar. Es una manipulación cruel que explota la vulnerabilidad humana para convertir la paciencia en furia ciega.
+    @@EEPROT63@@
 
-    <p style="margin-top: 40px; font-weight: bold; border-top: 1px solid #ccc; padding-top: 20px;">
-        Zusammenfassend lässt sich sagen: Alarmismus ist das Opium des Volkes, nur mit mehr Lärm und weniger unmittelbaren Nebenwirkungen. Es ist ein Werkzeug der sozialen Kontrolle, getarnt als Besorgnis. Lassen Sie sich nicht täuschen. Die Welt ist ein gefährlicher Ort, ja, aber nicht aus den Gründen, die Ihnen die Scharlatane der Hysterie verkaufen. Denken Sie nach, zweifeln Sie, recherchieren Sie. Und vor allem: Lassen Sie sich keine Angst einjagen von denen, die aus Ihrem Schrecken Profit schlagen. Die Vernunft ist das einzige Licht in diesem Sumpf aus Tinte und Panik.
-    </p>
+    @@EEPROT64@@4. ¿Cómo detectarlo? Ponga los anteojos de la duda@@EEPROT65@@
+    @@EEPROT66@@
+        Detectar el alarmismo requiere una dosis de cinismo y una pizca de paciencia. Primero, pregúntese: ¿Esto es un hecho o una proyección? Hechos son medibles. Proyecciones son sueños pesadillescos disfrazados de ciencia. Si no hay un estudio, un dato duro, una fuente verificable, es humo.
+    @@EEPROT67@@
+    @@EEPROT68@@
+        Segundo, mire la fuente. ¿Quién está hablando? ¿Está motivado por informar o por vender? ¿Por generar clics? ¿Por ganar unas elecciones? El interés propio es el mejor rastreador de la desinformación. Si alguien gana dinero, poder o atención al asustarle, su credibilidad se desploma por los suelos.
+    @@EEPROT69@@
+    @@EEPROT70@@
+        Tercero, busque el matiz. Si un argumento es demasiado simple, es probablemente falso. La realidad es compleja. Si la solución propuesta es única, drástica y urgente, es casi seguro que esté diseñada para saltarse el debate y la deliberación.
+    @@EEPROT71@@
+    @@EEPROT72@@
+        Cuarto, observe el lenguaje. ¿Hay muchas exclamaciones? ¿Hay adjetivos superlativos? ¿Se habla de "nunca antes visto"? Eso es una bandera roja. La historia está llena de cosas "nunca antes vistas", y la mayoría de las veces, se resolvieron con tiempo, no con pánico.
+    @@EEPROT73@@
 
-<div style="background:#1a1a24;padding:1em;border-radius:8px;margin:2em 0;font-size:0.9em;"><strong>Rechtlicher Hinweis:</strong> Dies ist keine Anschuldigung. Dies ist eine Autopsie. Die Medien sind zitiert und verlinkt. Das Zitierrecht schützt uns.</div>
-<hr>
-<div style="background:#0a0a0f;border-left:4px solid #e63946;padding:1em;border-radius:6px;margin:2em 0;">
-<strong>Folgen Sie uns:</strong> <a href="https://youtube.com/@somoselencuadre.oficial">YouTube</a> · <a href="https://tiktok.com/@somoselencuadre">TikTok</a> · <a href="https://instagram.com/somoselencuadre">Instagram</a> · <a href="https://x.com/SomosElEncuadre">X</a> · <a href="https://threads.net/@somoselencuadre">Threads</a>
-</div></div>
+    @@EEPROT74@@@@EEPROT75@@@@EEPROT76@@5. ¿Cómo combatirlo? La vacuna de la razón@@EEPROT77@@@@EEPROT78@@
+@@EEPROT79@@5. ¿Cómo combatirlo? La vacuna de la razón@@EEPROT80@@
+    @@EEPROT81@@
+        Combatir el alarmismo no es tarea fácil. El miedo es adictivo. Pero hay una cura: la información de calidad, lenta y aburrida. Lea fuentes primarias. No se fíe de los resúmenes en redes sociales. Vaya al origen. Si un medio sensacionalista dice "X es el fin del mundo", busque lo que dice el organismo técnico oficial. A menudo, la diferencia es abismal.
+    @@EEPROT82@@
+    @@EEPROT83@@
+        Segundo, eduque a su entorno. Hable con calma. No grite. El alarmista grita; usted debe susurrar. Explique los matices. Muestre los datos. Si no puede, no insista. No se puede razonar con alguien que está en modo pánico.
+    @@EEPROT84@@
+    @@EEPROT85@@
+        Tercero, practique la resiliencia emocional. Acepte que no puede controlar todo. Acepte que hay riesgos, pero que no son necesariamente inminentes ni catastróficos. Aprenda a distinguir entre el riesgo real y el riesgo percibido. La mayoría de las cosas que nos aterrorizan hoy son, estadísticamente, menos peligrosas que ir en coche o fumar.
+    @@EEPROT86@@
+    @@EEPROT87@@
+        Finalmente, vote con la cabeza, no con el corazón asustado. Exija a sus representantes políticos que hablen con claridad, con datos, sin drama. Si les pide miedo, le darán miedo. Si les pide verdad, quizá le den una versión más aceptable de la realidad.
+    @@EEPROT88@@
 
-</div>
-</div>
-<!-- EE_ENRICHED_END -->
+    @@EEPROT89@@
+        En resumen, el alarmismo es el opio del pueblo, sólo que con más ruido y menos efectos secundarios inmediatos. Es una herramienta de control social disfrazada de preocupación. No se deje engañar. El mundo es un lugar peligroso, sí, pero no por las razones que le venden los charlatanes de la histeria. Piense, dude, investigue. Y sobre todo, no se deje asustar por quienes se lucran con su terror. La razón es la única luz en este pantano de tinta y pánico.
+    @@EEPROT90@@
+
+@@EEPROT91@@@@EEPROT92@@Aviso legal:@@EEPROT93@@ Esto no es una acusacion. Es una autopsia. Los medios estan citados y enlazados. El derecho de cita (art. 32 LPI) nos ampara.@@EEPROT94@@
+@@EEPROT95@@
+@@EEPROT96@@
+@@EEPROT97@@Síguenos:@@EEPROT98@@ @@EEPROT99@@YouTube@@EEPROT100@@ · @@EEPROT101@@TikTok@@EEPROT102@@ · @@EEPROT103@@Instagram@@EEPROT104@@ · @@EEPROT105@@X@@EEPROT106@@ · @@EEPROT107@@Threads@@EEPROT108@@
+@@EEPROT109@@
+
+@@EEPROT110@@
+
+@@EEPROT111@@
+@@EEPROT112@@
+@@EEPROT113@@
