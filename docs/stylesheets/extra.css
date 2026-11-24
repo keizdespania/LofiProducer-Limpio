@@ -1586,3 +1586,12 @@ body { font-family: var(--ee-font-sans); background: var(--ee-bg); color: var(--
 .ee-share-bluesky { background: #1185fe !important; }
 .ee-share-email { background: #4a5568 !important; }
 .ee-share-copy { background: var(--ee-red) !important; }
+
+
+/* === FIX RESPONSIVE MOVIL Y PORTADA === */
+html, body, .md-main, .md-content, .md-grid { max-width: 100% !important; overflow-x: hidden !important; }
+.ee-home, .ee-hero-dia, .ee-main-layout, .ee-main-col, .holo-grid, .holo-card, .ee-ticker { max-width: 100% !important; box-sizing: border-box; }
+.ee-hero-titulo, .ee-hero-titulo a, h1, h2, h3, p, a { overflow-wrap: break-word !important; word-break: break-word !important; }
+.ee-hero-titulo { font-size: clamp(1.35rem, 5.2vw, 2.5rem) !important; line-height: 1.2 !important; }
+.holo-grid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important; gap: 1rem !important; }
+.holo-card img, img { max-width: 100% !important; height: auto !important; border-radius: 8px; }
