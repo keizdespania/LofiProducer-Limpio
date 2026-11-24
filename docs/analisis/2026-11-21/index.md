@@ -1,8 +1,8 @@
-```yaml
+---
 title: "Análisis de la apertura emocional 'eufórico' en la retórica del PP y la defensa de la Moncloa"
 date: 2026-11-21
 description: "Desglose de la técnica de apertura emocional con el adjetivo 'eufórico' en la narrativa política actual, basada en la cobertura de La Vanguardia. Se examinan datos concretos, el contexto de la disputa y el estilo defensivo de la Moncloa sin revelar el resultado final."
-```
+---
 
 # Introducción
 

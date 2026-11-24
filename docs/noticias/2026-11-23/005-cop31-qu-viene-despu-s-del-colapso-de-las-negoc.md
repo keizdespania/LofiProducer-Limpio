@@ -20,4 +20,4 @@ Finalmente, el fondo irónico del mensaje señala que el dramatismo es, en sí m
 
 En resumen, el titular emplea un encuadre negativo para magnificar el fracaso percibido, mientras que el tono sarcástico del fondo denuncia esa misma estrategia, recordándonos que el verdadero desafío está en superar el drama y avanzar con propuestas concretas, no en celebrar la caída de una negociación.
 
-![005-cop31-what-next-after-un-climate-talks-collapse](/media/imagenes/post_2026-11-23_005-cop31-what-next-after-un-cli.png)
+![005-cop31-what-next-after-un-climate-talks-collapse](../../media/imagenes/post_2026-11-23_005-cop31-what-next-after-un-cli.png)

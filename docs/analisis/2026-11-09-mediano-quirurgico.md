@@ -62,11 +62,5 @@ tags:
 </div>
 
 </div>
-<div class="ee-share">
-<a href="https://twitter.com/intent/tweet?text=El ángulo que nadie cuenta: ¿Te cuesta encontrar casa?&url=https://elencuadre.pages.dev/analisis/2026-11-09-mediano-quirurgico/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
-<a href="https://threads.net/intent/post?text=El ángulo que nadie cuenta: ¿Te cuesta encontrar casa?+https://elencuadre.pages.dev/analisis/2026-11-09-mediano-quirurgico/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
-<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-09-mediano-quirurgico/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
-<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-09-mediano-quirurgico/&text=El ángulo que nadie cuenta: ¿Te cuesta encontrar casa?" target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
-</div>
 </div>
 <!-- EE_ENRICHED_END -->

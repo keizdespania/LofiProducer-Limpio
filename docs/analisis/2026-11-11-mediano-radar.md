@@ -50,11 +50,5 @@ tags:
 </div>
 
 </div>
-<div class="ee-share">
-<a href="https://twitter.com/intent/tweet?text=Radar de medios: El Encuadre: Los sindicatos llaman a España a una &url=https://elencuadre.pages.dev/analisis/2026-11-11-mediano-radar/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
-<a href="https://threads.net/intent/post?text=Radar de medios: El Encuadre: Los sindicatos llaman a España a una +https://elencuadre.pages.dev/analisis/2026-11-11-mediano-radar/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
-<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-11-mediano-radar/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
-<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-11-mediano-radar/&text=Radar de medios: El Encuadre: Los sindicatos llaman a España a una " target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
-</div>
 </div>
 <!-- EE_ENRICHED_END -->

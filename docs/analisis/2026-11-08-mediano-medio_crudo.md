@@ -66,11 +66,5 @@ tags:
 </div>
 
 </div>
-<div class="ee-share">
-<a href="https://twitter.com/intent/tweet?text=Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la ilusión de dinamismo y inevitabilidad&url=https://elencuadre.pages.dev/analisis/2026-11-08-mediano-medio_crudo/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
-<a href="https://threads.net/intent/post?text=Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la ilusión de dinamismo y inevitabilidad+https://elencuadre.pages.dev/analisis/2026-11-08-mediano-medio_crudo/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
-<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-08-mediano-medio_crudo/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
-<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-08-mediano-medio_crudo/&text=Le Monde: la tecnica del marco de agenda que enfatiza la movilización y la expansión para crear la ilusión de dinamismo y inevitabilidad" target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
-</div>
 </div>
 <!-- EE_ENRICHED_END -->

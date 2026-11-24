@@ -7,32 +7,41 @@
     <span class="ee-logo-icon">◉</span>
     <span class="ee-logo-text">EL ENCUADRE</span>
   </div>
-  <div class="ee-drawer-sub">El periódico anti-medios</div>
+  <div class="ee-drawer-sub">Análisis y hemeroteca sin filtros</div>
   <ul class="md-nav__list" data-md-scrollfix>
     {% for nav_item in nav %}
       {% if nav_item.children %}
         <li class="md-nav__item md-nav__item--nested">
-          <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_{{ loop.index }}">
+          <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_{{ loop.index }}" {% if nav_item.active %}checked{% endif %}>
           <label class="md-nav__link" for="__nav_{{ loop.index }}">
             <span class="md-ellipsis">{{ nav_item.title }}</span>
+            <span class="md-nav__icon md-icon"></span>
           </label>
           <nav class="md-nav" aria-label="{{ nav_item.title }}" data-md-level="1">
             <ul class="md-nav__list">
               {% for sub in nav_item.children %}
                 {% if sub.children %}
-                  <li class="md-nav__item">
-                    <span class="md-nav__link" style="opacity:0.6;font-style:italic;">{{ sub.title }}</span>
+                  <li class="md-nav__item md-nav__item--nested">
+                    <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_{{ loop.index }}_{{ loop.index0 }}">
+                    <label class="md-nav__link" for="__nav_{{ loop.index }}_{{ loop.index0 }}">
+                      <span class="md-ellipsis">{{ sub.title }}</span>
+                      <span class="md-nav__icon md-icon"></span>
+                    </label>
+                    <nav class="md-nav" aria-label="{{ sub.title }}" data-md-level="2">
+                      <ul class="md-nav__list">
+                        {% for subsub in sub.children %}
+                          <li class="md-nav__item">
+                            <a href="{{ subsub.url | url }}" class="md-nav__link{% if subsub.active %} md-nav__link--active{% endif %}">
+                              <span class="md-ellipsis">{{ subsub.title }}</span>
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </nav>
                   </li>
-                  {% for subsub in sub.children %}
-                    <li class="md-nav__item">
-                      <a href="{{ subsub.url | url }}" class="md-nav__link" style="padding-left:1.5rem;">
-                        <span class="md-ellipsis">{{ subsub.title }}</span>
-                      </a>
-                    </li>
-                  {% endfor %}
                 {% else %}
                   <li class="md-nav__item">
-                    <a href="{{ sub.url | url }}" class="md-nav__link">
+                    <a href="{{ sub.url | url }}" class="md-nav__link{% if sub.active %} md-nav__link--active{% endif %}">
                       <span class="md-ellipsis">{{ sub.title }}</span>
                     </a>
                   </li>
@@ -43,7 +52,7 @@
         </li>
       {% else %}
         <li class="md-nav__item">
-          <a href="{{ nav_item.url | url }}" class="md-nav__link">
+          <a href="{{ nav_item.url | url }}" class="md-nav__link{% if nav_item.active %} md-nav__link--active{% endif %}">
             <span class="md-ellipsis">{{ nav_item.title }}</span>
           </a>
         </li>
@@ -51,7 +60,7 @@
     {% endfor %}
   </ul>
   <div class="ee-drawer-cta">
-    <a href="https://t.me/somoselencuadre" class="btn-hero" style="display:block;text-align:center;margin:1rem;">📡 Unirse al Telegram</a>
-    <a href="/feed.xml" style="display:block;text-align:center;color:var(--ee-text-muted);font-size:0.85rem;margin-top:0.5rem;">📡 RSS</a>
+    <a href="https://t.me/somoselencuadre" target="_blank" rel="noopener" class="btn-hero" style="display:block;text-align:center;margin:1rem;">📡 Unirse al Telegram</a>
+    <a href="{{ 'feed.xml' | url }}" style="display:block;text-align:center;color:var(--ee-text-muted);font-size:0.85rem;margin-top:0.5rem;">📰 Canal RSS</a>
   </div>
 </nav>

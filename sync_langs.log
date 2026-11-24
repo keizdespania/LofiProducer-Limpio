@@ -1,0 +1,1691 @@
+nohup: ignoring input
+[1/374 de 376] -> FR | analisis/2026-10-31-dossier-v2.md ...
+[2/374 de 376] -> DE | analisis/2026-10-31-dossier-v2.md ...
+[3/374 de 376] -> PT | analisis/2026-10-31-dossier-v2.md ...
+[4/374 de 376] -> FR | analisis/2026-10-31-dossier.md ...
+[3/374] [OK] PT | analisis/2026-10-31-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite) | 126.1s
+[5/374 de 376] -> DE |[3/376] [OK] PT | analisis/2026-10-31-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-1(gemini-4-hydrogen) | 154.8s
+[4/376] -> FR | analisis/2026-10-31-dossier.md ...
+[4/376] [OK] FR | analisis/2026-10-31-dossier.md | motor=gemini-1(gemini-3.5-flash-lite) | 71.9s
+[5/376] -> DE | analisis/2026-10-31-dossier.md ...
+[5/376] [OK] DE | analisis/2026-10-31-dossier.md | motor=gemini-1(gemini-3.5-flash-lite) | 74.8s
+[6/376] -> PT | analisis/2026-10-31-dossier.md ...
+[6/376] [OK] PT | analisis/2026-10-31-dossier.md | motor=gemini-1(gemini-3.5-flash-lite) | 78.4s
+[7/376] -> EN | analisis/2026-10-31-largo.md ...
+[7/376] [OK] EN | analisis/2026-10-31-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 136.9s
+[8/376] -> FR | analisis/2026-10-31-largo.md ...
+[8/376] [OK] FR | analisis/2026-10-31-largo.md | motor=gemini-1(gemini-3.5-flash-lite) | 123.6s
+[9/376] -> DE | analisis/2026-10-31-largo.md ...
+[9/376] [OK] DE | analisis/2026-10-31-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)+partial-fallback+gemini-3(gemini-3.5-flash-lite) | 309.2s
+[10/376] -> PT | analisis/2026-10-31-largo.md ...
+[10/376] [OK] PT | analisis/2026-10-31-largo.md | motor=gemini-2(gemini-3.5-flash-lite) | 129.1s
+[11/376] -> EN | analisis/2026-10-31-master.md ...
+[11/376] [OK] EN | analisis/2026-10-31-master.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 134.4s
+[12/376] -> FR | analisis/2026-10-31-master.md ...
+[12/376] [OK] FR | analisis/2026-10-31-master.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 133.6s
+[13/376] -> DE | analisis/2026-10-31-master.md ...
+[13/376] [OK] DE | analisis/2026-10-31-master.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 126.5s
+[14/376] -> PT | analisis/2026-10-31-master.md ...
+[14/376] [OK] PT | analisis/2026-10-31-master.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 212.1s
+[15/376] -> EN | analisis/2026-10-31-mediano-dossier.md ...
+[15/376] [OK] EN | analisis/2026-10-31-mediano-dossier.md | motor=gemini-2(gemini-3.5-flash-lite) | 92.4s
+[16/376] -> FR | analisis/2026-10-31-mediano-dossier.md ...
+[16/376] [OK] FR | analisis/2026-10-31-mediano-dossier.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite) | 124.6s
+[17/376] -> DE | analisis/2026-10-31-mediano-dossier.md ...
+[17/376] [OK] DE | analisis/2026-10-31-mediano-dossier.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 108.0s
+[18/376] -> PT | analisis/2026-10-31-mediano-dossier.md ...
+[18/376] [OK] PT | analisis/2026-10-31-mediano-dossier.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 127.4s
+[19/376] -> EN | analisis/2026-11-01-dossier-v2.md ...
+[19/376] [OK] EN | analisis/2026-11-01-dossier-v2.md | motor=gemini-2(gemini-3.5-flash-lite) | 131.2s
+[20/376] -> FR | analisis/2026-11-01-dossier-v2.md ...
+[20/376] [OK] FR | analisis/2026-11-01-dossier-v2.md | motor=gemini-4(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 162.3s
+[21/376] -> DE | analisis/2026-11-01-dossier-v2.md ...
+[21/376] [OK] DE | analisis/2026-11-01-dossier-v2.md | motor=gemini-2(gemini-3.5-flash-lite) | 128.7s
+[22/376] -> PT | analisis/2026-11-01-dossier-v2.md ...
+[22/376] [OK] PT | analisis/2026-11-01-dossier-v2.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 240.1s
+[23/376] -> EN | analisis/2026-11-01-largo.md ...
+[23/376] [OK] EN | analisis/2026-11-01-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 97.7s
+[24/376] -> FR | analisis/2026-11-01-largo.md ...
+[24/376] [OK] FR | analisis/2026-11-01-largo.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 136.8s
+[25/376] -> DE | analisis/2026-11-01-largo.md ...
+[25/376] [OK] DE | analisis/2026-11-01-largo.md | motor=gemini-2(gemini-3.5-flash-lite) | 114.6s
+[26/376] -> PT | analisis/2026-11-01-largo.md ...
+[26/376] [OK] PT | analisis/2026-11-01-largo.md | motor=gemini-2(gemini-3.5-flash-lite) | 109.5s
+[27/376] -> EN | analisis/2026-11-01-mediano-medio_crudo.md ...
+[27/376] [OK] EN | analisis/2026-11-01-mediano-medio_crudo.md | motor=gemini-3(gemini-3.5-flash-lite)+partial-fallback+gemini-2(gemini-3.5-flash-lite) | 701.8s
+[28/376] -> FR | analisis/2026-11-01-mediano-medio_crudo.md ...
+[28/376] [OK] FR | analisis/2026-11-01-mediano-medio_crudo.md | motor=gemini-2(gemini-3.5-flash-lite) | 126.2s
+[29/376] -> DE | analisis/2026-11-01-mediano-medio_crudo.md ...
+[29/376] [OK] DE | analisis/2026-11-01-mediano-medio_crudo.md | motor=gemini-2(gemini-3.5-flash-lite) | 395.6s
+[30/376] -> PT | analisis/2026-11-01-mediano-medio_crudo.md ...
+[30/376] [OK] PT | analisis/2026-11-01-mediano-medio_crudo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 214.3s
+[31/376] -> EN | analisis/2026-11-02-dossier-v2.md ...
+[31/376] [OK] EN | analisis/2026-11-02-dossier-v2.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 111.5s
+[32/376] -> FR | analisis/2026-11-02-dossier-v2.md ...
+[32/376] [OK] FR | analisis/2026-11-02-dossier-v2.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 99.6s
+[33/376] -> DE | analisis/2026-11-02-dossier-v2.md ...
+[33/376] [OK] DE | analisis/2026-11-02-dossier-v2.md | motor=gemini-4(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 115.6s
+[34/376] -> PT | analisis/2026-11-02-dossier-v2.md ...
+[34/376] [OK] PT | analisis/2026-11-02-dossier-v2.md | motor=gemini-4(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 118.0s
+[35/376] -> EN | analisis/2026-11-02-largo.md ...
+[35/376] [OK] EN | analisis/2026-11-02-largo.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite) | 157.0s
+[36/376] -> FR | analisis/2026-11-02-largo.md ...
+[36/376] [OK] FR | analisis/2026-11-02-largo.md | motor=gemini-3(gemini-3.5-flash-lite)+partial-fallback+gemini-4(gemini-3.5-flash-lite) | 161.8s
+[37/376] -> DE | analisis/2026-11-02-largo.md ...
+[37/376] [OK] DE | analisis/2026-11-02-largo.md | motor=gemini-3(gemini-3.5-flash-lite)+partial-fallback+gemini-4(gemini-3.5-flash-lite) | 194.6s
+[38/376] -> PT | analisis/2026-11-02-largo.md ...
+[38/376] [OK] PT | analisis/2026-11-02-largo.md | motor=gemini-4(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 168.3s
+[39/376] -> EN | analisis/2026-11-02-mediano-quirurgico.md ...
+[39/376] [OK] EN | analisis/2026-11-02-mediano-quirurgico.md | motor=gemini-4(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 215.7s
+[40/376] -> FR | analisis/2026-11-02-mediano-quirurgico.md ...
+[40/376] [OK] FR | analisis/2026-11-02-mediano-quirurgico.md | motor=gemini-4(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 668.6s
+[41/376] -> DE | analisis/2026-11-02-mediano-quirurgico.md ...
+[41/376] [OK] DE | analisis/2026-11-02-mediano-quirurgico.md | motor=gemini-1(gemini-3.5-flash-lite) | 488.9s
+[42/376] -> PT | analisis/2026-11-02-mediano-quirurgico.md ...
+[42/376] [OK] PT | analisis/2026-11-02-mediano-quirurgico.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 327.1s
+[43/376] -> EN | analisis/2026-11-03-dossier-v2.md ...
+[43/376] [OK] EN | analisis/2026-11-03-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-1(gemini-4-hydrogen) | 164.2s
+[44/376] -> FR | analisis/2026-11-03-dossier-v2.md ...
+[44/376] [OK] FR | analisis/2026-11-03-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 280.9s
+[45/376] -> DE | analisis/2026-11-03-dossier-v2.md ...
+[45/376] [OK] DE | analisis/2026-11-03-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite) | 123.9s
+[46/376] -> PT | analisis/2026-11-03-dossier-v2.md ...
+[46/376] [OK] PT | analisis/2026-11-03-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite) | 109.2s
+[47/376] -> EN | analisis/2026-11-03-largo.md ...
+[47/376] [OK] EN | analisis/2026-11-03-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 96.6s
+[48/376] -> FR | analisis/2026-11-03-largo.md ...
+[48/376] [OK] FR | analisis/2026-11-03-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 96.8s
+[49/376] -> DE | analisis/2026-11-03-largo.md ...
+[49/376] [OK] DE | analisis/2026-11-03-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 84.5s
+[50/376] -> PT | analisis/2026-11-03-largo.md ...
+[50/376] [OK] PT | analisis/2026-11-03-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-4-hydrogen) | 108.0s
+[51/376] -> EN | analisis/2026-11-03-mediano-tutorial.md ...
+[51/376] [OK] EN | analisis/2026-11-03-mediano-tutorial.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 87.5s
+[52/376] -> FR | analisis/2026-11-03-mediano-tutorial.md ...
+[52/376] [OK] FR | analisis/2026-11-03-mediano-tutorial.md | motor=gemini-1(gemini-3.5-flash-lite) | 76.0s
+[53/376] -> DE | analisis/2026-11-03-mediano-tutorial.md ...
+[53/376] [OK] DE | analisis/2026-11-03-mediano-tutorial.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 143.5s
+[54/376] -> PT | analisis/2026-11-03-mediano-tutorial.md ...
+[54/376] [OK] PT | analisis/2026-11-03-mediano-tutorial.md | motor=gemini-1(gemini-3.5-flash-lite) | 75.3s
+[55/376] -> EN | analisis/2026-11-04-dossier-v2.md ...
+[55/376] [OK] EN | analisis/2026-11-04-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite) | 125.7s
+[56/376] -> FR | analisis/2026-11-04-dossier-v2.md ...
+[56/376] [OK] FR | analisis/2026-11-04-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 135.0s
+[57/376] -> DE | analisis/2026-11-04-dossier-v2.md ...
+[57/376] [OK] DE | analisis/2026-11-04-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 134.8s
+[58/376] -> PT | analisis/2026-11-04-dossier-v2.md ...
+[58/376] [OK] PT | analisis/2026-11-04-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite) | 126.0s
+[59/376] -> EN | analisis/2026-11-04-largo.md ...
+[59/376] [OK] EN | analisis/2026-11-04-largo.md | motor=gemini-1(gemini-3.5-flash-lite) | 123.8s
+[60/376] -> FR | analisis/2026-11-04-largo.md ...
+[60/376] [OK] FR | analisis/2026-11-04-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 133.6s
+[61/376] -> DE | analisis/2026-11-04-largo.md ...
+[61/376] [OK] DE | analisis/2026-11-04-largo.md | motor=gemini-1(gemini-3.5-flash-lite) | 130.4s
+[62/376] -> PT | analisis/2026-11-04-largo.md ...
+[62/376] [OK] PT | analisis/2026-11-04-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 145.4s
+[63/376] -> EN | analisis/2026-11-04-mediano-radar.md ...
+[63/376] [OK] EN | analisis/2026-11-04-mediano-radar.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 116.8s
+[64/376] -> FR | analisis/2026-11-04-mediano-radar.md ...
+[64/376] [OK] FR | analisis/2026-11-04-mediano-radar.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 84.1s
+[65/376] -> DE | analisis/2026-11-04-mediano-radar.md ...
+[65/376] [OK] DE | analisis/2026-11-04-mediano-radar.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 90.9s
+[66/376] -> PT | analisis/2026-11-04-mediano-radar.md ...
+[66/376] [OK] PT | analisis/2026-11-04-mediano-radar.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 90.4s
+[67/376] -> EN | analisis/2026-11-05-dossier-v2.md ...
+[67/376] [OK] EN | analisis/2026-11-05-dossier-v2.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 103.0s
+[68/376] -> FR | analisis/2026-11-05-dossier-v2.md ...
+[68/376] [OK] FR | analisis/2026-11-05-dossier-v2.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite) | 238.9s
+[69/376] -> DE | analisis/2026-11-05-dossier-v2.md ...
+[69/376] [OK] DE | analisis/2026-11-05-dossier-v2.md | motor=gemini-2(gemini-3.5-flash-lite) | 704.5s
+[70/376] -> PT | analisis/2026-11-05-dossier-v2.md ...
+[70/376] [OK] PT | analisis/2026-11-05-dossier-v2.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 137.9s
+[71/376] -> EN | analisis/2026-11-05-largo.md ...
+[71/376] [OK] EN | analisis/2026-11-05-largo.md | motor=partial-fallback+gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 532.6s
+[72/376] -> FR | analisis/2026-11-05-largo.md ...
+[72/376] [OK] FR | analisis/2026-11-05-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite) | 200.4s
+[73/376] -> DE | analisis/2026-11-05-largo.md ...
+[73/376] [OK] DE | analisis/2026-11-05-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite) | 221.9s
+[74/376] -> PT | analisis/2026-11-05-largo.md ...
+[74/376] [OK] PT | analisis/2026-11-05-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+partial-fallback | 229.8s
+[75/376] -> EN | analisis/2026-11-05-mediano-cita.md ...
+[75/376] [OK] EN | analisis/2026-11-05-mediano-cita.md | motor=partial-fallback | 125.9s
+[76/376] -> FR | analisis/2026-11-05-mediano-cita.md ...
+[76/376] [OK] FR | analisis/2026-11-05-mediano-cita.md | motor=partial-fallback | 125.7s
+[77/376] -> DE | analisis/2026-11-05-mediano-cita.md ...
+[77/376] [OK] DE | analisis/2026-11-05-mediano-cita.md | motor=partial-fallback | 125.3s
+[78/376] -> PT | analisis/2026-11-05-mediano-cita.md ...
+[78/376] [OK] PT | analisis/2026-11-05-mediano-cita.md | motor=partial-fallback | 125.9s
+[79/376] -> EN | analisis/2026-11-06-dossier-v2.md ...
+[79/376] [OK] EN | analisis/2026-11-06-dossier-v2.md | motor=partial-fallback | 211.2s
+[80/376] -> FR | analisis/2026-11-06-dossier-v2.md ...
+[80/376] [OK] FR | analisis/2026-11-06-dossier-v2.md | motor=partial-fallback | 210.1s
+[81/376] -> DE | analisis/2026-11-06-dossier-v2.md ...
+[81/376] [OK] DE | analisis/2026-11-06-dossier-v2.md | motor=partial-fallback | 209.9s
+[82/376] -> PT | analisis/2026-11-06-dossier-v2.md ...
+[82/376] [OK] PT | analisis/2026-11-06-dossier-v2.md | motor=partial-fallback | 209.0s
+[83/376] -> EN | analisis/2026-11-06-largo.md ...
+[83/376] [OK] EN | analisis/2026-11-06-largo.md | motor=partial-fallback | 249.8s
+[84/376] -> FR | analisis/2026-11-06-largo.md ...
+[84/376] [OK] FR | analisis/2026-11-06-largo.md | motor=partial-fallback+gemini-1(gemini-3.5-flash-lite) | 236.6s
+[85/376] -> DE | analisis/2026-11-06-largo.md ...
+[85/376] [OK] DE | analisis/2026-11-06-largo.md | motor=partial-fallback | 251.2s
+[86/376] -> PT | analisis/2026-11-06-largo.md ...
+[86/376] [OK] PT | analisis/2026-11-06-largo.md | motor=partial-fallback | 252.4s
+[87/376] -> EN | analisis/2026-11-06-mediano-medio_analizado.md ...
+[87/376] [OK] EN | analisis/2026-11-06-mediano-medio_analizado.md | motor=partial-fallback | 84.1s
+[88/376] -> FR | analisis/2026-11-06-mediano-medio_analizado.md ...
+[88/376] [OK] FR | analisis/2026-11-06-mediano-medio_analizado.md | motor=partial-fallback | 82.9s
+[89/376] -> DE | analisis/2026-11-06-mediano-medio_analizado.md ...
+[89/376] [OK] DE | analisis/2026-11-06-mediano-medio_analizado.md | motor=partial-fallback | 83.1s
+[90/376] -> PT | analisis/2026-11-06-mediano-medio_analizado.md ...
+[90/376] [OK] PT | analisis/2026-11-06-mediano-medio_analizado.md | motor=partial-fallback | 82.8s
+[91/376] -> EN | analisis/2026-11-07-dossier-v2.md ...
+[91/376] [OK] EN | analisis/2026-11-07-dossier-v2.md | motor=partial-fallback | 166.3s
+[92/376] -> FR | analisis/2026-11-07-dossier-v2.md ...
+[92/376] [OK] FR | analisis/2026-11-07-dossier-v2.md | motor=partial-fallback | 166.0s
+[93/376] -> DE | analisis/2026-11-07-dossier-v2.md ...
+[93/376] [OK] DE | analisis/2026-11-07-dossier-v2.md | motor=partial-fallback | 165.8s
+[94/376] -> PT | analisis/2026-11-07-dossier-v2.md ...
+[94/376] [OK] PT | analisis/2026-11-07-dossier-v2.md | motor=partial-fallback | 165.8s
+[95/376] -> EN | analisis/2026-11-07-largo.md ...
+[95/376] [OK] EN | analisis/2026-11-07-largo.md | motor=partial-fallback | 249.1s
+[96/376] -> FR | analisis/2026-11-07-largo.md ...
+[96/376] [OK] FR | analisis/2026-11-07-largo.md | motor=partial-fallback | 248.8s
+[97/376] -> DE | analisis/2026-11-07-largo.md ...
+[97/376] [OK] DE | analisis/2026-11-07-largo.md | motor=partial-fallback | 248.6s
+[98/376] -> PT | analisis/2026-11-07-largo.md ...
+[98/376] [OK] PT | analisis/2026-11-07-largo.md | motor=partial-fallback | 250.6s
+[99/376] -> EN | analisis/2026-11-07-mediano-dossier.md ...
+[99/376] [OK] EN | analisis/2026-11-07-mediano-dossier.md | motor=partial-fallback | 126.6s
+[100/376] -> FR | analisis/2026-11-07-mediano-dossier.md ...
+[100/376] [OK] FR | analisis/2026-11-07-mediano-dossier.md | motor=partial-fallback | 126.3s
+[101/376] -> DE | analisis/2026-11-07-mediano-dossier.md ...
+[101/376] [OK] DE | analisis/2026-11-07-mediano-dossier.md | motor=partial-fallback | 126.9s
+[102/376] -> PT | analisis/2026-11-07-mediano-dossier.md ...
+[102/376] [OK] PT | analisis/2026-11-07-mediano-dossier.md | motor=partial-fallback | 126.3s
+[103/376] -> EN | analisis/2026-11-08-dossier-v2.md ...
+[103/376] [OK] EN | analisis/2026-11-08-dossier-v2.md | motor=partial-fallback | 168.7s
+[104/376] -> FR | analisis/2026-11-08-dossier-v2.md ...
+[104/376] [OK] FR | analisis/2026-11-08-dossier-v2.md | motor=partial-fallback | 169.0s
+[105/376] -> DE | analisis/2026-11-08-dossier-v2.md ...
+[105/376] [OK] DE | analisis/2026-11-08-dossier-v2.md | motor=partial-fallback | 168.3s
+[106/376] -> PT | analisis/2026-11-08-dossier-v2.md ...
+[106/376] [OK] PT | analisis/2026-11-08-dossier-v2.md | motor=partial-fallback | 168.1s
+[107/376] -> EN | analisis/2026-11-08-largo.md ...
+[107/376] [OK] EN | analisis/2026-11-08-largo.md | motor=partial-fallback | 210.2s
+[108/376] -> FR | analisis/2026-11-08-largo.md ...
+[108/376] [OK] FR | analisis/2026-11-08-largo.md | motor=partial-fallback | 210.7s
+[109/376] -> DE | analisis/2026-11-08-largo.md ...
+[109/376] [OK] DE | analisis/2026-11-08-largo.md | motor=partial-fallback | 210.9s
+[110/376] -> PT | analisis/2026-11-08-largo.md ...
+[110/376] [OK] PT | analisis/2026-11-08-largo.md | motor=partial-fallback | 210.6s
+[111/376] -> EN | analisis/2026-11-08-mediano-medio_crudo.md ...
+[111/376] [OK] EN | analisis/2026-11-08-mediano-medio_crudo.md | motor=partial-fallback | 84.2s
+[112/376] -> FR | analisis/2026-11-08-mediano-medio_crudo.md ...
+[112/376] [OK] FR | analisis/2026-11-08-mediano-medio_crudo.md | motor=partial-fallback | 84.1s
+[113/376] -> DE | analisis/2026-11-08-mediano-medio_crudo.md ...
+[113/376] [OK] DE | analisis/2026-11-08-mediano-medio_crudo.md | motor=partial-fallback | 84.4s
+[114/376] -> PT | analisis/2026-11-08-mediano-medio_crudo.md ...
+[114/376] [OK] PT | analisis/2026-11-08-mediano-medio_crudo.md | motor=partial-fallback | 84.6s
+[115/376] -> EN | analisis/2026-11-09-dossier-v2.md ...
+[115/376] [OK] EN | analisis/2026-11-09-dossier-v2.md | motor=partial-fallback | 211.0s
+[116/376] -> FR | analisis/2026-11-09-dossier-v2.md ...
+[116/376] [OK] FR | analisis/2026-11-09-dossier-v2.md | motor=partial-fallback | 211.8s
+[117/376] -> DE | analisis/2026-11-09-dossier-v2.md ...
+[117/376] [OK] DE | analisis/2026-11-09-dossier-v2.md | motor=partial-fallback | 211.5s
+[118/376] -> PT | analisis/2026-11-09-dossier-v2.md ...
+[118/376] [OK] PT | analisis/2026-11-09-dossier-v2.md | motor=partial-fallback | 210.2s
+[119/376] -> EN | analisis/2026-11-09-largo.md ...
+[119/376] [OK] EN | analisis/2026-11-09-largo.md | motor=partial-fallback | 210.8s
+[120/376] -> FR | analisis/2026-11-09-largo.md ...
+[120/376] [OK] FR | analisis/2026-11-09-largo.md | motor=partial-fallback | 211.1s
+[121/376] -> DE | analisis/2026-11-09-largo.md ...
+[121/376] [OK] DE | analisis/2026-11-09-largo.md | motor=partial-fallback | 211.3s
+[122/376] -> PT | analisis/2026-11-09-largo.md ...
+[122/376] [OK] PT | analisis/2026-11-09-largo.md | motor=partial-fallback | 211.9s
+[123/376] -> EN | analisis/2026-11-09-mediano-quirurgico.md ...
+[123/376] [OK] EN | analisis/2026-11-09-mediano-quirurgico.md | motor=partial-fallback | 126.8s
+[124/376] -> FR | analisis/2026-11-09-mediano-quirurgico.md ...
+[124/376] [OK] FR | analisis/2026-11-09-mediano-quirurgico.md | motor=partial-fallback | 126.8s
+[125/376] -> DE | analisis/2026-11-09-mediano-quirurgico.md ...
+[125/376] [OK] DE | analisis/2026-11-09-mediano-quirurgico.md | motor=partial-fallback | 127.1s
+[126/376] -> PT | analisis/2026-11-09-mediano-quirurgico.md ...
+[126/376] [OK] PT | analisis/2026-11-09-mediano-quirurgico.md | motor=partial-fallback | 126.8s
+[127/376] -> EN | analisis/2026-11-10-dossier-v2.md ...
+[127/376] [OK] EN | analisis/2026-11-10-dossier-v2.md | motor=partial-fallback | 168.8s
+[128/376] -> FR | analisis/2026-11-10-dossier-v2.md ...
+[128/376] [OK] FR | analisis/2026-11-10-dossier-v2.md | motor=partial-fallback | 169.0s
+[129/376] -> DE | analisis/2026-11-10-dossier-v2.md ...
+[129/376] [OK] DE | analisis/2026-11-10-dossier-v2.md | motor=partial-fallback | 169.1s
+[130/376] -> PT | analisis/2026-11-10-dossier-v2.md ...
+[130/376] [OK] PT | analisis/2026-11-10-dossier-v2.md | motor=partial-fallback | 169.8s
+[131/376] -> EN | analisis/2026-11-10-largo.md ...
+[131/376] [OK] EN | analisis/2026-11-10-largo.md | motor=partial-fallback | 169.3s
+[132/376] -> FR | analisis/2026-11-10-largo.md ...
+[132/376] [OK] FR | analisis/2026-11-10-largo.md | motor=partial-fallback | 168.9s
+[133/376] -> DE | analisis/2026-11-10-largo.md ...
+[133/376] [OK] DE | analisis/2026-11-10-largo.md | motor=partial-fallback | 168.6s
+[134/376] -> PT | analisis/2026-11-10-largo.md ...
+[134/376] [OK] PT | analisis/2026-11-10-largo.md | motor=partial-fallback | 168.8s
+[135/376] -> EN | analisis/2026-11-10-mediano-tutorial.md ...
+[135/376] [OK] EN | analisis/2026-11-10-mediano-tutorial.md | motor=partial-fallback | 126.6s
+[136/376] -> FR | analisis/2026-11-10-mediano-tutorial.md ...
+[136/376] [OK] FR | analisis/2026-11-10-mediano-tutorial.md | motor=partial-fallback | 126.5s
+[137/376] -> DE | analisis/2026-11-10-mediano-tutorial.md ...
+[137/376] [OK] DE | analisis/2026-11-10-mediano-tutorial.md | motor=partial-fallback | 126.7s
+[138/376] -> PT | analisis/2026-11-10-mediano-tutorial.md ...
+[138/376] [OK] PT | analisis/2026-11-10-mediano-tutorial.md | motor=partial-fallback | 126.5s
+[139/376] -> EN | analisis/2026-11-11-dossier-v2.md ...
+[139/376] [OK] EN | analisis/2026-11-11-dossier-v2.md | motor=partial-fallback | 333.4s
+[140/376] -> FR | analisis/2026-11-11-dossier-v2.md ...
+[140/376] [OK] FR | analisis/2026-11-11-dossier-v2.md | motor=partial-fallback | 318.9s
+[141/376] -> DE | analisis/2026-11-11-dossier-v2.md ...
+[141/376] [OK] DE | analisis/2026-11-11-dossier-v2.md | motor=partial-fallback | 322.7s
+[142/376] -> PT | analisis/2026-11-11-dossier-v2.md ...
+[142/376] [OK] PT | analisis/2026-11-11-dossier-v2.md | motor=partial-fallback | 336.9s
+[143/376] -> EN | analisis/2026-11-11-largo.md ...
+[143/376] [OK] EN | analisis/2026-11-11-largo.md | motor=partial-fallback | 261.9s
+[144/376] -> FR | analisis/2026-11-11-largo.md ...
+[144/376] [OK] FR | analisis/2026-11-11-largo.md | motor=partial-fallback | 257.6s
+[145/376] -> DE | analisis/2026-11-11-largo.md ...
+[145/376] [OK] DE | analisis/2026-11-11-largo.md | motor=partial-fallback | 211.9s
+[146/376] -> PT | analisis/2026-11-11-largo.md ...
+[146/376] [OK] PT | analisis/2026-11-11-largo.md | motor=partial-fallback | 167.6s
+[147/376] -> EN | analisis/2026-11-11-mediano-radar.md ...
+[147/376] [OK] EN | analisis/2026-11-11-mediano-radar.md | motor=partial-fallback | 84.7s
+[148/376] -> FR | analisis/2026-11-11-mediano-radar.md ...
+[148/376] [OK] FR | analisis/2026-11-11-mediano-radar.md | motor=partial-fallback | 84.3s
+[149/376] -> DE | analisis/2026-11-11-mediano-radar.md ...
+[149/376] [OK] DE | analisis/2026-11-11-mediano-radar.md | motor=partial-fallback | 85.0s
+[150/376] -> PT | analisis/2026-11-11-mediano-radar.md ...
+[150/376] [OK] PT | analisis/2026-11-11-mediano-radar.md | motor=partial-fallback | 84.8s
+[151/376] -> EN | analisis/2026-11-12-dossier-v2.md ...
+[151/376] [OK] EN | analisis/2026-11-12-dossier-v2.md | motor=partial-fallback | 211.4s
+[152/376] -> FR | analisis/2026-11-12-dossier-v2.md ...
+[152/376] [OK] FR | analisis/2026-11-12-dossier-v2.md | motor=partial-fallback | 210.5s
+[153/376] -> DE | analisis/2026-11-12-dossier-v2.md ...
+[153/376] [OK] DE | analisis/2026-11-12-dossier-v2.md | motor=partial-fallback | 212.0s
+[154/376] -> PT | analisis/2026-11-12-dossier-v2.md ...
+[154/376] [OK] PT | analisis/2026-11-12-dossier-v2.md | motor=partial-fallback | 213.8s
+[155/376] -> EN | analisis/2026-11-12-largo.md ...
+[155/376] [OK] EN | analisis/2026-11-12-largo.md | motor=partial-fallback | 257.2s
+[156/376] -> FR | analisis/2026-11-12-largo.md ...
+[156/376] [OK] FR | analisis/2026-11-12-largo.md | motor=partial-fallback | 253.7s
+[157/376] -> DE | analisis/2026-11-12-largo.md ...
+[157/376] [OK] DE | analisis/2026-11-12-largo.md | motor=partial-fallback | 251.1s
+[158/376] -> PT | analisis/2026-11-12-largo.md ...
+[158/376] [OK] PT | analisis/2026-11-12-largo.md | motor=partial-fallback | 250.3s
+[159/376] -> EN | analisis/2026-11-12-mediano-cita.md ...
+[159/376] [OK] EN | analisis/2026-11-12-mediano-cita.md | motor=partial-fallback | 125.5s
+[160/376] -> FR | analisis/2026-11-12-mediano-cita.md ...
+[160/376] [OK] FR | analisis/2026-11-12-mediano-cita.md | motor=partial-fallback | 124.9s
+[161/376] -> DE | analisis/2026-11-12-mediano-cita.md ...
+[161/376] [OK] DE | analisis/2026-11-12-mediano-cita.md | motor=partial-fallback | 125.2s
+[162/376] -> PT | analisis/2026-11-12-mediano-cita.md ...
+[162/376] [OK] PT | analisis/2026-11-12-mediano-cita.md | motor=partial-fallback | 124.8s
+[163/376] -> EN | analisis/2026-11-13-dossier-v2.md ...
+[163/376] [OK] EN | analisis/2026-11-13-dossier-v2.md | motor=partial-fallback | 208.1s
+[164/376] -> FR | analisis/2026-11-13-dossier-v2.md ...
+[164/376] [OK] FR | analisis/2026-11-13-dossier-v2.md | motor=partial-fallback | 207.4s
+[165/376] -> DE | analisis/2026-11-13-dossier-v2.md ...
+[165/376] [OK] DE | analisis/2026-11-13-dossier-v2.md | motor=partial-fallback | 207.5s
+[166/376] -> PT | analisis/2026-11-13-dossier-v2.md ...
+[166/376] [OK] PT | analisis/2026-11-13-dossier-v2.md | motor=partial-fallback | 208.3s
+[167/376] -> EN | analisis/2026-11-13-largo.md ...
+[167/376] [OK] EN | analisis/2026-11-13-largo.md | motor=partial-fallback | 208.9s
+[168/376] -> FR | analisis/2026-11-13-largo.md ...
+[168/376] [OK] FR | analisis/2026-11-13-largo.md | motor=partial-fallback | 208.6s
+[169/376] -> DE | analisis/2026-11-13-largo.md ...
+[169/376] [OK] DE | analisis/2026-11-13-largo.md | motor=partial-fallback | 208.7s
+[170/376] -> PT | analisis/2026-11-13-largo.md ...
+[170/376] [OK] PT | analisis/2026-11-13-largo.md | motor=partial-fallback | 209.0s
+[171/376] -> EN | analisis/2026-11-13-mediano-medio_analizado.md ...
+[171/376] [OK] EN | analisis/2026-11-13-mediano-medio_analizado.md | motor=partial-fallback | 125.5s
+[172/376] -> FR | analisis/2026-11-13-mediano-medio_analizado.md ...
+[172/376] [OK] FR | analisis/2026-11-13-mediano-medio_analizado.md | motor=partial-fallback | 126.5s
+[173/376] -> DE | analisis/2026-11-13-mediano-medio_analizado.md ...
+[173/376] [OK] DE | analisis/2026-11-13-mediano-medio_analizado.md | motor=partial-fallback | 124.8s
+[174/376] -> PT | analisis/2026-11-13-mediano-medio_analizado.md ...
+[174/376] [OK] PT | analisis/2026-11-13-mediano-medio_analizado.md | motor=partial-fallback | 125.4s
+[175/376] -> EN | analisis/2026-11-14-dossier-v2.md ...
+[175/376] [OK] EN | analisis/2026-11-14-dossier-v2.md | motor=partial-fallback | 125.8s
+[176/376] -> FR | analisis/2026-11-14-dossier-v2.md ...
+[176/376] [OK] FR | analisis/2026-11-14-dossier-v2.md | motor=partial-fallback | 126.8s
+[177/376] -> DE | analisis/2026-11-14-dossier-v2.md ...
+[177/376] [OK] DE | analisis/2026-11-14-dossier-v2.md | motor=partial-fallback | 125.1s
+[178/376] -> PT | analisis/2026-11-14-dossier-v2.md ...
+[178/376] [OK] PT | analisis/2026-11-14-dossier-v2.md | motor=partial-fallback | 125.7s
+[179/376] -> EN | analisis/2026-11-14-largo.md ...
+[179/376] [OK] EN | analisis/2026-11-14-largo.md | motor=partial-fallback | 251.7s
+[180/376] -> FR | analisis/2026-11-14-largo.md ...
+[180/376] [OK] FR | analisis/2026-11-14-largo.md | motor=partial-fallback | 251.4s
+[181/376] -> DE | analisis/2026-11-14-largo.md ...
+[181/376] [OK] DE | analisis/2026-11-14-largo.md | motor=partial-fallback | 252.2s
+[182/376] -> PT | analisis/2026-11-14-largo.md ...
+[182/376] [OK] PT | analisis/2026-11-14-largo.md | motor=partial-fallback | 250.4s
+[183/376] -> EN | analisis/2026-11-14-mediano-dossier.md ...
+[183/376] [OK] EN | analisis/2026-11-14-mediano-dossier.md | motor=partial-fallback | 125.0s
+[184/376] -> FR | analisis/2026-11-14-mediano-dossier.md ...
+[184/376] [OK] FR | analisis/2026-11-14-mediano-dossier.md | motor=partial-fallback | 125.0s
+[185/376] -> DE | analisis/2026-11-14-mediano-dossier.md ...
+[185/376] [OK] DE | analisis/2026-11-14-mediano-dossier.md | motor=partial-fallback | 125.1s
+[186/376] -> PT | analisis/2026-11-14-mediano-dossier.md ...
+[186/376] [OK] PT | analisis/2026-11-14-mediano-dossier.md | motor=partial-fallback | 126.8s
+[187/376] -> EN | analisis/2026-11-15-dossier-v2.md ...
+[187/376] [OK] EN | analisis/2026-11-15-dossier-v2.md | motor=partial-fallback | 211.5s
+[188/376] -> FR | analisis/2026-11-15-dossier-v2.md ...
+E | analisis/2026-11-12-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 178.8s
+[159/374 de 376] -> EN | analisis/2026-11-12-mediano-cita.md ...
+[158/374] [OK] PT | analisis/2026-11-12-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 178.5s
+[160/374 de 376] -> FR | analisis/2026-11-12-mediano-cita.md ...
+[155/374] [OK] EN | analisis/2026-11-12-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-2(gemini-4-hydrogen)+gemini-1(gemini-3.5-flash-lite) | 225.1s
+[161/374 de 376] -> DE | analisis/2026-11-12-mediano-cita.md ...
+[159/374] [OK] EN | analisis/2026-11-12-mediano-cita.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 90.1s
+[162/374 de 376] -> PT | analisis/2026-11-12-mediano-cita.md ...
+[160/374] [OK] FR | analisis/2026-11-12-mediano-cita.md | motor=gemini-1(gemini-3.5-flash-lite) | 83.8s
+[163/374 de 376] -> EN | analisis/2026-11-13-dossier-v2.md ...
+[161/374] [OK] DE | analisis/2026-11-12-mediano-cita.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 98.1s
+[164/374 de 376] -> FR | analisis/2026-11-13-dossier-v2.md ...
+[156/374] [OK] FR | analisis/2026-11-12-largo.md | motor=gemini-4(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-2(gemini-4-hydrogen) | 353.3s
+[165/374 de 376] -> DE | analisis/2026-11-13-dossier-v2.md ...
+[162/374] [OK] PT | analisis/2026-11-12-mediano-cita.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 84.2s
+[166/374 de 376] -> PT | analisis/2026-11-13-dossier-v2.md ...
+[163/374] [OK] EN | analisis/2026-11-13-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 133.5s
+[167/374 de 376] -> EN | analisis/2026-11-13-largo.md ...
+[164/374] [OK] FR | analisis/2026-11-13-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite) | 131.9s
+[168/374 de 376] -> FR | analisis/2026-11-13-largo.md ...
+[165/374] [OK] DE | analisis/2026-11-13-dossier-v2.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 138.0s
+[169/374 de 376] -> DE | analisis/2026-11-13-largo.md ...
+[166/374] [OK] PT | analisis/2026-11-13-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 138.7s
+[170/374 de 376] -> PT | analisis/2026-11-13-largo.md ...
+[167/374] [OK] EN | analisis/2026-11-13-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 148.5s
+[171/374 de 376] -> EN | analisis/2026-11-13-mediano-medio_analizado.md ...
+[168/374] [OK] FR | analisis/2026-11-13-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 134.6s
+[172/374 de 376] -> FR | analisis/2026-11-13-mediano-medio_analizado.md ...
+[169/374] [OK] DE | analisis/2026-11-13-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 152.1s
+[173/374 de 376] -> DE | analisis/2026-11-13-mediano-medio_analizado.md ...
+[171/374] [OK] EN | analisis/2026-11-13-mediano-medio_analizado.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 81.4s
+[174/374 de 376] -> PT | analisis/2026-11-13-mediano-medio_analizado.md ...
+[172/374] [OK] FR | analisis/2026-11-13-mediano-medio_analizado.md | motor=gemini-1(gemini-3.5-flash-lite) | 74.4s
+[175/374 de 376] -> EN | analisis/2026-11-14-dossier-v2.md ...
+[173/374] [OK] DE | analisis/2026-11-13-mediano-medio_analizado.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 79.9s
+[176/374 de 376] -> FR | analisis/2026-11-14-dossier-v2.md ...
+[174/374] [OK] PT | analisis/2026-11-13-mediano-medio_analizado.md | motor=gemini-1(gemini-3.5-flash-lite) | 74.8s
+[177/374 de 376] -> DE | analisis/2026-11-14-dossier-v2.md ...
+[175/374] [OK] EN | analisis/2026-11-14-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-4-hydrogen) | 129.5s
+[178/374 de 376] -> PT | analisis/2026-11-14-dossier-v2.md ...
+[177/374] [OK] DE | analisis/2026-11-14-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite) | 78.1s
+[179/374 de 376] -> EN | analisis/2026-11-14-largo.md ...
+[176/374] [OK] FR | analisis/2026-11-14-dossier-v2.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 126.0s
+[180/374 de 376] -> FR | analisis/2026-11-14-largo.md ...
+[170/374] [OK] PT | analisis/2026-11-13-largo.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 354.9s
+[181/374 de 376] -> DE | analisis/2026-11-14-largo.md ...
+[178/374] [OK] PT | analisis/2026-11-14-dossier-v2.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 131.4s
+[182/374 de 376] -> PT | analisis/2026-11-14-largo.md ...
+[179/374] [OK] EN | analisis/2026-11-14-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 158.7s
+[183/374 de 376] -> EN | analisis/2026-11-14-mediano-dossier.md ...
+[180/374] [OK] FR | analisis/2026-11-14-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 161.8s
+[184/374 de 376] -> FR | analisis/2026-11-14-mediano-dossier.md ...
+[183/374] [OK] EN | analisis/2026-11-14-mediano-dossier.md | motor=gemini-1(gemini-3.5-flash-lite) | 74.8s
+[185/374 de 376] -> DE | analisis/2026-11-14-mediano-dossier.md ...
+[181/374] [OK] DE | analisis/2026-11-14-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-4-hydrogen) | 195.2s
+[186/374 de 376] -> PT | analisis/2026-11-14-mediano-dossier.md ...
+[184/374] [OK] FR | analisis/2026-11-14-mediano-dossier.md | motor=gemini-1(gemini-3.5-flash-lite) | 77.1s
+[187/374 de 376] -> EN | analisis/2026-11-15-dossier-v2.md ...
+[185/374] [OK] DE | analisis/2026-11-14-mediano-dossier.md | motor=gemini-1(gemini-3.5-flash-lite) | 76.2s
+[188/374 de 376] -> FR | analisis/2026-11-15-dossier-v2.md ...
+[186/374] [OK] PT | analisis/2026-11-14-mediano-dossier.md | motor=gemini-1(gemini-3.5-flash-lite) | 77.2s
+[189/374 de 376] -> DE | analisis/2026-11-15-dossier-v2.md ...
+[182/374] [OK] PT | analisis/2026-11-14-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 210.0s
+[190/374 de 376] -> PT | analisis/2026-11-15-dossier-v2.md ...
+[187/374] [OK] EN | analisis/2026-11-15-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 137.4s
+[191/374 de 376] -> EN | analisis/2026-11-15-largo.md ...
+[188/374] [OK] FR | analisis/2026-11-15-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite) | 130.2s
+[192/374 de 376] -> FR | analisis/2026-11-15-largo.md ...
+[190/374] [OK] PT | analisis/2026-11-15-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 133.8s
+[193/374 de 376] -> DE | analisis/2026-11-15-largo.md ...
+[189/374] [OK] DE | analisis/2026-11-15-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 146.3s
+[194/374 de 376] -> PT | analisis/2026-11-15-largo.md ...
+[193/374] [OK] DE | analisis/2026-11-15-largo.md | motor=gemini-1(gemini-3.5-flash-lite) | 128.4s
+[195/374 de 376] -> EN | analisis/2026-11-15-mediano-medio_crudo.md ...
+[191/374] [OK] EN | analisis/2026-11-15-largo.md | motor=gemini-3(gemini-4-hydrogen)+gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 173.6s
+[196/374 de 376] -> FR | analisis/2026-11-15-mediano-medio_crudo.md ...
+[194/374] [OK] PT | analisis/2026-11-15-largo.md | motor=gemini-1(gemini-3.5-flash-lite) | 127.4s
+[197/374 de 376] -> DE | analisis/2026-11-15-mediano-medio_crudo.md ...
+[195/374] [OK] EN | analisis/2026-11-15-mediano-medio_crudo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 56.0s
+[198/374 de 376] -> PT | analisis/2026-11-15-mediano-medio_crudo.md ...
+[196/374] [OK] FR | analisis/2026-11-15-mediano-medio_crudo.md | motor=gemini-1(gemini-3.5-flash-lite) | 50.2s
+[199/374 de 376] -> EN | analisis/2026-11-16-dossier-v2.md ...
+[197/374] [OK] DE | analisis/2026-11-15-mediano-medio_crudo.md | motor=gemini-1(gemini-3.5-flash-lite) | 50.5s
+[200/374 de 376] -> FR | analisis/2026-11-16-dossier-v2.md ...
+[192/374] [OK] FR | analisis/2026-11-15-largo.md | motor=gemini-4(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 231.1s
+[201/374 de 376] -> DE | analisis/2026-11-16-dossier-v2.md ...
+[198/374] [OK] PT | analisis/2026-11-15-mediano-medio_crudo.md | motor=gemini-1(gemini-3.5-flash-lite) | 50.3s
+[202/374 de 376] -> PT | analisis/2026-11-16-dossier-v2.md ...
+[200/374] [OK] FR | analisis/2026-11-16-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite) | 77.1s
+[203/374 de 376] -> EN | analisis/2026-11-16-largo.md ...
+[199/374] [OK] EN | analisis/2026-11-16-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 83.4s
+[204/374 de 376] -> FR | analisis/2026-11-16-largo.md ...
+[201/374] [OK] DE | analisis/2026-11-16-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 93.9s
+[205/374 de 376] -> DE | analisis/2026-11-16-largo.md ...
+[202/374] [OK] PT | analisis/2026-11-16-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 103.9s
+[206/374 de 376] -> PT | analisis/2026-11-16-largo.md ...
+[204/374] [OK] FR | analisis/2026-11-16-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 123.7s
+[207/374 de 376] -> EN | analisis/2026-11-16-mediano-quirurgico.md ...
+[205/374] [OK] DE | analisis/2026-11-16-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 110.6s
+[208/374 de 376] -> FR | analisis/2026-11-16-mediano-quirurgico.md ...
+[206/374] [OK] PT | analisis/2026-11-16-largo.md | motor=gemini-1(gemini-3.5-flash-lite) | 100.6s
+[209/374 de 376] -> DE | analisis/2026-11-16-mediano-quirurgico.md ...
+[207/374] [OK] EN | analisis/2026-11-16-mediano-quirurgico.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 82.5s
+[210/374 de 376] -> PT | analisis/2026-11-16-mediano-quirurgico.md ...
+[208/374] [OK] FR | analisis/2026-11-16-mediano-quirurgico.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 81.7s
+[211/374 de 376] -> EN | analisis/2026-11-17-dossier-v2.md ...
+[203/374] [OK] EN | analisis/2026-11-16-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+partial-fallback+gemini-2(gemini-3.5-flash-lite) | 253.1s
+[212/374 de 376] -> FR | analisis/2026-11-17-dossier-v2.md ...
+[210/374] [OK] PT | analisis/2026-11-16-mediano-quirurgico.md | motor=gemini-1(gemini-3.5-flash-lite) | 78.1s
+[213/374 de 376] -> DE | analisis/2026-11-17-dossier-v2.md ...
+[212/374] [OK] FR | analisis/2026-11-17-dossier-v2.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 125.5s
+[214/374 de 376] -> PT | analisis/2026-11-17-dossier-v2.md ...
+[213/374] [OK] DE | analisis/2026-11-17-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 123.9s
+[215/374 de 376] -> EN | analisis/2026-11-17-largo.md ...
+[209/374] [OK] DE | analisis/2026-11-16-mediano-quirurgico.md | motor=partial-fallback+gemini-1(gemini-3.5-flash-lite) | 250.3s
+[216/374 de 376] -> FR | analisis/2026-11-17-largo.md ...
+[211/374] [OK] EN | analisis/2026-11-17-dossier-v2.md | motor=gemini-4(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 238.5s
+[217/374 de 376] -> DE | analisis/2026-11-17-largo.md ...
+[214/374] [OK] PT | analisis/2026-11-17-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 159.3s
+[218/374 de 376] -> PT | analisis/2026-11-17-largo.md ...
+[215/374] [OK] EN | analisis/2026-11-17-largo.md | motor=gemini-1(gemini-3.5-flash-lite) | 178.1s
+[219/374 de 376] -> EN | analisis/2026-11-17-mediano-tutorial.md ...
+[216/374] [OK] FR | analisis/2026-11-17-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 228.3s
+[220/374 de 376] -> FR | analisis/2026-11-17-mediano-tutorial.md ...
+[217/374] [OK] DE | analisis/2026-11-17-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 201.1s
+[221/374 de 376] -> DE | analisis/2026-11-17-mediano-tutorial.md ...
+[219/374] [OK] EN | analisis/2026-11-17-mediano-tutorial.md | motor=gemini-1(gemini-3.5-flash-lite) | 99.6s
+[222/374 de 376] -> PT | analisis/2026-11-17-mediano-tutorial.md ...
+[218/374] [OK] PT | analisis/2026-11-17-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite) | 158.1s
+[223/374 de 376] -> EN | analisis/2026-11-18-dossier-v2.md ...
+[220/374] [OK] FR | analisis/2026-11-17-mediano-tutorial.md | motor=gemini-1(gemini-3.5-flash-lite) | 100.6s
+[224/374 de 376] -> FR | analisis/2026-11-18-dossier-v2.md ...
+[221/374] [OK] DE | analisis/2026-11-17-mediano-tutorial.md | motor=gemini-1(gemini-3.5-flash-lite) | 100.9s
+[225/374 de 376] -> DE | analisis/2026-11-18-dossier-v2.md ...
+[223/374] [OK] EN | analisis/2026-11-18-dossier-v2.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 87.7s
+[226/374 de 376] -> PT | analisis/2026-11-18-dossier-v2.md ...
+[222/374] [OK] PT | analisis/2026-11-17-mediano-tutorial.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 106.6s
+[227/374 de 376] -> EN | analisis/2026-11-18-largo.md ...
+[224/374] [OK] FR | analisis/2026-11-18-dossier-v2.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 99.8s
+[228/374 de 376] -> FR | analisis/2026-11-18-largo.md ...
+[226/374] [OK] PT | analisis/2026-11-18-dossier-v2.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 101.0s
+[229/374 de 376] -> DE | analisis/2026-11-18-largo.md ...
+[225/374] [OK] DE | analisis/2026-11-18-dossier-v2.md | motor=gemini-4(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 145.1s
+[230/374 de 376] -> PT | analisis/2026-11-18-largo.md ...
+[227/374] [OK] EN | analisis/2026-11-18-largo.md | motor=gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 147.9s
+[231/374 de 376] -> EN | analisis/2026-11-18-mediano-radar.md ...
+[231/374] [OK] EN | analisis/2026-11-18-mediano-radar.md | motor=gemini-2(gemini-3.5-flash-lite) | 136.5s
+[232/374 de 376] -> FR | analisis/2026-11-18-mediano-radar.md ...
+[229/374] [OK] DE | analisis/2026-11-18-largo.md | motor=gemini-2(gemini-3.5-flash-lite) | 203.5s
+[233/374 de 376] -> DE | analisis/2026-11-18-mediano-radar.md ...
+[228/374] [OK] FR | analisis/2026-11-18-largo.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite) | 246.5s
+[234/374 de 376] -> PT | analisis/2026-11-18-mediano-radar.md ...
+[230/374] [OK] PT | analisis/2026-11-18-largo.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 234.9s
+[235/374 de 376] -> EN | analisis/2026-11-19-dossier-v2.md ...
+[232/374] [OK] FR | analisis/2026-11-18-mediano-radar.md | motor=gemini-2(gemini-3.5-flash-lite) | 120.1s
+[236/374 de 376] -> FR | analisis/2026-11-19-dossier-v2.md ...
+[234/374] [OK] PT | analisis/2026-11-18-mediano-radar.md | motor=gemini-3(gemini-3.5-flash-lite) | 728.0s
+[237/374 de 376] -> DE | analisis/2026-11-19-dossier-v2.md ...
+[233/374] [OK] DE | analisis/2026-11-18-mediano-radar.md | motor=gemini-2(gemini-3.5-flash-lite)+partial-fallback | 759.3s
+[238/374 de 376] -> PT | analisis/2026-11-19-dossier-v2.md ...
+[235/374] [OK] EN | analisis/2026-11-19-dossier-v2.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 804.8s
+[239/374 de 376] -> EN | analisis/2026-11-19-largo.md ...
+[236/374] [OK] FR | analisis/2026-11-19-dossier-v2.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 808.5s
+[240/374 de 376] -> FR | analisis/2026-11-19-largo.md ...
+[238/374] [OK] PT | analisis/2026-11-19-dossier-v2.md | motor=gemini-2(gemini-3.5-flash-lite) | 493.1s
+[241/374 de 376] -> DE | analisis/2026-11-19-largo.md ...
+[237/374] [OK] DE | analisis/2026-11-19-dossier-v2.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite) | 516.7s
+[242/374 de 376] -> PT | analisis/2026-11-19-largo.md ...
+[239/374] [OK] EN | analisis/2026-11-19-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)+partial-fallback | 535.4s
+[243/374 de 376] -> EN | analisis/2026-11-19-mediano-cita.md ...
+[240/374] [OK] FR | analisis/2026-11-19-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite) | 491.9s
+[244/374 de 376] -> FR | analisis/2026-11-19-mediano-cita.md ...
+[243/374] [OK] EN | analisis/2026-11-19-mediano-cita.md | motor=gemini-2(gemini-3.5-flash-lite) | 89.6s
+[245/374 de 376] -> DE | analisis/2026-11-19-mediano-cita.md ...
+[241/374] [OK] DE | analisis/2026-11-19-largo.md | motor=gemini-4(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite) | 245.6s
+[246/374 de 376] -> PT | analisis/2026-11-19-mediano-cita.md ...
+[242/374] [OK] PT | analisis/2026-11-19-largo.md | motor=gemini-2(gemini-3.5-flash-lite)+partial-fallback+gemini-3(gemini-3.5-flash-lite) | 249.9s
+[247/374 de 376] -> EN | analisis/2026-11-21/angulo.md ...
+[244/374] [OK] FR | analisis/2026-11-19-mediano-cita.md | motor=gemini-3(gemini-3.5-flash-lite) | 108.5s
+[248/374 de 376] -> FR | analisis/2026-11-21/angulo.md ...
+[245/374] [OK] DE | analisis/2026-11-19-mediano-cita.md | motor=gemini-2(gemini-3.5-flash-lite) | 90.1s
+[249/374 de 376] -> DE | analisis/2026-11-21/angulo.md ...
+[246/374] [OK] PT | analisis/2026-11-19-mediano-cita.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 95.4s
+[250/374 de 376] -> PT | analisis/2026-11-21/angulo.md ...
+[247/374] [OK] EN | analisis/2026-11-21/angulo.md | motor=gemini-2(gemini-3.5-flash-lite) | 91.1s
+[251/374 de 376] -> EN | analisis/2026-11-21/index.md ...
+[249/374] [OK] DE | analisis/2026-11-21/angulo.md | motor=gemini-2(gemini-3.5-flash-lite) | 93.0s
+[252/374 de 376] -> FR | analisis/2026-11-21/index.md ...
+[250/374] [OK] PT | analisis/2026-11-21/angulo.md | motor=gemini-2(gemini-3.5-flash-lite) | 91.4s
+[253/374 de 376] -> DE | analisis/2026-11-21/index.md ...
+[248/374] [OK] FR | analisis/2026-11-21/angulo.md | motor=gemini-2(gemini-3.5-flash-lite)+partial-fallback | 173.3s
+[254/374 de 376] -> PT | analisis/2026-11-21/index.md ...
+[251/374] [OK] EN | analisis/2026-11-21/index.md | motor=gemini-2(gemini-3.5-flash-lite) | 122.2s
+[255/374 de 376] -> EN | analisis/2026-11-22/angulo.md ...
+[253/374] [OK] DE | analisis/2026-11-21/index.md | motor=gemini-2(gemini-3.5-flash-lite) | 122.8s
+[256/374 de 376] -> FR | analisis/2026-11-22/angulo.md ...
+[255/374] [OK] EN | analisis/2026-11-22/angulo.md | motor=gemini-2(gemini-3.5-flash-lite) | 91.3s
+[257/374 de 376] -> DE | analisis/2026-11-22/angulo.md ...
+[252/374] [OK] FR | analisis/2026-11-21/index.md | motor=gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite) | 132.9s
+[258/374 de 376] -> PT | analisis/2026-11-22/angulo.md ...
+[254/374] [OK] PT | analisis/2026-11-21/index.md | motor=gemini-2(gemini-3.5-flash-lite) | 122.8s
+[259/374 de 376] -> EN | analisis/2026-11-22/index.md ...
+[258/374] [OK] PT | analisis/2026-11-22/angulo.md | motor=gemini-2(gemini-3.5-flash-lite) | 91.7s
+[260/374 de 376] -> FR | analisis/2026-11-22/index.md ...
+[257/374] [OK] DE | analisis/2026-11-22/angulo.md | motor=gemini-2(gemini-3.5-flash-lite) | 96.8s
+[261/374 de 376] -> DE | analisis/2026-11-22/index.md ...
+[256/374] [OK] FR | analisis/2026-11-22/angulo.md | motor=partial-fallback+gemini-2(gemini-3.5-flash-lite) | 115.1s
+[262/374 de 376] -> PT | analisis/2026-11-22/index.md ...
+[259/374] [OK] EN | analisis/2026-11-22/index.md | motor=gemini-2(gemini-3.5-flash-lite) | 122.3s
+[263/374 de 376] -> EN | analisis/2026-11-23/angulo.md ...
+[263/374] [OK] EN | analisis/2026-11-23/angulo.md | motor=partial-fallback | 42.2s
+[264/374 de 376] -> FR | analisis/2026-11-23/angulo.md ...
+[264/374] [OK] FR | analisis/2026-11-23/angulo.md | motor=partial-fallback | 41.8s
+[265/374 de 376] -> DE | analisis/2026-11-23/angulo.md ...
+[260/374] [OK] FR | analisis/2026-11-22/index.md | motor=gemini-2(gemini-3.5-flash-lite)+partial-fallback | 156.6s
+[266/374 de 376] -> PT | analisis/2026-11-23/angulo.md ...
+[261/374] [OK] DE | analisis/2026-11-22/index.md | motor=gemini-2(gemini-3.5-flash-lite)+partial-fallback | 157.1s
+[267/374 de 376] -> EN | analisis/2026-11-23/dossier.md ...
+[265/374] [OK] DE | analisis/2026-11-23/angulo.md | motor=partial-fallback | 41.9s
+[268/374 de 376] -> FR | analisis/2026-11-23/dossier.md ...
+[262/374] [OK] PT | analisis/2026-11-22/index.md | motor=partial-fallback | 167.7s
+[269/374 de 376] -> DE | analisis/2026-11-23/dossier.md ...
+[266/374] [OK] PT | analisis/2026-11-23/angulo.md | motor=partial-fallback | 43.9s
+[270/374 de 376] -> PT | analisis/2026-11-23/dossier.md ...
+[267/374] [OK] EN | analisis/2026-11-23/dossier.md | motor=partial-fallback | 42.0s
+[271/374 de 376] -> EN | analisis/2026-11-23/index.md ...
+[268/374] [OK] FR | analisis/2026-11-23/dossier.md | motor=partial-fallback | 42.0s
+[272/374 de 376] -> FR | analisis/2026-11-23/index.md ...
+[269/374] [OK] DE | analisis/2026-11-23/dossier.md | motor=partial-fallback | 42.0s
+[273/374 de 376] -> DE | analisis/2026-11-23/index.md ...
+[270/374] [OK] PT | analisis/2026-11-23/dossier.md | motor=partial-fallback | 42.0s
+[274/374 de 376] -> PT | analisis/2026-11-23/index.md ...
+[271/374] [OK] EN | analisis/2026-11-23/index.md | motor=partial-fallback | 41.8s
+[275/374 de 376] -> EN | analisis/2026-11-23/pildora.md ...
+[272/374] [OK] FR | analisis/2026-11-23/index.md | motor=partial-fallback | 41.8s
+[276/374 de 376] -> FR | analisis/2026-11-23/pildora.md ...
+[273/374] [OK] DE | analisis/2026-11-23/index.md | motor=partial-fallback | 41.7s
+[277/374 de 376] -> DE | analisis/2026-11-23/pildora.md ...
+[274/374] [OK] PT | analisis/2026-11-23/index.md | motor=partial-fallback | 41.9s
+[278/374 de 376] -> PT | analisis/2026-11-23/pildora.md ...
+[275/374] [OK] EN | analisis/2026-11-23/pildora.md | motor=partial-fallback | 41.9s
+[279/374 de 376] -> EN | analisis/index.md ...
+[276/374] [OK] FR | analisis/2026-11-23/pildora.md | motor=partial-fallback | 41.8s
+[280/374 de 376] -> FR | analisis/index.md ...
+[277/374] [OK] DE | analisis/2026-11-23/pildora.md | motor=partial-fallback | 41.7s
+[281/374 de 376] -> DE | analisis/index.md ...
+[278/374] [OK] PT | analisis/2026-11-23/pildora.md | motor=partial-fallback | 41.8s
+[282/374 de 376] -> PT | analisis/index.md ...
+[280/374] [OK] FR | analisis/index.md | motor=partial-fallback | 335.2s
+[283/374 de 376] -> EN | citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md ...
+[279/374] [OK] EN | analisis/index.md | motor=partial-fallback | 335.8s
+[284/374 de 376] -> FR | citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md ...
+[281/374] [OK] DE | analisis/index.md | motor=partial-fallback | 335.8s
+[285/374 de 376] -> DE | citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md ...
+[284/374] [OK] FR | citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md | motor=partial-fallback | 41.9s
+[286/374 de 376] -> PT | citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md ...
+[282/374] [OK] PT | analisis/index.md | motor=partial-fallback | 337.0s
+[287/374 de 376] -> EN | glosario.md ...
+[283/374] [OK] EN | citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md | motor=partial-fallback | 42.2s
+[288/374 de 376] -> FR | glosario.md ...
+[285/374] [OK] DE | citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md | motor=partial-fallback | 42.0s
+[289/374 de 376] -> DE | glosario.md ...
+[286/374] [OK] PT | citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md | motor=partial-fallback | 42.2s
+[290/374 de 376] -> PT | glosario.md ...
+[288/374] [OK] FR | glosario.md | motor=partial-fallback | 168.6s
+[291/374 de 376] -> EN | index.md ...
+[287/374] [OK] EN | glosario.md | motor=partial-fallback | 168.9s
+[292/374 de 376] -> FR | index.md ...
+[289/374] [OK] DE | glosario.md | motor=partial-fallback | 169.3s
+[293/374 de 376] -> DE | index.md ...
+[290/374] [OK] PT | glosario.md | motor=partial-fallback | 168.7s
+[294/374 de 376] -> PT | index.md ...
+[292/374] [OK] FR | index.md | motor=partial-fallback | 84.6s
+[295/374 de 376] -> EN | noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md ...
+[291/374] [OK] EN | index.md | motor=partial-fallback | 85.3s
+[296/374 de 376] -> FR | noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md ...
+[293/374] [OK] DE | index.md | motor=partial-fallback | 84.3s
+[297/374 de 376] -> DE | noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md ...
+[295/374] [OK] EN | noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md | motor=partial-fallback | 41.8s
+[298/374 de 376] -> PT | noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md ...
+[294/374] [OK] PT | index.md | motor=partial-fallback | 84.7s
+[299/374 de 376] -> EN | noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md ...
+[296/374] [OK] FR | noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md | motor=partial-fallback | 42.1s
+[300/374 de 376] -> FR | noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md ...
+[297/374] [OK] DE | noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md | motor=partial-fallback | 42.1s
+[301/374 de 376] -> DE | noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md ...
+[298/374] [OK] PT | noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md | motor=partial-fallback | 41.9s
+[302/374 de 376] -> PT | noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md ...
+[299/374] [OK] EN | noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md | motor=partial-fallback | 41.8s
+[303/374 de 376] -> EN | noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md ...
+[300/374] [OK] FR | noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md | motor=partial-fallback | 41.9s
+[304/374 de 376] -> FR | noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md ...
+[301/374] [OK] DE | noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md | motor=partial-fallback | 42.0s
+[305/374 de 376] -> DE | noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md ...
+[303/374] [OK] EN | noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md | motor=partial-fallback | 41.8s
+[306/374 de 376] -> PT | noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md ...
+[302/374] [OK] PT | noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md | motor=partial-fallback | 42.2s
+[307/374 de 376] -> EN | noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md ...
+[304/374] [OK] FR | noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md | motor=partial-fallback | 42.0s
+[308/374 de 376] -> FR | noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md ...
+[305/374] [OK] DE | noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md | motor=partial-fallback | 41.9s
+[309/374 de 376] -> DE | noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md ...
+[306/374] [OK] PT | noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md | motor=partial-fallback | 42.0s
+[310/374 de 376] -> PT | noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md ...
+[307/374] [OK] EN | noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md | motor=partial-fallback | 42.1s
+[311/374 de 376] -> EN | noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md ...
+[308/374] [OK] FR | noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md | motor=partial-fallback | 41.7s
+[312/374 de 376] -> FR | noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md ...
+[309/374] [OK] DE | noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md | motor=partial-fallback | 41.8s
+[313/374 de 376] -> DE | noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md ...
+[310/374] [OK] PT | noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md | motor=partial-fallback | 41.8s
+[314/374 de 376] -> PT | noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md ...
+[311/374] [OK] EN | noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md | motor=partial-fallback | 41.8s
+[315/374 de 376] -> EN | noticias/2026-11-21/007-ley-energia-renovable.md ...
+[312/374] [OK] FR | noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md | motor=partial-fallback | 41.8s
+[316/374 de 376] -> FR | noticias/2026-11-21/007-ley-energia-renovable.md ...
+[313/374] [OK] DE | noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md | motor=partial-fallback | 41.9s
+[317/374 de 376] -> DE | noticias/2026-11-21/007-ley-energia-renovable.md ...
+[314/374] [OK] PT | noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md | motor=partial-fallback | 41.9s
+[318/374 de 376] -> PT | noticias/2026-11-21/007-ley-energia-renovable.md ...
+[315/374] [OK] EN | noticias/2026-11-21/007-ley-energia-renovable.md | motor=partial-fallback | 41.8s
+[319/374 de 376] -> EN | noticias/2026-11-21/008-informe-pobreza-clima-bbc.md ...
+[316/374] [OK] FR | noticias/2026-11-21/007-ley-energia-renovable.md | motor=partial-fallback | 41.8s
+[320/374 de 376] -> FR | noticias/2026-11-21/008-informe-pobreza-clima-bbc.md ...
+[317/374] [OK] DE | noticias/2026-11-21/007-ley-energia-renovable.md | motor=partial-fallback | 42.1s
+[321/374 de 376] -> DE | noticias/2026-11-21/008-informe-pobreza-clima-bbc.md ...
+[318/374] [OK] PT | noticias/2026-11-21/007-ley-energia-renovable.md | motor=partial-fallback | 42.2s
+[322/374 de 376] -> PT | noticias/2026-11-21/008-informe-pobreza-clima-bbc.md ...
+[319/374] [OK] EN | noticias/2026-11-21/008-informe-pobreza-clima-bbc.md | motor=partial-fallback | 42.1s
+[323/374 de 376] -> EN | noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md ...
+[320/374] [OK] FR | noticias/2026-11-21/008-informe-pobreza-clima-bbc.md | motor=partial-fallback | 42.3s
+[324/374 de 376] -> FR | noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md ...
+[321/374] [OK] DE | noticias/2026-11-21/008-informe-pobreza-clima-bbc.md | motor=partial-fallback | 42.3s
+[325/374 de 376] -> DE | noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md ...
+[322/374] [OK] PT | noticias/2026-11-21/008-informe-pobreza-clima-bbc.md | motor=partial-fallback | 41.7s
+[326/374 de 376] -> PT | noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md ...
+[323/374] [OK] EN | noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md | motor=partial-fallback | 42.0s
+[327/374 de 376] -> EN | noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md ...
+[324/374] [OK] FR | noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md | motor=partial-fallback | 41.9s
+[328/374 de 376] -> FR | noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md ...
+[325/374] [OK] DE | noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md | motor=partial-fallback | 41.9s
+[329/374 de 376] -> DE | noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md ...
+[326/374] [OK] PT | noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md | motor=partial-fallback | 42.0s
+[330/374 de 376] -> PT | noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md ...
+[328/374] [OK] FR | noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md | motor=partial-fallback | 41.8s
+[327/374] [OK] EN | noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md | motor=partial-fallback | 41.9s
+[331/374 de 376] -> EN | noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md ...
+[332/374 de 376] -> FR | noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md ...
+[329/374] [OK] DE | noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md | motor=partial-fallback | 41.9s
+[333/374 de 376] -> DE | noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md ...
+[330/374] [OK] PT | noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md | motor=partial-fallback | 41.8s
+[334/374 de 376] -> PT | noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md ...
+[332/374] [OK] FR | noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md | motor=partial-fallback | 42.1s
+[335/374 de 376] -> EN | noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md ...
+[331/374] [OK] EN | noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md | motor=partial-fallback | 43.8s
+[336/374 de 376] -> FR | noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md ...
+[333/374] [OK] DE | noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md | motor=partial-fallback | 41.8s
+[337/374 de 376] -> DE | noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md ...
+[334/374] [OK] PT | noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md | motor=partial-fallback | 41.7s
+[338/374 de 376] -> PT | noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md ...
+[335/374] [OK] EN | noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md | motor=partial-fallback | 42.0s
+[339/374 de 376] -> EN | noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md ...
+[336/374] [OK] FR | noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md | motor=partial-fallback | 41.8s
+[340/374 de 376] -> FR | noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md ...
+[337/374] [OK] DE | noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md | motor=partial-fallback | 41.8s
+[341/374 de 376] -> DE | noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md ...
+[338/374] [OK] PT | noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md | motor=partial-fallback | 41.9s
+[342/374 de 376] -> PT | noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md ...
+[339/374] [OK] EN | noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md | motor=partial-fallback | 41.8s
+[343/374 de 376] -> EN | noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md ...
+[340/374] [OK] FR | noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md | motor=partial-fallback | 41.9s
+[344/374 de 376] -> FR | noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md ...
+[341/374] [OK] DE | noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md | motor=partial-fallback | 41.8s
+[345/374 de 376] -> DE | noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md ...
+[342/374] [OK] PT | noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md | motor=partial-fallback | 41.7s
+[346/374 de 376] -> PT | noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md ...
+[343/374] [OK] EN | noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md | motor=partial-fallback | 41.9s
+[347/374 de 376] -> EN | noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md ...
+[344/374] [OK] FR | noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md | motor=partial-fallback | 42.1s
+[348/374 de 376] -> FR | noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md ...
+[345/374] [OK] DE | noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md | motor=partial-fallback | 42.1s
+[349/374 de 376] -> DE | noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md ...
+[346/374] [OK] PT | noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md | motor=partial-fallback | 42.1s
+[350/374 de 376] -> PT | noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md ...
+[347/374] [OK] EN | noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md | motor=partial-fallback | 41.9s
+[351/374 de 376] -> EN | noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md ...
+[348/374] [OK] FR | noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md | motor=partial-fallback | 42.2s
+[352/374 de 376] -> FR | noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md ...
+[349/374] [OK] DE | noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md | motor=partial-fallback | 42.0s
+[353/374 de 376] -> DE | noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md ...
+[350/374] [OK] PT | noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md | motor=partial-fallback | 42.4s
+[354/374 de 376] -> PT | noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md ...
+[351/374] [OK] EN | noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md | motor=partial-fallback | 41.8s
+[355/374 de 376] -> EN | noticias/2026-11-23/006-noticia.md ...
+[352/374] [OK] FR | noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md | motor=partial-fallback | 41.9s
+[356/374 de 376] -> FR | noticias/2026-11-23/006-noticia.md ...
+[353/374] [OK] DE | noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md | motor=partial-fallback | 42.0s
+[357/374 de 376] -> DE | noticias/2026-11-23/006-noticia.md ...
+[354/374] [OK] PT | noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md | motor=partial-fallback | 42.1s
+[358/374 de 376] -> PT | noticias/2026-11-23/006-noticia.md ...
+[355/374] [OK] EN | noticias/2026-11-23/006-noticia.md | motor=partial-fallback | 41.9s
+[359/374 de 376] -> EN | pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md ...
+[356/374] [OK] FR | noticias/2026-11-23/006-noticia.md | motor=partial-fallback | 41.9s
+[360/374 de 376] -> FR | pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md ...
+[357/374] [OK] DE | noticias/2026-11-23/006-noticia.md | motor=partial-fallback | 41.4s
+[361/374 de 376] -> DE | pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md ...
+[358/374] [OK] PT | noticias/2026-11-23/006-noticia.md | motor=partial-fallback | 41.4s
+[362/374 de 376] -> PT | pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md ...
+[359/374] [OK] EN | pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md | motor=partial-fallback | 41.2s
+[363/374 de 376] -> EN | pildoras/2026-11-21/010-velocidad-de-la-luz.md ...
+[360/374] [OK] FR | pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md | motor=partial-fallback | 41.6s
+[364/374 de 376] -> FR | pildoras/2026-11-21/010-velocidad-de-la-luz.md ...
+[361/374] [OK] DE | pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md | motor=partial-fallback | 41.4s
+[365/374 de 376] -> DE | pildoras/2026-11-21/010-velocidad-de-la-luz.md ...
+[362/374] [OK] PT | pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md | motor=partial-fallback | 41.3s
+[366/374 de 376] -> PT | pildoras/2026-11-21/010-velocidad-de-la-luz.md ...
+[363/374] [OK] EN | pildoras/2026-11-21/010-velocidad-de-la-luz.md | motor=partial-fallback | 41.4s
+[367/374 de 376] -> EN | podcast/index.md ...
+[364/374] [OK] FR | pildoras/2026-11-21/010-velocidad-de-la-luz.md | motor=partial-fallback | 41.3s
+[368/374 de 376] -> FR | podcast/index.md ...
+[365/374] [OK] DE | pildoras/2026-11-21/010-velocidad-de-la-luz.md | motor=partial-fallback | 41.2s
+[369/374 de 376] -> DE | podcast/index.md ...
+[366/374] [OK] PT | pildoras/2026-11-21/010-velocidad-de-la-luz.md | motor=partial-fallback | 41.4s
+[370/374 de 376] -> PT | podcast/index.md ...
+[367/374] [OK] EN | podcast/index.md | motor=partial-fallback | 41.3s
+[371/374 de 376] -> EN | sobre.md ...
+[368/374] [OK] FR | podcast/index.md | motor=partial-fallback | 41.7s
+[372/374 de 376] -> FR | sobre.md ...
+[369/374] [OK] DE | podcast/index.md | motor=partial-fallback | 41.3s
+[373/374 de 376] -> DE | sobre.md ...
+[370/374] [OK] PT | podcast/index.md | motor=partial-fallback | 41.3s
+[374/374 de 376] -> PT | sobre.md ...
+[371/374] [OK] EN | sobre.md | motor=partial-fallback | 41.3s
+[372/374] [OK] FR | sobre.md | motor=partial-fallback | 41.2s
+[373/374] [OK] DE | sobre.md | motor=partial-fallback | 42.9s
+[374/374] [OK] PT | sobre.md | motor=partial-fallback | 42.0s
+OK: procesados=374 | traducidos_ia=374 | fallback=0 | nodos_activos=8 | motores={'gemini-1(gemini-3.5-flash-lite)': 41, 'gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)': 14, 'gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 29, 'gemini-2(gemini-4-hydrogen)+gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 1, 'gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)': 1, 'gemini-4(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-4-hydrogen)': 1, 'gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 2, 'gemini-1(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 1, 'gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)': 14, 'gemini-2(gemini-3.5-flash-lite)': 35, 'gemini-3(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 2, 'gemini-4(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)': 3, 'gemini-2(gemini-3.5-flash-lite)+partial-fallback': 5, 'gemini-4(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 3, 'gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 15, 'gemini-4(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 3, 'partial-fallback+gemini-2(gemini-3.5-flash-lite)': 4, 'gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)': 4, 'gemini-2(gemini-3.5-flash-lite)+partial-fallback+gemini-3(gemini-3.5-flash-lite)': 2, 'gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-4-hydrogen)': 2, 'gemini-3(gemini-3.5-flash-lite)+partial-fallback+gemini-2(gemini-3.5-flash-lite)': 1, 'gemini-4(gemini-4-hydrogen)+gemini-2(gemini-3.5-flash-lite)': 1, 'gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)': 6, 'gemini-4(gemini-3.5-flash-lite)+partial-fallback': 1, 'gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)': 2, 'partial-fallback+gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-4-hydrogen)': 1, 'gemini-4(gemini-4-hydrogen)+gemini-4(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 1, 'gemini-4(gemini-4-hydrogen)+gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 1, 'partial-fallback+gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)': 1, 'partial-fallback+gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 1, 'gemini-4(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+partial-fallback': 1, 'gemini-3(gemini-3.5-flash-lite)': 14, 'gemini-4(gemini-3.5-flash-lite)+partial-fallback+gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)': 1, 'gemini-3(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)': 4, 'gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)+partial-fallback': 1, 'gemini-4(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)': 1, 'partial-fallback+gemini-3(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)': 1, 'gemini-4(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)+partial-fallback': 2, 'gemini-3(gemini-3.5-flash-lite)+partial-fallback': 3, 'gemini-3(gemini-3.5-flash-lite)+partial-fallback+gemini-4(gemini-3.5-flash-lite)': 1, 'gemini-3(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)+partial-fallback': 1, 'gemini-3(gemini-3.5-flash-lite)+partial-fallback+gemini-1(gemini-3.5-flash-lite)': 2, 'gemini-4(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)': 3, 'gemini-2(gemini-4-hydrogen)+gemini-1(gemini-3.5-flash-lite)': 1, 'gemini-1(gemini-3.5-flash-lite)+gemini-1(gemini-4-hydrogen)': 3, 'gemini-1(gemini-4-hydrogen)+gemini-1(gemini-3.5-flash-lite)': 1, 'gemini-1(gemini-4-hydrogen)+gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 1, 'gemini-2(gemini-4-hydrogen)+gemini-3(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)': 1, 'gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)': 3, 'gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)': 3, 'gemini-2(gemini-3.5-flash-lite)+gemini-2(gemini-4-hydrogen)+gemini-1(gemini-3.5-flash-lite)': 1, 'gemini-4(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-2(gemini-4-hydrogen)': 1, 'gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-4-hydrogen)': 2, 'gemini-3(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)': 2, 'gemini-3(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 2, 'gemini-3(gemini-4-hydrogen)+gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)': 1, 'gemini-1(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)': 1, 'gemini-1(gemini-3.5-flash-lite)+partial-fallback+gemini-2(gemini-3.5-flash-lite)': 1, 'partial-fallback+gemini-1(gemini-3.5-flash-lite)': 1, 'gemini-2(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)': 1, 'gemini-2(gemini-3.5-flash-lite)+gemini-4(gemini-3.5-flash-lite)+partial-fallback': 1, 'gemini-4(gemini-3.5-flash-lite)+gemini-2(gemini-3.5-flash-lite)+gemini-1(gemini-3.5-flash-lite)+gemini-3(gemini-3.5-flash-lite)': 1, 'partial-fallback': 113}
+
+[33m │  [1mMaterial for MkDocs reaches end of life on May 5, 2027.[0m
+[33m │[0m  Critical fixes and security updates continue until that date.
+[33m │[0m
+[33m │[0m  Zensical is its maintained successor, built by the same team.
+[33m │[0m  Try it alongside MkDocs with your existing mkdocs.yml:
+[33m │[0m  [36m[4mhttps://zensical.org/docs/compatibility/mkdocs/migration/[0m
+[33m │[0m
+[33m │[0m  A third-party plugin may print a separate notice recommending
+[33m │[0m  ProperDocs. That notice is not from the Material for MkDocs
+[33m │[0m  team and does not represent a recommendation from us.
+
+[90m  To disable this warning, set NO_MKDOCS_2_WARNING=1.[0m
+
+INFO    -  Cleaning site directory
+INFO    -  Building documentation to directory: /data/data/com.termux/files/home/lofiproducer-limpio/site
+INFO    -  The following pages exist in the docs directory, but are not included in the "nav" configuration:
+  - 404.md
+  - privacidad.md
+  - proximamente.md
+  - analisis/2026-10-31-dossier-v2.md
+  - analisis/2026-10-31-dossier.md
+  - analisis/2026-10-31-largo.md
+  - analisis/2026-10-31-master.md
+  - analisis/2026-10-31-mediano-dossier.md
+  - analisis/2026-11-01-dossier-v2.md
+  - analisis/2026-11-01-largo.md
+  - analisis/2026-11-01-mediano-medio_crudo.md
+  - analisis/2026-11-02-dossier-v2.md
+  - analisis/2026-11-02-largo.md
+  - analisis/2026-11-02-mediano-quirurgico.md
+  - analisis/2026-11-03-dossier-v2.md
+  - analisis/2026-11-03-largo.md
+  - analisis/2026-11-03-mediano-tutorial.md
+  - analisis/2026-11-04-dossier-v2.md
+  - analisis/2026-11-04-largo.md
+  - analisis/2026-11-04-mediano-radar.md
+  - analisis/2026-11-05-dossier-v2.md
+  - analisis/2026-11-05-largo.md
+  - analisis/2026-11-05-mediano-cita.md
+  - analisis/2026-11-06-dossier-v2.md
+  - analisis/2026-11-06-largo.md
+  - analisis/2026-11-06-mediano-medio_analizado.md
+  - analisis/2026-11-07-dossier-v2.md
+  - analisis/2026-11-07-largo.md
+  - analisis/2026-11-07-mediano-dossier.md
+  - analisis/2026-11-08-dossier-v2.md
+  - analisis/2026-11-08-largo.md
+  - analisis/2026-11-08-mediano-medio_crudo.md
+  - analisis/2026-11-09-dossier-v2.md
+  - analisis/2026-11-09-largo.md
+  - analisis/2026-11-09-mediano-quirurgico.md
+  - analisis/2026-11-10-dossier-v2.md
+  - analisis/2026-11-10-largo.md
+  - analisis/2026-11-10-mediano-tutorial.md
+  - analisis/2026-11-11-dossier-v2.md
+  - analisis/2026-11-11-largo.md
+  - analisis/2026-11-11-mediano-radar.md
+  - analisis/2026-11-12-dossier-v2.md
+  - analisis/2026-11-12-largo.md
+  - analisis/2026-11-12-mediano-cita.md
+  - analisis/2026-11-13-dossier-v2.md
+  - analisis/2026-11-13-largo.md
+  - analisis/2026-11-13-mediano-medio_analizado.md
+  - analisis/2026-11-14-dossier-v2.md
+  - analisis/2026-11-14-largo.md
+  - analisis/2026-11-14-mediano-dossier.md
+  - analisis/2026-11-15-dossier-v2.md
+  - analisis/2026-11-15-largo.md
+  - analisis/2026-11-15-mediano-medio_crudo.md
+  - analisis/2026-11-16-dossier-v2.md
+  - analisis/2026-11-16-largo.md
+  - analisis/2026-11-16-mediano-quirurgico.md
+  - analisis/2026-11-17-dossier-v2.md
+  - analisis/2026-11-17-largo.md
+  - analisis/2026-11-17-mediano-tutorial.md
+  - analisis/2026-11-18-dossier-v2.md
+  - analisis/2026-11-18-largo.md
+  - analisis/2026-11-18-mediano-radar.md
+  - analisis/2026-11-19-dossier-v2.md
+  - analisis/2026-11-19-largo.md
+  - analisis/2026-11-19-mediano-cita.md
+  - analisis/2026-11-21/angulo.md
+  - analisis/2026-11-22/angulo.md
+  - citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md
+  - de/index.md
+  - de/glosario.md
+  - de/sobre.md
+  - de/analisis/index.md
+  - de/analisis/2026-10-31-dossier-v2.md
+  - de/analisis/2026-10-31-dossier.md
+  - de/analisis/2026-10-31-largo.md
+  - de/analisis/2026-10-31-master.md
+  - de/analisis/2026-10-31-mediano-dossier.md
+  - de/analisis/2026-11-01-dossier-v2.md
+  - de/analisis/2026-11-01-largo.md
+  - de/analisis/2026-11-01-mediano-medio_crudo.md
+  - de/analisis/2026-11-02-dossier-v2.md
+  - de/analisis/2026-11-02-largo.md
+  - de/analisis/2026-11-02-mediano-quirurgico.md
+  - de/analisis/2026-11-03-dossier-v2.md
+  - de/analisis/2026-11-03-largo.md
+  - de/analisis/2026-11-03-mediano-tutorial.md
+  - de/analisis/2026-11-04-dossier-v2.md
+  - de/analisis/2026-11-04-largo.md
+  - de/analisis/2026-11-04-mediano-radar.md
+  - de/analisis/2026-11-05-dossier-v2.md
+  - de/analisis/2026-11-05-largo.md
+  - de/analisis/2026-11-05-mediano-cita.md
+  - de/analisis/2026-11-06-dossier-v2.md
+  - de/analisis/2026-11-06-largo.md
+  - de/analisis/2026-11-06-mediano-medio_analizado.md
+  - de/analisis/2026-11-07-dossier-v2.md
+  - de/analisis/2026-11-07-largo.md
+  - de/analisis/2026-11-07-mediano-dossier.md
+  - de/analisis/2026-11-08-dossier-v2.md
+  - de/analisis/2026-11-08-largo.md
+  - de/analisis/2026-11-08-mediano-medio_crudo.md
+  - de/analisis/2026-11-09-dossier-v2.md
+  - de/analisis/2026-11-09-largo.md
+  - de/analisis/2026-11-09-mediano-quirurgico.md
+  - de/analisis/2026-11-10-dossier-v2.md
+  - de/analisis/2026-11-10-largo.md
+  - de/analisis/2026-11-10-mediano-tutorial.md
+  - de/analisis/2026-11-11-dossier-v2.md
+  - de/analisis/2026-11-11-largo.md
+  - de/analisis/2026-11-11-mediano-radar.md
+  - de/analisis/2026-11-12-dossier-v2.md
+  - de/analisis/2026-11-12-largo.md
+  - de/analisis/2026-11-12-mediano-cita.md
+  - de/analisis/2026-11-13-dossier-v2.md
+  - de/analisis/2026-11-13-largo.md
+  - de/analisis/2026-11-13-mediano-medio_analizado.md
+  - de/analisis/2026-11-14-dossier-v2.md
+  - de/analisis/2026-11-14-largo.md
+  - de/analisis/2026-11-14-mediano-dossier.md
+  - de/analisis/2026-11-15-dossier-v2.md
+  - de/analisis/2026-11-15-largo.md
+  - de/analisis/2026-11-15-mediano-medio_crudo.md
+  - de/analisis/2026-11-16-dossier-v2.md
+  - de/analisis/2026-11-16-largo.md
+  - de/analisis/2026-11-16-mediano-quirurgico.md
+  - de/analisis/2026-11-17-dossier-v2.md
+  - de/analisis/2026-11-17-largo.md
+  - de/analisis/2026-11-17-mediano-tutorial.md
+  - de/analisis/2026-11-18-dossier-v2.md
+  - de/analisis/2026-11-18-largo.md
+  - de/analisis/2026-11-18-mediano-radar.md
+  - de/analisis/2026-11-19-dossier-v2.md
+  - de/analisis/2026-11-19-largo.md
+  - de/analisis/2026-11-19-mediano-cita.md
+  - de/analisis/2026-11-21/index.md
+  - de/analisis/2026-11-21/angulo.md
+  - de/analisis/2026-11-22/index.md
+  - de/analisis/2026-11-22/angulo.md
+  - de/analisis/2026-11-23/index.md
+  - de/analisis/2026-11-23/angulo.md
+  - de/analisis/2026-11-23/dossier.md
+  - de/analisis/2026-11-23/pildora.md
+  - de/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md
+  - de/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md
+  - de/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md
+  - de/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md
+  - de/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md
+  - de/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md
+  - de/noticias/2026-11-21/007-ley-energia-renovable.md
+  - de/noticias/2026-11-21/008-informe-pobreza-clima-bbc.md
+  - de/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md
+  - de/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md
+  - de/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md
+  - de/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md
+  - de/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md
+  - de/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md
+  - de/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md
+  - de/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md
+  - de/noticias/2026-11-23/006-noticia.md
+  - de/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md
+  - de/pildoras/2026-11-21/010-velocidad-de-la-luz.md
+  - de/podcast/index.md
+  - en/index.md
+  - en/coming-soon.md
+  - en/glosario.md
+  - en/sobre.md
+  - en/analisis/index.md
+  - en/analisis/2026-10-31-dossier-v2.md
+  - en/analisis/2026-10-31-dossier.md
+  - en/analisis/2026-10-31-largo.md
+  - en/analisis/2026-10-31-master.md
+  - en/analisis/2026-10-31-mediano-dossier.md
+  - en/analisis/2026-11-01-dossier-v2.md
+  - en/analisis/2026-11-01-largo.md
+  - en/analisis/2026-11-01-mediano-medio_crudo.md
+  - en/analisis/2026-11-02-dossier-v2.md
+  - en/analisis/2026-11-02-largo.md
+  - en/analisis/2026-11-02-mediano-quirurgico.md
+  - en/analisis/2026-11-03-dossier-v2.md
+  - en/analisis/2026-11-03-largo.md
+  - en/analisis/2026-11-03-mediano-tutorial.md
+  - en/analisis/2026-11-04-dossier-v2.md
+  - en/analisis/2026-11-04-largo.md
+  - en/analisis/2026-11-04-mediano-radar.md
+  - en/analisis/2026-11-05-dossier-v2.md
+  - en/analisis/2026-11-05-largo.md
+  - en/analisis/2026-11-05-mediano-cita.md
+  - en/analisis/2026-11-06-dossier-v2.md
+  - en/analisis/2026-11-06-largo.md
+  - en/analisis/2026-11-06-mediano-medio_analizado.md
+  - en/analisis/2026-11-07-dossier-v2.md
+  - en/analisis/2026-11-07-largo.md
+  - en/analisis/2026-11-07-mediano-dossier.md
+  - en/analisis/2026-11-08-dossier-v2.md
+  - en/analisis/2026-11-08-largo.md
+  - en/analisis/2026-11-08-mediano-medio_crudo.md
+  - en/analisis/2026-11-09-dossier-v2.md
+  - en/analisis/2026-11-09-largo.md
+  - en/analisis/2026-11-09-mediano-quirurgico.md
+  - en/analisis/2026-11-10-dossier-v2.md
+  - en/analisis/2026-11-10-largo.md
+  - en/analisis/2026-11-10-mediano-tutorial.md
+  - en/analisis/2026-11-11-dossier-v2.md
+  - en/analisis/2026-11-11-largo.md
+  - en/analisis/2026-11-11-mediano-radar.md
+  - en/analisis/2026-11-12-dossier-v2.md
+  - en/analisis/2026-11-12-largo.md
+  - en/analisis/2026-11-12-mediano-cita.md
+  - en/analisis/2026-11-13-dossier-v2.md
+  - en/analisis/2026-11-13-largo.md
+  - en/analisis/2026-11-13-mediano-medio_analizado.md
+  - en/analisis/2026-11-14-dossier-v2.md
+  - en/analisis/2026-11-14-largo.md
+  - en/analisis/2026-11-14-mediano-dossier.md
+  - en/analisis/2026-11-15-dossier-v2.md
+  - en/analisis/2026-11-15-largo.md
+  - en/analisis/2026-11-15-mediano-medio_crudo.md
+  - en/analisis/2026-11-16-dossier-v2.md
+  - en/analisis/2026-11-16-largo.md
+  - en/analisis/2026-11-16-mediano-quirurgico.md
+  - en/analisis/2026-11-17-dossier-v2.md
+  - en/analisis/2026-11-17-largo.md
+  - en/analisis/2026-11-17-mediano-tutorial.md
+  - en/analisis/2026-11-18-dossier-v2.md
+  - en/analisis/2026-11-18-largo.md
+  - en/analisis/2026-11-18-mediano-radar.md
+  - en/analisis/2026-11-19-dossier-v2.md
+  - en/analisis/2026-11-19-largo.md
+  - en/analisis/2026-11-19-mediano-cita.md
+  - en/analisis/2026-11-21/index.md
+  - en/analisis/2026-11-21/angulo.md
+  - en/analisis/2026-11-22/index.md
+  - en/analisis/2026-11-22/angulo.md
+  - en/analisis/2026-11-23/index.md
+  - en/analisis/2026-11-23/angulo.md
+  - en/analisis/2026-11-23/dossier.md
+  - en/analisis/2026-11-23/pildora.md
+  - en/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md
+  - en/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md
+  - en/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md
+  - en/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md
+  - en/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md
+  - en/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md
+  - en/noticias/2026-11-21/007-ley-energia-renovable.md
+  - en/noticias/2026-11-21/008-informe-pobreza-clima-bbc.md
+  - en/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md
+  - en/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md
+  - en/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md
+  - en/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md
+  - en/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md
+  - en/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md
+  - en/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md
+  - en/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md
+  - en/noticias/2026-11-23/006-noticia.md
+  - en/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md
+  - en/pildoras/2026-11-21/010-velocidad-de-la-luz.md
+  - en/podcast/index.md
+  - fr/index.md
+  - fr/glosario.md
+  - fr/sobre.md
+  - fr/analisis/index.md
+  - fr/analisis/2026-10-31-dossier-v2.md
+  - fr/analisis/2026-10-31-dossier.md
+  - fr/analisis/2026-10-31-largo.md
+  - fr/analisis/2026-10-31-master.md
+  - fr/analisis/2026-10-31-mediano-dossier.md
+  - fr/analisis/2026-11-01-dossier-v2.md
+  - fr/analisis/2026-11-01-largo.md
+  - fr/analisis/2026-11-01-mediano-medio_crudo.md
+  - fr/analisis/2026-11-02-dossier-v2.md
+  - fr/analisis/2026-11-02-largo.md
+  - fr/analisis/2026-11-02-mediano-quirurgico.md
+  - fr/analisis/2026-11-03-dossier-v2.md
+  - fr/analisis/2026-11-03-largo.md
+  - fr/analisis/2026-11-03-mediano-tutorial.md
+  - fr/analisis/2026-11-04-dossier-v2.md
+  - fr/analisis/2026-11-04-largo.md
+  - fr/analisis/2026-11-04-mediano-radar.md
+  - fr/analisis/2026-11-05-dossier-v2.md
+  - fr/analisis/2026-11-05-largo.md
+  - fr/analisis/2026-11-05-mediano-cita.md
+  - fr/analisis/2026-11-06-dossier-v2.md
+  - fr/analisis/2026-11-06-largo.md
+  - fr/analisis/2026-11-06-mediano-medio_analizado.md
+  - fr/analisis/2026-11-07-dossier-v2.md
+  - fr/analisis/2026-11-07-largo.md
+  - fr/analisis/2026-11-07-mediano-dossier.md
+  - fr/analisis/2026-11-08-dossier-v2.md
+  - fr/analisis/2026-11-08-largo.md
+  - fr/analisis/2026-11-08-mediano-medio_crudo.md
+  - fr/analisis/2026-11-09-dossier-v2.md
+  - fr/analisis/2026-11-09-largo.md
+  - fr/analisis/2026-11-09-mediano-quirurgico.md
+  - fr/analisis/2026-11-10-dossier-v2.md
+  - fr/analisis/2026-11-10-largo.md
+  - fr/analisis/2026-11-10-mediano-tutorial.md
+  - fr/analisis/2026-11-11-dossier-v2.md
+  - fr/analisis/2026-11-11-largo.md
+  - fr/analisis/2026-11-11-mediano-radar.md
+  - fr/analisis/2026-11-12-dossier-v2.md
+  - fr/analisis/2026-11-12-largo.md
+  - fr/analisis/2026-11-12-mediano-cita.md
+  - fr/analisis/2026-11-13-dossier-v2.md
+  - fr/analisis/2026-11-13-largo.md
+  - fr/analisis/2026-11-13-mediano-medio_analizado.md
+  - fr/analisis/2026-11-14-dossier-v2.md
+  - fr/analisis/2026-11-14-largo.md
+  - fr/analisis/2026-11-14-mediano-dossier.md
+  - fr/analisis/2026-11-15-dossier-v2.md
+  - fr/analisis/2026-11-15-largo.md
+  - fr/analisis/2026-11-15-mediano-medio_crudo.md
+  - fr/analisis/2026-11-16-dossier-v2.md
+  - fr/analisis/2026-11-16-largo.md
+  - fr/analisis/2026-11-16-mediano-quirurgico.md
+  - fr/analisis/2026-11-17-dossier-v2.md
+  - fr/analisis/2026-11-17-largo.md
+  - fr/analisis/2026-11-17-mediano-tutorial.md
+  - fr/analisis/2026-11-18-dossier-v2.md
+  - fr/analisis/2026-11-18-largo.md
+  - fr/analisis/2026-11-18-mediano-radar.md
+  - fr/analisis/2026-11-19-dossier-v2.md
+  - fr/analisis/2026-11-19-largo.md
+  - fr/analisis/2026-11-19-mediano-cita.md
+  - fr/analisis/2026-11-21/index.md
+  - fr/analisis/2026-11-21/angulo.md
+  - fr/analisis/2026-11-22/index.md
+  - fr/analisis/2026-11-22/angulo.md
+  - fr/analisis/2026-11-23/index.md
+  - fr/analisis/2026-11-23/angulo.md
+  - fr/analisis/2026-11-23/dossier.md
+  - fr/analisis/2026-11-23/pildora.md
+  - fr/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md
+  - fr/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md
+  - fr/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md
+  - fr/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md
+  - fr/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md
+  - fr/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md
+  - fr/noticias/2026-11-21/007-ley-energia-renovable.md
+  - fr/noticias/2026-11-21/008-informe-pobreza-clima-bbc.md
+  - fr/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md
+  - fr/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md
+  - fr/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md
+  - fr/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md
+  - fr/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md
+  - fr/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md
+  - fr/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md
+  - fr/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md
+  - fr/noticias/2026-11-23/006-noticia.md
+  - fr/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md
+  - fr/pildoras/2026-11-21/010-velocidad-de-la-luz.md
+  - fr/podcast/index.md
+  - noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md
+  - noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md
+  - noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md
+  - noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md
+  - noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md
+  - noticias/2026-11-21/007-ley-energia-renovable.md
+  - noticias/2026-11-21/008-informe-pobreza-clima-bbc.md
+  - noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md
+  - noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md
+  - noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md
+  - noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md
+  - noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md
+  - noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md
+  - noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md
+  - noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md
+  - noticias/2026-11-23/006-noticia.md
+  - pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md
+  - pildoras/2026-11-21/010-velocidad-de-la-luz.md
+  - pt/index.md
+  - pt/glosario.md
+  - pt/sobre.md
+  - pt/analisis/index.md
+  - pt/analisis/2026-10-31-dossier-v2.md
+  - pt/analisis/2026-10-31-dossier.md
+  - pt/analisis/2026-10-31-largo.md
+  - pt/analisis/2026-10-31-master.md
+  - pt/analisis/2026-10-31-mediano-dossier.md
+  - pt/analisis/2026-11-01-dossier-v2.md
+  - pt/analisis/2026-11-01-largo.md
+  - pt/analisis/2026-11-01-mediano-medio_crudo.md
+  - pt/analisis/2026-11-02-dossier-v2.md
+  - pt/analisis/2026-11-02-largo.md
+  - pt/analisis/2026-11-02-mediano-quirurgico.md
+  - pt/analisis/2026-11-03-dossier-v2.md
+  - pt/analisis/2026-11-03-largo.md
+  - pt/analisis/2026-11-03-mediano-tutorial.md
+  - pt/analisis/2026-11-04-dossier-v2.md
+  - pt/analisis/2026-11-04-largo.md
+  - pt/analisis/2026-11-04-mediano-radar.md
+  - pt/analisis/2026-11-05-dossier-v2.md
+  - pt/analisis/2026-11-05-largo.md
+  - pt/analisis/2026-11-05-mediano-cita.md
+  - pt/analisis/2026-11-06-dossier-v2.md
+  - pt/analisis/2026-11-06-largo.md
+  - pt/analisis/2026-11-06-mediano-medio_analizado.md
+  - pt/analisis/2026-11-07-dossier-v2.md
+  - pt/analisis/2026-11-07-largo.md
+  - pt/analisis/2026-11-07-mediano-dossier.md
+  - pt/analisis/2026-11-08-dossier-v2.md
+  - pt/analisis/2026-11-08-largo.md
+  - pt/analisis/2026-11-08-mediano-medio_crudo.md
+  - pt/analisis/2026-11-09-dossier-v2.md
+  - pt/analisis/2026-11-09-largo.md
+  - pt/analisis/2026-11-09-mediano-quirurgico.md
+  - pt/analisis/2026-11-10-dossier-v2.md
+  - pt/analisis/2026-11-10-largo.md
+  - pt/analisis/2026-11-10-mediano-tutorial.md
+  - pt/analisis/2026-11-11-dossier-v2.md
+  - pt/analisis/2026-11-11-largo.md
+  - pt/analisis/2026-11-11-mediano-radar.md
+  - pt/analisis/2026-11-12-dossier-v2.md
+  - pt/analisis/2026-11-12-largo.md
+  - pt/analisis/2026-11-12-mediano-cita.md
+  - pt/analisis/2026-11-13-dossier-v2.md
+  - pt/analisis/2026-11-13-largo.md
+  - pt/analisis/2026-11-13-mediano-medio_analizado.md
+  - pt/analisis/2026-11-14-dossier-v2.md
+  - pt/analisis/2026-11-14-largo.md
+  - pt/analisis/2026-11-14-mediano-dossier.md
+  - pt/analisis/2026-11-15-dossier-v2.md
+  - pt/analisis/2026-11-15-largo.md
+  - pt/analisis/2026-11-15-mediano-medio_crudo.md
+  - pt/analisis/2026-11-16-dossier-v2.md
+  - pt/analisis/2026-11-16-largo.md
+  - pt/analisis/2026-11-16-mediano-quirurgico.md
+  - pt/analisis/2026-11-17-dossier-v2.md
+  - pt/analisis/2026-11-17-largo.md
+  - pt/analisis/2026-11-17-mediano-tutorial.md
+  - pt/analisis/2026-11-18-dossier-v2.md
+  - pt/analisis/2026-11-18-largo.md
+  - pt/analisis/2026-11-18-mediano-radar.md
+  - pt/analisis/2026-11-19-dossier-v2.md
+  - pt/analisis/2026-11-19-largo.md
+  - pt/analisis/2026-11-19-mediano-cita.md
+  - pt/analisis/2026-11-21/index.md
+  - pt/analisis/2026-11-21/angulo.md
+  - pt/analisis/2026-11-22/index.md
+  - pt/analisis/2026-11-22/angulo.md
+  - pt/analisis/2026-11-23/index.md
+  - pt/analisis/2026-11-23/angulo.md
+  - pt/analisis/2026-11-23/dossier.md
+  - pt/analisis/2026-11-23/pildora.md
+  - pt/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md
+  - pt/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md
+  - pt/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md
+  - pt/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md
+  - pt/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md
+  - pt/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md
+  - pt/noticias/2026-11-21/007-ley-energia-renovable.md
+  - pt/noticias/2026-11-21/008-informe-pobreza-clima-bbc.md
+  - pt/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md
+  - pt/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md
+  - pt/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md
+  - pt/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md
+  - pt/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md
+  - pt/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md
+  - pt/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md
+  - pt/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md
+  - pt/noticias/2026-11-23/006-noticia.md
+  - pt/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md
+  - pt/pildoras/2026-11-21/010-velocidad-de-la-luz.md
+  - pt/podcast/index.md
+INFO    -  Doc file '404.md' contains an absolute link '/', it was left as is. Did you mean 'index.md'?
+INFO    -  Doc file '404.md' contains an absolute link '/analisis/', it was left as is. Did you mean 'analisis/index.md'?
+INFO    -  Doc file 'privacidad.md' contains an absolute link '/contacto/', it was left as is. Did you mean 'contacto.md'?
+INFO    -  Doc file 'sobre.md' contains an absolute link '/contacto/', it was left as is. Did you mean 'contacto.md'?
+INFO    -  Doc file 'analisis/2026-11-23/index.md' contains an absolute link '/media/imagenes/post_2026-11-23_analisis_1.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_analisis_1.png'?
+INFO    -  Doc file 'analisis/2026-11-23/index.md' contains an absolute link '/media/imagenes/post_2026-11-23_analisis_2.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_analisis_2.png'?
+INFO    -  Doc file 'analisis/2026-11-23/index.md' contains an absolute link '/media/imagenes/post_2026-11-23_analisis_3.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_analisis_3.png'?
+INFO    -  Doc file 'analisis/2026-11-23/angulo.md' contains an absolute link '/media/imagenes/post_2026-11-23_angulo_1.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_angulo_1.png'?
+INFO    -  Doc file 'analisis/2026-11-23/angulo.md' contains an absolute link '/media/imagenes/post_2026-11-23_angulo_2.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_angulo_2.png'?
+INFO    -  Doc file 'analisis/2026-11-23/angulo.md' contains an absolute link '/media/imagenes/post_2026-11-23_angulo_3.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_angulo_3.png'?
+INFO    -  Doc file 'analisis/2026-11-23/dossier.md' contains an absolute link '/media/imagenes/post_2026-11-23_dossier_1.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_dossier_1.png'?
+INFO    -  Doc file 'analisis/2026-11-23/dossier.md' contains an absolute link '/media/imagenes/post_2026-11-23_dossier_2.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_dossier_2.png'?
+INFO    -  Doc file 'analisis/2026-11-23/dossier.md' contains an absolute link '/media/imagenes/post_2026-11-23_dossier_3.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_dossier_3.png'?
+INFO    -  Doc file 'analisis/2026-11-23/pildora.md' contains an absolute link '/media/imagenes/post_2026-11-23_pildora_1.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_pildora_1.png'?
+INFO    -  Doc file 'de/index.md' contains an absolute link '/', it was left as is. Did you mean '../index.md'?
+INFO    -  Doc file 'de/glosario.md' contains an absolute link '/glosario/', it was left as is. Did you mean '../glosario.md'?
+INFO    -  Doc file 'de/sobre.md' contains an absolute link '/sobre/', it was left as is. Did you mean '../sobre.md'?
+INFO    -  Doc file 'de/analisis/index.md' contains an absolute link '/analisis/', it was left as is. Did you mean '../../analisis/index.md'?
+INFO    -  Doc file 'de/analisis/2026-10-31-dossier-v2.md' contains an absolute link '/analisis/2026-10-31-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-10-31-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-10-31-dossier.md' contains an absolute link '/analisis/2026-10-31-dossier/', it was left as is. Did you mean '../../analisis/2026-10-31-dossier.md'?
+INFO    -  Doc file 'de/analisis/2026-10-31-largo.md' contains an absolute link '/analisis/2026-10-31-largo/', it was left as is. Did you mean '../../analisis/2026-10-31-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-10-31-master.md' contains an absolute link '/analisis/2026-10-31-master/', it was left as is. Did you mean '../../analisis/2026-10-31-master.md'?
+INFO    -  Doc file 'de/analisis/2026-10-31-mediano-dossier.md' contains an absolute link '/analisis/2026-10-31-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-10-31-mediano-dossier.md'?
+INFO    -  Doc file 'de/analisis/2026-11-01-dossier-v2.md' contains an absolute link '/analisis/2026-11-01-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-01-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-01-largo.md' contains an absolute link '/analisis/2026-11-01-largo/', it was left as is. Did you mean '../../analisis/2026-11-01-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-01-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-01-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-01-mediano-medio_crudo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-02-dossier-v2.md' contains an absolute link '/analisis/2026-11-02-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-02-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-02-largo.md' contains an absolute link '/analisis/2026-11-02-largo/', it was left as is. Did you mean '../../analisis/2026-11-02-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-02-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-02-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-02-mediano-quirurgico.md'?
+INFO    -  Doc file 'de/analisis/2026-11-03-dossier-v2.md' contains an absolute link '/analisis/2026-11-03-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-03-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-03-largo.md' contains an absolute link '/analisis/2026-11-03-largo/', it was left as is. Did you mean '../../analisis/2026-11-03-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-03-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-03-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-03-mediano-tutorial.md'?
+INFO    -  Doc file 'de/analisis/2026-11-04-dossier-v2.md' contains an absolute link '/analisis/2026-11-04-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-04-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-04-largo.md' contains an absolute link '/analisis/2026-11-04-largo/', it was left as is. Did you mean '../../analisis/2026-11-04-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-04-mediano-radar.md' contains an absolute link '/analisis/2026-11-04-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-04-mediano-radar.md'?
+INFO    -  Doc file 'de/analisis/2026-11-05-dossier-v2.md' contains an absolute link '/analisis/2026-11-05-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-05-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-05-largo.md' contains an absolute link '/analisis/2026-11-05-largo/', it was left as is. Did you mean '../../analisis/2026-11-05-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-05-mediano-cita.md' contains an absolute link '/analisis/2026-11-05-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-05-mediano-cita.md'?
+INFO    -  Doc file 'de/analisis/2026-11-06-dossier-v2.md' contains an absolute link '/analisis/2026-11-06-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-06-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-06-largo.md' contains an absolute link '/analisis/2026-11-06-largo/', it was left as is. Did you mean '../../analisis/2026-11-06-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-06-mediano-medio_analizado.md' contains an absolute link '/analisis/2026-11-06-mediano-medio_analizado/', it was left as is. Did you mean '../../analisis/2026-11-06-mediano-medio_analizado.md'?
+INFO    -  Doc file 'de/analisis/2026-11-07-dossier-v2.md' contains an absolute link '/analisis/2026-11-07-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-07-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-07-largo.md' contains an absolute link '/analisis/2026-11-07-largo/', it was left as is. Did you mean '../../analisis/2026-11-07-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-07-mediano-dossier.md' contains an absolute link '/analisis/2026-11-07-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-11-07-mediano-dossier.md'?
+INFO    -  Doc file 'de/analisis/2026-11-08-dossier-v2.md' contains an absolute link '/analisis/2026-11-08-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-08-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-08-largo.md' contains an absolute link '/analisis/2026-11-08-largo/', it was left as is. Did you mean '../../analisis/2026-11-08-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-08-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-08-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-08-mediano-medio_crudo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-09-dossier-v2.md' contains an absolute link '/analisis/2026-11-09-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-09-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-09-largo.md' contains an absolute link '/analisis/2026-11-09-largo/', it was left as is. Did you mean '../../analisis/2026-11-09-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-09-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-09-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-09-mediano-quirurgico.md'?
+INFO    -  Doc file 'de/analisis/2026-11-10-dossier-v2.md' contains an absolute link '/analisis/2026-11-10-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-10-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-10-largo.md' contains an absolute link '/analisis/2026-11-10-largo/', it was left as is. Did you mean '../../analisis/2026-11-10-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-10-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-10-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-10-mediano-tutorial.md'?
+INFO    -  Doc file 'de/analisis/2026-11-11-dossier-v2.md' contains an absolute link '/analisis/2026-11-11-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-11-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-11-largo.md' contains an absolute link '/analisis/2026-11-11-largo/', it was left as is. Did you mean '../../analisis/2026-11-11-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-11-mediano-radar.md' contains an absolute link '/analisis/2026-11-11-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-11-mediano-radar.md'?
+INFO    -  Doc file 'de/analisis/2026-11-12-dossier-v2.md' contains an absolute link '/analisis/2026-11-12-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-12-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-12-largo.md' contains an absolute link '/analisis/2026-11-12-largo/', it was left as is. Did you mean '../../analisis/2026-11-12-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-12-mediano-cita.md' contains an absolute link '/analisis/2026-11-12-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-12-mediano-cita.md'?
+INFO    -  Doc file 'de/analisis/2026-11-13-dossier-v2.md' contains an absolute link '/analisis/2026-11-13-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-13-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-13-largo.md' contains an absolute link '/analisis/2026-11-13-largo/', it was left as is. Did you mean '../../analisis/2026-11-13-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-13-mediano-medio_analizado.md' contains an absolute link '/analisis/2026-11-13-mediano-medio_analizado/', it was left as is. Did you mean '../../analisis/2026-11-13-mediano-medio_analizado.md'?
+INFO    -  Doc file 'de/analisis/2026-11-14-dossier-v2.md' contains an absolute link '/analisis/2026-11-14-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-14-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-14-largo.md' contains an absolute link '/analisis/2026-11-14-largo/', it was left as is. Did you mean '../../analisis/2026-11-14-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-14-mediano-dossier.md' contains an absolute link '/analisis/2026-11-14-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-11-14-mediano-dossier.md'?
+INFO    -  Doc file 'de/analisis/2026-11-15-dossier-v2.md' contains an absolute link '/analisis/2026-11-15-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-15-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-15-largo.md' contains an absolute link '/analisis/2026-11-15-largo/', it was left as is. Did you mean '../../analisis/2026-11-15-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-15-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-15-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-15-mediano-medio_crudo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-16-dossier-v2.md' contains an absolute link '/analisis/2026-11-16-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-16-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-16-largo.md' contains an absolute link '/analisis/2026-11-16-largo/', it was left as is. Did you mean '../../analisis/2026-11-16-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-16-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-16-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-16-mediano-quirurgico.md'?
+INFO    -  Doc file 'de/analisis/2026-11-17-dossier-v2.md' contains an absolute link '/analisis/2026-11-17-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-17-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-17-largo.md' contains an absolute link '/analisis/2026-11-17-largo/', it was left as is. Did you mean '../../analisis/2026-11-17-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-17-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-17-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-17-mediano-tutorial.md'?
+INFO    -  Doc file 'de/analisis/2026-11-18-dossier-v2.md' contains an absolute link '/analisis/2026-11-18-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-18-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-18-largo.md' contains an absolute link '/analisis/2026-11-18-largo/', it was left as is. Did you mean '../../analisis/2026-11-18-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-18-mediano-radar.md' contains an absolute link '/analisis/2026-11-18-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-18-mediano-radar.md'?
+INFO    -  Doc file 'de/analisis/2026-11-19-dossier-v2.md' contains an absolute link '/analisis/2026-11-19-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-19-dossier-v2.md'?
+INFO    -  Doc file 'de/analisis/2026-11-19-largo.md' contains an absolute link '/analisis/2026-11-19-largo/', it was left as is. Did you mean '../../analisis/2026-11-19-largo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-19-mediano-cita.md' contains an absolute link '/analisis/2026-11-19-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-19-mediano-cita.md'?
+INFO    -  Doc file 'de/analisis/2026-11-21/index.md' contains an absolute link '/analisis/2026-11-21/', it was left as is. Did you mean '../../../analisis/2026-11-21/index.md'?
+INFO    -  Doc file 'de/analisis/2026-11-21/angulo.md' contains an absolute link '/analisis/2026-11-21/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-21/angulo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-22/index.md' contains an absolute link '/analisis/2026-11-22/', it was left as is. Did you mean '../../../analisis/2026-11-22/index.md'?
+INFO    -  Doc file 'de/analisis/2026-11-22/angulo.md' contains an absolute link '/analisis/2026-11-22/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-22/angulo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-23/index.md' contains an absolute link '/analisis/2026-11-23/', it was left as is. Did you mean '../../../analisis/2026-11-23/index.md'?
+INFO    -  Doc file 'de/analisis/2026-11-23/angulo.md' contains an absolute link '/analisis/2026-11-23/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-23/angulo.md'?
+INFO    -  Doc file 'de/analisis/2026-11-23/dossier.md' contains an absolute link '/analisis/2026-11-23/dossier/', it was left as is. Did you mean '../../../analisis/2026-11-23/dossier.md'?
+INFO    -  Doc file 'de/analisis/2026-11-23/pildora.md' contains an absolute link '/analisis/2026-11-23/pildora/', it was left as is. Did you mean '../../../analisis/2026-11-23/pildora.md'?
+INFO    -  Doc file 'de/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md' contains an absolute link '/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what/', it was left as is. Did you mean '../../../citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md'?
+INFO    -  Doc file 'de/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md' contains an absolute link '/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana/', it was left as is. Did you mean '../../../noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md'?
+INFO    -  Doc file 'de/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md' contains an absolute link '/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge/', it was left as is. Did you mean '../../../noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md'?
+INFO    -  Doc file 'de/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md' contains an absolute link '/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in/', it was left as is. Did you mean '../../../noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md'?
+INFO    -  Doc file 'de/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md' contains an absolute link '/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a/', it was left as is. Did you mean '../../../noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md'?
+INFO    -  Doc file 'de/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md' contains an absolute link '/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma/', it was left as is. Did you mean '../../../noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md'?
+INFO    -  Doc file 'de/noticias/2026-11-21/007-ley-energia-renovable.md' contains an absolute link '/noticias/2026-11-21/007-ley-energia-renovable/', it was left as is. Did you mean '../../../noticias/2026-11-21/007-ley-energia-renovable.md'?
+INFO    -  Doc file 'de/noticias/2026-11-21/008-informe-pobreza-clima-bbc.md' contains an absolute link '/noticias/2026-11-21/008-informe-pobreza-clima-bbc/', it was left as is. Did you mean '../../../noticias/2026-11-21/008-informe-pobreza-clima-bbc.md'?
+INFO    -  Doc file 'de/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md' contains an absolute link '/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones/', it was left as is. Did you mean '../../../noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md'?
+INFO    -  Doc file 'de/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md' contains an absolute link '/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe/', it was left as is. Did you mean '../../../noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md'?
+INFO    -  Doc file 'de/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md' contains an absolute link '/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie/', it was left as is. Did you mean '../../../noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md'?
+INFO    -  Doc file 'de/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md' contains an absolute link '/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las/', it was left as is. Did you mean '../../../noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md'?
+INFO    -  Doc file 'de/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md' contains an absolute link '/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de/', it was left as is. Did you mean '../../../noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md'?
+INFO    -  Doc file 'de/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md' contains an absolute link '/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien/', it was left as is. Did you mean '../../../noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md'?
+INFO    -  Doc file 'de/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md' contains an absolute link '/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac/', it was left as is. Did you mean '../../../noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md'?
+INFO    -  Doc file 'de/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md' contains an absolute link '/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc/', it was left as is. Did you mean '../../../noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md'?
+INFO    -  Doc file 'de/noticias/2026-11-23/006-noticia.md' contains an absolute link '/noticias/2026-11-23/006-noticia/', it was left as is. Did you mean '../../../noticias/2026-11-23/006-noticia.md'?
+INFO    -  Doc file 'de/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md' contains an absolute link '/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez/', it was left as is. Did you mean '../../../pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md'?
+INFO    -  Doc file 'de/pildoras/2026-11-21/010-velocidad-de-la-luz.md' contains an absolute link '/pildoras/2026-11-21/010-velocidad-de-la-luz/', it was left as is. Did you mean '../../../pildoras/2026-11-21/010-velocidad-de-la-luz.md'?
+INFO    -  Doc file 'de/podcast/index.md' contains an absolute link '/podcast/', it was left as is. Did you mean '../../podcast/index.md'?
+INFO    -  Doc file 'en/index.md' contains an absolute link '/', it was left as is. Did you mean '../index.md'?
+INFO    -  Doc file 'en/glosario.md' contains an absolute link '/glosario/', it was left as is. Did you mean '../glosario.md'?
+INFO    -  Doc file 'en/sobre.md' contains an absolute link '/sobre/', it was left as is. Did you mean '../sobre.md'?
+INFO    -  Doc file 'en/analisis/index.md' contains an absolute link '/analisis/', it was left as is. Did you mean '../../analisis/index.md'?
+INFO    -  Doc file 'en/analisis/2026-10-31-dossier-v2.md' contains an absolute link '/analisis/2026-10-31-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-10-31-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-10-31-dossier.md' contains an absolute link '/analisis/2026-10-31-dossier/', it was left as is. Did you mean '../../analisis/2026-10-31-dossier.md'?
+INFO    -  Doc file 'en/analisis/2026-10-31-largo.md' contains an absolute link '/analisis/2026-10-31-largo/', it was left as is. Did you mean '../../analisis/2026-10-31-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-10-31-master.md' contains an absolute link '/analisis/2026-10-31-master/', it was left as is. Did you mean '../../analisis/2026-10-31-master.md'?
+INFO    -  Doc file 'en/analisis/2026-10-31-mediano-dossier.md' contains an absolute link '/analisis/2026-10-31-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-10-31-mediano-dossier.md'?
+INFO    -  Doc file 'en/analisis/2026-11-01-dossier-v2.md' contains an absolute link '/analisis/2026-11-01-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-01-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-01-largo.md' contains an absolute link '/analisis/2026-11-01-largo/', it was left as is. Did you mean '../../analisis/2026-11-01-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-01-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-01-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-01-mediano-medio_crudo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-02-dossier-v2.md' contains an absolute link '/analisis/2026-11-02-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-02-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-02-largo.md' contains an absolute link '/analisis/2026-11-02-largo/', it was left as is. Did you mean '../../analisis/2026-11-02-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-02-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-02-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-02-mediano-quirurgico.md'?
+INFO    -  Doc file 'en/analisis/2026-11-03-dossier-v2.md' contains an absolute link '/analisis/2026-11-03-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-03-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-03-largo.md' contains an absolute link '/analisis/2026-11-03-largo/', it was left as is. Did you mean '../../analisis/2026-11-03-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-03-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-03-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-03-mediano-tutorial.md'?
+INFO    -  Doc file 'en/analisis/2026-11-04-dossier-v2.md' contains an absolute link '/analisis/2026-11-04-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-04-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-04-largo.md' contains an absolute link '/analisis/2026-11-04-largo/', it was left as is. Did you mean '../../analisis/2026-11-04-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-04-mediano-radar.md' contains an absolute link '/analisis/2026-11-04-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-04-mediano-radar.md'?
+INFO    -  Doc file 'en/analisis/2026-11-05-dossier-v2.md' contains an absolute link '/analisis/2026-11-05-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-05-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-05-largo.md' contains an absolute link '/analisis/2026-11-05-largo/', it was left as is. Did you mean '../../analisis/2026-11-05-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-05-mediano-cita.md' contains an absolute link '/analisis/2026-11-05-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-05-mediano-cita.md'?
+INFO    -  Doc file 'en/analisis/2026-11-06-dossier-v2.md' contains an absolute link '/analisis/2026-11-06-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-06-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-06-largo.md' contains an absolute link '/analisis/2026-11-06-largo/', it was left as is. Did you mean '../../analisis/2026-11-06-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-06-mediano-medio_analizado.md' contains an absolute link '/analisis/2026-11-06-mediano-medio_analizado/', it was left as is. Did you mean '../../analisis/2026-11-06-mediano-medio_analizado.md'?
+INFO    -  Doc file 'en/analisis/2026-11-07-dossier-v2.md' contains an absolute link '/analisis/2026-11-07-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-07-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-07-largo.md' contains an absolute link '/analisis/2026-11-07-largo/', it was left as is. Did you mean '../../analisis/2026-11-07-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-07-mediano-dossier.md' contains an absolute link '/analisis/2026-11-07-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-11-07-mediano-dossier.md'?
+INFO    -  Doc file 'en/analisis/2026-11-08-dossier-v2.md' contains an absolute link '/analisis/2026-11-08-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-08-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-08-largo.md' contains an absolute link '/analisis/2026-11-08-largo/', it was left as is. Did you mean '../../analisis/2026-11-08-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-08-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-08-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-08-mediano-medio_crudo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-09-dossier-v2.md' contains an absolute link '/analisis/2026-11-09-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-09-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-09-largo.md' contains an absolute link '/analisis/2026-11-09-largo/', it was left as is. Did you mean '../../analisis/2026-11-09-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-09-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-09-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-09-mediano-quirurgico.md'?
+INFO    -  Doc file 'en/analisis/2026-11-10-dossier-v2.md' contains an absolute link '/analisis/2026-11-10-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-10-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-10-largo.md' contains an absolute link '/analisis/2026-11-10-largo/', it was left as is. Did you mean '../../analisis/2026-11-10-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-10-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-10-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-10-mediano-tutorial.md'?
+INFO    -  Doc file 'en/analisis/2026-11-11-dossier-v2.md' contains an absolute link '/analisis/2026-11-11-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-11-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-11-largo.md' contains an absolute link '/analisis/2026-11-11-largo/', it was left as is. Did you mean '../../analisis/2026-11-11-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-11-mediano-radar.md' contains an absolute link '/analisis/2026-11-11-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-11-mediano-radar.md'?
+INFO    -  Doc file 'en/analisis/2026-11-12-dossier-v2.md' contains an absolute link '/analisis/2026-11-12-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-12-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-12-largo.md' contains an absolute link '/analisis/2026-11-12-largo/', it was left as is. Did you mean '../../analisis/2026-11-12-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-12-mediano-cita.md' contains an absolute link '/analisis/2026-11-12-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-12-mediano-cita.md'?
+INFO    -  Doc file 'en/analisis/2026-11-13-dossier-v2.md' contains an absolute link '/analisis/2026-11-13-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-13-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-13-largo.md' contains an absolute link '/analisis/2026-11-13-largo/', it was left as is. Did you mean '../../analisis/2026-11-13-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-13-mediano-medio_analizado.md' contains an absolute link '/analisis/2026-11-13-mediano-medio_analizado/', it was left as is. Did you mean '../../analisis/2026-11-13-mediano-medio_analizado.md'?
+INFO    -  Doc file 'en/analisis/2026-11-14-dossier-v2.md' contains an absolute link '/analisis/2026-11-14-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-14-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-14-largo.md' contains an absolute link '/analisis/2026-11-14-largo/', it was left as is. Did you mean '../../analisis/2026-11-14-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-14-mediano-dossier.md' contains an absolute link '/analisis/2026-11-14-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-11-14-mediano-dossier.md'?
+INFO    -  Doc file 'en/analisis/2026-11-15-dossier-v2.md' contains an absolute link '/analisis/2026-11-15-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-15-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-15-largo.md' contains an absolute link '/analisis/2026-11-15-largo/', it was left as is. Did you mean '../../analisis/2026-11-15-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-15-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-15-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-15-mediano-medio_crudo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-16-dossier-v2.md' contains an absolute link '/analisis/2026-11-16-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-16-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-16-largo.md' contains an absolute link '/analisis/2026-11-16-largo/', it was left as is. Did you mean '../../analisis/2026-11-16-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-16-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-16-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-16-mediano-quirurgico.md'?
+INFO    -  Doc file 'en/analisis/2026-11-17-dossier-v2.md' contains an absolute link '/analisis/2026-11-17-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-17-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-17-largo.md' contains an absolute link '/analisis/2026-11-17-largo/', it was left as is. Did you mean '../../analisis/2026-11-17-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-17-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-17-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-17-mediano-tutorial.md'?
+INFO    -  Doc file 'en/analisis/2026-11-18-dossier-v2.md' contains an absolute link '/analisis/2026-11-18-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-18-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-18-largo.md' contains an absolute link '/analisis/2026-11-18-largo/', it was left as is. Did you mean '../../analisis/2026-11-18-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-18-mediano-radar.md' contains an absolute link '/analisis/2026-11-18-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-18-mediano-radar.md'?
+INFO    -  Doc file 'en/analisis/2026-11-19-dossier-v2.md' contains an absolute link '/analisis/2026-11-19-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-19-dossier-v2.md'?
+INFO    -  Doc file 'en/analisis/2026-11-19-largo.md' contains an absolute link '/analisis/2026-11-19-largo/', it was left as is. Did you mean '../../analisis/2026-11-19-largo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-19-mediano-cita.md' contains an absolute link '/analisis/2026-11-19-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-19-mediano-cita.md'?
+INFO    -  Doc file 'en/analisis/2026-11-21/index.md' contains an absolute link '/analisis/2026-11-21/', it was left as is. Did you mean '../../../analisis/2026-11-21/index.md'?
+INFO    -  Doc file 'en/analisis/2026-11-21/angulo.md' contains an absolute link '/analisis/2026-11-21/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-21/angulo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-22/index.md' contains an absolute link '/analisis/2026-11-22/', it was left as is. Did you mean '../../../analisis/2026-11-22/index.md'?
+INFO    -  Doc file 'en/analisis/2026-11-22/angulo.md' contains an absolute link '/analisis/2026-11-22/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-22/angulo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-23/index.md' contains an absolute link '/analisis/2026-11-23/', it was left as is. Did you mean '../../../analisis/2026-11-23/index.md'?
+INFO    -  Doc file 'en/analisis/2026-11-23/angulo.md' contains an absolute link '/analisis/2026-11-23/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-23/angulo.md'?
+INFO    -  Doc file 'en/analisis/2026-11-23/dossier.md' contains an absolute link '/analisis/2026-11-23/dossier/', it was left as is. Did you mean '../../../analisis/2026-11-23/dossier.md'?
+INFO    -  Doc file 'en/analisis/2026-11-23/pildora.md' contains an absolute link '/analisis/2026-11-23/pildora/', it was left as is. Did you mean '../../../analisis/2026-11-23/pildora.md'?
+INFO    -  Doc file 'en/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md' contains an absolute link '/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what/', it was left as is. Did you mean '../../../citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md'?
+INFO    -  Doc file 'en/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md' contains an absolute link '/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana/', it was left as is. Did you mean '../../../noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md'?
+INFO    -  Doc file 'en/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md' contains an absolute link '/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge/', it was left as is. Did you mean '../../../noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md'?
+INFO    -  Doc file 'en/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md' contains an absolute link '/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in/', it was left as is. Did you mean '../../../noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md'?
+INFO    -  Doc file 'en/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md' contains an absolute link '/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a/', it was left as is. Did you mean '../../../noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md'?
+INFO    -  Doc file 'en/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md' contains an absolute link '/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma/', it was left as is. Did you mean '../../../noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md'?
+INFO    -  Doc file 'en/noticias/2026-11-21/007-ley-energia-renovable.md' contains an absolute link '/noticias/2026-11-21/007-ley-energia-renovable/', it was left as is. Did you mean '../../../noticias/2026-11-21/007-ley-energia-renovable.md'?
+INFO    -  Doc file 'en/noticias/2026-11-21/008-informe-pobreza-clima-bbc.md' contains an absolute link '/noticias/2026-11-21/008-informe-pobreza-clima-bbc/', it was left as is. Did you mean '../../../noticias/2026-11-21/008-informe-pobreza-clima-bbc.md'?
+INFO    -  Doc file 'en/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md' contains an absolute link '/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones/', it was left as is. Did you mean '../../../noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md'?
+INFO    -  Doc file 'en/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md' contains an absolute link '/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe/', it was left as is. Did you mean '../../../noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md'?
+INFO    -  Doc file 'en/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md' contains an absolute link '/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie/', it was left as is. Did you mean '../../../noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md'?
+INFO    -  Doc file 'en/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md' contains an absolute link '/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las/', it was left as is. Did you mean '../../../noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md'?
+INFO    -  Doc file 'en/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md' contains an absolute link '/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de/', it was left as is. Did you mean '../../../noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md'?
+INFO    -  Doc file 'en/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md' contains an absolute link '/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien/', it was left as is. Did you mean '../../../noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md'?
+INFO    -  Doc file 'en/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md' contains an absolute link '/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac/', it was left as is. Did you mean '../../../noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md'?
+INFO    -  Doc file 'en/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md' contains an absolute link '/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc/', it was left as is. Did you mean '../../../noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md'?
+INFO    -  Doc file 'en/noticias/2026-11-23/006-noticia.md' contains an absolute link '/noticias/2026-11-23/006-noticia/', it was left as is. Did you mean '../../../noticias/2026-11-23/006-noticia.md'?
+INFO    -  Doc file 'en/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md' contains an absolute link '/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez/', it was left as is. Did you mean '../../../pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md'?
+INFO    -  Doc file 'en/pildoras/2026-11-21/010-velocidad-de-la-luz.md' contains an absolute link '/pildoras/2026-11-21/010-velocidad-de-la-luz/', it was left as is. Did you mean '../../../pildoras/2026-11-21/010-velocidad-de-la-luz.md'?
+INFO    -  Doc file 'en/podcast/index.md' contains an absolute link '/podcast/', it was left as is. Did you mean '../../podcast/index.md'?
+INFO    -  Doc file 'fr/index.md' contains an absolute link '/', it was left as is. Did you mean '../index.md'?
+INFO    -  Doc file 'fr/glosario.md' contains an absolute link '/glosario/', it was left as is. Did you mean '../glosario.md'?
+INFO    -  Doc file 'fr/sobre.md' contains an absolute link '/sobre/', it was left as is. Did you mean '../sobre.md'?
+INFO    -  Doc file 'fr/analisis/index.md' contains an absolute link '/analisis/', it was left as is. Did you mean '../../analisis/index.md'?
+INFO    -  Doc file 'fr/analisis/2026-10-31-dossier-v2.md' contains an absolute link '/analisis/2026-10-31-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-10-31-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-10-31-dossier.md' contains an absolute link '/analisis/2026-10-31-dossier/', it was left as is. Did you mean '../../analisis/2026-10-31-dossier.md'?
+INFO    -  Doc file 'fr/analisis/2026-10-31-largo.md' contains an absolute link '/analisis/2026-10-31-largo/', it was left as is. Did you mean '../../analisis/2026-10-31-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-10-31-master.md' contains an absolute link '/analisis/2026-10-31-master/', it was left as is. Did you mean '../../analisis/2026-10-31-master.md'?
+INFO    -  Doc file 'fr/analisis/2026-10-31-mediano-dossier.md' contains an absolute link '/analisis/2026-10-31-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-10-31-mediano-dossier.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-01-dossier-v2.md' contains an absolute link '/analisis/2026-11-01-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-01-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-01-largo.md' contains an absolute link '/analisis/2026-11-01-largo/', it was left as is. Did you mean '../../analisis/2026-11-01-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-01-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-01-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-01-mediano-medio_crudo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-02-dossier-v2.md' contains an absolute link '/analisis/2026-11-02-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-02-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-02-largo.md' contains an absolute link '/analisis/2026-11-02-largo/', it was left as is. Did you mean '../../analisis/2026-11-02-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-02-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-02-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-02-mediano-quirurgico.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-03-dossier-v2.md' contains an absolute link '/analisis/2026-11-03-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-03-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-03-largo.md' contains an absolute link '/analisis/2026-11-03-largo/', it was left as is. Did you mean '../../analisis/2026-11-03-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-03-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-03-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-03-mediano-tutorial.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-04-dossier-v2.md' contains an absolute link '/analisis/2026-11-04-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-04-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-04-largo.md' contains an absolute link '/analisis/2026-11-04-largo/', it was left as is. Did you mean '../../analisis/2026-11-04-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-04-mediano-radar.md' contains an absolute link '/analisis/2026-11-04-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-04-mediano-radar.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-05-dossier-v2.md' contains an absolute link '/analisis/2026-11-05-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-05-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-05-largo.md' contains an absolute link '/analisis/2026-11-05-largo/', it was left as is. Did you mean '../../analisis/2026-11-05-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-05-mediano-cita.md' contains an absolute link '/analisis/2026-11-05-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-05-mediano-cita.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-06-dossier-v2.md' contains an absolute link '/analisis/2026-11-06-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-06-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-06-largo.md' contains an absolute link '/analisis/2026-11-06-largo/', it was left as is. Did you mean '../../analisis/2026-11-06-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-06-mediano-medio_analizado.md' contains an absolute link '/analisis/2026-11-06-mediano-medio_analizado/', it was left as is. Did you mean '../../analisis/2026-11-06-mediano-medio_analizado.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-07-dossier-v2.md' contains an absolute link '/analisis/2026-11-07-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-07-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-07-largo.md' contains an absolute link '/analisis/2026-11-07-largo/', it was left as is. Did you mean '../../analisis/2026-11-07-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-07-mediano-dossier.md' contains an absolute link '/analisis/2026-11-07-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-11-07-mediano-dossier.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-08-dossier-v2.md' contains an absolute link '/analisis/2026-11-08-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-08-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-08-largo.md' contains an absolute link '/analisis/2026-11-08-largo/', it was left as is. Did you mean '../../analisis/2026-11-08-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-08-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-08-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-08-mediano-medio_crudo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-09-dossier-v2.md' contains an absolute link '/analisis/2026-11-09-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-09-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-09-largo.md' contains an absolute link '/analisis/2026-11-09-largo/', it was left as is. Did you mean '../../analisis/2026-11-09-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-09-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-09-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-09-mediano-quirurgico.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-10-dossier-v2.md' contains an absolute link '/analisis/2026-11-10-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-10-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-10-largo.md' contains an absolute link '/analisis/2026-11-10-largo/', it was left as is. Did you mean '../../analisis/2026-11-10-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-10-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-10-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-10-mediano-tutorial.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-11-dossier-v2.md' contains an absolute link '/analisis/2026-11-11-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-11-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-11-largo.md' contains an absolute link '/analisis/2026-11-11-largo/', it was left as is. Did you mean '../../analisis/2026-11-11-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-11-mediano-radar.md' contains an absolute link '/analisis/2026-11-11-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-11-mediano-radar.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-12-dossier-v2.md' contains an absolute link '/analisis/2026-11-12-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-12-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-12-largo.md' contains an absolute link '/analisis/2026-11-12-largo/', it was left as is. Did you mean '../../analisis/2026-11-12-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-12-mediano-cita.md' contains an absolute link '/analisis/2026-11-12-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-12-mediano-cita.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-13-dossier-v2.md' contains an absolute link '/analisis/2026-11-13-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-13-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-13-largo.md' contains an absolute link '/analisis/2026-11-13-largo/', it was left as is. Did you mean '../../analisis/2026-11-13-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-13-mediano-medio_analizado.md' contains an absolute link '/analisis/2026-11-13-mediano-medio_analizado/', it was left as is. Did you mean '../../analisis/2026-11-13-mediano-medio_analizado.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-14-dossier-v2.md' contains an absolute link '/analisis/2026-11-14-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-14-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-14-largo.md' contains an absolute link '/analisis/2026-11-14-largo/', it was left as is. Did you mean '../../analisis/2026-11-14-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-14-mediano-dossier.md' contains an absolute link '/analisis/2026-11-14-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-11-14-mediano-dossier.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-15-dossier-v2.md' contains an absolute link '/analisis/2026-11-15-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-15-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-15-largo.md' contains an absolute link '/analisis/2026-11-15-largo/', it was left as is. Did you mean '../../analisis/2026-11-15-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-15-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-15-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-15-mediano-medio_crudo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-16-dossier-v2.md' contains an absolute link '/analisis/2026-11-16-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-16-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-16-largo.md' contains an absolute link '/analisis/2026-11-16-largo/', it was left as is. Did you mean '../../analisis/2026-11-16-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-16-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-16-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-16-mediano-quirurgico.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-17-dossier-v2.md' contains an absolute link '/analisis/2026-11-17-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-17-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-17-largo.md' contains an absolute link '/analisis/2026-11-17-largo/', it was left as is. Did you mean '../../analisis/2026-11-17-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-17-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-17-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-17-mediano-tutorial.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-18-dossier-v2.md' contains an absolute link '/analisis/2026-11-18-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-18-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-18-largo.md' contains an absolute link '/analisis/2026-11-18-largo/', it was left as is. Did you mean '../../analisis/2026-11-18-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-18-mediano-radar.md' contains an absolute link '/analisis/2026-11-18-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-18-mediano-radar.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-19-dossier-v2.md' contains an absolute link '/analisis/2026-11-19-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-19-dossier-v2.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-19-largo.md' contains an absolute link '/analisis/2026-11-19-largo/', it was left as is. Did you mean '../../analisis/2026-11-19-largo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-19-mediano-cita.md' contains an absolute link '/analisis/2026-11-19-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-19-mediano-cita.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-21/index.md' contains an absolute link '/analisis/2026-11-21/', it was left as is. Did you mean '../../../analisis/2026-11-21/index.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-21/angulo.md' contains an absolute link '/analisis/2026-11-21/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-21/angulo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-22/index.md' contains an absolute link '/analisis/2026-11-22/', it was left as is. Did you mean '../../../analisis/2026-11-22/index.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-22/angulo.md' contains an absolute link '/analisis/2026-11-22/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-22/angulo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-23/index.md' contains an absolute link '/analisis/2026-11-23/', it was left as is. Did you mean '../../../analisis/2026-11-23/index.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-23/angulo.md' contains an absolute link '/analisis/2026-11-23/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-23/angulo.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-23/dossier.md' contains an absolute link '/analisis/2026-11-23/dossier/', it was left as is. Did you mean '../../../analisis/2026-11-23/dossier.md'?
+INFO    -  Doc file 'fr/analisis/2026-11-23/pildora.md' contains an absolute link '/analisis/2026-11-23/pildora/', it was left as is. Did you mean '../../../analisis/2026-11-23/pildora.md'?
+INFO    -  Doc file 'fr/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md' contains an absolute link '/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what/', it was left as is. Did you mean '../../../citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md' contains an absolute link '/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana/', it was left as is. Did you mean '../../../noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md' contains an absolute link '/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge/', it was left as is. Did you mean '../../../noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md' contains an absolute link '/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in/', it was left as is. Did you mean '../../../noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md' contains an absolute link '/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a/', it was left as is. Did you mean '../../../noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md' contains an absolute link '/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma/', it was left as is. Did you mean '../../../noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-21/007-ley-energia-renovable.md' contains an absolute link '/noticias/2026-11-21/007-ley-energia-renovable/', it was left as is. Did you mean '../../../noticias/2026-11-21/007-ley-energia-renovable.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-21/008-informe-pobreza-clima-bbc.md' contains an absolute link '/noticias/2026-11-21/008-informe-pobreza-clima-bbc/', it was left as is. Did you mean '../../../noticias/2026-11-21/008-informe-pobreza-clima-bbc.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md' contains an absolute link '/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones/', it was left as is. Did you mean '../../../noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md' contains an absolute link '/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe/', it was left as is. Did you mean '../../../noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md' contains an absolute link '/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie/', it was left as is. Did you mean '../../../noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md' contains an absolute link '/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las/', it was left as is. Did you mean '../../../noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md' contains an absolute link '/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de/', it was left as is. Did you mean '../../../noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md' contains an absolute link '/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien/', it was left as is. Did you mean '../../../noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md' contains an absolute link '/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac/', it was left as is. Did you mean '../../../noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md' contains an absolute link '/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc/', it was left as is. Did you mean '../../../noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md'?
+INFO    -  Doc file 'fr/noticias/2026-11-23/006-noticia.md' contains an absolute link '/noticias/2026-11-23/006-noticia/', it was left as is. Did you mean '../../../noticias/2026-11-23/006-noticia.md'?
+INFO    -  Doc file 'fr/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md' contains an absolute link '/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez/', it was left as is. Did you mean '../../../pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md'?
+INFO    -  Doc file 'fr/pildoras/2026-11-21/010-velocidad-de-la-luz.md' contains an absolute link '/pildoras/2026-11-21/010-velocidad-de-la-luz/', it was left as is. Did you mean '../../../pildoras/2026-11-21/010-velocidad-de-la-luz.md'?
+INFO    -  Doc file 'fr/podcast/index.md' contains an absolute link '/podcast/', it was left as is. Did you mean '../../podcast/index.md'?
+INFO    -  Doc file 'noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md' contains an absolute link '/media/imagenes/post_2026-11-23_001-s-nchez-agita-el-populismo-e.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_001-s-nchez-agita-el-populismo-e.png'?
+INFO    -  Doc file 'noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md' contains an absolute link '/media/imagenes/post_2026-11-23_002-longest-ever-un-climate-talk.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_002-longest-ever-un-climate-talk.png'?
+INFO    -  Doc file 'noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md' contains an absolute link '/media/imagenes/post_2026-11-23_003-enorme-planeta-diminuta-estr.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_003-enorme-planeta-diminuta-estr.png'?
+INFO    -  Doc file 'noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md' contains an absolute link '/media/imagenes/post_2026-11-23_004-rulo-y-la-contrabanda-anunci.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_004-rulo-y-la-contrabanda-anunci.png'?
+INFO    -  Doc file 'noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md' contains an absolute link '/media/imagenes/post_2026-11-23_005-cop31-what-next-after-un-cli.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_005-cop31-what-next-after-un-cli.png'?
+INFO    -  Doc file 'noticias/2026-11-23/006-noticia.md' contains an absolute link '/media/imagenes/post_2026-11-23_006-noticia.png', it was left as is. Did you mean '../../media/imagenes/post_2026-11-23_006-noticia.png'?
+INFO    -  Doc file 'pt/index.md' contains an absolute link '/', it was left as is. Did you mean '../index.md'?
+INFO    -  Doc file 'pt/glosario.md' contains an absolute link '/glosario/', it was left as is. Did you mean '../glosario.md'?
+INFO    -  Doc file 'pt/sobre.md' contains an absolute link '/sobre/', it was left as is. Did you mean '../sobre.md'?
+INFO    -  Doc file 'pt/analisis/index.md' contains an absolute link '/analisis/', it was left as is. Did you mean '../../analisis/index.md'?
+INFO    -  Doc file 'pt/analisis/2026-10-31-dossier-v2.md' contains an absolute link '/analisis/2026-10-31-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-10-31-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-10-31-dossier.md' contains an absolute link '/analisis/2026-10-31-dossier/', it was left as is. Did you mean '../../analisis/2026-10-31-dossier.md'?
+INFO    -  Doc file 'pt/analisis/2026-10-31-largo.md' contains an absolute link '/analisis/2026-10-31-largo/', it was left as is. Did you mean '../../analisis/2026-10-31-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-10-31-master.md' contains an absolute link '/analisis/2026-10-31-master/', it was left as is. Did you mean '../../analisis/2026-10-31-master.md'?
+INFO    -  Doc file 'pt/analisis/2026-10-31-mediano-dossier.md' contains an absolute link '/analisis/2026-10-31-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-10-31-mediano-dossier.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-01-dossier-v2.md' contains an absolute link '/analisis/2026-11-01-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-01-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-01-largo.md' contains an absolute link '/analisis/2026-11-01-largo/', it was left as is. Did you mean '../../analisis/2026-11-01-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-01-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-01-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-01-mediano-medio_crudo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-02-dossier-v2.md' contains an absolute link '/analisis/2026-11-02-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-02-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-02-largo.md' contains an absolute link '/analisis/2026-11-02-largo/', it was left as is. Did you mean '../../analisis/2026-11-02-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-02-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-02-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-02-mediano-quirurgico.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-03-dossier-v2.md' contains an absolute link '/analisis/2026-11-03-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-03-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-03-largo.md' contains an absolute link '/analisis/2026-11-03-largo/', it was left as is. Did you mean '../../analisis/2026-11-03-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-03-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-03-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-03-mediano-tutorial.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-04-dossier-v2.md' contains an absolute link '/analisis/2026-11-04-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-04-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-04-largo.md' contains an absolute link '/analisis/2026-11-04-largo/', it was left as is. Did you mean '../../analisis/2026-11-04-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-04-mediano-radar.md' contains an absolute link '/analisis/2026-11-04-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-04-mediano-radar.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-05-dossier-v2.md' contains an absolute link '/analisis/2026-11-05-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-05-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-05-largo.md' contains an absolute link '/analisis/2026-11-05-largo/', it was left as is. Did you mean '../../analisis/2026-11-05-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-05-mediano-cita.md' contains an absolute link '/analisis/2026-11-05-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-05-mediano-cita.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-06-dossier-v2.md' contains an absolute link '/analisis/2026-11-06-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-06-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-06-largo.md' contains an absolute link '/analisis/2026-11-06-largo/', it was left as is. Did you mean '../../analisis/2026-11-06-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-06-mediano-medio_analizado.md' contains an absolute link '/analisis/2026-11-06-mediano-medio_analizado/', it was left as is. Did you mean '../../analisis/2026-11-06-mediano-medio_analizado.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-07-dossier-v2.md' contains an absolute link '/analisis/2026-11-07-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-07-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-07-largo.md' contains an absolute link '/analisis/2026-11-07-largo/', it was left as is. Did you mean '../../analisis/2026-11-07-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-07-mediano-dossier.md' contains an absolute link '/analisis/2026-11-07-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-11-07-mediano-dossier.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-08-dossier-v2.md' contains an absolute link '/analisis/2026-11-08-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-08-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-08-largo.md' contains an absolute link '/analisis/2026-11-08-largo/', it was left as is. Did you mean '../../analisis/2026-11-08-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-08-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-08-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-08-mediano-medio_crudo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-09-dossier-v2.md' contains an absolute link '/analisis/2026-11-09-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-09-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-09-largo.md' contains an absolute link '/analisis/2026-11-09-largo/', it was left as is. Did you mean '../../analisis/2026-11-09-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-09-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-09-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-09-mediano-quirurgico.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-10-dossier-v2.md' contains an absolute link '/analisis/2026-11-10-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-10-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-10-largo.md' contains an absolute link '/analisis/2026-11-10-largo/', it was left as is. Did you mean '../../analisis/2026-11-10-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-10-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-10-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-10-mediano-tutorial.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-11-dossier-v2.md' contains an absolute link '/analisis/2026-11-11-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-11-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-11-largo.md' contains an absolute link '/analisis/2026-11-11-largo/', it was left as is. Did you mean '../../analisis/2026-11-11-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-11-mediano-radar.md' contains an absolute link '/analisis/2026-11-11-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-11-mediano-radar.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-12-dossier-v2.md' contains an absolute link '/analisis/2026-11-12-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-12-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-12-largo.md' contains an absolute link '/analisis/2026-11-12-largo/', it was left as is. Did you mean '../../analisis/2026-11-12-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-12-mediano-cita.md' contains an absolute link '/analisis/2026-11-12-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-12-mediano-cita.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-13-dossier-v2.md' contains an absolute link '/analisis/2026-11-13-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-13-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-13-largo.md' contains an absolute link '/analisis/2026-11-13-largo/', it was left as is. Did you mean '../../analisis/2026-11-13-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-13-mediano-medio_analizado.md' contains an absolute link '/analisis/2026-11-13-mediano-medio_analizado/', it was left as is. Did you mean '../../analisis/2026-11-13-mediano-medio_analizado.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-14-dossier-v2.md' contains an absolute link '/analisis/2026-11-14-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-14-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-14-largo.md' contains an absolute link '/analisis/2026-11-14-largo/', it was left as is. Did you mean '../../analisis/2026-11-14-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-14-mediano-dossier.md' contains an absolute link '/analisis/2026-11-14-mediano-dossier/', it was left as is. Did you mean '../../analisis/2026-11-14-mediano-dossier.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-15-dossier-v2.md' contains an absolute link '/analisis/2026-11-15-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-15-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-15-largo.md' contains an absolute link '/analisis/2026-11-15-largo/', it was left as is. Did you mean '../../analisis/2026-11-15-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-15-mediano-medio_crudo.md' contains an absolute link '/analisis/2026-11-15-mediano-medio_crudo/', it was left as is. Did you mean '../../analisis/2026-11-15-mediano-medio_crudo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-16-dossier-v2.md' contains an absolute link '/analisis/2026-11-16-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-16-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-16-largo.md' contains an absolute link '/analisis/2026-11-16-largo/', it was left as is. Did you mean '../../analisis/2026-11-16-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-16-mediano-quirurgico.md' contains an absolute link '/analisis/2026-11-16-mediano-quirurgico/', it was left as is. Did you mean '../../analisis/2026-11-16-mediano-quirurgico.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-17-dossier-v2.md' contains an absolute link '/analisis/2026-11-17-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-17-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-17-largo.md' contains an absolute link '/analisis/2026-11-17-largo/', it was left as is. Did you mean '../../analisis/2026-11-17-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-17-mediano-tutorial.md' contains an absolute link '/analisis/2026-11-17-mediano-tutorial/', it was left as is. Did you mean '../../analisis/2026-11-17-mediano-tutorial.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-18-dossier-v2.md' contains an absolute link '/analisis/2026-11-18-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-18-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-18-largo.md' contains an absolute link '/analisis/2026-11-18-largo/', it was left as is. Did you mean '../../analisis/2026-11-18-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-18-mediano-radar.md' contains an absolute link '/analisis/2026-11-18-mediano-radar/', it was left as is. Did you mean '../../analisis/2026-11-18-mediano-radar.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-19-dossier-v2.md' contains an absolute link '/analisis/2026-11-19-dossier-v2/', it was left as is. Did you mean '../../analisis/2026-11-19-dossier-v2.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-19-largo.md' contains an absolute link '/analisis/2026-11-19-largo/', it was left as is. Did you mean '../../analisis/2026-11-19-largo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-19-mediano-cita.md' contains an absolute link '/analisis/2026-11-19-mediano-cita/', it was left as is. Did you mean '../../analisis/2026-11-19-mediano-cita.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-21/index.md' contains an absolute link '/analisis/2026-11-21/', it was left as is. Did you mean '../../../analisis/2026-11-21/index.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-21/angulo.md' contains an absolute link '/analisis/2026-11-21/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-21/angulo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-22/index.md' contains an absolute link '/analisis/2026-11-22/', it was left as is. Did you mean '../../../analisis/2026-11-22/index.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-22/angulo.md' contains an absolute link '/analisis/2026-11-22/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-22/angulo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-23/index.md' contains an absolute link '/analisis/2026-11-23/', it was left as is. Did you mean '../../../analisis/2026-11-23/index.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-23/angulo.md' contains an absolute link '/analisis/2026-11-23/angulo/', it was left as is. Did you mean '../../../analisis/2026-11-23/angulo.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-23/dossier.md' contains an absolute link '/analisis/2026-11-23/dossier/', it was left as is. Did you mean '../../../analisis/2026-11-23/dossier.md'?
+INFO    -  Doc file 'pt/analisis/2026-11-23/pildora.md' contains an absolute link '/analisis/2026-11-23/pildora/', it was left as is. Did you mean '../../../analisis/2026-11-23/pildora.md'?
+INFO    -  Doc file 'pt/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md' contains an absolute link '/citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what/', it was left as is. Did you mean '../../../citas/2026-11-21/011-putin-demands-the-impossible-to-end-the-war-what.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md' contains an absolute link '/noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana/', it was left as is. Did you mean '../../../noticias/2026-11-21/001-la-moviola-del-debate-feij-o-subraya-la-desgana.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md' contains an absolute link '/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge/', it was left as is. Did you mean '../../../noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md' contains an absolute link '/noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in/', it was left as is. Did you mean '../../../noticias/2026-11-21/004-israeli-settlers-occupy-eight-palestinian-homes-in.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md' contains an absolute link '/noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a/', it was left as is. Did you mean '../../../noticias/2026-11-21/005-puente-conoc-a-el-pago-del-tratamiento-de-c-ncer-a.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md' contains an absolute link '/noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma/', it was left as is. Did you mean '../../../noticias/2026-11-21/006-los-momentazos-de-los40-music-awards-rosal-a-suma.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-21/007-ley-energia-renovable.md' contains an absolute link '/noticias/2026-11-21/007-ley-energia-renovable/', it was left as is. Did you mean '../../../noticias/2026-11-21/007-ley-energia-renovable.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-21/008-informe-pobreza-clima-bbc.md' contains an absolute link '/noticias/2026-11-21/008-informe-pobreza-clima-bbc/', it was left as is. Did you mean '../../../noticias/2026-11-21/008-informe-pobreza-clima-bbc.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md' contains an absolute link '/noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones/', it was left as is. Did you mean '../../../noticias/2026-11-22/001-de-alejandro-sanz-a-antonio-orozco-las-canciones.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md' contains an absolute link '/noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe/', it was left as is. Did you mean '../../../noticias/2026-11-22/002-la-derecha-suma-mayor-a-absoluta-mientras-el-psoe.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md' contains an absolute link '/noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie/', it was left as is. Did you mean '../../../noticias/2026-11-22/003-se-ha-movido-el-voto-til-las-opciones-de-izquie.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md' contains an absolute link '/noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las/', it was left as is. Did you mean '../../../noticias/2026-11-23/001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md' contains an absolute link '/noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de/', it was left as is. Did you mean '../../../noticias/2026-11-23/002-los-di-logos-clim-ticos-de-la-onu-m-s-extensos-de.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md' contains an absolute link '/noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien/', it was left as is. Did you mean '../../../noticias/2026-11-23/003-enorme-planeta-diminuta-estrella-el-descubrimien.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md' contains an absolute link '/noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac/', it was left as is. Did you mean '../../../noticias/2026-11-23/004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md' contains an absolute link '/noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc/', it was left as is. Did you mean '../../../noticias/2026-11-23/005-cop31-qu-viene-despu-s-del-colapso-de-las-negoc.md'?
+INFO    -  Doc file 'pt/noticias/2026-11-23/006-noticia.md' contains an absolute link '/noticias/2026-11-23/006-noticia/', it was left as is. Did you mean '../../../noticias/2026-11-23/006-noticia.md'?
+INFO    -  Doc file 'pt/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md' contains an absolute link '/pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez/', it was left as is. Did you mean '../../../pildoras/2026-11-21/009-qui-n-fue-el-ide-logo-de-la-estrategia-de-s-nchez.md'?
+INFO    -  Doc file 'pt/pildoras/2026-11-21/010-velocidad-de-la-luz.md' contains an absolute link '/pildoras/2026-11-21/010-velocidad-de-la-luz/', it was left as is. Did you mean '../../../pildoras/2026-11-21/010-velocidad-de-la-luz.md'?
+INFO    -  Doc file 'pt/podcast/index.md' contains an absolute link '/podcast/', it was left as is. Did you mean '../../podcast/index.md'?
+INFO    -  Documentation built in 69.44 seconds
+[copy_media] 616 ficheros -> web/docs/media/

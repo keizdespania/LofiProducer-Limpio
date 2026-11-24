@@ -21,10 +21,10 @@ medio: OkDiario
 ### Conclusión
 El titular de **OkDiario** emplea la ironía y la provocación como herramientas de manipulación: convierten una acusación potencialmente grave en una “broma” que atrae clics y genera debate sin aportar hechos verificables. Esta estrategia distorsiona la relación entre forma y contenido, dirige la atención del lector hacia la polémica superficial y dificulta la comprensión crítica del tema real. Para evitar ser manipulado, el lector debe reconocer estos recursos retóricos y buscar fuentes que ofrezcan información concreta y contextualizada.
 
-![angulo clave 1](/media/imagenes/post_2026-11-23_angulo_1.png)
+![angulo clave 1](../../media/imagenes/post_2026-11-23_angulo_1.png)
 
 
-![angulo clave 2](/media/imagenes/post_2026-11-23_angulo_2.png)
+![angulo clave 2](../../media/imagenes/post_2026-11-23_angulo_2.png)
 
 
-![angulo clave 3](/media/imagenes/post_2026-11-23_angulo_3.png)
+![angulo clave 3](../../media/imagenes/post_2026-11-23_angulo_3.png)

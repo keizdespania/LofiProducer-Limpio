@@ -84,11 +84,5 @@ El día que el presidente de Adif dejó de respirar, la cúpula del tren de alta
 </div>
 
 </div>
-<div class="ee-share">
-<a href="https://twitter.com/intent/tweet?text=Dossier completo del dia&url=https://elencuadre.pages.dev/analisis/2026-11-07-mediano-dossier/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
-<a href="https://threads.net/intent/post?text=Dossier completo del dia+https://elencuadre.pages.dev/analisis/2026-11-07-mediano-dossier/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
-<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-07-mediano-dossier/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
-<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-07-mediano-dossier/&text=Dossier completo del dia" target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
-</div>
 </div>
 <!-- EE_ENRICHED_END -->

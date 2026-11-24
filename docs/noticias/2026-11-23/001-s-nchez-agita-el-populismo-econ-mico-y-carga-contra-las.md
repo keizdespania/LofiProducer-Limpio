@@ -18,4 +18,4 @@ Segundo, la frase “carga contra las multinacionales, el Ibex y los ricos” ag
 
 Finalmente, el uso del término “populismo económico” carga con una connotación negativa, insinuando que cualquier propuesta que favorezca a los sectores menos favorecidos es inherentemente irreflexiva o demagógica. Al no ofrecer datos sobre la situación económica ni contrastar con otras propuestas, el titular se limita a polarizar el debate, presentando a Sánchez como un agitador que busca dividir a la sociedad en “pobres” y “ricos”. Esta simplificación impide un análisis serio de las políticas públicas y fomenta la desconfianza hacia las instituciones económicas.
 
-![001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las](/media/imagenes/post_2026-11-23_001-s-nchez-agita-el-populismo-e.png)
+![001-s-nchez-agita-el-populismo-econ-mico-y-carga-contra-las](../../media/imagenes/post_2026-11-23_001-s-nchez-agita-el-populismo-e.png)

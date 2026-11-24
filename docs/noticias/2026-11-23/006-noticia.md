@@ -18,4 +18,4 @@ El uso de un **mapa de barras** como metáfora visual refuerza la idea de que el
 
 En resumen, el titular no informa; **manipula**. Crea una falsa sensación de poder individual mientras, en el trasfondo, se reconoce que el resultado está ya trazado. La estrategia busca mantener la audiencia **enganchada** y **ansiosa**, asegurando que el proceso electoral siga siendo un espectáculo de incertidumbre fabricada más que una deliberación informada.
 
-![006-noticia](/media/imagenes/post_2026-11-23_006-noticia.png)
+![006-noticia](../../media/imagenes/post_2026-11-23_006-noticia.png)

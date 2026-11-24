@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block extrahead %}
   {{ super() }}
   <link rel="preconnect" href="https://t.me" crossorigin>
@@ -40,7 +39,7 @@
       </script>
     {% endif %}
   {% endif %}
-  {% if page.is_homepage %}
+  {% if page and page.is_homepage %}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -74,4 +73,39 @@
 {% block content %}
   {% include "partials/cookie.html" %}
   {{ super() }}
+  {% if page and not page.is_homepage and page.url not in ["404.html", "privacidad.html", "contacto.html"] %}
+    {% set share_url = (page.canonical_url or ("https://elencuadre.pages.dev/" ~ page.url)) | urlencode %}
+    {% set share_title = ((page.title or "Somos El Encuadre") ~ " — Somos El Encuadre") | urlencode %}
+    <div class="ee-share-box" aria-label="Compartir en redes sociales">
+      <div class="ee-share-label">Compartir este análisis</div>
+      <div class="ee-share">
+        <a class="ee-share-x" href="https://x.com/intent/tweet?url={{ share_url }}&text={{ share_title }}" target="_blank" rel="noopener noreferrer">𝕏 X</a>
+        <a class="ee-share-telegram" href="https://t.me/share/url?url={{ share_url }}&text={{ share_title }}" target="_blank" rel="noopener noreferrer">✈ Telegram</a>
+        <a class="ee-share-whatsapp" href="https://api.whatsapp.com/send?text={{ share_title }}%20{{ share_url }}" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
+        <a class="ee-share-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}" target="_blank" rel="noopener noreferrer">f Facebook</a>
+        <a class="ee-share-linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url={{ share_url }}" target="_blank" rel="noopener noreferrer">in LinkedIn</a>
+        <a class="ee-share-reddit" href="https://www.reddit.com/submit?url={{ share_url }}&title={{ share_title }}" target="_blank" rel="noopener noreferrer">👽 Reddit</a>
+        <a class="ee-share-threads" href="https://www.threads.net/intent/post?text={{ share_title }}%20{{ share_url }}" target="_blank" rel="noopener noreferrer">@ Threads</a>
+        <a class="ee-share-bluesky" href="https://bsky.app/intent/compose?text={{ share_title }}%20{{ share_url }}" target="_blank" rel="noopener noreferrer">🦋 Bluesky</a>
+        <a class="ee-share-email" href="mailto:?subject={{ share_title }}&body={{ share_url }}">✉ Correo</a>
+        <button type="button" class="ee-share-copy" data-copy-url="{{ page.canonical_url or ('https://elencuadre.pages.dev/' ~ page.url) }}">🔗 Copiar enlace</button>
+      </div>
+    </div>
+  {% endif %}
+  <script>
+  (function() {
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.ee-share-copy');
+      if (!btn) return;
+      var url = btn.getAttribute('data-copy-url') || window.location.href;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function() {
+          var prev = btn.textContent;
+          btn.textContent = '✓ Enlace copiado';
+          setTimeout(function() { btn.textContent = prev; }, 2000);
+        }).catch(function() {});
+      }
+    });
+  })();
+  </script>
 {% endblock %}

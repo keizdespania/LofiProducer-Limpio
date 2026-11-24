@@ -20,4 +20,4 @@ Tercero, el tono negativo ignora el contexto de que las negociaciones internacio
 
 En resumen, el encuadre de conflicto del titular exagera la falta de acuerdo y la división, sin reconocer la complejidad del proceso ni los avances parciales. Al centrarse exclusivamente en lo negativo, se fomenta el cinismo y se minimiza la importancia de los diálogos continuos que, aunque imperfectos, son esenciales para avanzar en la agenda climática global.
 
-![002-longest-ever-un-climate-talks-end-with-no-deal-as-deep](/media/imagenes/post_2026-11-23_002-longest-ever-un-climate-talk.png)
+![002-longest-ever-un-climate-talks-end-with-no-deal-as-deep](../../media/imagenes/post_2026-11-23_002-longest-ever-un-climate-talk.png)

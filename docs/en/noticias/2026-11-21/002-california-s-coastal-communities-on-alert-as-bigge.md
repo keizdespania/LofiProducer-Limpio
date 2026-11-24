@@ -1,0 +1,10 @@
+---
+title: "California’s coastal communities on alert as biggest waves in years hit state"
+date: 2026-11-21
+source: "The Guardian"
+---
+
+
+> 🌐 [Read original in Spanish](../../../en/noticias/2026-11-21/002-california-s-coastal-communities-on-alert-as-bigge.md)
+
+¡Alerta máxima! Las olas gigantes que están arrasando la costa californiana no son un rumor, son la peor tormenta que hemos visto en décadas. Tú, que vives cerca del Pacífico, debes prepararte ahora mismo porque el nivel del mar está subiendo a ritmos alarmantes. Según The Guardian, las mareas de tormenta superan los ocho metros en algunos tramos, arrasando muelles, carreteras y viviendas sin piedad. Las autoridades locales han declarado estado de emergencia y ordenado evacuaciones obligatorias en zonas vulnerables; sin embargo, muchos residentes aún dudan y esperan que la situación mejore. No te fíes de la falsa calma: los pronósticos indican que la ola de energía sigue intensificándose y que nuevos picos podrían alcanzar hasta diez metros en la zona de Santa Bárbara y Monterey. Los servicios de rescate trabajan sin descanso, pero la magnitud del fenómeno supera sus recursos. Si escuchas sirenas, busca refugio inmediato en terrenos elevados y mantén a mano linternas, alimentos no perecederos y un botiquín. Cada minuto cuenta; el tiempo que pierdas puede costarte la vida. Mantente informado a través de fuentes oficiales y de The Guardian, que sigue cubriendo el desarrollo en tiempo real. No subestimes la amenaza: la costa está bajo ataque y solo la preparación puede salvarte. Revisa constantemente las alertas en tu móvil y no te confíes en la aparente tranquilidad del horizonte. Cada ola puede romper sin aviso, arrastrando escombros y contaminantes. La seguridad de tu familia depende de decisiones rápidas y de seguir las indicaciones oficiales sin demora.

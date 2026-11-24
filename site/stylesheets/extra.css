@@ -1356,3 +1356,233 @@ body { font-family: var(--ee-font-sans); background: var(--ee-bg); color: var(--
 .ee-cookie-reject { background: var(--ee-surface-hover); color: var(--ee-text); }
 .ee-cookie-reject:hover { background: var(--ee-border); }
 @media (max-width: 768px) { .ee-cookie-inner { flex-direction: column; align-items: stretch; } .ee-cookie-actions { justify-content: stretch; } .ee-cookie-btn { flex: 1; } }
+
+
+[data-md-color-scheme="slate"] {
+  --ee-bg: #05050a;
+  --ee-bg-alt: #0b0b14;
+  --ee-surface: #10101d;
+  --ee-surface-hover: #171728;
+  --ee-border: rgba(0, 240, 255, 0.18);
+  --ee-text: #f0f0f8;
+  --ee-text-muted: #a2a2bc;
+}
+
+[data-md-color-scheme="default"] {
+  --ee-bg: #f8f9fb;
+  --ee-bg-alt: #eef1f6;
+  --ee-surface: #ffffff;
+  --ee-surface-hover: #f2f4f8;
+  --ee-border: #d8dee9;
+  --ee-text: #12151c;
+  --ee-text-muted: #525866;
+}
+
+[data-md-color-scheme="default"] body::before,
+[data-md-color-scheme="default"] body::after {
+  opacity: 0.18;
+}
+
+.ee-share a {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+.ee-share-x { background: #111318 !important; }
+.ee-share-threads { background: #1e1e24 !important; }
+.ee-share-linkedin { background: #0a66c2 !important; }
+.ee-share-telegram { background: #0088cc !important; }
+
+
+/* ============================================================
+   ACABADO EDITORIAL TOP - TEMA CLARO / OSCURO, DRAWER Y FOOTER
+   ============================================================ */
+.md-nav--primary .ee-drawer-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.1rem 1rem 0.25rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.md-nav--primary .ee-drawer-sub {
+  padding: 0 1rem 0.9rem;
+  font-size: 0.8rem;
+  color: var(--ee-text-muted);
+  border-bottom: 1px solid var(--ee-border);
+  margin-bottom: 0.5rem;
+}
+.md-nav__item--nested > .md-nav__link {
+  font-weight: 700;
+}
+
+.ee-footer {
+  margin-top: 4rem;
+  border-top: 1px solid var(--ee-border);
+  background: var(--ee-bg-alt);
+  color: var(--ee-text);
+}
+.ee-footer-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 2rem;
+}
+.ee-footer-col h4 {
+  margin: 0 0 0.85rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ee-red);
+}
+.ee-footer-col p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ee-text-muted);
+  line-height: 1.6;
+}
+.ee-footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ee-footer-col li {
+  margin-bottom: 0.45rem;
+  font-size: 0.9rem;
+}
+.ee-footer-col a {
+  color: var(--ee-text);
+  text-decoration: none;
+  transition: var(--ee-transition);
+}
+.ee-footer-col a:hover {
+  color: var(--ee-red);
+}
+.ee-footer-bottom {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.1rem 1.5rem 1.6rem;
+  border-top: 1px solid var(--ee-border);
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--ee-text-muted);
+}
+
+.ee-cookie-notice {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 90;
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--ee-surface);
+  color: var(--ee-text);
+  border: 1px solid var(--ee-border);
+  border-radius: var(--ee-radius-lg);
+  box-shadow: var(--ee-shadow-hover);
+  padding: 0.9rem 1.2rem;
+}
+.ee-cookie-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.ee-cookie-inner p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--ee-text-muted);
+}
+.ee-cookie-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.ee-cookie-btn {
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--ee-radius-md);
+  border: 1px solid var(--ee-red);
+  background: var(--ee-red);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ee-cookie-btn.ee-cookie-reject {
+  background: transparent;
+  color: var(--ee-text);
+  border-color: var(--ee-border);
+}
+
+
+/* ============================================================
+   COMPARTIR UNIVERSAL EN POSTS + CABECERA A INICIO + BUSCADOR
+   ============================================================ */
+.ee-site-home-link,
+.ee-ticker-header-link {
+  color: inherit !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+.ee-site-home-link:hover,
+.ee-ticker-header-link:hover {
+  color: var(--ee-red) !important;
+}
+
+.ee-share-box {
+  max-width: 1100px;
+  margin: 3rem auto 1.5rem;
+  padding: 1.4rem 1.5rem;
+  background: var(--ee-surface);
+  border: 1px solid var(--ee-border);
+  border-radius: var(--ee-radius-lg);
+  box-shadow: var(--ee-shadow);
+}
+.ee-share-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ee-orange);
+  margin-bottom: 0.9rem;
+  text-align: center;
+}
+.ee-share {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: center;
+  margin: 0;
+}
+.ee-share a,
+.ee-share button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: var(--ee-radius-md);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  cursor: pointer;
+  transition: var(--ee-transition);
+}
+.ee-share a:hover,
+.ee-share button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ee-shadow);
+}
+.ee-share-x { background: #111318 !important; }
+.ee-share-telegram { background: #0088cc !important; }
+.ee-share-whatsapp { background: #1ea854 !important; }
+.ee-share-facebook { background: #1877f2 !important; }
+.ee-share-linkedin { background: #0a66c2 !important; }
+.ee-share-reddit { background: #d93b00 !important; }
+.ee-share-threads { background: #1c1c21 !important; }
+.ee-share-bluesky { background: #1185fe !important; }
+.ee-share-email { background: #4a5568 !important; }
+.ee-share-copy { background: var(--ee-red) !important; }

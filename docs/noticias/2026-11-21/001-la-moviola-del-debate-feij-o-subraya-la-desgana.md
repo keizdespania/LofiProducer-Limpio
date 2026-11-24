@@ -1,8 +1,8 @@
-```yaml
+---
 title: "La moviola del debate: Feijóo subraya \"la desgana y los silencios\" de Sánchez, y Sánchez \"la mala educación\" de Feijóo"
 date: 2026-11-21
 source: "El Español"
-```
+---
 
 Te habrás fijado en la moviola del último debate televisivo: Feijóo no perdió el tiempo y acusó a Sánchez de mostrar “desgana y silencios” ante los problemas de la economía y la seguridad. En cambio, Sánchez contraatacó señalando la “mala educación” de Feijóe al evitar preguntas incómodas y lanzar insultos velados. Según El Español, la escena se convirtió en una coreografía de culpa mutua, donde cada líder intenta trasladar la responsabilidad al otro para reforzar la identidad de su base.
 

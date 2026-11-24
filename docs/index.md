@@ -33,42 +33,42 @@ hide:
     <div class="holo-grid">
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-18-largo/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
-    <img src="/media/imagenes/post_2026-11-18_largo_1.png" alt="El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="media/imagenes/post_2026-11-18_largo_1.png" alt="El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu</h3>
     <p>Analisis largo: El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu</p>
     <div class="holo-meta"><span>📅 2026-11-18</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-18-dossier-v2/'" data-category="dossier">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="/media/imagenes/post_2026-11-18_dossier_1.png" alt="Dossier del día: El Encuadre: Sánchez le hace los Presupuest" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="media/imagenes/post_2026-11-18_dossier_1.png" alt="Dossier del día: El Encuadre: Sánchez le hace los Presupuest" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Dossier del día: El Encuadre: Sánchez le hace los Presupuestos a Feijóo despu</h3>
     <p>Dossier ejecutivo: El Encuadre: Sánchez le hace los Presupuestos a Feijóo después de cuatro años si</p>
     <div class="holo-meta"><span>📅 2026-11-18</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-18-mediano-radar/'" data-category="angulo">
     <div class="holo-badge badge-guide">📄 Ángulo del Día</div>
-    <img src="/media/imagenes/post_2026-11-18_mediano_1.png" alt="Radar de medios: El Encuadre: Sánchez le hace los Presupuest" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="media/imagenes/post_2026-11-18_mediano_1.png" alt="Radar de medios: El Encuadre: Sánchez le hace los Presupuest" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Radar de medios: El Encuadre: Sánchez le hace los Presupuestos a Fe</h3>
     <p>Analisis radar: Radar de medios: El Encuadre: Sánchez le hace los Presupuestos a Fe</p>
     <div class="holo-meta"><span>📅 2026-11-18</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-17-largo/'" data-category="diario">
     <div class="holo-badge badge-new">🔥 Análisis del Día</div>
-    <img src="/media/imagenes/post_2026-11-17_largo_1.png" alt="El Encuadre: El CNI informó al Gobierno del riesgo de desbor" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="media/imagenes/post_2026-11-17_largo_1.png" alt="El Encuadre: El CNI informó al Gobierno del riesgo de desbor" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>El Encuadre: El CNI informó al Gobierno del riesgo de desbor</h3>
     <p>Analisis largo: El Encuadre: El CNI informó al Gobierno del riesgo de desbor</p>
     <div class="holo-meta"><span>📅 2026-11-17</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-17-dossier-v2/'" data-category="dossier">
     <div class="holo-badge badge-dossier">📁 Dossier Ejecutivo</div>
-    <img src="/media/imagenes/post_2026-11-17_dossier_1.png" alt="Dossier del día: El Encuadre: El CNI informó al Gobierno del" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="media/imagenes/post_2026-11-17_dossier_1.png" alt="Dossier del día: El Encuadre: El CNI informó al Gobierno del" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Dossier del día: El Encuadre: El CNI informó al Gobierno del riesgo de desbor</h3>
     <p>Dossier ejecutivo: El Encuadre: El CNI informó al Gobierno del riesgo de desbordamiento en Canarias</p>
     <div class="holo-meta"><span>📅 2026-11-17</span></div>
   </div>
   <div class="holo-card" style="cursor:pointer" onclick="window.location.href='2026-11-17-mediano-tutorial/'" data-category="angulo">
     <div class="holo-badge badge-guide">📄 Ángulo del Día</div>
-    <img src="/media/imagenes/post_2026-11-17_mediano_1.png" alt="Cómo detectar la técnica: apelación al miedo (alarmismo)" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
+    <img src="media/imagenes/post_2026-11-17_mediano_1.png" alt="Cómo detectar la técnica: apelación al miedo (alarmismo)" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:0.5em;">
     <h3>Cómo detectar la técnica: apelación al miedo (alarmismo)</h3>
     <p>Analisis tutorial: Cómo detectar la técnica: apelación al miedo (alarmismo)</p>
     <div class="holo-meta"><span>📅 2026-11-17</span></div>
@@ -98,12 +98,7 @@ hide:
       </ul>
     </div>
 
-    <div class="ee-side-card ee-side-stats">
-      <h3>📊 El Encuadre en cifras</h3>
-      <p><strong>65</strong> análisis publicados</p>
-      <p><strong>2026-11-23</strong> último publicado</p>
-    </div>
-  </aside>
+    </aside>
 
 </div>
 

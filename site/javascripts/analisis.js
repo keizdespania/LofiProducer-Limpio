@@ -1,40 +1,54 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const filterBtns = document.querySelectorAll('.holo-filter-btn');
-    const cards = document.querySelectorAll('.holo-card[data-category]');
+(function() {
+  function initAnalisisFilters() {
+    const filterBtns = document.querySelectorAll('.holo-filter-btn[data-filter]');
+    const cards = document.querySelectorAll('#archivo-grid .holo-card[data-category]');
     const grid = document.getElementById('archivo-grid');
 
-    if (!filterBtns.length || !grid) return;
+    if (!filterBtns.length || !cards.length || !grid) return;
 
     filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // 1. Actualizar estado de los botones
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+      if (btn.dataset.filterBound === '1') return;
+      btn.dataset.filterBound = '1';
 
-            // 2. Obtener el filtro seleccionado
-            const filter = btn.getAttribute('data-filter');
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
 
-            // 3. Filtrar las tarjetas con animación
-            cards.forEach(card => {
-                const category = card.getAttribute('data-category');
-                
-                // Si es "Todos" o la categoría coincide
-                if (filter === 'all' || category === filter) {
-                    card.style.display = 'flex';
-                    // Pequeño delay para la animación de opacidad
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'scale(1)';
-                    }, 10);
-                } else {
-                    card.style.opacity = '0';
-                    card.style.transform = 'scale(0.95)';
-                    // Ocultar después de que termine la transición CSS
-                    setTimeout(() => {
-                        card.style.display = 'none';
-                    }, 300);
-                }
-            });
+        const filter = btn.getAttribute('data-filter');
+
+        cards.forEach(card => {
+          if (card._hideTimer) {
+            clearTimeout(card._hideTimer);
+            card._hideTimer = null;
+          }
+          if (card._showTimer) {
+            clearTimeout(card._showTimer);
+            card._showTimer = null;
+          }
+
+          const category = card.getAttribute('data-category');
+          const match = (filter === 'all' || category === filter);
+
+          if (match) {
+            card.style.display = 'flex';
+            card._showTimer = setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'scale(1)';
+            }, 15);
+          } else {
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.95)';
+            card._hideTimer = setTimeout(() => {
+              card.style.display = 'none';
+            }, 250);
+          }
         });
+      });
     });
-});
+  }
+
+  document.addEventListener('DOMContentLoaded', initAnalisisFilters);
+  if (typeof document$ !== 'undefined' && document$ && typeof document$.subscribe === 'function') {
+    document$.subscribe(initAnalisisFilters);
+  }
+})();

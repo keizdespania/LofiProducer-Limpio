@@ -16,4 +16,4 @@ El uso del superlativo “más íntimo” sugiere una cercanía inédita con el 
 
 Además, el encabezado se apoya en la notoriedad del nombre “Rulo y la Contrabanda”, capitalizando su fama para reforzar la supuesta magnitud del anuncio. Al no incluir citas del propio grupo, fechas de lanzamiento o detalles de producción, el titular se mantiene en el terreno de la expectativa sensacionalista, invitando al lector a buscar la historia completa en la cobertura posterior. En resumen, la fórmula “intimidad + devastación” funciona como gancho emocional que, sin sustento factual, distorsiona la información y prioriza el impacto sobre la claridad.
 
-![004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac](/media/imagenes/post_2026-11-23_004-rulo-y-la-contrabanda-anunci.png)
+![004-rulo-y-la-contrabanda-anuncia-su-disco-m-s-ntimo-nac](../../media/imagenes/post_2026-11-23_004-rulo-y-la-contrabanda-anunci.png)

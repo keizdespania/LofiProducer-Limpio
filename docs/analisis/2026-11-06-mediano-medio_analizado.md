@@ -61,11 +61,5 @@ tags:
 </div>
 
 </div>
-<div class="ee-share">
-<a href="https://twitter.com/intent/tweet?text=Onda Cero: la tecnica del uso de la metáfora de 'resaca' para sugerir un golpe económico negativo&url=https://elencuadre.pages.dev/analisis/2026-11-06-mediano-medio_analizado/" target="_blank" rel="noopener" class="ee-share-x">𝕏 Compartir</a>
-<a href="https://threads.net/intent/post?text=Onda Cero: la tecnica del uso de la metáfora de 'resaca' para sugerir un golpe económico negativo+https://elencuadre.pages.dev/analisis/2026-11-06-mediano-medio_analizado/" target="_blank" rel="noopener" class="ee-share-threads">@ Threads</a>
-<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://elencuadre.pages.dev/analisis/2026-11-06-mediano-medio_analizado/" target="_blank" rel="noopener" class="ee-share-linkedin">in LinkedIn</a>
-<a href="https://t.me/share/url?url=https://elencuadre.pages.dev/analisis/2026-11-06-mediano-medio_analizado/&text=Onda Cero: la tecnica del uso de la metáfora de 'resaca' para sugerir un golpe económico negativo" target="_blank" rel="noopener" class="ee-share-telegram">✈ Telegram</a>
-</div>
 </div>
 <!-- EE_ENRICHED_END -->

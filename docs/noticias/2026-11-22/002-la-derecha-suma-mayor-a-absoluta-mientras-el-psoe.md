@@ -1,9 +1,9 @@
-```yaml
+---
 title: "La derecha suma mayoría absoluta mientras el PSOE se acerca al PP"
 date: 2026-11-22
 source: "La Vanguardia"
 author: "Redacción"
-```
+---
 
 Hoy la escena política se ha dividido en dos bandos claros. La derecha, liderada por el PP, ha conseguido una mayoría absoluta en el Congreso, superando el umbral del 50 % de los escaños. Según La Vanguardia, la coalición conservadora obtuvo 176 votos, lo que le permite gobernar sin depender de alianzas. Por otro lado, el PSOE ha experimentado una sorprendente recuperación y se sitúa ahora a escasos puntos del PP, con 165 escaños, lo que convierte a la izquierda en una fuerza de presión decisiva.
 
