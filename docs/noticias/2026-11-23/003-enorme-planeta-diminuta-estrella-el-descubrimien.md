@@ -19,3 +19,5 @@ Segundo, el uso de adjetivos superlativos (*huge*, *tiny*) exagera la diferencia
 Tercero, el objetivo implícito es generar clics. Al anunciar que el hallazgo “desafía” la visión tradicional, el medio apela al miedo de perderse una supuesta revolución, una táctica típica del sensacionalismo. El mensaje subyacente es comercial, no informativo.
 
 En conclusión, el titular manipula la percepción al presentar una incertidumbre científica como una ruptura dramática de la teoría establecida, usando lenguaje exagerado y omitiendo datos esenciales. El lector debe reconocer que, lejos de una revelación que cambie los libros de texto, lo que se muestra es simplemente un nuevo caso que alimenta el debate abierto y aún inconcluso sobre cómo se forman los gigantes cósmicos.
+
+![003-enorme-planeta-diminuta-estrella-el-descubrimien](/media/imagenes/post_2026-11-23_003-enorme-planeta-diminuta-estr.png)

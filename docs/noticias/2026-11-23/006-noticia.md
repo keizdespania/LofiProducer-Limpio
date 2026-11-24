@@ -17,3 +17,5 @@ Este tipo de encuadre manipula la percepción de la audiencia al presentar la el
 El uso de un **mapa de barras** como metáfora visual refuerza la idea de que el voto es una variable cuantificable que determinará el destino nacional, mientras que la ausencia de datos concretos impide una evaluación objetiva. La narrativa, por tanto, desplaza la atención de los verdaderos factores políticos (programas, propuestas, historial) hacia una **emocionalidad controlada**, que mantiene al electorado en un estado de tensión constante.
 
 En resumen, el titular no informa; **manipula**. Crea una falsa sensación de poder individual mientras, en el trasfondo, se reconoce que el resultado está ya trazado. La estrategia busca mantener la audiencia **enganchada** y **ansiosa**, asegurando que el proceso electoral siga siendo un espectáculo de incertidumbre fabricada más que una deliberación informada.
+
+![006-noticia](/media/imagenes/post_2026-11-23_006-noticia.png)

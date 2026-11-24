@@ -37,3 +37,11 @@ medio: OkDiario
 
 ### Conclusión
 El titular de OkDiario utiliza la ironía como herramienta de encuadre: transforma una ausencia de pruebas en una “acusación” humorística que, sin embargo, sugiere culpabilidad. Al no aportar datos, citas ni fuentes externas, el mensaje se sostiene únicamente en la carga emocional generada por la provocación y el juego de palabras, lo que constituye una maniobra retórica destinada a crear polémica y captar la atención sin fundamento factual.
+
+![analisis clave 1](/media/imagenes/post_2026-11-23_analisis_1.png)
+
+
+![analisis clave 2](/media/imagenes/post_2026-11-23_analisis_2.png)
+
+
+![analisis clave 3](/media/imagenes/post_2026-11-23_analisis_3.png)

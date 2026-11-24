@@ -25,3 +25,5 @@ El encabezado de OkDiario combina dos armas clásicas del sensacionalismo: la *i
    Al centrar la atención en la supuesta ironía, el medio oculta cualquier evidencia concreta que respalde la acusación. El lector se queda con la sensación de “broma política” y no con datos verificables.
 
 En resumen, el titular no informa; manipula. Usa la ironía como cortina para ocultar la falta de pruebas y convierte una posible polémica seria en un mero espectáculo de palabras, logrando captar clics y reacciones emocionales a costa de la claridad informativa.
+
+![pildora encuadre](/media/imagenes/post_2026-11-23_pildora_1.png)

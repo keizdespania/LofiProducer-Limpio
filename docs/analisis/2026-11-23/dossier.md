@@ -32,3 +32,11 @@ medio: OkDiario
 ### Conclusión
 
 El titular de OkDiario combina **ironía**, **provocación** y **asociación de nombres** para crear un gancho que desvíe la atención de la falta de pruebas y fomente una percepción negativa inmediata. Reconocer estos mecanismos te permite no caer en la trampa de la manipulación y buscar la información completa antes de formarte una opinión.
+
+![dossier clave 1](/media/imagenes/post_2026-11-23_dossier_1.png)
+
+
+![dossier clave 2](/media/imagenes/post_2026-11-23_dossier_2.png)
+
+
+![dossier clave 3](/media/imagenes/post_2026-11-23_dossier_3.png)

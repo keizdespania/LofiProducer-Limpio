@@ -1,7 +1,7 @@
 ---
-title: "COP31: ¿Qué sigue tras el colapso de las negociaciones climáticas de la ONU?"
+title: "COP31: ¿Qué viene después del colapso de las negociaciones climáticas de la ONU?"
 date: 2026-11-23
-description: "Al Jazeera dramatiza el “colapso” de la COP31, pero el análisis muestra que, pese al tono apocalíptico, aún hay espacio para avances."
+description: "Al Jazeera pinta la COP31 como un “colapso” climático, pero el mensaje real celebra avances pese al tono apocalíptico."
 tags: [encuadre, medios, noticia]
 tipo: noticia
 fuente_url: https://elencuadre.pages.dev/analisis/2026-11-23/
@@ -19,3 +19,5 @@ Segundo, el uso de la pregunta “¿Qué sigue?” refuerza la sensación de vac
 Finalmente, el fondo irónico del mensaje señala que el dramatismo es, en sí mismo, una forma de manipulación: el “mundo necesita más drama” sugiere que la cobertura mediática prefiere el espectáculo al análisis profundo. Al señalar la “impotencia climática”, se acusa implícitamente a los actores políticos y a los medios de perpetuar la inacción bajo la apariencia de urgencia.
 
 En resumen, el titular emplea un encuadre negativo para magnificar el fracaso percibido, mientras que el tono sarcástico del fondo denuncia esa misma estrategia, recordándonos que el verdadero desafío está en superar el drama y avanzar con propuestas concretas, no en celebrar la caída de una negociación.
+
+![005-cop31-what-next-after-un-climate-talks-collapse](/media/imagenes/post_2026-11-23_005-cop31-what-next-after-un-cli.png)

@@ -1,7 +1,7 @@
 ---
-title: "Los diálogos climáticos de la ONU más extensos de la historia terminan sin acuerdo, revelando profundas divisiones."
+title: "Los diálogos climáticos de la ONU más extensos de la historia terminan sin acuerdo, revelando profundas divisiones"
 date: 2026-11-23
-description: "La BBC usa un encuadre conflictivo, resaltando la duración récord y la falta de acuerdo para insinuar que el fracaso de la cumbre era inevit"
+description: "BBC enmarca la cumbre climática récord como un fracaso inevitable, destacando su duración y la falta de acuerdo por profundas divisiones."
 tags: [encuadre, medios, noticia]
 tipo: noticia
 fuente_url: https://elencuadre.pages.dev/analisis/2026-11-23/
@@ -19,3 +19,5 @@ Segundo, el énfasis en “no deal” y “deep divisions” crea una narrativa 
 Tercero, el tono negativo ignora el contexto de que las negociaciones internacionales son procesos iterativos. La exposición de diferencias puede ser, precisamente, un paso necesario para identificar brechas y diseñar estrategias más efectivas. Presentar la divergencia como un “gran logro” de la inacción distorsiona la realidad y desincentiva la participación ciudadana informada.
 
 En resumen, el encuadre de conflicto del titular exagera la falta de acuerdo y la división, sin reconocer la complejidad del proceso ni los avances parciales. Al centrarse exclusivamente en lo negativo, se fomenta el cinismo y se minimiza la importancia de los diálogos continuos que, aunque imperfectos, son esenciales para avanzar en la agenda climática global.
+
+![002-longest-ever-un-climate-talks-end-with-no-deal-as-deep](/media/imagenes/post_2026-11-23_002-longest-ever-un-climate-talk.png)
