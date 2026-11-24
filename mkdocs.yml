@@ -204,9 +204,9 @@ plugins:
   - social:
       enabled: !ENV [CI, true]
       cards: true
-      cards_color:
-        fill: '#0a0a0f'
-        text: '#e63946'
+      cards_layout_options:
+        background_color: '#0a0a0f'
+        color: '#e63946'
 
 use_directory_urls: true
 
